@@ -1,0 +1,98 @@
+\documentclass[a4paper,10pt, twoside]{article}
+\usepackage[utf8]{inputenc}
+\setcounter{tocdepth}{2} %Only show sections and subsections in toc.
+
+\usepackage{colortbl}
+\usepackage{siunitx} %Package for SI units
+\sisetup{per-mode=fraction}
+
+\usepackage{textcomp} %Vertically centered tilde (~)
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{standalone}
+
+\usepackage[font={footnotesize}]{caption}
+\usepackage[font={footnotesize}]{subcaption}
+
+\usepackage[hidelinks]{hyperref}
+%\hypersetup{
+%    colorlinks = false,
+%    linkbordercolor = {white},
+%}
+
+
+%\hypersetup{
+ %   colorlinks,
+ %   linkcolor={red!50!black},
+ %   citecolor={blue!50!black},
+ %   urlcolor={blue!80!black}
+%}
+
+\usepackage{float}
+\usepackage[procnames]{listings}
+\usepackage{epstopdf} %Convert EPS files to PDF format
+\usepackage{pdfpages} %Utility to include pdf documents into the report, used to include datasheets in appendices.
+
+\usepackage{tikz} 			%Utility to draw nice figures
+\usetikzlibrary{shapes.geometric, arrows}
+\usepackage{standalone}
+\usepackage{circuitikz} 	%Utility to draw circuits in tikz
+
+\usepackage[disable]{todonotes}
+\usepackage{listings}
+\usepackage{multirow}
+
+
+\usepackage{url}
+\renewcommand{\UrlFont}{\large\tt}
+
+\usepackage{chngcntr} %Change the counters of objects. Used to make figure/table and equation counting specific to the section they are in.
+\counterwithin{figure}{section}
+\counterwithin{equation}{section}
+
+%Make counter of listings specific to sections
+\AtBeginDocument{%
+  \counterwithin*{lstlisting}{section}
+  \renewcommand{\thelstlisting}{%
+    \ifnum\value{subsection}=0
+      \thesection.\arabic{lstlisting}%
+    \else
+      \ifnum\value{subsubsection}=0
+        \thesection.\arabic{lstlisting}%
+      \else
+        \thesection.\arabic{lstlisting}%
+      \fi
+    \fi
+  }%
+}
+
+\usepackage[inner=2cm,outer=4cm]{geometry}
+
+
+
+\setlength{\parindent}{0pt}
+
+\title{Electronics - 1. Semester Project}
+\author{Thomas Søndergaard Christensen, Erlingur Ívar Jóhannsson, Mikkel Skarup Jaedicke, Morten Tholstrup Pedersen, Martin Brøchner Andersen}
+\date{31/05/2016}
+
+
+\begin{document}
+\input{sections/titlepage.tex}
+\newpage
+\pagenumbering{Roman}
+\input{sections/abstract}
+\newpage
+\tableofcontents
+\newpage
+\listoftodos
+%\listoftables
+\clearpage
+\newpage
+\pagenumbering{arabic}
+\input{sections/systemdescription}
+\newpage
+\input{bib}
+\newpage
+\end{document}
+
