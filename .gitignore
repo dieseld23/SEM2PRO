@@ -4,3 +4,7 @@
 *.out
 *.toc
 *.backup
+main.pdf
+*.fdb_latexmk
+*.fls
+*.synctex.gz
