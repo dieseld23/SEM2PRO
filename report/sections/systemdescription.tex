@@ -53,14 +53,27 @@ The system will be scalable. How much will be discussed.
 %Sevcon and possibly IMU, GPS...
 
 \subsubsection{QUESTIONS}
-What bandwidth/latency should the communication be able to handle?
-How is data produced? i.e. just by the sensors, by the go-kart or both systems?
-How many sensors/data producers?\\
-Should we support asynchronous transfer? (different sensors with different 
+\begin{itemize}{}
+\item What bandwidth/latency should the communication be able to handle?
+\item How is data produced? i.e. just by the sensors, by the go-kart or both systems?
+\item How many sensors/data producers?\\
+\item Should we support asynchronous transfer? (different sensors with different 
 update frequency transfer at different rates).\\
-Which tasks should be handled where? i.e. can some tasks be handled locally on 
+\item Which tasks should be handled where? i.e. can some tasks be handled locally on 
 the go-kart?
+\item What topology should the go-kart network be? Ring?
+\item What should the basic gui (on the laptop) be?
+\item Go-kart network hierarchy? A zybo master ruling the rest puny zybos without mercy?
+\item Required hardware to make the entire network? (eg. Zybos, pmod ip core ethernet, wifi card for zybo etc.)
+\item Sevcon requires use of OpenCan. How will the connection between the Sevcon and the network should be done?
+\item What is the max distance we want to support for wireless communication Stat. Laptop - Go-kart zybo? What hardware for that distance?
+\item How does this max distance affects the bandwidth/latency and in general, the efficiency of the entire network?
+\item If we have error-handling on the go-kart zybo, what kind of errors might those be?!??!
+\item Programming language/IDE of creating the GUI?
+\item How the failure of a node will be handled?
+\item How the wifi disconnection between Stationary PC and the go-kart zybo will be handled? A msg in GUI? What about if data was being transmitted, should we check if the node got the data? In other words, do we need verification of data received by the nodes shown on the gui after adjusting the parameters?
 
+\end{itemize}
 
 
 \section{Further ivestigation}
