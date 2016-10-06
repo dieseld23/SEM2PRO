@@ -1,18 +1,45 @@
 %!TEX root = ../main.tex
 
 \section{System description}
-\textbf{Communication of sensor data and parameters between a computer on our go-kart and a stationary computer.}\\
-What is meant by "computer"\\
-What kind of data?\\
-What setup should be used for communication? Wireless/wired, what protocol etc.
+\subsection{Communication of sensor data and parameters between a computer on the SDU go-kart and a stationary computer.}
+Bla Bla....
+
+\subsubsection{What is the data on stationary computer intended for?}
+\subsubsection{What is the data on stationary computer intended for?}
+Monitoring data related to movement from the go-kart and adjusting go-kart control parameters by an engineer.
+
+\subsubsection{What kind of data}
+Data from Sevcon controller related to the motor (control, temperature, speed etc.), and from other nodes that are sensors. Sensors may include IMU, GPS... (to be discussed).
+
+\subsubsection{What is meant by "computer"}
+Stationary computer is a laptop/desktop (general purpose computer, OS: Windows/Linux), and the go-kart computer is a zybo board running Linux.
+
+\subsubsection{What setup should be used for communication (Wireless/wired), what protocol etc.}
+Wireless communication to make possible the monitoring/adjusting while the go-kart is being driven on a track. Protocol?
+
+\subsubsection{}
+
+\subsubsection{Does the communication require extra verification? checksum, timestamping etc.?}
+YES.
+
+\subsubsection{Is storage necessary?}
+To be discussed.
+
+\subsubsection{How many nodes/sensors should the system be able to handle?}
+The system will be scalable. How much will be discussed.
+
+\subsubsection{What kind of nodes/sensors/actuators?}
+Sevcon and possibly IMU, GPS...
+
+\subsubsection{QUESTIONS}
 What bandwidth/latency should the communication be able to handle?
-Does the communication require extra verification? checksum, timestamping or 
-similar.
-Is storage necessary?
 How is data produced? i.e. just by the sensors, by the go-kart or both systems?
 How many sensors/data producers?\\
-What kind of sensors/actuators?\\
 Should we support asynchronous transfer? (different sensors with different 
 update frequency transfer at different rates).\\
 Which tasks should be handled where? i.e. can some tasks be handled locally on 
 the go-kart?
+
+
+
+\section{Further ivestigation}
