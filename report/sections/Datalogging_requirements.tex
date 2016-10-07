@@ -1,0 +1,53 @@
+%!TEX root = ../main.tex
+
+\section{Data Logging}
+
+Datalogging should be useful for working with an inverter as was the case on the first semester.
+Likely it would be interesting to log the phase-current to the motor at high enough rate to accurately depict their sinusoidal short term average.
+The ripple current or voltage at the motor terminals should be measured in the lab, as this requires a high sample rate, and more control than offered on the test track.
+This data logging would be useful for recording current in the motor as the go kart is driving.
+By looking at the maximum frequency of the motor and the most extreme rate of change permissible by the armature inductance, it is possible to set a sample rate for the log file.\\
+
+According to the manufacturer of the motor, the maximum rotational velocity is 5000 RPM.
+With four pole pairs, this comes to a maximum sinusoidal frequency of 333 Hz. 
+According to the Nyquist theorem, it is necessary to use a sample frequency at least twice that. 
+However it is necessary to use even higher sampling frequencies to get reconstructible data.
+The higher sample rate, the better, but less might be useful.
+To determine this, a simulation has been made as shown below.\\
+
+\begin{figure}[H]
+	\centering
+	\includegraphics{graphics/determine_max_frequency.png}
+	\caption{Simulink block diagram for determining reconstructability}
+	\label{fig:determine_max_frequency}
+\end{figure}
+
+
+A sinusoidal signal $x(t) = \sin(2\omega \pi f \cdot t)$ is discretized at interval T. 
+The discrete signal is processed by a first order low pass filter, and then reconstructed by a first order highpass filter and a gain of 2.
+This processed signal is then compared to the original signal delayed by $\frac{T}{2}$.
+To get an estimate of the authenticity of the reconstructed signal, RMS is calculated from the difference between the delayed input signal, and the reconstructed signal.
+To compare, the simulation has been performed with values of T ranging from $\frac{1}{2f}$ to $\frac{1}{10f}$.\\
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{| S | S | S |}
+		\hline
+		{T} & {$f= 333.3\si{\herz}$} & {$f= 300\si{\herz}$} \\
+		\hline
+		{$\frac{1}{2f}$} & {0.701} & {0.701} \\
+		\hline
+		{$\frac{1}{4f}$} & {0.156} & {0.15} \\
+		\hline
+		{$\frac{1}{5f}$} & {0.0983} & {0.109} \\
+		\hline
+		{$\frac{1}{6f}$} & {0.0674} & {0.0889} \\
+		\hline
+		{$\frac{1}{8f}$} & {0.0376} & {0.0744} \\
+		\hline
+		{$\frac{1}{10f}$} & {0.025} & {0.06985} \\
+		\hline
+	\end{tabular}
+	\caption{Comparison of RMS of error at maximum frequency, and 90 \%}
+	\label{tab:determine_maximum_frequency}
+\end{table}
