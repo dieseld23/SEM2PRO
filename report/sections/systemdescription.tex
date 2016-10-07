@@ -1,23 +1,38 @@
 %!TEX root = ../main.tex
 
 \section{Communication of sensor data and parameters between a computer on the SDU go-kart and a stationary computer.}
-%Bla Bla....
-\subsection{What is the purpose of transferring go-kart data to and from a stationary computer?}
-To let an engineer or a mechanic monitor the status of the go-kart.
-Movement data could be usefull for testing new hardware, improving existing hardware and evaluation the drivers performance. 
-Data about battery status, currents, motortemperature is usefull for safety procedures.
-Data from the SEVCON xxx inverter on the go-kart could be used for tuning parameters, evaluation performance and safety measures.
-On the basis of this data it should be possibly to change configuration parameters on the SEVCON xxx while driving the go-kart.
+This project aims to produce a tool for developing, evaluating and testing the SDU go-kart.
+Movement of the go-kart should be monitored to enable evaluation of the drivers performance.
+The control variables and currents of the inverter should be monitored to develop new hardware or evaluate existing hardware.
+Relavant control variables should be controllable, while driving allowing for efficient testing controllers.
+To achieve this data should be collected on a computer on the go-kart and sent to a stationary computer.
+
+
+%\subsection{What is the role of transferring go-kart data to and from a stationary computer?}
+%To let an engineer or a mechanic monitor the status of the go-kart.
+
+%Movement data could be usefull for testing new hardware, improving existing hardware and evaluation the drivers performance. 
+%Data about battery status, currents, motortemperature is usefull for safety procedures.
+%Data from the SEVCON xxx inverter or other inverters on the go-kart could be used for tuning parameters, evaluation performance and safety measures.
+%On the basis of this data it should be possibly to change configuration parameters on the SEVCON xxx while driving the go-kart.
+
+\subsection{What is the role of the stationary computer?}
+The stationary computer should be responsible of the transmission of relevant go-kart data to and from the "on-board" computer.
+The received data should be presented to the user and the user should be able to change relevant contral variables.
 
 \subsubsection*{What data and sensors would be interesting to monitor?}
 Data from IMU, GPS and encoders would be necessary to monitor the movement of the go-kart.
 Data from the SEVCON xxx gives information about about battery status, currents, motortemperature.
-Temperature of tyres, speed of front wheels, possibility to control or at least moniter stearing and brake.
+%Temperature of tyres, speed of front wheels, possibility to control or at least moniter stearing and brake.
 
 \subsubsection*{What kind is the stationary computer?}
 It should be possible for different personnel to monitor the go-kart data therefore the statinonary computer should just be general purpose computer running (linux?).
 
-\subsubsection*{What kind of communcation is needed to transfer data between the go-kart computer and the stationary computer?}
+
+\subsubsection*{What control variables would be interesting to change?}
+......
+
+\subsubsection*{What kind of communication is needed to transfer data between the go-kart computer and the stationary computer?}
 As it should be possibly to monitor data and change parameters while the go-kart is driving the connection clearly needs to be wireless with a range allowing for driving on a typical racing track. 
 As all data is used by humans the propagation delay of the connection is not required to be "superfast" (should be rewritten in numbers somewhere).
 
@@ -25,14 +40,15 @@ As all data is used by humans the propagation delay of the connection is not req
 As live data should be easy to read? ("overskue" in danish) there needs to be a GUI or at least a UI that will present the user with easy readable data. 
 Changing of parameters on the go-kart should also be in the UI in order useable by others than the developers.
 
-\subsection{What is the purpose of the computer on the go-kart?}
+\subsection{What is the role? of the computer on the go-kart?}
 The "onboard" computer needs to handle both the collection
 of data from different sensors (data producers) and the transmission of data to 
 data consumers.
 Data consumers may be sensors that require setup, filters or similar equipment.
 This computer will also handle the transmission of data to the stationary 
 computer.
-There are tasks that need to be handled locally fx strict safety measures (and future things fx localisation) that requires a miminum delay. 
+%There are tasks that need to be handled locally fx strict safety measures (and future things fx localisation) that requires a miminum delay. 
+Storing of data with a 
 The computer needs also to store data locally in order to avoid data loss if the wireless connection is lost.
 
 \subsubsection*{How is local data transmission handled?}
@@ -46,9 +62,6 @@ data producers/consumers.
 The computer should be a small embedded platform in order to mount it physcically on the go-kart.
 It should be able to handle all "on-board" tasks.
 
-\subsubsection*{What kind of safety measures should be implemented locally?}
-Martin? :D Over current? Battery failures? Depends on what's meant by that. Battery failures would probably mean that we can't moniter anything. I don't know if we want to our data to survive a sudden loss of power? The inverter (Sevcon or otherwise) should handle motor-related isssues. Tyre temperature and wear could be an angle, because these can rise quite quickly, and suddenly burst.
-
 \subsubsection*{How should local data storage be realised?}
 Data should be stored directly on nonvolatile memory to be able retrieve data after shutdown.
 Data integrity checks is needed to ensure proper data logging.
@@ -56,28 +69,6 @@ Data integrity checks is needed to ensure proper data logging.
 
 
 \section{Further ivestigation}
-
-
-\subsection{How is data retrieved from the Sevcon?}
-Will be continued....! 
-
-\subsection{What wireless communication will be used?}
-Will be continued....!
-
-\subsection{What network should be realised to colled data locally?}
-Will be continued....!
-
-\subsection{What "on-board" computer should be used?}
-Will be continued....!
-
-\subsection{Local safety measures?}
-Will be continued....!
-
-\subsection{Proper data loggin?}
-Will be continued....!
-
-\subsection{UI}
-Will be continued....!
 
 %\subsubsection{What is the data on stationary computer intended for?}
 %Monitoring data related to movement from the go-kart and adjusting go-kart control parameters by an engineer.
@@ -101,28 +92,29 @@ Will be continued....!
 %\subsubsection{What kind of nodes/sensors/actuators?}
 %Sevcon and possibly IMU, GPS...
 
-\subsubsection{QUESTIONS - should be deleted. They are only here for inspiration.}
-\begin{itemize}{}
-\item What bandwidth/latency should the communication be able to handle?
-\item How is data produced? i.e. just by the sensors, by the go-kart or both systems?
-\item How many sensors/data producers?\\
-\item Should we support asynchronous transfer? (different sensors with different 
-update frequency transfer at different rates).\\
-\item Which tasks should be handled where? i.e. can some tasks be handled locally on 
-the go-kart?
-\item What topology should the go-kart network be? Ring?
-\item What should the basic gui (on the laptop) be?
-\item Go-kart network hierarchy? A zybo master ruling the rest puny zybos without mercy?
-\item Required hardware to make the entire network? (eg. Zybos, pmod ip core ethernet, wifi card for zybo etc.)
-\item Sevcon requires use of OpenCan. How will the connection between the Sevcon and the network should be done?
-\item What is the max distance we want to support for wireless communication Stat. Laptop - Go-kart zybo? What hardware for that distance?
-\item How does this max distance affects the bandwidth/latency and in general, the efficiency of the entire network?
-\item If we have error-handling on the go-kart zybo, what kind of errors might those be?!??!
-\item Programming language/IDE of creating the GUI?
-\item How the failure of a node will be handled?
-\item How the wifi disconnection between Stationary PC and the go-kart zybo will be handled? A msg in GUI? What about if data was being transmitted, should we check if the node got the data? In other words, do we need verification of data received by the nodes shown on the gui after adjusting the parameters?
+% \subsubsection{QUESTIONS - should be deleted. They are only here for inspiration.}
+% \begin{itemize}{}
+% \item What bandwidth/latency should the communication be able to handle?
+% \item How is data produced? i.e. just by the sensors, by the go-kart or both systems?
+% \item How many sensors/data producers?\\
+% \item Should we support asynchronous transfer? (different sensors with different 
+% update frequency transfer at different rates).\\
+% \item Which tasks should be handled where? i.e. can some tasks be handled locally on 
+% the go-kart?
+% \item What topology should the go-kart network be? Ring?
+% \item What should the basic gui (on the laptop) be?
+% \item Go-kart network hierarchy? A zybo master ruling the rest puny zybos without mercy?
+% \item Required hardware to make the entire network? (eg. Zybos, pmod ip core ethernet, wifi card for zybo etc.)
+% \item Sevcon requires use of OpenCan. How will the connection between the Sevcon and the network should be done?
+% \item What is the max distance we want to support for wireless communication Stat. Laptop - Go-kart zybo? What hardware for that distance?
+% \item How does this max distance affects the bandwidth/latency and in general, the efficiency of the entire network?
+% \item If we have error-handling on the go-kart zybo, what kind of errors might those be?!??!
+% \item Programming language/IDE of creating the GUI?
+% \item How the failure of a node will be handled?
+% \item How the wifi disconnection between Stationary PC and the go-kart zybo will be handled? A msg in GUI? What about if data was being transmitted, should we check if the node got the data? In other words, do we need verification of data received by the nodes shown on the gui after adjusting the parameters?
+% \item Embedded linux on one or all the nodes?
 
-\end{itemize}
+% \end{itemize}
 
 \subsection{What will the data be used forr (should maybe be above some other questions?)}
 
