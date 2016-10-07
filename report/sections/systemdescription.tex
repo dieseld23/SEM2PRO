@@ -25,14 +25,21 @@ As live data should be easy to read? ("overskue" in danish) there needs to be a 
 Changing of parameters on the go-kart should also be in the UI in order useable by others than the developers.
 
 \subsection{What is the purpose of the computer on the go-kart?}
-The "onboard" computer needs to handle collection of data from different sensors and transfer it to the stationary computer.
+The "onboard" computer needs to handle both the collection
+of data from different sensors (data producers) and the transmission of data to 
+data consumers.
+Data consumers may be sensors that require setup, filters or similar equipment.
+This computer will also handle the transmission of data to the stationary 
+computer.
 There are tasks that need to be handled locally fx strict safety measures (and future things fx localisation) that requires a miminum delay. 
 The computer needs also to store data locally in order to avoid data loss if the wireless connection is lost.
 
-\subsubsection*{How is data collected?}
+\subsubsection*{How is local data transmission handled?}
 All data should be collected locally on the "on-board" computer to transmit it to the stationary computer.
 Local data collection should be "fast" and "reliable" for local safety measures to function properly.
-It should be possibly to collect data from at least the aforementioned IMU, GPS and SEVCON xx with the possibility of adding additional data producers.
+It should be possibly to collect data from and transmit data to at least the 
+aforementioned IMU, GPS and SEVCON xx with the possibility of adding additional 
+data producers/consumers.
 
 \subsubsection*{What kind is the "on-board" computer?}
 The computer should be a small embedded platform in order to mount it physcically on the go-kart.
