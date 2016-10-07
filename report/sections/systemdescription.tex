@@ -72,6 +72,7 @@ the go-kart?
 \item Programming language/IDE of creating the GUI?
 \item How the failure of a node will be handled?
 \item How the wifi disconnection between Stationary PC and the go-kart zybo will be handled? A msg in GUI? What about if data was being transmitted, should we check if the node got the data? In other words, do we need verification of data received by the nodes shown on the gui after adjusting the parameters?
+\item IDEA: The GPS specifically can be hooked up as a shield on the main zybo itself and NOT having it as a node. A reason for that would be because the gps sensor is a sensor that can be anywhere on the gokart, while other nodes, for example proximity or IMU must be at specific locations (for various reasons) and thus you need the node network. So why not take one node out to reduce the complexity of the network? In other words, we can add the gps as part of the purpose of having the main zybo on the go-kart.
 
 \end{itemize}
 
