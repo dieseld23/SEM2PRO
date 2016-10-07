@@ -12,6 +12,7 @@ On the basis of this data it should be possibly to change configuration paramete
 \subsubsection*{What data and sensors would be interesting to monitor?}
 Data from IMU, GPS and encoders would be necessary to monitor the movement of the go-kart.
 Data from the SEVCON xxx gives information about about battery status, currents, motortemperature.
+Temperature of tyres, speed of front wheels, possibility to control or at least moniter stearing and brake.
 
 \subsubsection*{What kind is the stationary computer?}
 It should be possible for different personnel to monitor the go-kart data therefore the statinonary computer should just be general purpose computer running (linux?).
@@ -46,7 +47,7 @@ The computer should be a small embedded platform in order to mount it physcicall
 It should be able to handle all "on-board" tasks.
 
 \subsubsection*{What kind of safety measures should be implemented locally?}
-Martin? :D Over current? Battery failures?
+Martin? :D Over current? Battery failures? Depends on what's meant by that. Battery failures would probably mean that we can't moniter anything. I don't know if we want to our data to survive a sudden loss of power? The inverter (Sevcon or otherwise) should handle motor-related isssues. Tyre temperature and wear could be an angle, because these can rise quite quickly, and suddenly burst.
 
 \subsubsection*{How should local data storage be realised?}
 Data should be stored directly on nonvolatile memory to be able retrieve data after shutdown.
@@ -122,6 +123,8 @@ the go-kart?
 \item How the wifi disconnection between Stationary PC and the go-kart zybo will be handled? A msg in GUI? What about if data was being transmitted, should we check if the node got the data? In other words, do we need verification of data received by the nodes shown on the gui after adjusting the parameters?
 
 \end{itemize}
+
+\subsection{What will the data be used forr (should maybe be above some other questions?)}
 
 
 
