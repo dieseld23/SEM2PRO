@@ -1,13 +1,13 @@
 %!TEX root = ../main.tex
 
-\section{On-Vechile Local Network}
+\section{On-vehicle Local Network}
 
 \subsection{Topology}
 
-There are various network topologies that can be used to setup the required node network for this project. These include the ring, bus, mesh ,star and tree topology. Of course, a hybrid approach is also possible. Before we specify which one is suitable, a brief description of the purpose and functionality of our network as well as an overview of their advantages and disadvantages are needed. 
+There are various network topologies that can be used to setup the required node network for this project. These include the ring, bus, mesh ,star and tree topology. Before we specify which one is suitable, a brief description of the purpose of our network as well as an overview of their advantages and disadvantages are needed. 
 
 \subsubsection{Purpose of the Network}
-The purpose of this network is to accommodate multiple sensors which need to be able to communicate with the main node as well as with the other present nodes. The reasons for this is that the main node is responsible for transmitting and receiving data from the stationary computer and other nodes may require data from other nodes to cooperate for a task. The main node, apart from communicating, will also handle processing that the secondary nodes are not able to. The communication between the various nodes is preferred not to be strictly centralized. Two nodes may need to communicate with one another without the control and the extra processing time of a centralized topology. Furthermore, in the case that one node fails, the network as a whole should still be operative. Lastly, since it is a multi-node network and it may require more nodes in the future, a certain level of scalability is also required.
+The purpose of this network is to accommodate multiple sensors which need to be able to communicate with the main node and the other present nodes. The reasons for this is that the main node is responsible for transmitting and receiving data from the stationary computer and other nodes may require data from other to cooperate for a task. The main node, apart from communicating, will also handle processing that the secondary nodes are not able to. The communication between the various nodes is preferred not to be strictly centralized. Two nodes may need to communicate with one another without the control and the extra processing time of a centralized topology. Furthermore, in case that one node fails, the network as a whole should still be operative. Lastly, since it is a multi-node network and it may require more nodes in the future, a certain level of scalability is also required.
 
 \subsubsection{Different Topologies}
 \begin{itemize}
@@ -20,16 +20,15 @@ The purpose of this network is to accommodate multiple sensors which need to be 
 \end{itemize}
 
 \subsubsection{Suitable Topology}
-Based on the purpose of the network to be implemented and the pros and cons of the various topologies, the mesh type is not suitable, since it adds extra hardware requirements such as processing power and many redundant connections. A node may be a simple sensor with a small microprocessor and hence, connecting it to such a network is not feasible. Although the bus may fit the requirements, the risk of failing due to a node malfunction can be high making it a secondary option. In our system, a small embedded board computer will handle the wireless communication, making it to be the important node that needs to keep its connection with the rest of the nodes even in case of failures. Apart from that, since this main node will also handle processing, it needs to be the central communicating node in all topologies that require a centralized node such as the star and the tree. Thus, the star topology is not suited, since in case of its failure, the whole network fails. Similarly, the tree is also not suited for the same reason. Scalability is also a requirement for the future connection of sensors or data producers. Although the majority of the types provide a level of scalability, the addition of extra nodes always decrease the overall performance of any network. Hence, a topology that balances the decrease in performance against the network's expansion is best suited for the project.\\\\
+Concluding from the above, the mesh type is not suitable, since it adds extra hardware requirements such as processing power and many redundant connections. A node may be a simple sensor with a small microprocessor and hence, connecting it to such a network is not feasible. Although the bus type may fit the requirements, the risk of failing due to a node malfunction can be high making it a secondary option. In our system, a small embedded board computer will handle the wireless communication, making it to be the important node that needs to keep its connection with the rest of the nodes even in case of failures. Apart from that, since this main node will also handle processing, it needs to be the central communicating node in all topologies that require a centralized node such as the star and the tree. Thus, the star topology is not suited, since in case of its failure, the whole network fails. Similarly, the tree is also not suited for the same reason. Scalability is also a requirement for the future connection of sensors or data producers. Although the majority of the types provide a level of scalability, the addition of extra nodes always decrease the overall performance of any network. Hence, a topology that balances the decrease in performance against the network's expansion is best suited for the project.\\\\
 The approach that fits the requirements best is implementing a ring network, where each node may be a subnetwork of a different type depending on the needs, making it into a hybrid network having a ring topology as its basis. The ring type provides the best balance of reliability, scalability, hardware requirements and communication speed in comparison to the others.
 
-\begin{itemize}
-\item Ethernet
-\item Ethercat
-\item CanBus
-\item CanOpen
+\subsection{Networking technology}
 
-\end{itemize}
+Different networking technologies exist in use today, such as Ethernet, Can bus, CanOpen and Powerlink, among others. Can bus is widely used in the automotive industry with data rates up to 1Mbit/s for small networks lengths, but the classic Ethernet and Powerlink support data rates of at least 10Mbit/s. Furthermore, Powerlink is suitable for transmission of time-critical data and timing-synchronization of the nodes. 
+\\\\
+Since the Zybo board will be used possibly using PmodNIC100 modules as they are provided by the university, the openPowerlink protocol can be implemented in software using as hardware the existing Ethernet ports provided by the modules.
+
 
 
 
