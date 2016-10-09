@@ -1,11 +1,11 @@
 %!TEX root = ../main.tex
 
 \section{Communication of sensor data and parameters between a computer on the SDU go-kart and a stationary computer.}
-This project aims to produce a tool for developing, evaluation and testing the SDU go-kart.
+This project aims to produce a tool for developing, evaluating and testing the SDU go-kart.
 Movement of the go-kart should be monitored to enable evaluation of the performance of the driver.
 The control variables and currents of the inverter should be monitored in order to help develop new hardware or evaluate existing hardware.
-Relavant control variables should be controllable, while driving allowing for efficient testing controllers.
-To achieve this data should be collected on a computer on the go-kart and sent to a stationary computer.
+Relavant control variables should be controllable, while driving allowing for efficient testing of controllers.
+To achieve this, data should be collected on a computer on the go-kart and sent to a stationary computer.
 
 %\subsection{What is the role of transferring go-kart data to and from a stationary computer?}
 %To let an engineer or a mechanic monitor the status of the go-kart.
@@ -23,6 +23,7 @@ The received data should be presented to the user and the user should be able to
 Data from IMU, GPS and encoders would be necessary to monitor the movement of the go-kart.
 Data from the SEVCON xxx gives information about about battery status, currents, motortemperature.
 %Temperature of tyres, speed of front wheels, possibility to control or at least moniter stearing and brake.
+It should be possible to get data from a new inverter, that is not yet made. 
 
 \subsubsection*{What kind is the stationary computer?}
 It should be possible for different personnel to monitor the go-kart data therefore the statinonary computer should just be general purpose computer running (linux?).
@@ -33,7 +34,7 @@ It should be possible for different personnel to monitor the go-kart data theref
 
 \subsubsection*{What kind of communication is needed to transfer data between the go-kart computer and the stationary computer?}
 As it should be possibly to monitor data and change parameters while the go-kart is driving the connection clearly needs to be wireless with a range allowing for driving on a typical racing track. 
-As all data is used by humans the propagation delay of the connection is not required to be "superfast" (should be rewritten in numbers somewhere).
+As all data is used by humans the propagation delay of the connection is not required to be very low.
 
 \subsubsection*{How should data on the stationary computer be presented?}
 As live data should be easy to read? ("overskue" in danish) there needs to be a GUI or at least a UI that will present the user with easy readable data. 
@@ -160,12 +161,51 @@ This category comprises all information about the mechanical aspects of the go-k
 % \item If we have error-handling on the go-kart zybo, what kind of errors might those be?!??!
 % \item Programming language/IDE of creating the GUI?
 % \item How the failure of a node will be handled?
-% \item How the wifi disconnection between Stationary PC and the go-kart zybo will be handled? A msg in GUI? What about if data was being transmitted, should we check if the node got the data? In other words, do we need verification of data received by the nodes shown on the gui after adjusting the parameters?
+% \item How the wifi disconnection between Stationary PTP-LINKC and the go-kart zybo will be handled? A msg in GUI? What about if data was being transmitted, should we check if the node got the data? In other words, do we need verification of data received by the nodes shown on the gui after adjusting the parameters?
 % \item Embedded linux on one or all the nodes?
 
 % \end{itemize}
 
-\subsection{What will the data be used forr (should maybe be above some other questions?)}
 
 
 
+\subsection{Wireless transmission}
+The wireless transmission between the go-kart computer and the stationary computer could be a number of different technologies.
+This section seeks find an appropriate one.
+
+\subsubsection{Range}
+The range of the transmission is determined by the length of the test track. 
+Normally the SDU kart is tested on parking lots with a maximum lenght of 50m and width of 20m.
+There are almost no obstacles for the transmission on such a parking lot. 
+This test track sets a minimum requirement that the wireless setup should be able to transmit data at 55m with no obstacles.
+\\
+At some point it would be interesting to test the go-kart on a real go-kart track. 
+The nearest go-kart track is \textit{Odense gokart Hal}, which is also thought to be an average indoor go-kart track.
+The track is about 70m long and 40m in width with no obstacles other than the barriers. 
+If the wireless transmitter and receiver are placed above the barrier then they will not an obstruction on the transmission. 
+This track sets a minimum requirement of 80m transmission. 
+
+\subsubsection{Speed}
+The transferred data is from xx sensors producing a maximum of yy bites per sample. 
+Data is only used for human inspection and therefore a sample frequency of 100Hz would be sufficient.
+This gives a minimum requirement for the speed of the transmission to be ZZ Mbit/s. 
+
+\subsubsection{Compatibility}
+It should be possibly to change the stationary computer and therefore the choosen wireless transmission technology should be compatible with standard computers running linux.
+The chosen hardware should be compatible with standard linux computers and the Zybo board. 
+Both have USB ports as a standard, therefore the choosen hardware should be an USB WiFi Adapter.
+
+\subsubsection{Technologies}
+Bluetooth is a technology that is compatible with standard computers running linux. 
+Bluetooth 5.0 has a maximum speed of 50Mbit/s, which is sufficient.
+The range of typical class 2 Bluetooth device is 10m \footnote{https://en.wikipedia.org/wiki/Bluetooth}.
+This range is definitely not enough for this application.
+\\
+\\  
+WiFi is also compatible with standard computers running linux and typical WiFi units has speeds that is a lot higher than the required. 
+WiFi can be operating in the 2.4GHz band and in the 5GHz band. 
+2.4GHz units has the highest range. 
+The 802.11n protocol generally has the best range compared to the other 802.11 protocols \footnote{https://en.wikipedia.org/wiki/IEEE\_802.11\#802.11n}.
+
+\subsubsection{Conclusion} 
+It was chosen to use the TP-LINK TL-WN722N, as it uses the 2.4GHz band, the 802.11n protocol, is compatible with linux, has an external antenna and uses USB. 
