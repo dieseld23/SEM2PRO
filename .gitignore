@@ -4,6 +4,7 @@
 *.out
 *.toc
 *.backup
+*.dvi
 main.pdf
 *.fdb_latexmk
 *.fls
