@@ -1,12 +1,11 @@
 %!TEX root = ../main.tex
 
 \section{Communication of sensor data and parameters between a computer on the SDU go-kart and a stationary computer.}
-This project aims to produce a tool for developing, evaluating and testing the SDU go-kart.
-Movement of the go-kart should be monitored to enable evaluation of the drivers performance.
-The control variables and currents of the inverter should be monitored to develop new hardware or evaluate existing hardware.
+This project aims to produce a tool for developing, evaluation and testing the SDU go-kart.
+Movement of the go-kart should be monitored to enable evaluation of the performance of the driver.
+The control variables and currents of the inverter should be monitored in order to help develop new hardware or evaluate existing hardware.
 Relavant control variables should be controllable, while driving allowing for efficient testing controllers.
 To achieve this data should be collected on a computer on the go-kart and sent to a stationary computer.
-
 
 %\subsection{What is the role of transferring go-kart data to and from a stationary computer?}
 %To let an engineer or a mechanic monitor the status of the go-kart.
@@ -67,8 +66,58 @@ Data should be stored directly on nonvolatile memory to be able retrieve data af
 Data integrity checks is needed to ensure proper data logging.
 %Correct data logging should be realised to ensure validity of data. 
 
-
+\newpage
 \section{Further ivestigation}
+
+\subsection{Parameters of Interest}
+In developing new hardware or evaluating current hardware, it is necessary to be able to monitor a range of parameters.
+This section will investigate what parameters need to be logged in order to provide a useful and complete logging of the behaviour of the go-kart.
+The parameters in question fall into three categories; Physical parameters, electrical parameters and mechanical parameters.
+These will be dealt with in turn in the following sections
+\paragraph*{Physical Parameters}
+This category comprises all information about the motion of the go-kart.
+\begin{itemize}
+	\item \textbf{Position, Absolute:} Providing a means to record the absolute position of the go-kart is a useful feature in certain fields.
+	Especially any form of localisation and pathfinding will be able to put this information to use.
+	The absolute position of the go-kart can be recorded using a GPS module or possibly by using a known starting coordinate and information about the relative movement of the go-kart.
+	\item \textbf{Position, Relative:} The relative position of the kart can be, as just mentioned, used to infer the absolute position of the go-kart.
+	Additionally it can provide a means to analyze a drivers performance on the track or detect drift while cornoring.
+	The relative position includes both translational, as well as rotational information.
+	This information can be gathered using an inertial measurement unit (IMU).
+	An IMU is a compound device, comprising of an accelerometer and a gyroscope and, in some cases, a magnetometer.
+	\item \textbf{Velocity:} The velocity of the go-kart is key in optimising lap-times, clearly, it is desirable to monitor this parameter.
+	It can be extracted by reading the motor encoders.
+	However, the driving wheels are prone to slippage when cornoring, this would give an inaccurate reading of the actual velocity of the go-kart.
+	Instead, a simple encoder can be mounted on either one, or both of the front wheels as these are freerunning and independent.
+	Once the rotational speed of the axle is known, the velocity of the go-kart can be infered using the tyre diameter.
+	\item \textbf{Acceleration:} It may be of interest to monitor the forces exerted on the go-kart, or, its acceleration, as it drives on the track.
+	This information is already provided by the accelerometer in the IMU mentioned above and as such provides no additional complication.
+\end{itemize}
+\paragraph*{Electrical Parameters}
+This category comprises all information about the electrical aspects of the go-kart.
+\begin{itemize}
+	\item \textbf{Motor Currents:} Providing a means of monitoring the currents flowing through the motor allows the user to calculate the torque exerted by the motor as well as the current power draw of the motor.
+	Knowing the currents could also prove an invaluable debugging tool when developing a new inverter for the go-kart.
+	These currents are all monitored by the sevcon gen4 controller mounted on the go-kart.
+	As such the information is readily available through the CAN interface of the controller.
+	\item \textbf{Throttle Position:} The throttle on the go-kart is connected to a potentiometer.
+	Measuring the voltage output of this potentiometer provides a simple way of monitoring the position of the throttle.
+	\item \textbf{Desired Currents:} Based on the current throttle position a set of desired currents are calculated.
+	Monitoring these allows spotting any discrepancies between the desired and the actual currents.
+	\item \textbf{Battery Voltage:} As the go-kart is electrical, naturally, it has a battery.
+	Monitoring the current battery status could give the user an indication of how much driving time is left, or how long until the batteries are recharged afterwards.
+	\item \textbf{Motor Angle:}
+\end{itemize}
+\paragraph*{Mechanical Information}
+This category comprises all information about the mechanical aspects of the go-kart.
+\begin{itemize}
+	\item \textbf{Steering Wheel Angle:} Monitoring the angle of the steering wheel allows analysing the performance of the driver.
+	In addition it opens up for the possibility of mechanical control of the go-kart.
+	Similarly to monitoring the velocity, the steering wheel angle can be monitored by adding an encoder to the steering column.
+	\item \textbf{Braking Pedal Position:} The braking system on the go-kart is similar to that of an ordinary car.
+	The braking disc is mounted on the driving axle and the braking calibers connected to the brake pedal by a series of oil-filled hoses.
+	Monitoring its actuation allows analysing the performance of the driver and as mentioned above, may potentially allow for mechanical control of the go-kart
+\end{itemize}
 
 %\subsubsection{What is the data on stationary computer intended for?}
 %Monitoring data related to movement from the go-kart and adjusting go-kart control parameters by an engineer.
