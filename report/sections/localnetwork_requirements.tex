@@ -31,11 +31,8 @@ The approach that fits the requirements best is implementing a ring network, whe
 \subsubsection{Existing Technologies}
 Different networking technologies exist in use today, such as Ethernet, CAN-bus, CanOpen and Powerlink, among others. Can bus is widely used in the automotive industry with data rates up to 1Mbit/s for small networks lengths, but the classic Ethernet and Powerlink support data rates of at least 10Mbit/s. Furthermore, Powerlink is suitable for transmission of time-critical data and timing-synchronization of the nodes. 
 \subsubsection{Choosing a Technology}
-Although for the purpose of this project Ethernet suffices, Powerlink adds a level for critical timing synchronization, a feature certainly needed for nodes that need to communicate and to react fast to a situation such as braking or to log data on a very small and specific time interval. Since the Zybo board will be used possibly using PmodNIC100 modules as they are provided by the university, the openPowerlink protocol can be implemented in software utilizing as hardware the existing Ethernet ports provided by the modules. CAN-bus is also an option to implement with the availability of xxxx connector for the Zybo board and since it is a technology widely used in the automotive industry.
-\todo{Find the xxx connector CAN-bus for Zybo, whoever remembers which one was it.}
-
-
-
-\todo[inline]{Martin: I'm not so sure, at the ring network wins over the bus on any of those points. Both the bus and ring can only have one node sending at a time, the whole thing goes to shit if one cable is cut, the ring actually requires two ethernet ports, whereas the bus only requires one. I would agree though, that the speed is significantly better, but that's thanks to eternet.}
+Although for the purpose of this project Ethernet suffices, Powerlink adds a level for critical timing synchronization, a feature certainly needed for nodes that need to communicate and to react fast to a situation such as braking or to log data on a very small and specific time interval. Since the Zybo board will be used possibly using PmodNIC100 modules as they are provided by the university, the openPowerlink protocol can be implemented in software utilizing as hardware the existing Ethernet ports provided by the modules. CAN-bus is also an option to implement with for example the CAN-bus tranceiver breakout board from Copperhill, and since it is a technology widely used in the automotive industry.
+%link to CAN tranceiver: http://copperhilltech.com/can-bus-mini-breakout-board/
+%\todo[inline]{Martin: I'm not so sure, at the ring network wins over the bus on any of those points. Both the bus and ring can only have one node sending at a time, the whole thing goes to shit if one cable is cut, the ring actually requires two ethernet ports, whereas the bus only requires one. I would agree though, that the speed is significantly better, but that's thanks to eternet.}
 
 

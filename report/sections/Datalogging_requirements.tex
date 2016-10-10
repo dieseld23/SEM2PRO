@@ -33,7 +33,7 @@ This also doesn't take into account any disturbance or noise, which could make i
 
 Additionally, the Matlab function, resample, produces nicely filtered vectors with smaller time steps, so it is possible to use a low sample rate for time invariant signals.\\
 Another way to look at this is to calculate the maximum change in current from one sample to another.
-This is determined by the inductance of the motor, which is $600 \si{\micro \henry}$ \todo[inine]{when one half bridge is high, and the two others are low, it's one armature inductance of 400 uH in series with two parallel armature inductances}, and the maximum voltage across it, which is $V_{BAT}=52.8 \si{\volt}$. 
+This is determined by the inductance of the motor, which is $600 \si{\micro \henry}$ \todo[inline]{when one half bridge is high, and the two others are low, it's one armature inductance of 400 uH in series with two parallel armature inductances}, and the maximum voltage across it, which is $V_{BAT}=52.8 \si{\volt}$. 
 At a sample rate of 3.33 kSa/s, this results in a theoretical maximum step of $264\si{\ampere}$.
 A sample rate lower than this, would make it hard to properly record such sudden steps.
 
