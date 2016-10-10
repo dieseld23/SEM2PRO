@@ -2,7 +2,8 @@
 
 \section{Data Logging}
 A feature will be data logging. 
-Any data would be could be put into the log, although some signals can be logged at significantly higher rates than others, and might pose a storage problem.
+Any data could be put into the log, although some signals can be logged at significantly higher rates than others
+If all data is recorded at the fastest rate, this could present a storage problem.
 This challenge will be analyzed here.
 \subsection{Sample Rate}
 
@@ -18,17 +19,21 @@ According to the manufacturer of the motor, the maximum rotational velocity is 5
 With four pole pairs, this comes to a maximum sinusoidal frequency of 333 Hz. 
 It is not necessary to record at a rate significantly larger than the Nyquist limit in order to adequately record the sinusoidal.
 Simulations show, that by using Clark-Park transformation, interpolation and then the inverse Clarke-Park transformation, there is nearly no difference between a low sample rate of $1\si{\kilo\hertz}$, and a higher sample rate of $3.3\si{\kilo\hertz}$, as shown below.
-The source for the resampled signal is the 1 kSa/s recording.
 
 \begin{figure}
 	\centering
 	\includegraphics[width = 0.9\linewidth]{graphics/Clarke-park_resampled}	
 	\caption{Comparison of data recorded at 1 kSa/s and 3.33 kSa/s, against 100 kSa/s resampled using Clarke-Park}
+	\label{fig:Clarke-park_resampled}
 \end{figure}
-Additionally, the Matlab function, resample, produces nicely filtered vectors with smaller time steps, so it is possible to use a low sample rate for time invariant signals.\\
 
+The resampled data from the 1 kSa/s and 3.3 kSa/s (orange and purple respectively on figure\ref{fig:Clarke-park_resampled}) are almost identical.
+However, there is a small visible difference around the time 5.527 s, likely due to the limited precision of the encoder.
+This also doesn't take into account any disturbance or noise, which could make it hard to reconstruct the signals with lower sample rates.\\
+
+Additionally, the Matlab function, resample, produces nicely filtered vectors with smaller time steps, so it is possible to use a low sample rate for time invariant signals.\\
 Another way to look at this is to calculate the maximum change in current from one sample to another.
-This is determined by the inductance of the motor, which is $600 \si{\micro \henry}$ \todo{when one half bridge is high, and the two others are low, it's one armature inductance of 400 uH in series with two parallel armature inductances}, and the maximum voltage across it, which is $V_{BAT}=52.8 \si{\volt}$. 
+This is determined by the inductance of the motor, which is $600 \si{\micro \henry}$ \todo[inine]{when one half bridge is high, and the two others are low, it's one armature inductance of 400 uH in series with two parallel armature inductances}, and the maximum voltage across it, which is $V_{BAT}=52.8 \si{\volt}$. 
 At a sample rate of 3.33 kSa/s, this results in a theoretical maximum step of $264\si{\ampere}$.
 A sample rate lower than this, would make it hard to properly record such sudden steps.
 
