@@ -94,21 +94,27 @@ This category comprises all information about the motion of the go-kart.
 	\item \textbf{Acceleration:} It may be of interest to monitor the forces exerted on the go-kart, or, its acceleration, as it drives on the track.
 	This information is already provided by the accelerometer in the IMU mentioned above and as such provides no additional complication.
 \end{itemize}
+Three sensors are mentioned in this section.
+A GPS, an IMU and an encoder.
+In order to limit the scope of the project only the GPS and the IMU will be implemented.
 \paragraph*{Electrical Parameters}
 This category comprises all information about the electrical aspects of the go-kart.
 \begin{itemize}
 	\item \textbf{Motor Currents:} Providing a means of monitoring the currents flowing through the motor allows the user to calculate the torque exerted by the motor as well as the current power draw of the motor.
 	Knowing the currents could also prove an invaluable debugging tool when developing a new inverter for the go-kart.
-	These currents are all monitored by the sevcon gen4 controller mounted on the go-kart.
-	As such the information is readily available through the CAN interface of the controller.
 	\item \textbf{Throttle Position:} The throttle on the go-kart is connected to a potentiometer.
 	Measuring the voltage output of this potentiometer provides a simple way of monitoring the position of the throttle.
 	\item \textbf{Desired Currents:} Based on the current throttle position a set of desired currents are calculated.
 	Monitoring these allows spotting any discrepancies between the desired and the actual currents.
+	\item \textbf{Duty Cycles:}
 	\item \textbf{Battery Voltage:} As the go-kart is electrical, naturally, it has a battery.
 	Monitoring the current battery status could give the user an indication of how much driving time is left, or how long until the batteries are recharged afterwards.
-	\item \textbf{Motor Angle:}
+	\item \textbf{Motor Angle:} Knowing the angle of the motor at all times gives a means of more accurately calculate the currents at specific times.
+	Additionally, it can be used in Clarke-Parke transformations, again, providing information in debugging an inverter in development.
 \end{itemize}
+These parameters are all available from the sevcon gen4 motor controller mounted on the go-kart.
+This controller has a CANopen interface from which this data can be extracted.
+Any users who wish to add their own inverter will simply need to obey the API stated by the sevcon gen4 CANopen interface in order to correctly log the data.
 \paragraph*{Mechanical Information}
 This category comprises all information about the mechanical aspects of the go-kart.
 \begin{itemize}
@@ -119,6 +125,11 @@ This category comprises all information about the mechanical aspects of the go-k
 	The braking disc is mounted on the driving axle and the braking calibers connected to the brake pedal by a series of oil-filled hoses.
 	Monitoring its actuation allows analysing the performance of the driver and as mentioned above, may potentially allow for mechanical control of the go-kart
 \end{itemize}
+As both of these parameters would require mechanical changes to the go-kart, they are beyond the scope of this project and as such will not be implemented.
+\subsubsection*{Conclusion}
+In this section a multitude of different parameters have been discussed.
+Most of them can be logged using just three components; a Sevcon Gen4 motor controller, an IMU and a GPS.
+These are the three components from which data logging will be implemented throughout this project.
 
 %\subsubsection{What is the data on stationary computer intended for?}
 %Monitoring data related to movement from the go-kart and adjusting go-kart control parameters by an engineer.
@@ -168,7 +179,7 @@ This category comprises all information about the mechanical aspects of the go-k
 
 \subsection{Wireless transmission}
 The wireless transmission between the go-kart computer and the stationary computer could be a number of different technologies.
-This section seeks find an appropriate one.
+This section seeks to find an appropriate one.
 
 \subsubsection{Range}
 The range of the transmission is determined by the length of the test track. 
@@ -188,7 +199,7 @@ Data is only used for human inspection and therefore a sample frequency of 100Hz
 This gives a minimum requirement for the speed of the transmission to be ZZ Mbit/s. 
 
 \subsubsection{Compatibility}
-It should be possibly to change the stationary computer and therefore the choosen wireless transmission technology should be compatible with standard computers running linux.
+It should be possibly to change the stationary computer and therefore the chosen wireless transmission technology should be compatible with standard computers running linux.
 The chosen hardware should be compatible with standard linux computers and the Zybo board. 
 Both have USB ports as a standard, therefore the choosen hardware should be an USB WiFi Adapter.
 
