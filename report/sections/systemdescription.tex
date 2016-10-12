@@ -201,7 +201,7 @@ This gives a minimum requirement for the speed of the transmission to be ZZ Mbit
 \subsubsection{Compatibility}
 It should be possibly to change the stationary computer and therefore the chosen wireless transmission technology should be compatible with standard computers running linux.
 The chosen hardware should be compatible with standard linux computers and the Zybo board. 
-Both have USB ports as a standard, therefore the chosen hardware should be an using USB.
+Both have USB ports and Ethernet ports as a standard, therefore the chosen hardware should one of those.
 
 \subsubsection{Technologies}
 Bluetooth is a technology that is compatible with standard computers running linux. 
@@ -214,6 +214,26 @@ WiFi is also compatible with standard computers running linux and typical WiFi u
 WiFi can be operating in the 2.4GHz band and in the 5GHz band. 
 2.4GHz units has the highest range. 
 The 802.11n protocol generally has the best range compared to the other 802.11 protocols \footnote{https://en.wikipedia.org/wiki/IEEE\_802.11\#802.11n}.
+\\
+A local network between computers without connection to existing networks such as the internet is referred to as an ad-hoc network. 
+It is a required that the found hardware is capable of doing an ad-hoc network.
 
 \subsubsection{Conclusion} 
+
+\begin{table}[]
+\centering
+\begin{tabular}{|l|}
+\hline
+\textbf{Requirements} \\ \hline
+80m transmission              \\ \hline
+ZZ Mbit/s                     \\ \hline
+802.11n protocol              \\ \hline
+USB or Ethernet               \\ \hline
+ad-hoc network compatability  \\ \hline
+\end{tabular}
+%\caption{Minimum requirements for the wireless transmission.
+%\label{tab:req_wifi}
+\end{table}
+
+
 It was chosen to use the TP-LINK TL-WN722N, as it uses the 2.4GHz band, the 802.11n protocol, is compatible with linux, has an external antenna and uses USB. 
