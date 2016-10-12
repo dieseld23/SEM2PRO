@@ -1,1 +1,3 @@
 https://spin.atomicobject.com/2013/04/22/raspberry-pi-wireless-communication/
+https://askubuntu.com/questions/512727/how-to-install-driver-for-tp-link-tl-wn722n-on-ubuntu-14-04/512859
+http://elinux.org/RPi_USB_Wi-Fi_Adapters
