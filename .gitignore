@@ -10,4 +10,6 @@ main.pdf
 *.fls
 *.synctex.gz
 *-eps-converted-to.pdf
+*.bbl
+*.blg
 *.tdo
