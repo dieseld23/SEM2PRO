@@ -57,7 +57,7 @@ This type provides a good balance of reliability, scalability, hardware requirem
 
 \subsubsection{Existing Technologies}
 Different networking technologies exist in use today, such as Ethernet, CANbus, CANopen and Powerlink, among others.
-Canbus is widely used in the automotive industry with data rates up to 1Mbit/s for small networks lengths, but the classic Ethernet and Powerlink support data rates of at least 10Mbit/s.
+CANbus is widely used in the automotive industry with data rates up to 1Mbit/s for small networks lengths, but the classic Ethernet and Powerlink support data rates of at least 10Mbit/s.
 Furthermore, Powerlink is suitable for transmission of time-critical data and timing-synchronization of the nodes and CANopen networks are very robust and reliable.
 \subsubsection{Choosing a Technology}
 The two choices that were considered for the scope of this project were Powerlink and CANopen.
@@ -67,9 +67,24 @@ This library is easily implemented in Linux and can use various hardware, one of
 Another available module to use is the CANbus tranceiver breakout board from Copperhill which can be used by an IP core at a VHDL level that is available from Vivado IDE, greatly increasing the performance of such a network.
 Since CANbus is a technology widely used in the automotive industry, it is our first choice for developing our system.
 
-
-%Although for the purpose of this project Ethernet suffices, Powerlink adds a level for critical timing synchronization, a feature certainly needed for nodes that need to communicate and to react fast to a situation such as braking or to log data on a very small and specific time interval. Since the Zybo board will be used possibly using PmodNIC100 modules as they are provided by the university, the openPowerlink protocol can be implemented in software utilizing as hardware the existing Ethernet ports provided by the modules. CAN-bus is also an option to implement with for example the CAN-bus tranceiver breakout board from Copperhill, and since it is a technology widely used in the automotive industry.
 %link to CAN tranceiver: http://copperhilltech.com/can-bus-mini-breakout-board/
-%\todo[inline]{Martin: I'm not so sure, at the ring network wins over the bus on any of those points. Both the bus and ring can only have one node sending at a time, the whole thing goes to shit if one cable is cut, the ring actually requires two ethernet ports, whereas the bus only requires one. I would agree though, that the speed is significantly better, but that's thanks to eternet.}
+\begin{figure}
+\caption{Use cases for the on-vehicle computer.}
+\includegraphics[scale=0.7]{graphics/UML_UseCases_Zybo}
+\end{figure}
 
+\begin{table}[]
+\centering
+\caption{My caption}
+\label{my-label}
+\begin{tabular}{ll}
+\multicolumn{1}{r}{\begin{tabular}[c]{@{}r@{}}Use case:\\ Actors:\\ Purpose:\\ Overview:\\ Type:\\ Preconditions:\\ Postconditions:\\ Special requirements:\end{tabular}} & \begin{tabular}[c]{@{}l@{}}Monitor live data from go-kart\\ Engi\end{tabular} \\
+\multicolumn{1}{c}{Actor action}                                                                                                                                          & \multicolumn{1}{c}{System response}                                           \\
+\begin{tabular}[c]{@{}l@{}}1.\\ 2.\end{tabular}                                                                                                                           &                                                                               \\
+\multicolumn{2}{l}{Alternative flow of events}                                                                                                                                                                                                            \\
+\multicolumn{2}{l}{Line?:}                                                                                                                                                                                                                              
+\end{tabular}
+\end{table}
+
+\todo{Put the section about the zybo use cases somewhere after Mikkel finishes.}
 
