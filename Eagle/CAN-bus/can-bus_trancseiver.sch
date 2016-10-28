@@ -22,8 +22,8 @@
 <layer number="26" name="bNames" color="7" fill="1" visible="yes" active="no"/>
 <layer number="27" name="tValues" color="7" fill="1" visible="yes" active="no"/>
 <layer number="28" name="bValues" color="7" fill="1" visible="yes" active="no"/>
-<layer number="29" name="tStop" color="7" fill="3" visible="no" active="no"/>
-<layer number="30" name="bStop" color="7" fill="6" visible="no" active="no"/>
+<layer number="29" name="tStop" color="7" fill="1" visible="no" active="no"/>
+<layer number="30" name="bStop" color="7" fill="1" visible="no" active="no"/>
 <layer number="31" name="tCream" color="7" fill="4" visible="no" active="no"/>
 <layer number="32" name="bCream" color="7" fill="5" visible="no" active="no"/>
 <layer number="33" name="tFinish" color="6" fill="3" visible="no" active="no"/>
@@ -6172,11 +6172,11 @@ Source: AVX .. aphvc.pdf</description>
 <part name="+3V3" library="supply1" deviceset="+3V3" device=""/>
 <part name="GND3" library="supply1" deviceset="GND" device=""/>
 <part name="SEVCON" library="con-phoenix-508" deviceset="MKDSN1,5/2-5,08" device=""/>
-<part name="R0" library="rcl" deviceset="R-EU_" device="R0603" value="120"/>
-<part name="R1" library="rcl" deviceset="R-EU_" device="R0603" value="120"/>
-<part name="C0" library="rcl" deviceset="C-EU" device="C0603" value="100n"/>
+<part name="R0" library="rcl" deviceset="R-EU_" device="R0805" value="120"/>
+<part name="R1" library="rcl" deviceset="R-EU_" device="R0805" value="120"/>
+<part name="C0" library="rcl" deviceset="C-EU" device="C0805K" value="100n"/>
 <part name="GND4" library="supply1" deviceset="GND" device=""/>
-<part name="C1" library="rcl" deviceset="C-EU" device="C0603" value="100n"/>
+<part name="C1" library="rcl" deviceset="C-EU" device="C0805K" value="100n"/>
 <part name="GND5" library="supply1" deviceset="GND" device=""/>
 <part name="CAN_H" library="wirepad" deviceset="1,6/0,8" device=""/>
 <part name="CAN_L" library="wirepad" deviceset="1,6/0,8" device=""/>
