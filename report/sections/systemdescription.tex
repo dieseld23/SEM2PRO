@@ -138,6 +138,47 @@ Data should be stored directly on nonvolatile memory to be able retrieve data af
 Data integrity checks is needed to ensure proper data logging.
 %Correct data logging should be realised to ensure validity of data. 
 
+
+\newpage
+\section{System requirements}
+
+\subsection{Actors}
+The only actor on the system is an engineer.
+
+\subsection{Interfaces}
+Wifi for data transfer between go-kart and stationary computer, CAN bus for local network,  CanOpen for interfacing the Sevcon, USB for GPS and IMU and SD card connection??
+
+\subsection{Functional requirements}
+The system: 
+\begin{itemize}
+\item Reads data from sensors.
+\item Reads data from Sevcon.
+\item Transfers data to statinary computer using Wifi.
+\item Presents data to the user.
+\item Logs sensordata to SD card.
+\item Timestamps all data. 
+\end{itemize}
+
+\subsection{Operational requirements}
+The engineer starts the system by powering it on.
+
+\subsection{Quality of service requirements}
+\begin{itemize}
+\item IMU data must be sampled with xx Hz.
+\item GPS data must be sampled with zz Hz.
+\item Data logging with qq Hz.??
+\end{itemize}
+
+\subsection{Parametric requirements}
+Wifi range must be greater than xx meters.
+
+\subsection{Design requirements}
+The system:
+\begin{itemize}
+\item must be scalable to xx sensors/nodes.
+\item must be modular (how to explain this?)
+\item must be functional if one or more sensors/nodes stop working.	 
+\end{itemize}
 \newpage
 \section{Further ivestigation}
 

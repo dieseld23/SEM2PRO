@@ -1,3 +1,17 @@
 https://spin.atomicobject.com/2013/04/22/raspberry-pi-wireless-communication/
 https://askubuntu.com/questions/512727/how-to-install-driver-for-tp-link-tl-wn722n-on-ubuntu-14-04/512859
 http://elinux.org/RPi_USB_Wi-Fi_Adapters
+
+
+Antenna:
+http://www.linkdataguard.com/datasheets/Wireless/TL-ANT2412D_ds.pdf
+http://www.tp-link.com/en/products/details/cat-5067_TL-ANT2415D.html
+www.tp-link.com/en/products/details/cat-5067_TL-ANT2412D.html#overview
+
+FreeRTOS for Zybo:
+http://rishifranklin.blogspot.dk/2015/04/freertos-on-xilinx-zynq-zybo-single-core.html
+
+Bare metal usb:
+https://forums.xilinx.com/t5/Embedded-Processor-System-Design/ZYNQ-7000-IAR-USB-Example-Bare-Metal/td-p/482118
+https://www.xilinx.com/support/answers/61881.html
+https://forums.xilinx.com/t5/Welcome-Join/How-to-develop-USB-on-Zynq-7000/td-p/543337
