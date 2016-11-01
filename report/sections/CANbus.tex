@@ -4,7 +4,7 @@
 The CANOpen protocol runs on the CAN bus.
 It was originally developed in the 1980's by Bosch.
 It is a multi-master network, where each node connects to a common bus, and any node is then able to broadcast data to all other nodes.
-The bus offers 1 Mbit/s on a bus up to 40 m of length. \todo{Martin: is this with or without the substantial overhad?}
+The bus offers 1 Mbit/s on a bus up to 40 m of length. \todo{Martin: is this with or without the substantial overhead?}
 \subsection{Physical Layer}\label{sub:CANphys}
 The physical layer has three main parts: The CAN controller, the CAN transceiver and the bus itself. \\
 
@@ -13,8 +13,12 @@ The Zybo supports CAN, and an IP core is available, so the CAN controller is alr
 
 The CAN transceiver is connected to the controller by RX and TX voltage signals, and connects to the bus through two differential ports. 
 The transceiver must support the standard ISO11898-2, as this is what the Sevcon motor driver uses.
-The device SN65HVD232 from Texas instruments support this standard, and is supplied with 3.3 V, so it can be plugged right into the Zybo, and still communicate with the Sevcon even though its CAN bus uses $\si{5 \volt}$.\\
+The device SN65HVD232 from Texas instruments support this standard, and is supplied with 3.3 V, so it can be plugged right into the Zybo, and still communicate with the Sevcon even though its CAN bus uses $\si{5 \volt}$.
+According to TI itself\cite{3.3V_CAN}, this family of $\si{3.3 \volt}$ transceivers are compatible and interoparable with other \si{5 \volt} transceivers, so long as they support the same standard.\\
 
 The bus has to be made of twisted pair wires with a characteristic impedance of $\si{120 \ohm}$, and terminated at each end with a $\si{120 \ohm}$ resistor.
 That means, that if the bus is broken at any point, no communication will work.
-Alternately, it is possible to terminate each node, but this greatly reduces transmission speed.
+Alternately, it is possible to terminate each node, but this greatly reduces transmission speed, and will not be done.
+
+\subsection{Implementation of the Physical layer}\label{sub:CANphys_implementation}
+The Zybo has two build in

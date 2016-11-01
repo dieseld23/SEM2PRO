@@ -1551,7 +1551,7 @@ design rules under a new name.</description>
 <element name="CAN0" library="1_trancseiver" package="SO08" value="SN65HVD232" x="19.28" y="6.58" smashed="yes" rot="MR90">
 <attribute name="NAME" x="18.225" y="2.595" size="1.016" layer="26" ratio="18" rot="MR0"/>
 </element>
-<element name="SEVCON" library="con-phoenix-508" package="MKDSN1,5/2-5,08" value="MKDSN1,5/2-5,08" x="35.9" y="14.3" smashed="yes" rot="R90">
+<element name="SEVCON" library="con-phoenix-508" package="MKDSN1,5/2-5,08" value="2-5,08mm" x="35.9" y="14.3" smashed="yes" rot="R90">
 <attribute name="NAME" x="31.3511" y="19.755" size="1.27" layer="25" rot="R180"/>
 </element>
 <element name="R0" library="rcl" package="R0805" value="120" x="25.5" y="6.58" smashed="yes" rot="MR270">

@@ -6187,7 +6187,7 @@ Source: AVX .. aphvc.pdf</description>
 <part name="CAN0" library="1_trancseiver" deviceset="SN65HVD232" device=""/>
 <part name="+3V3" library="supply1" deviceset="+3V3" device=""/>
 <part name="GND3" library="supply1" deviceset="GND" device=""/>
-<part name="SEVCON" library="con-phoenix-508" deviceset="MKDSN1,5/2-5,08" device=""/>
+<part name="SEVCON" library="con-phoenix-508" deviceset="MKDSN1,5/2-5,08" device="" value="2-5,08mm"/>
 <part name="R0" library="rcl" deviceset="R-EU_" device="R0805" value="120"/>
 <part name="R1" library="rcl" deviceset="R-EU_" device="R0805" value="120"/>
 <part name="C0" library="rcl" deviceset="C-EU" device="C0805K" value="100n"/>
@@ -6200,62 +6200,62 @@ Source: AVX .. aphvc.pdf</description>
 <sheets>
 <sheet>
 <plain>
-<text x="38.1" y="73.66" size="1.778" layer="97">To be used on te JF connector. 
+<text x="127" y="71.12" size="1.778" layer="97">To be used on te JF connector. 
 Components will be on the bottom side. 
 CAN0 is MIO pins 10..11
 CAN1 is MIO pins 12..13
 Only use 120 ohm resistors on end of the line
 Only use two CAN busses for the Sevcon node
 There should be more (and different) can ports. These take too much space, and I want an input and an output for each BUS.</text>
-<text x="7.62" y="55.88" size="1.778" layer="91">680 in parallel with 150 gives 122.8 Ohm, that is the closest, we can get to using two E6 resistors</text>
+<text x="127" y="53.34" size="1.778" layer="91">680 in parallel with 150 gives 122.8 Ohm, that is the closest, we can get to using two E6 resistors</text>
 </plain>
 <instances>
-<instance part="CAN1" gate="G$1" x="-20.32" y="30.48"/>
-<instance part="+3V1" gate="G$1" x="-17.78" y="96.52" rot="R270"/>
-<instance part="+3V2" gate="G$1" x="-35.56" y="53.34"/>
-<instance part="GND1" gate="1" x="2.54" y="33.02"/>
+<instance part="CAN1" gate="G$1" x="55.88" y="66.04"/>
+<instance part="+3V1" gate="G$1" x="30.48" y="96.52" rot="R270"/>
+<instance part="+3V2" gate="G$1" x="40.64" y="88.9"/>
+<instance part="GND1" gate="1" x="78.74" y="68.58"/>
 <instance part="GND2" gate="1" x="-2.54" y="91.44"/>
 <instance part="ZYBO" gate="-2" x="-38.1" y="60.96" smashed="yes" rot="R180">
 <attribute name="NAME" x="-43.18" y="61.722" size="1.524" layer="95" rot="R180"/>
 </instance>
-<instance part="ZYBO" gate="-1" x="-38.1" y="25.4" smashed="yes" rot="R180">
-<attribute name="NAME" x="-43.18" y="26.162" size="1.524" layer="95" rot="R180"/>
+<instance part="ZYBO" gate="-1" x="38.1" y="60.96" smashed="yes" rot="R180">
+<attribute name="NAME" x="33.02" y="61.722" size="1.524" layer="95" rot="R180"/>
 </instance>
 <instance part="ZYBO" gate="-3" x="-38.1" y="63.5" smashed="yes" rot="R180">
 <attribute name="NAME" x="-43.18" y="64.262" size="1.524" layer="95" rot="R180"/>
 </instance>
-<instance part="ZYBO" gate="-4" x="-38.1" y="27.94" smashed="yes" rot="R180">
-<attribute name="NAME" x="-43.18" y="28.702" size="1.524" layer="95" rot="R180"/>
+<instance part="ZYBO" gate="-4" x="38.1" y="63.5" smashed="yes" rot="R180">
+<attribute name="NAME" x="33.02" y="64.262" size="1.524" layer="95" rot="R180"/>
 </instance>
 <instance part="ZYBO" gate="-5" x="-5.08" y="96.52" smashed="yes" rot="R180">
 <attribute name="NAME" x="-10.16" y="97.282" size="1.524" layer="95" rot="R180"/>
 </instance>
-<instance part="ZYBO" gate="-6" x="-27.94" y="96.52" smashed="yes" rot="R180">
-<attribute name="NAME" x="-33.02" y="97.282" size="1.524" layer="95" rot="R180"/>
+<instance part="ZYBO" gate="-6" x="20.32" y="96.52" smashed="yes" rot="R180">
+<attribute name="NAME" x="15.24" y="97.282" size="1.524" layer="95" rot="R180"/>
 </instance>
 <instance part="ZYBO" gate="-11" x="-5.08" y="99.06" smashed="yes" rot="R180">
 <attribute name="NAME" x="-10.16" y="99.822" size="1.524" layer="95" rot="R180"/>
 </instance>
-<instance part="ZYBO" gate="-12" x="-27.94" y="99.06" smashed="yes" rot="R180">
-<attribute name="NAME" x="-33.02" y="99.822" size="1.524" layer="95" rot="R180"/>
+<instance part="ZYBO" gate="-12" x="20.32" y="99.06" smashed="yes" rot="R180">
+<attribute name="NAME" x="15.24" y="99.822" size="1.524" layer="95" rot="R180"/>
 </instance>
 <instance part="CAN0" gate="G$1" x="-20.32" y="66.04"/>
 <instance part="+3V3" gate="G$1" x="-35.56" y="88.9"/>
 <instance part="GND3" gate="1" x="2.54" y="68.58"/>
-<instance part="SEVCON" gate="-1" x="15.24" y="27.94"/>
-<instance part="SEVCON" gate="-2" x="15.24" y="15.24"/>
+<instance part="SEVCON" gate="-1" x="91.44" y="63.5"/>
+<instance part="SEVCON" gate="-2" x="91.44" y="50.8"/>
 <instance part="R0" gate="G$1" x="2.54" y="55.88" rot="R90"/>
-<instance part="R1" gate="G$1" x="2.54" y="20.32" rot="R90"/>
+<instance part="R1" gate="G$1" x="78.74" y="55.88" rot="R90"/>
 <instance part="C0" gate="G$1" x="-43.18" y="78.74" smashed="yes">
 <attribute name="NAME" x="-47.244" y="78.359" size="1.778" layer="95" rot="R180"/>
 <attribute name="VALUE" x="-44.704" y="75.819" size="1.778" layer="96" rot="R180"/>
 </instance>
 <instance part="GND4" gate="1" x="-43.18" y="68.58"/>
-<instance part="C1" gate="G$1" x="-43.18" y="43.18" smashed="yes">
-<attribute name="NAME" x="-47.244" y="42.799" size="1.778" layer="95" rot="R180"/>
-<attribute name="VALUE" x="-44.704" y="40.259" size="1.778" layer="96" rot="R180"/>
+<instance part="C1" gate="G$1" x="33.02" y="78.74" smashed="yes">
+<attribute name="NAME" x="28.956" y="78.359" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="31.496" y="75.819" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="GND5" gate="1" x="-43.18" y="33.02"/>
+<instance part="GND5" gate="1" x="33.02" y="68.58"/>
 <instance part="CAN_H" gate="P" x="17.78" y="63.5" rot="R180"/>
 <instance part="CAN_L" gate="P" x="17.78" y="50.8" rot="R180"/>
 </instances>
@@ -6265,22 +6265,22 @@ There should be more (and different) can ports. These take too much space, and I
 <net name="+3V3" class="0">
 <segment>
 <pinref part="+3V1" gate="G$1" pin="+3V3"/>
-<wire x1="-20.32" y1="96.52" x2="-25.4" y2="96.52" width="0.1524" layer="91"/>
-<wire x1="-27.94" y1="99.06" x2="-25.4" y2="99.06" width="0.1524" layer="91"/>
-<wire x1="-25.4" y1="99.06" x2="-25.4" y2="96.52" width="0.1524" layer="91"/>
-<wire x1="-25.4" y1="96.52" x2="-27.94" y2="96.52" width="0.1524" layer="91"/>
-<junction x="-25.4" y="96.52"/>
+<wire x1="27.94" y1="96.52" x2="22.86" y2="96.52" width="0.1524" layer="91"/>
+<wire x1="20.32" y1="99.06" x2="22.86" y2="99.06" width="0.1524" layer="91"/>
+<wire x1="22.86" y1="99.06" x2="22.86" y2="96.52" width="0.1524" layer="91"/>
+<wire x1="22.86" y1="96.52" x2="20.32" y2="96.52" width="0.1524" layer="91"/>
+<junction x="22.86" y="96.52"/>
 <pinref part="ZYBO" gate="-12" pin="S"/>
 <pinref part="ZYBO" gate="-6" pin="S"/>
 </segment>
 <segment>
 <pinref part="CAN1" gate="G$1" pin="VCC"/>
 <pinref part="+3V2" gate="G$1" pin="+3V3"/>
-<wire x1="-35.56" y1="33.02" x2="-35.56" y2="45.72" width="0.1524" layer="91"/>
+<wire x1="40.64" y1="68.58" x2="40.64" y2="81.28" width="0.1524" layer="91"/>
 <pinref part="C1" gate="G$1" pin="1"/>
-<wire x1="-35.56" y1="45.72" x2="-35.56" y2="50.8" width="0.1524" layer="91"/>
-<wire x1="-43.18" y1="45.72" x2="-35.56" y2="45.72" width="0.1524" layer="91"/>
-<junction x="-35.56" y="45.72"/>
+<wire x1="40.64" y1="81.28" x2="40.64" y2="86.36" width="0.1524" layer="91"/>
+<wire x1="33.02" y1="81.28" x2="40.64" y2="81.28" width="0.1524" layer="91"/>
+<junction x="40.64" y="81.28"/>
 </segment>
 <segment>
 <pinref part="+3V3" gate="G$1" pin="+3V3"/>
@@ -6295,10 +6295,10 @@ There should be more (and different) can ports. These take too much space, and I
 <net name="GND" class="0">
 <segment>
 <pinref part="GND1" gate="1" pin="GND"/>
-<wire x1="2.54" y1="35.56" x2="2.54" y2="38.1" width="0.1524" layer="91"/>
-<wire x1="2.54" y1="38.1" x2="-5.08" y2="38.1" width="0.1524" layer="91"/>
+<wire x1="78.74" y1="71.12" x2="78.74" y2="73.66" width="0.1524" layer="91"/>
+<wire x1="78.74" y1="73.66" x2="71.12" y2="73.66" width="0.1524" layer="91"/>
 <pinref part="CAN1" gate="G$1" pin="GND"/>
-<wire x1="-5.08" y1="38.1" x2="-5.08" y2="33.02" width="0.1524" layer="91"/>
+<wire x1="71.12" y1="73.66" x2="71.12" y2="68.58" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="GND2" gate="1" pin="GND"/>
@@ -6321,7 +6321,7 @@ There should be more (and different) can ports. These take too much space, and I
 <segment>
 <pinref part="C1" gate="G$1" pin="2"/>
 <pinref part="GND5" gate="1" pin="GND"/>
-<wire x1="-43.18" y1="38.1" x2="-43.18" y2="35.56" width="0.1524" layer="91"/>
+<wire x1="33.02" y1="73.66" x2="33.02" y2="71.12" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="C0" gate="G$1" pin="2"/>
@@ -6347,14 +6347,14 @@ There should be more (and different) can ports. These take too much space, and I
 <segment>
 <pinref part="ZYBO" gate="-4" pin="S"/>
 <pinref part="CAN1" gate="G$1" pin="TXD"/>
-<wire x1="-38.1" y1="27.94" x2="-35.56" y2="27.94" width="0.1524" layer="91"/>
+<wire x1="38.1" y1="63.5" x2="40.64" y2="63.5" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$5" class="0">
 <segment>
 <pinref part="CAN1" gate="G$1" pin="RXD"/>
 <pinref part="ZYBO" gate="-1" pin="S"/>
-<wire x1="-35.56" y1="25.4" x2="-38.1" y2="25.4" width="0.1524" layer="91"/>
+<wire x1="40.64" y1="60.96" x2="38.1" y2="60.96" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$8" class="1">
@@ -6372,10 +6372,10 @@ There should be more (and different) can ports. These take too much space, and I
 <segment>
 <pinref part="CAN1" gate="G$1" pin="CANH"/>
 <pinref part="R1" gate="G$1" pin="2"/>
-<wire x1="2.54" y1="27.94" x2="-5.08" y2="27.94" width="0.1524" layer="91"/>
-<wire x1="2.54" y1="25.4" x2="2.54" y2="27.94" width="0.1524" layer="91"/>
-<wire x1="12.7" y1="27.94" x2="2.54" y2="27.94" width="0.1524" layer="91"/>
-<junction x="2.54" y="27.94"/>
+<wire x1="78.74" y1="63.5" x2="71.12" y2="63.5" width="0.1524" layer="91"/>
+<wire x1="78.74" y1="60.96" x2="78.74" y2="63.5" width="0.1524" layer="91"/>
+<wire x1="88.9" y1="63.5" x2="78.74" y2="63.5" width="0.1524" layer="91"/>
+<junction x="78.74" y="63.5"/>
 <pinref part="SEVCON" gate="-1" pin="KL"/>
 </segment>
 </net>
@@ -6383,11 +6383,11 @@ There should be more (and different) can ports. These take too much space, and I
 <segment>
 <pinref part="R1" gate="G$1" pin="1"/>
 <pinref part="CAN1" gate="G$1" pin="CANL"/>
-<wire x1="-5.08" y1="25.4" x2="-2.54" y2="25.4" width="0.1524" layer="91"/>
-<wire x1="-2.54" y1="25.4" x2="-2.54" y2="15.24" width="0.1524" layer="91"/>
-<wire x1="-2.54" y1="15.24" x2="2.54" y2="15.24" width="0.1524" layer="91"/>
-<wire x1="12.7" y1="15.24" x2="2.54" y2="15.24" width="0.1524" layer="91"/>
-<junction x="2.54" y="15.24"/>
+<wire x1="71.12" y1="60.96" x2="73.66" y2="60.96" width="0.1524" layer="91"/>
+<wire x1="73.66" y1="60.96" x2="73.66" y2="50.8" width="0.1524" layer="91"/>
+<wire x1="73.66" y1="50.8" x2="78.74" y2="50.8" width="0.1524" layer="91"/>
+<wire x1="88.9" y1="50.8" x2="78.74" y2="50.8" width="0.1524" layer="91"/>
+<junction x="78.74" y="50.8"/>
 <pinref part="SEVCON" gate="-2" pin="KL"/>
 </segment>
 </net>
