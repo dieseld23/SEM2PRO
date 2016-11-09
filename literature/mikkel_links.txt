@@ -15,3 +15,8 @@ Bare metal usb:
 https://forums.xilinx.com/t5/Embedded-Processor-System-Design/ZYNQ-7000-IAR-USB-Example-Bare-Metal/td-p/482118
 https://www.xilinx.com/support/answers/61881.html
 https://forums.xilinx.com/t5/Welcome-Join/How-to-develop-USB-on-Zynq-7000/td-p/543337
+
+
+
+http://lauri.xn--vsandi-pxa.com/hdl/zynq/zybo-compiling-kernel.html
+http://lauri.xn--vsandi-pxa.com/hdl/zynq/zybo-compiling-kernel.html#lauri-vosandi-zynq-7000
