@@ -71,6 +71,7 @@ Data integrity checks is needed to ensure proper data logging.
 \section{Further ivestigation}
 
 \subsection{Parameters of Interest}
+\label{sec:parameters}
 In developing new hardware or evaluating current hardware, it is necessary to be able to monitor a range of parameters.
 This section will investigate what parameters need to be logged in order to provide a useful and complete logging of the behaviour of the go-kart.
 The parameters in question fall into three categories; Physical parameters, electrical parameters and mechanical parameters.
@@ -130,7 +131,30 @@ As both of these parameters would require mechanical changes to the go-kart, the
 In this section a multitude of different parameters have been discussed.
 Most of them can be logged using just three components; a Sevcon Gen4 motor controller, an IMU and a GPS.
 These are the three components from which data logging will be implemented throughout this project.
+This provides a solid platform to prove the concept and additional sensory equipment can be added at a later date, should it be required.
 
+\subsection{Hardware for Monitoring Parameters}
+In section \ref{sec:parameter} an overview of the different parameters that may be of interest for logging is given.
+It was concluded that three components would suffice as a proof of concept; the Sevcon Gen4 motor controller, an IMU and a GPS.
+This section will explore in more detail what requirements and communication schemes exists for each of the components.
+
+\subsubsection*{Sevcon Gen4 Motor Controller}
+
+\subsubsection*{Inertial Measurement Unit (IMU)}
+IMU's, generally, exist in two versions.
+A 6D and a 9D version.
+Both include an accelerometer and a gyroscope.
+In addition to these the 9D IMU includes a magnetometer, enabling measurement of absolute direction, as opposed to the relative measurement of direction granted by the magnetometer.
+The requirement in terms of each of these parts is given as:
+\begin{itemize}
+	\item \textbf{Accelerometer [\si{\metre\per\second^2}]:} As the name implies, the accelerometer measures accelerations.
+	That is, when the component changes speed or direction the force exerted on the accelerometer is measured.
+	Professional drivers using professional grade go karts driving upwards of 250 \si{\kilo\metre\per\hour} can reach up to 2-3 g's of force exerted on them.
+	The go kart available in this project has a theoretical maximum speed of 50 \si{\kilo\metre\per\hour}.
+	Clearly, the forces exerted on this platform will be lower, however, a minimum requirement of $\pm$ 3g will be set for the accelerometer in the IMU.
+	\item \textbf{Gyroscope [\si{\degree\per\second}]:} 
+\end{itemize}
+\subsubsection*{Global Positioning System (GPS)}
 %\subsubsection{What is the data on stationary computer intended for?}
 %Monitoring data related to movement from the go-kart and adjusting go-kart control parameters by an engineer.
 
