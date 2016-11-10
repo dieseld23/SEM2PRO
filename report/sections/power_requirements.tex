@@ -1,0 +1,13 @@
+%!TEX root = ../main.tex
+
+\section{Power Requirements}\label{sec:power_requirements}
+The Zybos need to be supplied with 5 V, which subsequently powers the sensors, the CAN busses and the WiFi.
+The Sevcon has a 5V output, but it can only supply $\si{100 \milli \ampere}$, which is nowhere near enough.
+Some tests along with datasheet lookups has been to determine the current needed for this system.\\
+
+By measurement, it has been found, that one Zybo board draws a maximum of $\si{475 \milli \ampere}$ during startup. 
+
+Idle mean: 396 mA
+Idle max: (short spikes reaching) 480 mA
+During login mean: 448 mA
+During apt-get update peak: 680 mA

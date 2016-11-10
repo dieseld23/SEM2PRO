@@ -1,10 +1,87 @@
 %!TEX root = ../main.tex
-
-\section{Communication of sensor data and parameters between a computer on the SDU go-kart and a stationary computer.}
-This project aims to produce a tool for developing, evaluating and testing the SDU go-kart.
-Movement of the go-kart should be monitored to enable evaluation of the performance of the driver.
+\section{Monitoring of sensor data on the SDU go-kart.}
+This project aims to produce a tool for developing, evaluating and testing hardware for the SDU go-kart.
+Movement of the go-kart should be monitored to enable evaluation of the performance of the go-kart.
 The control variables and currents of the inverter should be monitored in order to help develop new hardware or evaluate existing hardware.
-Relavant control variables should be controllable, while driving allowing for efficient testing of controllers.
+A basic use case diagram showing the functionality of the system can be seen in figure \ref{fig:use_cases}.
+The use case narratives are shown in tables \ref{tab:use_monitor} to \ref{tab:use_read_log}.
+\begin{figure}[h]
+ 	\centering
+    \includegraphics[width=0.8\textwidth]{graphics/use_cases}
+    \caption{Use case diagram for the system.}
+    \label{fig:use_cases}
+\end{figure}
+
+
+\begin{table}[]
+\centering
+\caption{Usecase narrative for monitor live data from go-kart.}
+\label{tab:use_monitor}
+\begin{tabular}{| r | p{6 cm} |}
+\hline
+\textbf{Use case:}                        & Monitor live data from go-kart                  \\ 
+\textbf{Actors:}                          & Engineer                                        \\
+\textbf{Purpose:}                         & Monitor live data from go-kart                  \\
+\textbf{Overview:}                        & The engineer starts the system. The system will begin collecting data on the go-kart and transfer them to a stationary computer. The computer will present data to the engineer on a GUI. \\
+\textbf{Type:}                            & Essential                                       \\
+\textbf{Preconditions:}                   & -                                               \\
+\textbf{Postconditions:}                  & System transfers data from go-kart sensors to a stationary computer, showing data in a GUI.                                                                                            \\
+\textbf{Special requirements:}            & -                                               \\ \hline 
+\multicolumn{1}{|c|}{\textbf{Actor action}} & \multicolumn{1}{c|}{\textbf{System response}}\\
+\multicolumn{1}{|l|}{1. Start system}       & \begin{tabular}[c]{@{}l@{}}2. Start collecting data\\ 3. Transfer data to stationary computer\\ 4. Present data in GUI\end{tabular}                                              \\ \hline
+\multicolumn{2}{|c|}{\textbf{Alternative flow of events}}                                   \\
+\multicolumn{2}{|p{12 cm}|}{Any line: User can stop the system at any point in time.}              \\ \hline                                                                                                                                    
+\end{tabular}
+\end{table}
+
+
+\begin{table}[]
+\centering
+\caption{Usecase narrative for log go-kart data.}
+\label{tab:use_log}
+\begin{tabular}{| r | p{6 cm} |}
+\hline
+\textbf{Use case:}                        & Log go-kart data            			        \\ 
+\textbf{Actors:}                          & Engineer                                        \\
+\textbf{Purpose:}                         & Log go-kart data                 				\\
+\textbf{Overview:}                        & After startup the system will log the collected go-kart data on xx  \\
+\textbf{Type:}                            & Essential                                       \\
+\textbf{Preconditions:}                   & System is running and collecting go-kart data   \\
+\textbf{Postconditions:}                  & System logs collected go-kart data.      		\\
+\textbf{Special requirements:}            & -                                               \\ \hline 
+\multicolumn{1}{|c|}{\textbf{Actor action}} & \multicolumn{1}{c|}{\textbf{System response}} \\
+\multicolumn{1}{|l|}{}       & \begin{tabular}[c]{@{}l@{}}1. Log collected data\end{tabular}\\ \hline
+\multicolumn{2}{|c|}{\textbf{Alternative flow of events}}                                   \\
+\multicolumn{2}{|p{12 cm}|}{Any line: User can stop the logging	 at any point in time.}         \\ \hline                                                                                                                                    
+\end{tabular}
+\end{table}
+
+
+
+\begin{table}[]
+\centering
+\caption{Usecase narrative for read logged data.}
+\label{tab:use_read_log}
+\begin{tabular}{| r | p{6 cm} |}
+\hline
+\textbf{Use case:}                        & Read logged data  			                    \\ 
+\textbf{Actors:}                          & Engineer                                        \\
+\textbf{Purpose:}                         & Monitor live data from go-kart                  \\
+\textbf{Overview:}                        & The engineer will ask the system for the logged data. The system will transfer the logged data to a stationary computer \\
+\textbf{Type:}                            & Essential                                       \\
+\textbf{Preconditions:}                   & Data is logged in logfile on xx                 \\
+\textbf{Postconditions:}                  & The log file is on the stationary computer                                                                                      \\
+\textbf{Special requirements:}            & -                                               \\ \hline 
+\multicolumn{1}{|c|}{\textbf{Actor action}} & \multicolumn{1}{c|}{\textbf{System response}}\\
+\multicolumn{1}{|l|}{1. Ask for log file}       & \begin{tabular}[c]{@{}l@{}}2. Transfer logged data to statinary computer\\ 3. Save data to log file on stationary computer\end{tabular}                                              \\ \hline
+\multicolumn{2}{|c|}{\textbf{Alternative flow of events}}                                   \\
+\multicolumn{2}{|p{12 cm}|}{Any line: If connection is lost the system should detect it and mark the trasferred log file as invalid}              \\ \hline                                                                                                                                    
+\end{tabular}
+\end{table}
+
+
+
+%Relavant control variables should be controllable, while driving allowing for efficient testing of controllers.
 To achieve this, data should be collected on a computer on the go-kart and sent to a stationary computer.
 
 %\subsection{What is the role of transferring go-kart data to and from a stationary computer?}
@@ -17,7 +94,7 @@ To achieve this, data should be collected on a computer on the go-kart and sent 
 
 \subsection{What is the role of the stationary computer?}
 The stationary computer should be responsible of the transmission of relevant go-kart data to and from the "on-board" computer.
-The received data should be presented to the user and the user should be able to change relevant contral variables.
+The received data should be presented to the user in a SCADA system.
 
 \subsubsection*{What data and sensors would be interesting to monitor?}
 Data from IMU, GPS and encoders would be necessary to monitor the movement of the go-kart.
@@ -28,23 +105,17 @@ It should be possible to get data from a new inverter, that is not yet made.
 \subsubsection*{What kind is the stationary computer?}
 It should be possible for different personnel to monitor the go-kart data therefore the statinonary computer should just be general purpose computer running (linux?).
 
-
-\subsubsection*{What control variables would be interesting to change?}
-......
-
 \subsubsection*{What kind of communication is needed to transfer data between the go-kart computer and the stationary computer?}
-As it should be possibly to monitor data and change parameters while the go-kart is driving the connection clearly needs to be wireless with a range allowing for driving on a typical racing track. 
+As it should be possibly to monitor data while the go-kart is driving the connection clearly needs to be wireless with a range allowing for driving on a typical racing track. 
 As all data is used by humans the propagation delay of the connection is not required to be very low.
 
 \subsubsection*{How should data on the stationary computer be presented?}
-As live data should be easy to read? ("overskue" in danish) there needs to be a GUI or at least a UI that will present the user with easy readable data. 
+As live data should be easy to read? ("overskue" in danish) there needs to be a GUI or at least a UI that will present the user with easy readable data. SCADA SYSTEM!?!?!
 Changing of parameters on the go-kart should also be in the UI in order useable by others than the developers.
 
-\subsection{What is the role? of the computer on the go-kart?}
-The "onboard" computer needs to handle both the collection
-of data from different sensors (data producers) and the transmission of data to 
-data consumers.
-Data consumers may be sensors that require setup, filters or similar equipment.
+\subsection{What is the role of the computer on the go-kart?}
+The "onboard" computer needs to handle the collection
+of data from different sensors (data producers).
 This computer will also handle the transmission of data to the stationary 
 computer.
 %There are tasks that need to be handled locally fx strict safety measures (and future things fx localisation) that requires a miminum delay. 
@@ -56,7 +127,7 @@ All data should be collected locally on the "on-board" computer to transmit it t
 Local data collection should be "fast" and "reliable" for local safety measures to function properly.
 It should be possibly to collect data from and transmit data to at least the 
 aforementioned IMU, GPS and SEVCON xx with the possibility of adding additional 
-data producers/consumers.
+data producers.
 
 \subsubsection*{What kind is the "on-board" computer?}
 The computer should be a small embedded platform in order to mount it physcically on the go-kart.
@@ -66,6 +137,58 @@ It should be able to handle all "on-board" tasks.
 Data should be stored directly on nonvolatile memory to be able retrieve data after shutdown.
 Data integrity checks is needed to ensure proper data logging.
 %Correct data logging should be realised to ensure validity of data. 
+
+
+\newpage
+\section{System requirements}
+
+\subsection{Actors}
+The only actor on the system is an engineer.
+
+\subsection{Interfaces}
+\begin{itemize}
+\item Wifi, for data transfer between go-kart and stationary computer.
+\item CAN bus, for local network.
+\item CanOpen, for interfacing the Sevcon.
+\item USB, for GPS and IMU.
+\item ??, for SD card connection.
+\item Powersupply, for Zybo boards.
+\end{itemize}
+
+\subsection{Functional requirements}
+The system: 
+\begin{itemize}
+\item Reads data from sensors.
+\item Reads data from Sevcon.
+\item Transfers data to stationary computer using Wifi.
+\item Presents data to the user.
+\item Logs sensordata to SD card.
+\item Read data from SD card.
+\item Timestamps all data. 
+\end{itemize}
+
+\subsection{Operational requirements}
+The system monitors go-kart data.% when engineer starts the system by powering it on.
+
+\subsection{Quality of service requirements}
+\begin{itemize}
+\item IMU data must be sampled with xx Hz.
+\item GPS data must be sampled with zz Hz.
+\item Data logging with qq Hz.??
+\end{itemize}
+
+\subsection{Parametric requirements}
+Wifi range must be greater than xx meters.
+
+\subsection{Design requirements}
+The system:
+\begin{itemize}
+\item must be scalable to at least 16 sensors/nodes.
+\item must be modular to allow easy integration of new sensors/nodes.
+\item must be functional if one or more sensors/nodes stop working.	 
+\end{itemize}
+
+
 
 \newpage
 \section{Further ivestigation}
@@ -225,7 +348,7 @@ This gives a minimum requirement for the speed of the transmission to be ZZ Mbit
 \subsubsection{Compatibility}
 It should be possibly to change the stationary computer and therefore the chosen wireless transmission technology should be compatible with standard computers running linux.
 The chosen hardware should be compatible with standard linux computers and the Zybo board. 
-Both have USB ports as a standard, therefore the chosen hardware should be an using USB.
+Both have USB ports and Ethernet ports as a standard, therefore the chosen hardware should one of those.
 
 \subsubsection{Technologies}
 Bluetooth is a technology that is compatible with standard computers running linux. 
@@ -238,6 +361,23 @@ WiFi is also compatible with standard computers running linux and typical WiFi u
 WiFi can be operating in the 2.4GHz band and in the 5GHz band. 
 2.4GHz units has the highest range. 
 The 802.11n protocol generally has the best range compared to the other 802.11 protocols \footnote{https://en.wikipedia.org/wiki/IEEE\_802.11\#802.11n}.
+\\
+A local network between computers without connection to existing networks such as the internet is referred to as an ad-hoc network. 
+It is a required that the found hardware is capable of doing an ad-hoc network.
 
 \subsubsection{Conclusion} 
-It was chosen to use the TP-LINK TL-WN722N, as it uses the 2.4GHz band, the 802.11n protocol, is compatible with linux, has an external antenna and uses USB. 
+
+\begin{table}[]
+\centering
+\caption{Minimum requirements for wireless transmission.}
+\label{tab:req_wifi}
+\begin{tabular}{|l|}
+\hline
+80m transmission             \\ \hline
+ZZ Mbit/s                    \\ \hline
+802.11n protocol             \\ \hline
+USB or Ethernet              \\ \hline
+ad-hoc network compatability \\ \hline
+\end{tabular}
+\end{table}
+Based on the requirements in table \ref{tab:req_wifi} it was chosen to us the TP-LINK TL-WN722N, as it uses the 2.4GHz band, the 802.11n protocol, is compatible with linux, has an external antenna and uses USB. 
