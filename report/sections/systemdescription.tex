@@ -1,17 +1,46 @@
 %!TEX root = ../main.tex
-\section{Monitoring of sensor data on the SDU go-kart.}
-This project aims to produce a tool for developing, evaluating and testing hardware for the SDU go-kart.
-Movement of the go-kart should be monitored to enable evaluation of the performance of the go-kart.
-The control variables and currents of the inverter should be monitored in order to help develop new hardware or evaluate existing hardware.
-A basic use case diagram showing the functionality of the system can be seen in figure \ref{fig:use_cases}.
+\section{System Description}
+\label{sec:system_description}
+This project aims to develop an embedded system for monitoring parameters on the SDU go-kart.
+
+\subsection{SDU go-kart}
+The SDU go-kart is an electronic go-kart equipped with a PMAC motor. 
+To control the motor there is mounted a SEVCON inverter on the go-kart, but other inverters could be mounted and used instead.
+The go-kart can be seen in figure \ref{fig:go_kart}.
+
+\begin{figure}[h]
+ 	\centering
+    \includegraphics[width=0.4\textwidth]{graphics/go_kart}
+    \caption{The SDU go-kart}
+    \label{fig:go_kart}
+\end{figure}
+
+The SDU go-kart is used as a development platform for students at the Master of Electronics educations at SDU.
+Each year first semester students need to develop a three phase inverter to drive the go-kart.
+
+\subsection{Embedded System}
+To ease development on the go-kart the lecturers (?) would like to be able to monitor parameters on the go-kart while driving.
+To monitor the go-kart while driving there needs to be a wireless connection between the go-kart and a stationary computer, see figure \ref{fig:simple}.
+Data should be presented to the user on a GUI on the stationary computer.
+All data should also be logged locally on the go-kart, as there might be a wireless network faliures. 
+
+\begin{figure}[h]
+ 	\centering
+    \includegraphics[width=0.8\textwidth]{graphics/go_kart_network_simple}
+    \caption{Should maybe be redone? :)}
+    \label{fig:simple}
+\end{figure}
+
+A basic use case diagram showing the wanted functionality of the embedded system can be seen in figure \ref{fig:use_cases}.
 The use case narratives are shown in tables \ref{tab:use_monitor} to \ref{tab:use_read_log}.
+
+
 \begin{figure}[h]
  	\centering
     \includegraphics[width=0.8\textwidth]{graphics/use_cases}
     \caption{Use case diagram for the system.}
     \label{fig:use_cases}
 \end{figure}
-
 
 \begin{table}[]
 \centering
@@ -44,7 +73,7 @@ The use case narratives are shown in tables \ref{tab:use_monitor} to \ref{tab:us
 \textbf{Use case:}                        & Log go-kart data            			        \\ 
 \textbf{Actors:}                          & Engineer                                        \\
 \textbf{Purpose:}                         & Log go-kart data                 				\\
-\textbf{Overview:}                        & After startup the system will log the collected go-kart data on xx  \\
+\textbf{Overview:}                        & After startup the system will log the collected go-kart data locally on the go-kart  \\
 \textbf{Type:}                            & Essential                                       \\
 \textbf{Preconditions:}                   & System is running and collecting go-kart data   \\
 \textbf{Postconditions:}                  & System logs collected go-kart data.      		\\
@@ -66,10 +95,10 @@ The use case narratives are shown in tables \ref{tab:use_monitor} to \ref{tab:us
 \hline
 \textbf{Use case:}                        & Read logged data  			                    \\ 
 \textbf{Actors:}                          & Engineer                                        \\
-\textbf{Purpose:}                         & Monitor live data from go-kart                  \\
+\textbf{Purpose:}                         & To read data that is logged locally on the go-kart               \\
 \textbf{Overview:}                        & The engineer will ask the system for the logged data. The system will transfer the logged data to a stationary computer \\
 \textbf{Type:}                            & Essential                                       \\
-\textbf{Preconditions:}                   & Data is logged in logfile on xx                 \\
+\textbf{Preconditions:}                   & Data is logged in logfile on the go-kart                \\
 \textbf{Postconditions:}                  & The log file is on the stationary computer                                                                                      \\
 \textbf{Special requirements:}            & -                                               \\ \hline 
 \multicolumn{1}{|c|}{\textbf{Actor action}} & \multicolumn{1}{c|}{\textbf{System response}}\\
@@ -82,7 +111,7 @@ The use case narratives are shown in tables \ref{tab:use_monitor} to \ref{tab:us
 
 
 %Relavant control variables should be controllable, while driving allowing for efficient testing of controllers.
-To achieve this, data should be collected on a computer on the go-kart and sent to a stationary computer.
+%To achieve this, data should be collected on a computer on the go-kart and sent to a stationary computer.
 
 %\subsection{What is the role of transferring go-kart data to and from a stationary computer?}
 %To let an engineer or a mechanic monitor the status of the go-kart.
@@ -92,292 +121,49 @@ To achieve this, data should be collected on a computer on the go-kart and sent 
 %Data from the SEVCON xxx inverter or other inverters on the go-kart could be used for tuning parameters, evaluation performance and safety measures.
 %On the basis of this data it should be possibly to change configuration parameters on the SEVCON xxx while driving the go-kart.
 
-\subsection{What is the role of the stationary computer?}
-The stationary computer should be responsible of the transmission of relevant go-kart data to and from the "on-board" computer.
-The received data should be presented to the user in a SCADA system.
+%\subsection{What is the role of the stationary computer?}
+%The stationary computer should be responsible of the transmission of relevant go-kart data to and from the "on-board" computer.
+%The received data should be presented to the user in a SCADA system.
 
-\subsubsection*{What data and sensors would be interesting to monitor?}
-Data from IMU, GPS and encoders would be necessary to monitor the movement of the go-kart.
-Data from the SEVCON xxx gives information about about battery status, currents, motortemperature.
+%\subsubsection*{What data and sensors would be interesting to monitor?}
+%Data from IMU, GPS and encoders would be necessary to monitor the movement of the go-kart.
+%Data from the SEVCON xxx gives information about about battery status, currents, motortemperature.
 %Temperature of tyres, speed of front wheels, possibility to control or at least moniter stearing and brake.
-It should be possible to get data from a new inverter, that is not yet made. 
+%It should be possible to get data from a new inverter, that is not yet made. 
 
-\subsubsection*{What kind is the stationary computer?}
-It should be possible for different personnel to monitor the go-kart data therefore the statinonary computer should just be general purpose computer running (linux?).
+%\subsubsection*{What kind is the stationary computer?}
+%It should be possible for different personnel to monitor the go-kart data therefore the statinonary computer should just be general purpose computer running (linux?).
 
-\subsubsection*{What kind of communication is needed to transfer data between the go-kart computer and the stationary computer?}
-As it should be possibly to monitor data while the go-kart is driving the connection clearly needs to be wireless with a range allowing for driving on a typical racing track. 
-As all data is used by humans the propagation delay of the connection is not required to be very low.
+%\subsubsection*{What kind of communication is needed to transfer data between the go-kart computer and the stationary computer?}
+%As it should be possibly to monitor data while the go-kart is driving the connection clearly needs to be wireless with a range allowing for driving on a typical racing track. 
+%As all data is used by humans the propagation delay of the connection is not required to be very low.
 
-\subsubsection*{How should data on the stationary computer be presented?}
-As live data should be easy to read? ("overskue" in danish) there needs to be a GUI or at least a UI that will present the user with easy readable data. SCADA SYSTEM!?!?!
-Changing of parameters on the go-kart should also be in the UI in order useable by others than the developers.
 
-\subsection{What is the role of the computer on the go-kart?}
-The "onboard" computer needs to handle the collection
-of data from different sensors (data producers).
-This computer will also handle the transmission of data to the stationary 
-computer.
+%As live data should be easy to read? ("overskue" in danish) there needs to be a GUI or at least a UI that will present the user with easy readable data. SCADA SYSTEM!?!?!
+%Changing of parameters on the go-kart should also be in the UI in order useable by others than the developers.
+
+%\subsection{What is the role of the computer on the go-kart?}
+%The "onboard" computer needs to handle the collection
+%of data from different sensors (data producers).
+%This computer will also handle the transmission of data to the stationary 
+%computer.
 %There are tasks that need to be handled locally fx strict safety measures (and future things fx localisation) that requires a miminum delay. 
-Storing of data with a 
-The computer needs also to store data locally in order to avoid data loss if the wireless connection is lost.
+%Storing of data with a 
+%The computer needs also to store data locally in order to avoid data loss if the wireless connection is lost.
 
-\subsubsection*{How is local data transmission handled?}
-All data should be collected locally on the "on-board" computer to transmit it to the stationary computer.
-Local data collection should be "fast" and "reliable" for local safety measures to function properly.
-It should be possibly to collect data from and transmit data to at least the 
-aforementioned IMU, GPS and SEVCON xx with the possibility of adding additional 
-data producers.
+%\subsubsection*{How is local data transmission handled?}
+%All data should be collected locally on the "on-board" computer to transmit it to the stationary computer.
+%Local data collection should be "fast" and "reliable" for local safety measures to function properly.
+%It should be possibly to collect data from and transmit data to at least the 
+%aforementioned IMU, GPS and SEVCON xx with the possibility of adding additional 
+%data producers.
 
-\subsubsection*{What kind is the "on-board" computer?}
-The computer should be a small embedded platform in order to mount it physcically on the go-kart.
-It should be able to handle all "on-board" tasks.
+%\subsubsection*{What kind is the "on-board" computer?}
+%The computer should be a small embedded platform in order to mount it physcically on the go-kart.
+%It should be able to handle all "on-board" tasks.
 
-\subsubsection*{How should local data storage be realised?}
-Data should be stored directly on nonvolatile memory to be able retrieve data after shutdown.
-Data integrity checks is needed to ensure proper data logging.
+%Data should be stored directly on nonvolatile memory to be able retrieve data after shutdown.
+%Data integrity checks is needed to ensure proper data logging.
 %Correct data logging should be realised to ensure validity of data. 
 
 
-\newpage
-\section{System requirements}
-
-\subsection{Actors}
-The only actor on the system is an engineer.
-
-\subsection{Interfaces}
-\begin{itemize}
-\item Wifi, for data transfer between go-kart and stationary computer.
-\item CAN bus, for local network.
-\item CanOpen, for interfacing the Sevcon.
-\item USB, for GPS and IMU.
-\item ??, for SD card connection.
-\item Powersupply, for Zybo boards.
-\end{itemize}
-
-\subsection{Functional requirements}
-The system: 
-\begin{itemize}
-\item Reads data from sensors.
-\item Reads data from Sevcon.
-\item Transfers data to stationary computer using Wifi.
-\item Presents data to the user.
-\item Logs sensordata to SD card.
-\item Read data from SD card.
-\item Timestamps all data. 
-\end{itemize}
-
-\subsection{Operational requirements}
-The system monitors go-kart data.% when engineer starts the system by powering it on.
-
-\subsection{Quality of service requirements}
-\begin{itemize}
-\item IMU data must be sampled with xx Hz.
-\item GPS data must be sampled with zz Hz.
-\item Data logging with qq Hz.??
-\end{itemize}
-
-\subsection{Parametric requirements}
-Wifi range must be greater than xx meters.
-
-\subsection{Design requirements}
-The system:
-\begin{itemize}
-\item must be scalable to at least 16 sensors/nodes.
-\item must be modular to allow easy integration of new sensors/nodes.
-\item must be functional if one or more sensors/nodes stop working.	 
-\end{itemize}
-
-
-
-\newpage
-\section{Further ivestigation}
-
-\subsection{Parameters of Interest}
-\label{sec:parameters}
-In developing new hardware or evaluating current hardware, it is necessary to be able to monitor a range of parameters.
-This section will investigate what parameters need to be logged in order to provide a useful and complete logging of the behaviour of the go-kart.
-The parameters in question fall into three categories; Physical parameters, electrical parameters and mechanical parameters.
-These will be dealt with in turn in the following sections
-\paragraph*{Physical Parameters}
-This category comprises all information about the motion of the go-kart.
-\begin{itemize}
-	\item \textbf{Position, Absolute:} Providing a means to record the absolute position of the go-kart is a useful feature in certain fields.
-	Especially any form of localisation and pathfinding will be able to put this information to use.
-	The absolute position of the go-kart can be recorded using a GPS module or possibly by using a known starting coordinate and information about the relative movement of the go-kart.
-	\item \textbf{Position, Relative:} The relative position of the kart can be, as just mentioned, used to infer the absolute position of the go-kart.
-	Additionally it can provide a means to analyze a drivers performance on the track or detect drift while cornoring.
-	The relative position includes both translational, as well as rotational information.
-	This information can be gathered using an inertial measurement unit (IMU).
-	An IMU is a compound device, comprising of an accelerometer and a gyroscope and, in some cases, a magnetometer.
-	\item \textbf{Velocity:} The velocity of the go-kart is key in optimising lap-times, clearly, it is desirable to monitor this parameter.
-	It can be extracted by reading the motor encoders.
-	However, the driving wheels are prone to slippage when cornoring, this would give an inaccurate reading of the actual velocity of the go-kart.
-	Instead, a simple encoder can be mounted on either one, or both of the front wheels as these are freerunning and independent.
-	Once the rotational speed of the axle is known, the velocity of the go-kart can be infered using the tyre diameter.
-	\item \textbf{Acceleration:} It may be of interest to monitor the forces exerted on the go-kart, or, its acceleration, as it drives on the track.
-	This information is already provided by the accelerometer in the IMU mentioned above and as such provides no additional complication.
-\end{itemize}
-Three sensors are mentioned in this section.
-A GPS, an IMU and an encoder.
-In order to limit the scope of the project only the GPS and the IMU will be implemented.
-\paragraph*{Electrical Parameters}
-This category comprises all information about the electrical aspects of the go-kart.
-\begin{itemize}
-	\item \textbf{Motor Currents:} Providing a means of monitoring the currents flowing through the motor allows the user to calculate the torque exerted by the motor as well as the current power draw of the motor.
-	Knowing the currents could also prove an invaluable debugging tool when developing a new inverter for the go-kart.
-	\item \textbf{Throttle Position:} The throttle on the go-kart is connected to a potentiometer.
-	Measuring the voltage output of this potentiometer provides a simple way of monitoring the position of the throttle.
-	\item \textbf{Desired Currents:} Based on the current throttle position a set of desired currents are calculated.
-	Monitoring these allows spotting any discrepancies between the desired and the actual currents.
-	\item \textbf{Duty Cycles:}
-	\item \textbf{Battery Voltage:} As the go-kart is electrical, naturally, it has a battery.
-	Monitoring the current battery status could give the user an indication of how much driving time is left, or how long until the batteries are recharged afterwards.
-	\item \textbf{Motor Angle:} Knowing the angle of the motor at all times gives a means of more accurately calculate the currents at specific times.
-	Additionally, it can be used in Clarke-Parke transformations, again, providing information in debugging an inverter in development.
-\end{itemize}
-These parameters are all available from the sevcon gen4 motor controller mounted on the go-kart.
-This controller has a CANopen interface from which this data can be extracted.
-Any users who wish to add their own inverter will simply need to obey the API stated by the sevcon gen4 CANopen interface in order to correctly log the data.
-\paragraph*{Mechanical Information}
-This category comprises all information about the mechanical aspects of the go-kart.
-\begin{itemize}
-	\item \textbf{Steering Wheel Angle:} Monitoring the angle of the steering wheel allows analysing the performance of the driver.
-	In addition it opens up for the possibility of mechanical control of the go-kart.
-	Similarly to monitoring the velocity, the steering wheel angle can be monitored by adding an encoder to the steering column.
-	\item \textbf{Braking Pedal Position:} The braking system on the go-kart is similar to that of an ordinary car.
-	The braking disc is mounted on the driving axle and the braking calibers connected to the brake pedal by a series of oil-filled hoses.
-	Monitoring its actuation allows analysing the performance of the driver and as mentioned above, may potentially allow for mechanical control of the go-kart
-\end{itemize}
-As both of these parameters would require mechanical changes to the go-kart, they are beyond the scope of this project and as such will not be implemented.
-\subsubsection*{Conclusion}
-In this section a multitude of different parameters have been discussed.
-Most of them can be logged using just three components; a Sevcon Gen4 motor controller, an IMU and a GPS.
-These are the three components from which data logging will be implemented throughout this project.
-This provides a solid platform to prove the concept and additional sensory equipment can be added at a later date, should it be required.
-
-\subsection{Hardware for Monitoring Parameters}
-In section \ref{sec:parameter} an overview of the different parameters that may be of interest for logging is given.
-It was concluded that three components would suffice as a proof of concept; the Sevcon Gen4 motor controller, an IMU and a GPS.
-This section will explore in more detail what requirements and communication schemes exists for each of the components.
-
-\subsubsection*{Sevcon Gen4 Motor Controller}
-
-\subsubsection*{Inertial Measurement Unit (IMU)}
-IMU's, generally, exist in two versions.
-A 6D and a 9D version.
-Both include an accelerometer and a gyroscope.
-In addition to these the 9D IMU includes a magnetometer, enabling measurement of absolute direction, as opposed to the relative measurement of direction granted by the magnetometer.
-The requirement in terms of each of these parts is given as:
-\begin{itemize}
-	\item \textbf{Accelerometer [\si{\metre\per\second^2}]:} As the name implies, the accelerometer measures accelerations.
-	That is, when the component changes speed or direction the force exerted on the accelerometer is measured.
-	Professional drivers using professional grade go karts driving upwards of 250 \si{\kilo\metre\per\hour} can reach up to 2-3 g's of force exerted on them.
-	The go kart available in this project has a theoretical maximum speed of 50 \si{\kilo\metre\per\hour}.
-	Clearly, the forces exerted on this platform will be lower, however, a minimum requirement of $\pm$ 3g will be set for the accelerometer in the IMU.
-	\item \textbf{Gyroscope [\si{\degree\per\second}]:} 
-\end{itemize}
-\subsubsection*{Global Positioning System (GPS)}
-%\subsubsection{What is the data on stationary computer intended for?}
-%Monitoring data related to movement from the go-kart and adjusting go-kart control parameters by an engineer.
-
-%\subsubsection{What kind of data}
-%Data from Sevcon controller related to the motor (control, temperature, speed etc.), and from other nodes that are sensors. Sensors may include IMU, GPS... (to be discussed).
-
-%\subsubsection{What is meant by "computer"}
-%Stationary computer is a laptop/desktop (general purpose computer, OS: Windows/Linux), and the go-kart computer is a zybo board running Linux.
-
-%\subsubsection{What setup should be used for communication (Wireless/wired), what protocol etc.}
-%Wireless communication to make possible the monitoring/adjusting while the go-kart is being driven on a track. Protocol?
-
-%\subsubsection{Does the communication require extra verification? checksum, timestamping etc.?}
-%YES.
-
-
-%\subsubsection{How many nodes/sensors should the system be able to handle?}
-%The system will be scalable. How much will be discussed.
-
-%\subsubsection{What kind of nodes/sensors/actuators?}
-%Sevcon and possibly IMU, GPS...
-
-% \subsubsection{QUESTIONS - should be deleted. They are only here for inspiration.}
-% \begin{itemize}{}
-% \item What bandwidth/latency should the communication be able to handle?
-% \item How is data produced? i.e. just by the sensors, by the go-kart or both systems?
-% \item How many sensors/data producers?\\
-% \item Should we support asynchronous transfer? (different sensors with different 
-% update frequency transfer at different rates).\\
-% \item Which tasks should be handled where? i.e. can some tasks be handled locally on 
-% the go-kart?
-% \item What topology should the go-kart network be? Ring?
-% \item What should the basic gui (on the laptop) be?
-% \item Go-kart network hierarchy? A zybo master ruling the rest puny zybos without mercy?
-% \item Required hardware to make the entire network? (eg. Zybos, pmod ip core ethernet, wifi card for zybo etc.)
-% \item Sevcon requires use of OpenCan. How will the connection between the Sevcon and the network should be done?
-% \item What is the max distance we want to support for wireless communication Stat. Laptop - Go-kart zybo? What hardware for that distance?
-% \item How does this max distance affects the bandwidth/latency and in general, the efficiency of the entire network?
-% \item If we have error-handling on the go-kart zybo, what kind of errors might those be?!??!
-% \item Programming language/IDE of creating the GUI?
-% \item How the failure of a node will be handled?
-% \item How the wifi disconnection between Stationary PTP-LINKC and the go-kart zybo will be handled? A msg in GUI? What about if data was being transmitted, should we check if the node got the data? In other words, do we need verification of data received by the nodes shown on the gui after adjusting the parameters?
-% \item Embedded linux on one or all the nodes?
-
-% \end{itemize}
-
-\subsection{Wireless transmission}
-The wireless transmission between the go-kart computer and the stationary computer could be a number of different technologies.
-This section seeks to find an appropriate one.
-
-\subsubsection{Range}
-The range of the transmission is determined by the length of the test track. 
-Normally the SDU kart is tested on parking lots with a maximum lenght of 50m and width of 20m.
-There are almost no obstacles for the transmission on such a parking lot. 
-This test track sets a minimum requirement that the wireless setup should be able to transmit data at 55m with no obstacles.
-\\
-At some point it would be interesting to test the go-kart on a real go-kart track. 
-The nearest go-kart track is \textit{Odense gokart Hal}, which is also thought to be an average indoor go-kart track.
-The track is about 70m long and 40m in width with no obstacles other than the barriers. 
-If the wireless transmitter and receiver are placed above the barrier then they will not an obstruction on the transmission. 
-This track sets a minimum requirement of 80m transmission. 
-
-\subsubsection{Speed}
-The transferred data is from xx sensors producing a maximum of yy bites per sample. 
-Data is only used for human inspection and therefore a sample frequency of 100Hz would be sufficient.
-This gives a minimum requirement for the speed of the transmission to be ZZ Mbit/s. 
-
-\subsubsection{Compatibility}
-It should be possibly to change the stationary computer and therefore the chosen wireless transmission technology should be compatible with standard computers running linux.
-The chosen hardware should be compatible with standard linux computers and the Zybo board. 
-Both have USB ports and Ethernet ports as a standard, therefore the chosen hardware should one of those.
-
-\subsubsection{Technologies}
-Bluetooth is a technology that is compatible with standard computers running linux. 
-Bluetooth 5.0 has a maximum speed of 50Mbit/s, which is sufficient.
-The range of typical class 2 Bluetooth device is 10m \footnote{https://en.wikipedia.org/wiki/Bluetooth}.
-This range is definitely not enough for this application.
-\\
-\\  
-WiFi is also compatible with standard computers running linux and typical WiFi units has speeds that is a lot higher than the required. 
-WiFi can be operating in the 2.4GHz band and in the 5GHz band. 
-2.4GHz units has the highest range. 
-The 802.11n protocol generally has the best range compared to the other 802.11 protocols \footnote{https://en.wikipedia.org/wiki/IEEE\_802.11\#802.11n}.
-\\
-A local network between computers without connection to existing networks such as the internet is referred to as an ad-hoc network. 
-It is a required that the found hardware is capable of doing an ad-hoc network.
-
-\subsubsection{Conclusion} 
-
-\begin{table}[]
-\centering
-\caption{Minimum requirements for wireless transmission.}
-\label{tab:req_wifi}
-\begin{tabular}{|l|}
-\hline
-80m transmission             \\ \hline
-ZZ Mbit/s                    \\ \hline
-802.11n protocol             \\ \hline
-USB or Ethernet              \\ \hline
-ad-hoc network compatability \\ \hline
-\end{tabular}
-\end{table}
-Based on the requirements in table \ref{tab:req_wifi} it was chosen to us the TP-LINK TL-WN722N, as it uses the 2.4GHz band, the 802.11n protocol, is compatible with linux, has an external antenna and uses USB. 
