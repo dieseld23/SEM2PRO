@@ -52,7 +52,7 @@ The Zybo has two build in
 \todo{I suppose you want to say built-in}
 
 \todo{Polish the text and re-express some things such as send() function...}
-\subsection{Testing the CAN stack for a basic network}
+\subsection{Testing the CAN Stack for a Basic Network}
 After the design and printing of the stack board, testing it was the next step.
 The test included using one the CAN controllers within the Zynq chip with the purpose of showing that a basic CAN network between two Zybo boards could be implemented using the stack.
 Specifically, the one Zybo was sending the input value of the buttons to the network in order to be received by the second one and turn on the on-board LEDs as a result.
@@ -61,7 +61,7 @@ All Zybo boards were programmed with the same architecture and source code.
 
 \subsubsection{Architecture}
 In order to realize the above test, enabling the CAN controller inside the Zynq chip as well as including two AXI GPIO cores were necessary.
-One AXI GPIO was setup as leds 4bits while the other one as btns 4bits as it can be seen in figure \ref{fig:CAN_Testing_Architecture}. 
+One AXI GPIO was setup as leds 4bits while the other one as btns 4bits as it can be seen in figure \ref{fig:CAN_Testing_Architecture}. The architecture was firmly simple, but adequate to meet the purpose of the test.
 
 \begin{figure}[h!]
 	\centering
@@ -74,8 +74,10 @@ One AXI GPIO was setup as leds 4bits while the other one as btns 4bits as it can
 The programming for this task was done in C.
 The code from xcanps polled example provided by Xilinx documentation was used as a basis.
 The example shows the basic principle of sending and receiving messages on a loopback network on a single board.
-With further modifications and the addition of extra functionalities such as reading button input and writing the output to the LEDs, the developed final code was suitable to test the communication between two nodes on the CAN network.
+With further modifications and the addition of extra functionalities such as reading button input and writing the output to the LEDs, the finalized developed code was suitable to test the communication between two nodes on the CAN network.
 \\\\
 The basic principle for testing was to trigger an interrupt attached to the button presses, which then the send() function would send the value of the buttons to the network as a message.
 In turn, the receive() function was responsible of reading the message transmitted on the bus and writing the value as output to the LEDs.
 As mentioned before, this source code was common and uploaded to both boards resulting in a two-way communication, since both of them had a send() and a receive() function, thus one controlling the LEDs of the other one.
+
+\todo{We need a picture with 2 or better, 4 boards as stack! The coolest thing ever :P.}
