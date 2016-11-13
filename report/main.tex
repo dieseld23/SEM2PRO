@@ -40,6 +40,18 @@
 
 \usepackage[disable]{todonotes}
 \usepackage{listings}
+\lstset{
+  frame=l,
+  language=bash,
+  basicstyle=\ttfamily,
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{green}\ttfamily,
+  stringstyle=\color{mauve},
+  %texcl=true 
+}
+
 \usepackage{multirow}
 
 
@@ -89,9 +101,19 @@ Skarup Jaedicke, Martin Brøchner Andersen, Catalin Ionut Ntemkas‎;}
 \clearpage
 \newpage
 \pagenumbering{arabic}
+\input{sections/introduction}
+\newpage
 \input{sections/systemdescription}
-\input{sections/Datalogging_requirements}
-\input{sections/localnetwork_requirements}
+\newpage
+\input{sections/systemanalysis}
+\newpage
+\input{sections/systemrequirements}
+%\input{sections/Datalogging_requirements}
+%\input{sections/localnetwork_requirements}
+\newpage
+\input{sections/CANbus}
+\input{sections/interfacing_with_sevcon}
+\input{sections/wifi}
 \newpage
 \input{bib}
 \newpage
