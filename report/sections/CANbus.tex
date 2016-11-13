@@ -22,7 +22,7 @@ That means, that if the bus is broken at any point, no communication will work.
 Alternately, it is possible to terminate each node, but this greatly reduces transmission speed, and will not be done.//
 
 The transceivers have been mounted on boards, that plug directly into the Zybo's 12-pin PMOD connector, which will be stacked on top of each other. 
-The scematic is showed below.
+The schematic is shown below.
 
 \begin{figure}[h!]
 	\centering
@@ -49,3 +49,23 @@ The stack is visible below
 
 \subsection{Implementation of the Physical layer}\label{sub:CANphys_implementation}
 The Zybo has two build in
+\todo{I suppose you want to say built-in}
+
+\subsection{Testing the CAN stack for a basic network}
+After the design and printing of the stack board, testing it was the next step.
+The test included using one the CAN controllers within the Zynq chip with the purpose of showing that a basic CAN network between two Zybo boards could be implemented using the stack.
+Specifically, the one Zybo was sending the input value of the buttons to the network in order to be received by the second one and turn on the on-board LEDs as a result.
+After designing a basic architecture in Vivado and writing a source code, the test was successful, thus proving the basic functionality of a CAN network.
+All Zybo boards were programmed with the same architecture and source code.
+
+\subsubsection{Architecture}
+In order to realize the above test, enabling the CAN controller inside the Zynq chip as well as including two AXI GPIO cores were necessary. One AXI GPIO was setup as leds 4bits while the other one as btns 4bits as it can be seen in figure \ref{fig:CAN_Testing_Architecture}. 
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width = 0.9\linewidth]{graphics/Zybo_BasicTestingArchitecture_for_CAN}
+	\caption{Block diagram featuring the testing architecture in Vivado.}
+	\label{fig:CAN_Testing_Architecture}
+\end{figure}
+
+\subsubsection{Source Code}
