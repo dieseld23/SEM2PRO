@@ -1,0 +1,13 @@
+/*
+ * can_network.h
+ *
+ *  Created on: 10 Nov 2016
+ *      Author: Catalin I. Ntemkas
+ */
+
+#ifndef SRC_CAN_NETWORK_H_
+#define SRC_CAN_NETWORK_H_
+
+
+
+#endif /* SRC_CAN_NETWORK_H_ */

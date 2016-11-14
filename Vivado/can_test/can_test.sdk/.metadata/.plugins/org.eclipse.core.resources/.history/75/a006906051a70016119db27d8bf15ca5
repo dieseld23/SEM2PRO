@@ -1,0 +1,36 @@
+/******************************************************************************
+ *						Southern Denmark University
+ *
+ *				Project 2 - MSc. in Engineering in Electronics
+ *				A SCADA system to monitor data from the go-kart
+ *
+ *		Group members:
+ *
+ *
+ * main_program.c
+ *  Created on: 10 Nov 2016
+ *      Author: Catalin I. Ntemkas
+ *
+ *****************************************************************************/
+
+//=============================================================== Include Files
+#include "xcanps.h"
+#include "xparameters.h"
+#include "xil_printf.h"
+#include "xgpio.h"
+#include "xstatus.h"
+#include "xscugic.h"
+
+//===============================================================
+#include "simulation.h"
+
+//===============================================================
+//===============================================================
+
+int main(){
+
+	initSimulationSystem();
+
+	return XST_SUCCESS;
+}
+
