@@ -32,21 +32,21 @@ All data should also be logged locally on the go-kart, as there might be a wirel
 \end{figure}
 
 A basic use case diagram showing the wanted functionality of the embedded system can be seen in figure \ref{fig:use_cases}.
-The use case narratives are shown in tables \ref{tab:use_monitor} to \ref{tab:use_read_log}.
+The use case narratives are shown in tables \ref{tab:use_monitor} to \ref{tab:use_start_stop}.
 
 
 \begin{figure}[h]
  	\centering
-    \includegraphics[width=0.8\textwidth]{graphics/use_cases}
+    \includegraphics[width=1\textwidth]{graphics/use_cases.png}
     \caption{Use case diagram for the system.}
     \label{fig:use_cases}
 \end{figure}
 
-\begin{table}[]
+\begin{table}[!h]
 \centering
 \caption{Usecase narrative for monitor live data from go-kart.}
 \label{tab:use_monitor}
-\begin{tabular}{| r | p{6 cm} |}
+\begin{tabular}{| r | p{7 cm} |}
 \hline
 \textbf{Use case:}                        & Monitor live data from go-kart                  \\ 
 \textbf{Actors:}                          & Engineer                                        \\
@@ -57,18 +57,18 @@ The use case narratives are shown in tables \ref{tab:use_monitor} to \ref{tab:us
 \textbf{Postconditions:}                  & System transfers data from go-kart sensors to a stationary computer, showing data in a GUI.                                                                                            \\
 \textbf{Special requirements:}            & -                                               \\ \hline 
 \multicolumn{1}{|c|}{\textbf{Actor action}} & \multicolumn{1}{c|}{\textbf{System response}}\\
-\multicolumn{1}{|l|}{1. Start system}       & \begin{tabular}[c]{@{}l@{}}2. Start collecting data\\ 3. Transfer data to stationary computer\\ 4. Present data in GUI\end{tabular}                                              \\ \hline
+\multicolumn{1}{|p{5 cm}|}{1. Start system}       & \begin{tabular}[c]{@{}l@{}}2. Start collecting data\\ 3. Transfer data to stationary computer\\ 4. Present data in GUI\end{tabular}                                              \\ \hline
 \multicolumn{2}{|c|}{\textbf{Alternative flow of events}}                                   \\
 \multicolumn{2}{|p{12 cm}|}{Any line: User can stop the system at any point in time.}              \\ \hline                                                                                                                                    
 \end{tabular}
 \end{table}
 
 
-\begin{table}[]
+\begin{table}[!h]
 \centering
 \caption{Usecase narrative for log go-kart data.}
 \label{tab:use_log}
-\begin{tabular}{| r | p{6 cm} |}
+\begin{tabular}{| r | p{7 cm} |}
 \hline
 \textbf{Use case:}                        & Log go-kart data            			        \\ 
 \textbf{Actors:}                          & Engineer                                        \\
@@ -79,19 +79,19 @@ The use case narratives are shown in tables \ref{tab:use_monitor} to \ref{tab:us
 \textbf{Postconditions:}                  & System logs collected go-kart data.      		\\
 \textbf{Special requirements:}            & -                                               \\ \hline 
 \multicolumn{1}{|c|}{\textbf{Actor action}} & \multicolumn{1}{c|}{\textbf{System response}} \\
-\multicolumn{1}{|l|}{}       & \begin{tabular}[c]{@{}l@{}}1. Log collected data\end{tabular}\\ \hline
+\multicolumn{1}{|p{5 cm}|}{}       & \begin{tabular}[c]{@{}l@{}}1. Log collected data\end{tabular}\\ \hline
 \multicolumn{2}{|c|}{\textbf{Alternative flow of events}}                                   \\
-\multicolumn{2}{|p{12 cm}|}{Any line: User can stop the logging	 at any point in time.}         \\ \hline                                                                                                                                    
+\multicolumn{2}{|p{12 cm}|}{Any line: User can stop the logging	at any point in time.}         \\ \hline                                                                                                                                    
 \end{tabular}
 \end{table}
 
 
 
-\begin{table}[]
+\begin{table}[!h]
 \centering
 \caption{Usecase narrative for read logged data.}
 \label{tab:use_read_log}
-\begin{tabular}{| r | p{6 cm} |}
+\begin{tabular}{| r | p{7 cm} |}
 \hline
 \textbf{Use case:}                        & Read logged data  			                    \\ 
 \textbf{Actors:}                          & Engineer                                        \\
@@ -102,13 +102,34 @@ The use case narratives are shown in tables \ref{tab:use_monitor} to \ref{tab:us
 \textbf{Postconditions:}                  & The log file is on the stationary computer                                                                                      \\
 \textbf{Special requirements:}            & -                                               \\ \hline 
 \multicolumn{1}{|c|}{\textbf{Actor action}} & \multicolumn{1}{c|}{\textbf{System response}}\\
-\multicolumn{1}{|l|}{1. Ask for log file}       & \begin{tabular}[c]{@{}l@{}}2. Transfer logged data to statinary computer\\ 3. Save data to log file on stationary computer\end{tabular}                                              \\ \hline
+\multicolumn{1}{|p{5 cm}|}{1. Ask for log file}       & \begin{tabular}[c]{@{}l@{}}2. Transfer logged data to statinary computer\\ 3. Save data to log file on stationary computer\end{tabular}                                              \\ \hline
 \multicolumn{2}{|c|}{\textbf{Alternative flow of events}}                                   \\
 \multicolumn{2}{|p{12 cm}|}{Any line: If connection is lost the system should detect it and mark the trasferred log file as invalid}              \\ \hline                                                                                                                                    
 \end{tabular}
 \end{table}
 
+\begin{table}[!h]
+\centering
+\caption{Usecase narrative for start and stop data collection.}
+\label{tab:use_start_stop}
+\begin{tabular}{| r | p{7 cm} |}
+\hline
+\textbf{Use case:}                        & Start and stop data collection  			                    \\ 
+\textbf{Actors:}                          & Engineer                                        \\
+\textbf{Purpose:}                         & To start and stop data collection from different sensors              \\
+\textbf{Overview:}                        & The engineer will ask the system to start or stop collecting data from a specific sensor. The system will then start or stop the system respectively. \\
+\textbf{Type:}                            & Essential                                       \\
+\textbf{Preconditions:}                   & System is running               \\
+\textbf{Postconditions:}                  & Data collecting is started or stopped for specific sensor.                                                                                      \\
+\textbf{Special requirements:}            & -                                               \\ \hline 
+\multicolumn{1}{|c|}{\textbf{Actor action}} & \multicolumn{1}{c|}{\textbf{System response}}\\
+\multicolumn{1}{|p{5 cm} |}{1. Ask system to start or stop data collecting for specific sensor.}       & \begin{tabular}[c]{@{}p{7cm}@{}}2. System starts or stops data collecting for specific sensor\\ 3. Save data to log file on stationary computer\end{tabular}                              	                \\ \hline
+\multicolumn{2}{|c|}{\textbf{Alternative flow of events}}                                   \\
+\multicolumn{2}{|p{12 cm}|}{Any line: If connection is lost the system should detect it and mark the trasferred log file as invalid}              \\ \hline                                                                                                                                    
+\end{tabular}
+\end{table}
 
+%\todo[inline]{Mikkel: Are there other types than Essential?}
 
 %Relavant control variables should be controllable, while driving allowing for efficient testing of controllers.
 %To achieve this, data should be collected on a computer on the go-kart and sent to a stationary computer.
