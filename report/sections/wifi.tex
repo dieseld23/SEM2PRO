@@ -29,6 +29,17 @@ The following sections will explore the creation of both of these networks in tu
 As mentioned above, the off-kart network is done using wifi.
 It was chosen to use this method as all modern laptops are equipped with the capability of connecting to such a network.
 Hereafter the challenge lies in establishing an ad-hoc network between a zybo board and a PC.
+This network is created using the a USB-Wifi dongle on the Zybo board. 
+The following script is run to bring down the device, change the network type to ad-hoc, bring up the device, create the ad-hoc network and, finally, assign an IP-address to the device.
+\begin{lstlisting}
+sudo ip link set wlan0 down
+sudo iw wlan0 set type ibss
+sudo ip link set wlan0 up
+sudo iw wlan0 ibss join go-kart 2412
+sudo ifconfig wlan0 192.168.10.9
+\end{lstlisting}
+It is verified working using the ping command from both the Zybo board and to the PC and vice versa.
+Below is a thorough description of the challenges encountered while setting up this device as well as a brief explanation of the choice of device.
 \\~\\
 Two methods were immediately available for use: A usb wifi dongle and a PMOD wifi interface.
 As the name implies, the latter is designed to be compatible with the PMOD interfaces on the zybo board (and a range of similar boards offered by Digilent Inc.).
@@ -78,4 +89,10 @@ At this point the device is up, as can be seen on the list of flags:
 \begin{lstlisting}
 <NO-CARRIER,BROADCAST,MULTICAST,UP>
 \end{lstlisting}
+However, the \texttt{NO-CARRIER} flag is also set.
+This flag indicates a fault on the physical layer, i.e. a disconnected network cable or similar.
+In an attempt to isolate the error the dongle was connected to a PC.
+The dongle worked flawlessly on the PC and connected to the internet after bringing down the standard interface.
+Clearly, there are differences between the two systems, one or more of which were causing the 
+Eliminating these differences 
 \subsection{On-Kart Network}
