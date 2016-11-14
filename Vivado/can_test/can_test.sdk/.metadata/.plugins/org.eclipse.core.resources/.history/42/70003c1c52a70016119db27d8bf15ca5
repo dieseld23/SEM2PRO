@@ -1,0 +1,8 @@
+/*
+ * can_network.c
+ *
+ *  Created on: 10 Nov 2016
+ *      Author: Catalin I. Ntemkas
+ */
+
+#include "can_network.h"
