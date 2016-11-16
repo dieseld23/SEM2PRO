@@ -1,30 +1,31 @@
 %!TEX root = ../main.tex
 \section{System Analysis} % (fold)
 \label{sec:system_analysis}
-\todo[inline]{Mikkel: We need some kind of broad introduction here. }
-In order to design an embedded system that meets the needs expressed by the use cases a thorough system analysis is needed. 
-This section will present the analysis of the complete embedded system.
-
-It should be analysed 
-
-The use cases does not describe what parameters should be monitored 
+A thorough system analysis is needed in order to design an embedded system that meets the needs expressed by the use cases. 
+This section will present the analysis of the complete embedded system, through the following topics:
 
 \begin{itemize}
-\item Parameters of interest. The use cases does not describe what parameters should be monitored meaning that it should be investigated which are relevant to monitor.
-\item 
+\item Parameters of interest. The use cases do not describe what parameters should be monitored meaning that it should be investigated which are relevant to monitor.
+\item Hardware for monitoring parameters. It should be analysed what hardware is necessary in order to measure the parameters found to be relevant. 
+\item Amount and frequency of data????. Something clever about this. Martins sections should be used for it.
+\item Data collection. It should be analysed how data is collected on the go-kart.
+\item Micro-controller. It should be analysed what micro-controller should be used on the go-kart.
+\item Wireless network. It should be analysed how data is transferred from the go-kart 	to the stationary computer.
+\item Local storage. There needs to local storage on the go-kart and it needs to be analysed what kind this should be and how it should be implemented.
+\item UI. It should be be analysed how the transferred data should be presented to the user in an UI.
 \end{itemize}
 
 \subsection{Parameters of Interest}
 \label{sec:parameters}
 In developing new hardware or evaluating current hardware, it is necessary to be able to monitor a range of parameters.
-This section will investigate what parameters need to be logged in order to provide a useful and complete logging of the behaviour of the go-kart.
+This section will investigate what parameters need to be logged in order to provide a useful and complete logging of the behavior of the go-kart.
 The parameters in question fall into three categories; Physical parameters, electrical parameters and mechanical parameters.
 These will be dealt with in turn in the following sections
 \paragraph*{Physical Parameters}
 This category comprises all information about the motion of the go-kart.
 \begin{itemize}
 	\item \textbf{Position, Absolute:} Providing a means to record the absolute position of the go-kart is a useful feature in certain fields.
-	Especially any form of localisation and pathfinding will be able to put this information to use.
+	Especially any form of localisation and path finding will be able to put this information to use.
 	The absolute position of the go-kart can be recorded using a GPS module or possibly by using a known starting coordinate and information about the relative movement of the go-kart.
 	\item \textbf{Position, Relative:} The relative position of the kart can be, as just mentioned, used to infer the absolute position of the go-kart.
 	Additionally it can provide a means to analyze a drivers performance on track the or detect drift while cornoring.
@@ -78,7 +79,33 @@ Most of them can be logged using just three components; a Sevcon Gen4 motor cont
 These are the three components from which data logging will be implemented throughout this project.
 This provides a solid platform to prove the concept and additional sensory equipment can be added at a later date, should it be required.
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 \subsection{Hardware for Monitoring Parameters}
+\label{sec:hardware_for_par}
 In section \ref{sec:parameter} an overview of the different parameters that may be of interest for logging is given.
 It was concluded that three components would suffice as a proof of concept; the Sevcon Gen4 motor controller, an IMU and a GPS.
 This section will explore in more detail what requirements and communication schemes exists for each of the components.
@@ -112,8 +139,18 @@ The requirement in terms of each of these parts is given as:
 
 
 
+
+
+
+
+
 \subsection{Network}
 We need to write something about that we chose to have a local on-vehicle network and a wireless network.
+
+Monolithic?
+
+
+
 
 
 
@@ -193,26 +230,46 @@ Likely, different sample rates will be recorded to different log files
 
 
 
-\subsection{Microcontroller}
-Which one do we choose and why?
-Does it run Linux? yeaarh, because of drivers and bla bla bla
+\subsection{Micro-controller}
+As described in section \ref{sec:data_collection} there should be a CAN network of nodes on the go-kart.
+Each node is a sensor or other data producing unit along with a micro-controller.
+From the perspective of the network the only requirement for the micro-controller is that it has a CAN controller.
+In principle the network could consist of 16 different micro-controllers.
+
+\subsubsection*{Sensor Nodes}
+As described in section \ref{sec:hardware_for_par}, it was chosen to use an IMU and a GPS with a USB interface. 
+As specified in the use cases one of the nodes needs to transfer data wirelessly from the go-kart to the stationary computer. 
+Both USB interface and wireless data transfer drivers are implemented in operating systems like Linux, Mac OS X and Windows.
+Thus choosing a micro-controller supporting such an operating system will greatly simply the code that needs to be written for those sensor nodes.
+Developing software for Linux is a part of a course that the group is attending therefore Linux will be used as the operating system.
+\\
+The Zybo board will be used for the sensor nodes as it has a built-in CAN controller, it has the ability to run Linux and the group has access to it.
+
+\subsubsection*{Zybo Board}
+The Zybo board has a Xilinx Zynq Z-7010 chip, which has a processing system (PS) part and a programmable logic (PL) part.
+The PS consists among other of a dual-core ARM Cortex-A9 processor and I/O peripherals including CAN and USB.
+The PL consists of a Xilinx 7-series Field programmable gate array. 
+The PL and PS are connected through a bus called AXI.
+The Zybo board itself is a developing platform consisting, among other, of several buttons, switches, LEDs and connections for USB, Ethernet, HDMI and several PMOD connectors.
 
 
+\subsubsection*{Linux on the Zybo Board}
+Several Linux distribution are configured to run on the Zybo board. 
+The group has experience with a the Xillinux \footnote{http://xillybus.com/xillinux} distribution, therefore this will be used.
+Xillinux is based upon the Xilinx distribution witch is based upon Ubuntu 12.04.
+In the Xillinux architecture there is a bus between the PL and PS named Xillybus.
+Xillybus is implemented as an IP core in PL and a corresponding Xillybus driver in the Xillinux kernel.
+In PL the IP core is interfaced through standard FIFO buffers and the Xillybus is reached in userspace through \textit{"/dev/xillybus\_"}.
+\todo[inline]{Mikkel: Check this path on Zybo.}
+
+\subsubsection*{Conclusion}
+Nodes on the network need not to be a specific micro-controller, they just need to able to use CAN.
+The Zybo board running Xillinux will be used for IMU, GPS and wireless network node to ease development as Linux includes both USB and network drivers. 
 
 
-
-
-
-
-
-
-
-
-
-
-
-\subsection{On-vehicle Local Network}
-
+\subsection{Data Collection}
+\label{sec:data_collection}
+\todo[inline]{Mikkel: Needs to be rewritten!}
 \subsubsection{Topology}
 
 There are various network topologies that can be used to setup the required node network for this project.
@@ -313,6 +370,7 @@ This gives a minimum requirement for the speed of the transmission to be ZZ Mbit
 It should be possibly to change the stationary computer and therefore the chosen wireless transmission technology should be compatible with standard computers running linux.
 The chosen hardware should be compatible with standard linux computers and the Zybo board. 
 Both have USB ports and Ethernet ports as a standard, therefore the chosen hardware should one of those.
+\todo[inline]{Mikkel: Remove about Zybo}
 
 \subsubsection{Technologies}
 Bluetooth is a technology that is compatible with standard computers running linux. 
@@ -381,10 +439,10 @@ Somewhere this should be answered!
 
 
 
-\subsubsection*{How should local data storage be realised?}
+\subsection{Local Storage}
 Somewhere this should be answered!
 
-
+How should local data storage be realised?
 
 	
 
