@@ -280,13 +280,45 @@ Since CANbus is a technology widely used in the automotive industry, it is our f
 
 
 
-\subsection{CAN}
-Analysing CAN. What do we need?
-A Can Controller?
-A transceiver? Do we build it ourselves or buy one?
+\subsection{CAN-bus}
+The CAN (Controller Area Network) protocol was originally developed in the 1980's by Bosch.
+It is a multi-master network, where each node connects to a common bus, and any node is then able to broadcast data to all other nodes.
+It includes a substantial overhead of of 47 bits per message, and messages can vary from 0 to 8 bytes.
+This is described in section~\ref{sub:CanMessageFrame}
+The bus offers 1 Mbit/s on a bus up to 40 m of length, including overhead\\
 
+Each CAN node needs the structure displayed on figure~\ref{fig:canbus_setup}.
 
+\begin{figure}[h!]
+	\centering
+	\includegraphics{graphics/canbus_setup}
+	\caption{CAN node architecture}
+	\label{fig:canbus_setup}
+\end{figure}
 
+Starting from the bottom: The CAN bus itself.is a differential signal bus, meaning that the absolute value of each wire in the bus doesn't matter, but the difference between them matters. 
+The bus has to be made of twisted pair wires with a characteristic impedance of $\si{120 \ohm}$, and terminated at each end with a $\si{120 \ohm}$ resistor.
+That means, that if the bus is broken at any point, no communication will work, even if two nodes are still connected.
+Alternately, it is possible to terminate each node, but this greatly reduces transmission speed.\\
+
+The transceivers translate a Tx voltage signal to the differential CAN signal, and simultaneously translates the bus signal to Rx voltage signal. 
+For this reason, it is not possible to implement this in most if not all microprocessors.
+Because the CAN bus is differential, a transceiver would be able to read the signal it's putting out itself, but they do not transmit these to the Rx pin of the controller.
+Other than this blocking of its own signal, it will translate whatever the controller puts out with.
+The can transceivers CAN be bought online, but due to the simplicity of this circuitry, the group has designed and manufactured their own.\\
+
+The CAN controller can be standalone hardware, or in many cases be built into the microprocessor.
+The major advantage with having the controller built into the microprocessor is, that it would not otherwise require another protocol to communicate between the microprocessor and controller. 
+The controller has an input and output FIFO, meaning that the CAN bus communication is asynchronous. 
+This is necessary as there is only one bus, and it is likely that there will be a queue of nodes trying to write to the bus.
+
+The protocol in this case refers to a protocol running on top of CAN.
+One clear option is the CANopen, which will also be discussed later because it is needed to communicate with the Sevcon. 
+Another option is to create our own protocol. 
+Because of the specifications for this project, it would be more suitalbe to create our own protocol.
+The CANopen encompasses a lot of data registers and addresses, that can be written to and read from, and it definitely lives up to the requirements.
+But it is possible to design a high level protocol, that is easy to learn, and has less overhead than CANopen.
+This protocol will be described in section~\ref{sub:CAN_protocol}.\\
 
 \subsection{Wireless transmission}
 The wireless transmission between the go-kart computer and the stationary computer could be a number of different technologies.

@@ -1,27 +1,18 @@
 %!TEX root = ../main.tex
 
 \section{CAN bus}\label{sec:CANbus}
-The CANOpen protocol runs on the CAN bus.
-It was originally developed in the 1980's by Bosch.
-It is a multi-master network, where each node connects to a common bus, and any node is then able to broadcast data to all other nodes.
-The bus offers 1 Mbit/s on a bus up to 40 m of length. \todo{Martin: is this with or without the substantial overhead?}
+The can is described in this section, starting with the implementation of the physical layer.
 
 \subsection{Physical Layer}\label{sub:CANphys}
 The physical layer has three main parts: The CAN controller, the CAN transceiver and the bus itself. \\
 
-\todo{Martin: Need to include a drawing showing the different levels: application and interface in software, controller in zybo and transceiver on PCB}
+The Zybo supports CAN, and has a CAN controller in its PS.
+An IP core is also available if FPGA implementation was desired.\\
 
-The CAN controller can be implemented as a standalone IC, or in many cases integrated in the node itself.
-The Zybo supports CAN, and an IP core is available, so the CAN controller is already given.\\
-
-The CAN transceiver is connected to the controller by RX and TX voltage signals, and connects to the bus through two differential ports. 
+The CAN transceiver is connected to the controller by Rx and Tx voltage signals, and connects to the bus through two differential ports. 
 The transceiver must support the standard ISO11898-2, as this is what the Sevcon motor driver uses.
 The device SN65HVD232 from Texas instruments support this standard, and is supplied with 3.3 V, so it can be plugged right into the Zybo, and still communicate with the Sevcon even though its CAN bus uses $\si{5 \volt}$.
 According to TI itself\cite{3.3V_CAN}, this family of $\si{3.3 \volt}$ transceivers are compatible and interoparable with other \si{5 \volt} transceivers, so long as they support the same standard.\\
-
-The bus has to be made of twisted pair wires with a characteristic impedance of $\si{120 \ohm}$, and terminated at each end with a $\si{120 \ohm}$ resistor.
-That means, that if the bus is broken at any point, no communication will work.
-Alternately, it is possible to terminate each node, but this greatly reduces transmission speed, and will not be done.\\
 
 The transceivers have been mounted on boards, that plug directly into the Zybo's 12-pin PMOD connector, which will be stacked on top of each other. 
 The schematic is shown below.
@@ -83,22 +74,44 @@ As mentioned before, this source code was common and uploaded to both boards res
 
 \todo{We need a picture with 2 or better, 4 boards as stack! The coolest thing ever :P.}
 
-\subsection{Can Message Frame}\label{sub:CanMessageFrame}
-The CAN message consists 35 bits of overhead with each message of 0-8 bytes. 
+\subsection{CAN Message Frame}\label{sub:CanMessageFrame}
+Messages sent over CAN is put into a frame. 
+One frame contains all the parts in figure~\ref{fig:CAN_frame_pdf}, whereas a message should not be restricted to just 8 bytes -- however it doesn't include any overhead.
+A zero input to the transceiver will result in a voltage difference on the CAN bus, and a one input will result in no difference. 
+A zero will alway be dominant -- this is used to ensure that two nodes to not talk at the same time.
+If a node tries to write a one, but simultaneously reads back a zero, it will know that something is wrong, for instance, that the bus is occupied by a node with higher priority.
+The CAN message consists 47 bits of overhead with each message of 0-8 bytes. 
 This overhead includes a such things as message IDs and checks, to ensure that the message is received correctly, and collectively this is called a frame. 
 The frame of the message is described here.
 
-SOF: green 1 bit
-ID: red 11 bits
-RTR: cyan 1 bit
-IDE: magenta 1 bit
-r0: gray 1 bit
-DLC: dark yellow 4 bits
-data: white 8 bits (showed)
-CRC:  light blue 16 bits
-ACK: lime 2 bits
-EOF: light yellow 7 bits
-IFS: darkish blue 7 bits
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width = 0.9\linewidth]{graphics/CAN_frame_pdf}
+	\caption{Bitwise representation of a CAN frame}
+	\label{fig:CAN_frame_pdf}
+\end{figure}
 
-An important part of the CAN is, that at any given time, zero is dominant, and one is recessive. 
-This means, that if a node tries to write a one, but simultaneously reads back a zero, it will know that something is wrong, for instance, that the bus is occupied by a node with higher priority
+\begin{itemize}
+	\item SOF: \textbf{S}tart \textbf{O}f \textbf{F}rame: One dominant bit to start a frame.
+	\item Message ID: 11 bit message identifier provides information about what the message contains. Subscribers will recognize a message by this ID.
+	\item RTR: \textbf{R}emote \textbf{T}ransmission \textbf{R}equest: set to 1 if a transmission is requested from another node. Because is a publisher-subscriber network, this will always be 0.
+	\item IDE: \textbf{ID E}xtended: Set to 1 if extended ID is in use. This adds 18 more bits of message identifiers immediately after this bit. At the moment, this is not needed, and should always be 0.
+	\item r0: bit reserved for future use, alway set to zero
+	\item DLC: \textbf{D}ata \textbf{L}ength \textbf{C}ode: how many bytes, of data, the frame contains. Ranging from 0-8.
+	\item Data: Raw data. 
+	\item CRC Checksum: \textbf{C}yclic \textbf{R}edundancy \textbf{C}heck: 15 bit checksum based on what was written in the Data portion. The last bit is a delimiter, and is always 1.
+	\item ACK: \textbf{ACK}nowledge: The transmitting node will set the first bit of ACK to be recessive (1). Each receiving node will calculate CRC based on the data, and compare it to the CRC checksum. If no error is detected, it will set the bit to dominant (0). On a multi-node network, if one node confirms the data, the transmitting node cannot know if any other node did not receive the data. However, because of the nature of a differential voltage bus it is nearly impossible that two nodes would not receive the the same signal, so long as the bus is correctly impedance matched, and distances do not exceed the specification. The last bit o ACK is a delimiter, and always 1
+	\item EOF: \textbf{E}nd \textbf{O}f \textbf{F}rame: Pattern signifies the end of a frame, the pattern is 7 recessive bits.
+	\item IFS: \textbf{I}nter\textbf{F}rame \textbf{S}pace: an arbitrary length of recessive bits, at least three bits long. After this point, a new frame may start by setting a zero.
+\end{itemize}
+
+Because 0 dominates zero, it is possible to prioritize messages -- lower message ID get higher priority.
+If two nodes start writing a message at the same time, the first node to write a 1 when the other node writes 0 will realize that another node has right of way, and will stop transmitting and wait for the current frame to end.
+When the end of the message occurs, the node will try to send the message again.
+It might then be blocked again by another node, and there is a risk, that it will never send.
+It is the developer's responsibility to ensure that this doesn't happen.\\
+
+It is, that messages are extended by padding.
+If either 0 or 1 is written to the controller 5 consecutive times, the opposite polarity is interjected. 
+This is done to ensure that receiving nodes remain synchronized with the transmitting node, as there is no clock signal
+That means, that a frame can be extended by upwards of 20 \% if 
