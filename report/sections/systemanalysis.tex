@@ -1,7 +1,18 @@
 %!TEX root = ../main.tex
 \section{System Analysis} % (fold)
 \label{sec:system_analysis}
+\todo[inline]{Mikkel: We need some kind of broad introduction here. }
+In order to design an embedded system that meets the needs expressed by the use cases a thorough system analysis is needed. 
+This section will present the analysis of the complete embedded system.
 
+It should be analysed 
+
+The use cases does not describe what parameters should be monitored 
+
+\begin{itemize}
+\item Parameters of interest. The use cases does not describe what parameters should be monitored meaning that it should be investigated which are relevant to monitor.
+\item 
+\end{itemize}
 
 \subsection{Parameters of Interest}
 \label{sec:parameters}
@@ -16,7 +27,7 @@ This category comprises all information about the motion of the go-kart.
 	Especially any form of localisation and pathfinding will be able to put this information to use.
 	The absolute position of the go-kart can be recorded using a GPS module or possibly by using a known starting coordinate and information about the relative movement of the go-kart.
 	\item \textbf{Position, Relative:} The relative position of the kart can be, as just mentioned, used to infer the absolute position of the go-kart.
-	Additionally it can provide a means to analyze a drivers performance on the track or detect drift while cornoring.
+	Additionally it can provide a means to analyze a drivers performance on track the or detect drift while cornoring.
 	The relative position includes both translational, as well as rotational information.
 	This information can be gathered using an inertial measurement unit (IMU).
 	An IMU is a compound device, comprising of an accelerometer and a gyroscope and, in some cases, a magnetometer.
@@ -41,6 +52,7 @@ This category comprises all information about the electrical aspects of the go-k
 	\item \textbf{Desired Currents:} Based on the current throttle position a set of desired currents are calculated.
 	Monitoring these allows spotting any discrepancies between the desired and the actual currents.
 	\item \textbf{Duty Cycles:}
+	\todo[inline]{Mikkel: What do you mean?}
 	\item \textbf{Battery Voltage:} As the go-kart is electrical, naturally, it has a battery.
 	Monitoring the current battery status could give the user an indication of how much driving time is left, or how long until the batteries are recharged afterwards.
 	\item \textbf{Motor Angle:} Knowing the angle of the motor at all times gives a means of more accurately calculate the currents at specific times.
@@ -72,6 +84,7 @@ It was concluded that three components would suffice as a proof of concept; the 
 This section will explore in more detail what requirements and communication schemes exists for each of the components.
 
 \subsubsection*{Sevcon Gen4 Motor Controller}
+\todo[inline]{Mikkel: Something here?}
 
 \subsubsection*{Inertial Measurement Unit (IMU)}
 IMU's, generally, exist in two versions.
@@ -87,90 +100,20 @@ The requirement in terms of each of these parts is given as:
 	Clearly, the forces exerted on this platform will be lower, however, a minimum requirement of $\pm$ 3g will be set for the accelerometer in the IMU.
 	\item \textbf{Gyroscope [\si{\degree\per\second}]:} 
 \end{itemize}
+\todo[inline]{Mikkel: Which one do we chose?}
+
 \subsubsection*{Global Positioning System (GPS)}
+\todo[inline]{Mikkel: Something here?}
+
+
+\subsubsection*{Conclusion}
+\todo[inline]{Table with chosen sensors and their interfaces}
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-\subsection{Wireless transmission}
-The wireless transmission between the go-kart computer and the stationary computer could be a number of different technologies.
-This section seeks to find an appropriate one.
-
-\subsubsection{Range}
-The range of the transmission is determined by the length of the test track. 
-Normally the SDU kart is tested on parking lots with a maximum lenght of 50m and width of 20m.
-There are almost no obstacles for the transmission on such a parking lot. 
-This test track sets a minimum requirement that the wireless setup should be able to transmit data at 55m with no obstacles.
-\\
-At some point it would be interesting to test the go-kart on a real go-kart track. 
-The nearest go-kart track is \textit{Odense gokart Hal}, which is also thought to be an average indoor go-kart track.
-The track is about 70m long and 40m in width with no obstacles other than the barriers. 
-If the wireless transmitter and receiver are placed above the barrier then they will not an obstruction on the transmission. 
-This track sets a minimum requirement of 80m transmission. 
-
-\subsubsection{Speed}
-The transferred data is from xx sensors producing a maximum of yy bites per sample. 
-Data is only used for human inspection and therefore a sample frequency of 100Hz would be sufficient.
-This gives a minimum requirement for the speed of the transmission to be ZZ Mbit/s. 
-
-\subsubsection{Compatibility}
-It should be possibly to change the stationary computer and therefore the chosen wireless transmission technology should be compatible with standard computers running linux.
-The chosen hardware should be compatible with standard linux computers and the Zybo board. 
-Both have USB ports and Ethernet ports as a standard, therefore the chosen hardware should one of those.
-
-\subsubsection{Technologies}
-Bluetooth is a technology that is compatible with standard computers running linux. 
-Bluetooth 5.0 has a maximum speed of 50Mbit/s, which is sufficient.
-The range of typical class 2 Bluetooth device is 10m \footnote{https://en.wikipedia.org/wiki/Bluetooth}.
-This range is definitely not enough for this application.
-\\
-\\  
-WiFi is also compatible with standard computers running linux and typical WiFi units has speeds that is a lot higher than the required. 
-WiFi can be operating in the 2.4GHz band and in the 5GHz band. 
-2.4GHz units has the highest range. 
-The 802.11n protocol generally has the best range compared to the other 802.11 protocols \footnote{https://en.wikipedia.org/wiki/IEEE\_802.11\#802.11n}.
-\\
-A local network between computers without connection to existing networks such as the internet is referred to as an ad-hoc network. 
-It is a required that the found hardware is capable of doing an ad-hoc network.
-
-\subsubsection{Conclusion} 
-
-\begin{table}[]
-\centering
-\caption{Minimum requirements for wireless transmission.}
-\label{tab:req_wifi}
-\begin{tabular}{|l|}
-\hline
-80m transmission             \\ \hline
-ZZ Mbit/s                    \\ \hline
-802.11n protocol             \\ \hline
-USB or Ethernet              \\ \hline
-ad-hoc network compatability \\ \hline
-\end{tabular}
-\end{table}
-Based on the requirements in table \ref{tab:req_wifi} it was chosen to us the TP-LINK TL-WN722N, as it uses the 2.4GHz band, the 802.11n protocol, is compatible with linux, has an external antenna and uses USB. 
-
-
-
-
-
-
-
-
-
-
-
+\subsection{Network}
+We need to write something about that we chose to have a local on-vehicle network and a wireless network.
 
 
 
@@ -179,6 +122,7 @@ Based on the requirements in table \ref{tab:req_wifi} it was chosen to us the TP
 
 
 \subsection{Data Logging}
+\todo[inline]{Mikkel: Should maybe change name?}
 A feature will be data logging. 
 Any data could be put into the log, although some signals can be logged at significantly higher rates than others
 If all data is recorded at the fastest rate, this could present a storage problem.
@@ -242,6 +186,16 @@ Likely, different sample rates will be recorded to different log files
 
 
 
+
+
+
+
+
+
+
+\subsection{Microcontroller}
+Which one do we choose and why?
+Does it run Linux? yeaarh, because of drivers and bla bla bla
 
 
 
@@ -326,9 +280,105 @@ Since CANbus is a technology widely used in the automotive industry, it is our f
 
 
 
+\subsection{CAN}
+Analysing CAN. What do we need?
+A Can Controller?
+A transceiver? Do we build it ourselves or buy one?
 
-\subsubsection*{How should data on the stationary computer be presented?}
+
+
+
+\subsection{Wireless transmission}
+The wireless transmission between the go-kart computer and the stationary computer could be a number of different technologies.
+This section seeks to find an appropriate one.
+
+\subsubsection{Range}
+The range of the transmission is determined by the length of the test track. 
+Normally the SDU kart is tested on parking lots with a maximum lenght of 50m and width of 20m.
+There are almost no obstacles for the transmission on such a parking lot. 
+This test track sets a minimum requirement that the wireless setup should be able to transmit data at 55m with no obstacles.
+\\
+At some point it would be interesting to test the go-kart on a real go-kart track. 
+The nearest go-kart track is \textit{Odense gokart Hal}, which is also thought to be an average indoor go-kart track.
+The track is about 70m long and 40m in width with no obstacles other than the barriers. 
+If the wireless transmitter and receiver are placed above the barrier then they will not an obstruction on the transmission. 
+This track sets a minimum requirement of 80m transmission. 
+
+\subsubsection{Speed}
+The transferred data is from xx sensors producing a maximum of yy bites per sample. 
+Data is only used for human inspection and therefore a sample frequency of 100Hz would be sufficient.
+This gives a minimum requirement for the speed of the transmission to be ZZ Mbit/s. 
+
+\subsubsection{Compatibility}
+It should be possibly to change the stationary computer and therefore the chosen wireless transmission technology should be compatible with standard computers running linux.
+The chosen hardware should be compatible with standard linux computers and the Zybo board. 
+Both have USB ports and Ethernet ports as a standard, therefore the chosen hardware should one of those.
+
+\subsubsection{Technologies}
+Bluetooth is a technology that is compatible with standard computers running linux. 
+Bluetooth 5.0 has a maximum speed of 50Mbit/s, which is sufficient.
+The range of typical class 2 Bluetooth device is 10m \footnote{https://en.wikipedia.org/wiki/Bluetooth}.
+This range is definitely not enough for this application.
+\\
+\\  
+WiFi is also compatible with standard computers running linux and typical WiFi units has speeds that is a lot higher than the required. 
+WiFi can be operating in the 2.4GHz band and in the 5GHz band. 
+2.4GHz units has the highest range. 
+The 802.11n protocol generally has the best range compared to the other 802.11 protocols \footnote{https://en.wikipedia.org/wiki/IEEE\_802.11\#802.11n}.
+\\
+A local network between computers without connection to existing networks such as the internet is referred to as an ad-hoc network. 
+It is a required that the found hardware is capable of doing an ad-hoc network.
+
+\subsubsection{Conclusion} 
+
+\begin{table}[]
+\centering
+\caption{Minimum requirements for wireless transmission.}
+\label{tab:req_wifi}
+\begin{tabular}{|l|}
+\hline
+80m transmission range       \\ \hline
+ZZ Mbit/s                    \\ \hline
+802.11n protocol             \\ \hline
+USB or Ethernet              \\ \hline
+ad-hoc network compatability \\ \hline
+\end{tabular}
+\end{table}
+Based on the requirements in table \ref{tab:req_wifi} it was chosen to us the TP-LINK TL-WN722N, as it uses the 2.4GHz band, the 802.11n protocol, is compatible with linux, has an external antenna and uses USB. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsection{UI}
 Somewhere this should be answered!
+
+
+
+
+
+
+
+
+
+
 
 
 \subsubsection*{How should local data storage be realised?}
@@ -336,7 +386,7 @@ Somewhere this should be answered!
 
 
 
-
+	
 
 
 % section system_analysis (end)
