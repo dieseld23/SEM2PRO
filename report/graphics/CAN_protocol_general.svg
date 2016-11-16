@@ -25,9 +25,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.4"
-     inkscape:cx="456.38605"
-     inkscape:cy="94.661613"
+     inkscape:zoom="1.979899"
+     inkscape:cx="311.93767"
+     inkscape:cy="118.78018"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -53,13 +53,6 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(0,-852.80669)">
-    <rect
-       style="fill:#c1ffd7;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.8841759;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="rect3336"
-       width="41.635509"
-       height="41.635509"
-       x="35.87516"
-       y="974.85156" />
     <rect
        style="fill:#ffe4c1;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.8841759;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect3336-3"
@@ -139,40 +132,40 @@
        y="974.85156" />
     <path
        style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 76.990996,967.1569 c 0,-11.42858 27.857154,-17.14286 40.357154,-19.64286 12.5,-2.5 42.5,-8.92857 43.21428,-16.78572 0.71429,-7.85714 0.65398,-8.26781 0.65398,-8.26781 0,0 0,0.75761 0.63134,8.33375 0.63135,7.57615 24.36993,13.76333 36.87057,15.27856 12.50064,1.51523 43.94164,9.59645 44.82552,21.33947"
+       d="m 118.62323,967.1569 c 0,-11.42858 27.85716,-17.14286 40.35716,-19.64286 12.5,-2.5 42.5,-8.92857 43.21428,-16.78572 0.71429,-7.85714 0.65398,-8.26781 0.65398,-8.26781 0,0 0,0.75761 0.63134,8.33375 0.63135,7.57615 24.36993,13.76333 36.87057,15.27856 12.50064,1.51523 43.94164,9.59645 44.82552,21.33947"
        id="path5506"
        inkscape:connector-curvature="0" />
     <path
        style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 244.36333,967.427 c 0,-11.42858 27.85715,-17.14286 40.35715,-19.64286 12.5,-2.5 42.5,-8.92857 43.21428,-16.78572 0.71429,-7.85714 0.65398,-8.26781 0.65398,-8.26781 0,0 0,0.75761 0.63134,8.33375 0.63135,7.57615 24.36993,13.76333 36.87057,15.27856 12.50064,1.51523 43.94164,9.59645 44.82552,21.33947"
+       d="m 285.99557,967.427 c 0,-11.42858 27.85715,-17.14286 40.35715,-19.64286 12.5,-2.5 42.5,-8.92857 43.21428,-16.78572 0.71429,-7.85714 0.65398,-8.26781 0.65398,-8.26781 0,0 0,0.75761 0.63134,8.33375 0.63135,7.57615 24.36993,13.76333 36.87057,15.27856 12.50064,1.51523 43.94164,9.59645 44.82552,21.33947"
        id="path5506-2"
        inkscape:connector-curvature="0" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="90.633842"
+       x="132.26607"
        y="917.22833"
        id="text5523"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan5525"
-         x="90.633842"
+         x="132.26607"
          y="917.22833"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;font-family:arial;-inkscape-font-specification:arial">Transmitting Node ID</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="265.62543"
+       x="307.25766"
        y="899.1615"
        id="text5523-0"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan5525-3"
-         x="265.62543"
+         x="307.25766"
          y="899.1615"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;font-family:arial;-inkscape-font-specification:arial">(Special Case)</tspan><tspan
          sodipodi:role="line"
-         x="265.62543"
+         x="307.25766"
          y="917.9115"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;font-family:arial;-inkscape-font-specification:arial"
          id="tspan5545">Receiving Node ID</tspan></text>
@@ -181,5 +174,22 @@
        d="m 541.42562,1014.6386 55.52453,-0.1218"
        id="path4967"
        inkscape:connector-curvature="0" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="54.316822"
+       y="948.0661"
+       id="text5523-7"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         x="54.316822"
+         y="948.0661"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;font-family:arial;-inkscape-font-specification:arial"
+         id="tspan5615">New</tspan><tspan
+         sodipodi:role="line"
+         x="54.316822"
+         y="966.8161"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15px;font-family:arial;-inkscape-font-specification:arial"
+         id="tspan5619">Message</tspan></text>
   </g>
 </svg>

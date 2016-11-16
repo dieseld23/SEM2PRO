@@ -9,6 +9,8 @@ The bus offers 1 Mbit/s on a bus up to 40 m of length. \todo{Martin: is this wit
 \subsection{Physical Layer}\label{sub:CANphys}
 The physical layer has three main parts: The CAN controller, the CAN transceiver and the bus itself. \\
 
+\todo{Martin: Need to include a drawing showing the different levels: application and interface in software, controller in zybo and transceiver on PCB}
+
 The CAN controller can be implemented as a standalone IC, or in many cases integrated in the node itself.
 The Zybo supports CAN, and an IP core is available, so the CAN controller is already given.\\
 
@@ -19,7 +21,7 @@ According to TI itself\cite{3.3V_CAN}, this family of $\si{3.3 \volt}$ transceiv
 
 The bus has to be made of twisted pair wires with a characteristic impedance of $\si{120 \ohm}$, and terminated at each end with a $\si{120 \ohm}$ resistor.
 That means, that if the bus is broken at any point, no communication will work.
-Alternately, it is possible to terminate each node, but this greatly reduces transmission speed, and will not be done.//
+Alternately, it is possible to terminate each node, but this greatly reduces transmission speed, and will not be done.\\
 
 The transceivers have been mounted on boards, that plug directly into the Zybo's 12-pin PMOD connector, which will be stacked on top of each other. 
 The schematic is shown below.
@@ -47,8 +49,8 @@ The stack is visible below
 	\label{fig:CAN_stack_picture}
 \end{figure}
 
-\subsection{Implementation of the Physical layer}\label{sub:CANphys_implementation}
-The Zybo has two built-in
+Because the bus is so short, it isn't practical to make twisted pair, and this will work fine.
+The bus itself is also not $120 \si{\ohm}$, but experiment shows that it works.
 
 \todo{Polish the text and re-express some things such as send() function...}
 \subsection{Testing the CAN Stack for a Basic Network}
@@ -85,8 +87,6 @@ As mentioned before, this source code was common and uploaded to both boards res
 The CAN message consists 35 bits of overhead with each message of 0-8 bytes. 
 This overhead includes a such things as message IDs and checks, to ensure that the message is received correctly, and collectively this is called a frame. 
 The frame of the message is described here.
-
-\todo{Martin: Need to include a drawing showing the different levels: application and interface in software, controller in zybo and transceiver on PCB}
 
 SOF: green 1 bit
 ID: red 11 bits
