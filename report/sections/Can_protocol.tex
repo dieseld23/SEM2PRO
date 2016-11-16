@@ -1,0 +1,28 @@
+%!TEX root = ../main.tex
+
+\textbf{On-kart network requirements}:
+\begin{itemize}
+	\item Simple and easy to learn.
+	\item Support for 16 nodes.
+	\item Broadcast data.
+	\item Defining message types.
+	\item Variable data length - beyond 8 bytes per message
+	\item Expandable.
+	\item Commands: Start/stop broadcasting 
+	\item Commands can be send to specific or all nodes
+\end{itemize}
+
+The basic CAN framework is retained for this protocol. 
+The message ID is split in to two portions: The first four bits indicate the transmitting node ID, which will allow up to 16 nodes, all included. 
+The last 7 bits of the message ID would contain an identifier for what the data portion of the frame contains.
+Each node would then have a list of message IDs (11 bits), that it knows how to handle.
+If a message is not on that list, the node will ignore it.
+//
+There are basically two types of nodes: The node containing with the Wifi link \todo[inline]{We should agree on names for the nodes, IE, Wifi node, IMU node and so on.}, and all other nodes.
+Generally nodes can either produce data, and/or receive commands.
+The Wifi node does neither produce any kind of data nor receive commands, but it odes receive data, and send out commands.
+Therefore, there is a special case, for where the Wifi node is sending.
+In this case, the subsequent four bits determines the recipient, leaving three bits for command type. 
+For this part, command types are only "Start broadcasting" and "Stop broadcasting", but could be extended to for instance "Set parameter" or "Set value", where the data field will indicate which parameter, and what is's set to.
+
+

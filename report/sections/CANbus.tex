@@ -48,8 +48,7 @@ The stack is visible below
 \end{figure}
 
 \subsection{Implementation of the Physical layer}\label{sub:CANphys_implementation}
-The Zybo has two build in
-\todo{I suppose you want to say built-in}
+The Zybo has two built-in
 
 \todo{Polish the text and re-express some things such as send() function...}
 \subsection{Testing the CAN Stack for a Basic Network}
@@ -81,3 +80,25 @@ In turn, the receive() function was responsible of reading the message transmitt
 As mentioned before, this source code was common and uploaded to both boards resulting in a two-way communication, since both of them had a send() and a receive() function, thus one controlling the LEDs of the other one.
 
 \todo{We need a picture with 2 or better, 4 boards as stack! The coolest thing ever :P.}
+
+\subsection{Can Message Frame}\label{sub:CanMessageFrame}
+The CAN message consists 35 bits of overhead with each message of 0-8 bytes. 
+This overhead includes a such things as message IDs and checks, to ensure that the message is received correctly, and collectively this is called a frame. 
+The frame of the message is described here.
+
+\todo{Martin: Need to include a drawing showing the different levels: application and interface in software, controller in zybo and transceiver on PCB}
+
+SOF: green 1 bit
+ID: red 11 bits
+RTR: cyan 1 bit
+IDE: magenta 1 bit
+r0: gray 1 bit
+DLC: dark yellow 4 bits
+data: white 8 bits (showed)
+CRC:  light blue 16 bits
+ACK: lime 2 bits
+EOF: light yellow 7 bits
+IFS: darkish blue 7 bits
+
+An important part of the CAN is, that at any given time, zero is dominant, and one is recessive. 
+This means, that if a node tries to write a one, but simultaneously reads back a zero, it will know that something is wrong, for instance, that the bus is occupied by a node with higher priority
