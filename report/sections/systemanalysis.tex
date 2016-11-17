@@ -106,12 +106,20 @@ This provides a solid platform to prove the concept and additional sensory equip
 
 \subsection{Hardware for Monitoring Parameters}
 \label{sec:hardware_for_par}
-In section \ref{sec:parameter} an overview of the different parameters that may be of interest for logging is given.
+In section \ref{sec:parameters} an overview of the different parameters that may be of interest for logging is given.
 It was concluded that three components would suffice as a proof of concept; the Sevcon Gen4 motor controller, an IMU and a GPS.
 This section will explore in more detail what requirements and communication schemes exists for each of the components.
 
 \subsubsection*{Sevcon Gen4 Motor Controller}
-\todo[inline]{Mikkel: Something here?}
+\label{sec:interfacin_with_sevcon}
+
+The Sevcon Gen4 motor driver is a general purpose AC motor driver. 
+This means, it can be used for both asynchronous and synchronous motors of a wide range of sizes.
+The controller can then be set up for the particular motor and peripherals, and run without interfacing to another computer.
+However, it is also possible to read data from it while running, and in some cases set values.
+It is therefore possible to use this to access the electrical parameters. \\
+\todo[inline]{Mikkel: Martin add something here about CANOPEN?}
+
 
 \subsubsection*{Inertial Measurement Unit (IMU)}
 IMU's, generally, exist in two versions.
@@ -141,13 +149,6 @@ The requirement in terms of each of these parts is given as:
 
 
 
-
-
-
-\subsection{Network}
-We need to write something about that we chose to have a local on-vehicle network and a wireless network.
-
-Monolithic?
 
 
 
@@ -225,46 +226,6 @@ Likely, different sample rates will be recorded to different log files
 
 
 
-
-
-
-
-
-\subsection{Micro-controller}
-As described in section \ref{sec:data_collection} there should be a CAN network of nodes on the go-kart.
-Each node is a sensor or other data producing unit along with a micro-controller.
-From the perspective of the network the only requirement for the micro-controller is that it has a CAN controller.
-In principle the network could consist of 16 different micro-controllers.
-
-\subsubsection*{Sensor Nodes}
-As described in section \ref{sec:hardware_for_par}, it was chosen to use an IMU and a GPS with a USB interface. 
-As specified in the use cases one of the nodes needs to transfer data wirelessly from the go-kart to the stationary computer. 
-Both USB interface and wireless data transfer drivers are implemented in operating systems like Linux, Mac OS X and Windows.
-Thus choosing a micro-controller supporting such an operating system will greatly simply the code that needs to be written for those sensor nodes.
-Developing software for Linux is a part of a course that the group is attending therefore Linux will be used as the operating system.
-\\
-The Zybo board will be used for the sensor nodes as it has a built-in CAN controller, it has the ability to run Linux and the group has access to it.
-
-\subsubsection*{Zybo Board}
-The Zybo board has a Xilinx Zynq Z-7010 chip, which has a processing system (PS) part and a programmable logic (PL) part.
-The PS consists among other of a dual-core ARM Cortex-A9 processor and I/O peripherals including CAN and USB.
-The PL consists of a Xilinx 7-series Field programmable gate array. 
-The PL and PS are connected through a bus called AXI.
-The Zybo board itself is a developing platform consisting, among other, of several buttons, switches, LEDs and connections for USB, Ethernet, HDMI and several PMOD connectors.
-
-
-\subsubsection*{Linux on the Zybo Board}
-Several Linux distribution are configured to run on the Zybo board. 
-The group has experience with a the Xillinux \footnote{http://xillybus.com/xillinux} distribution, therefore this will be used.
-Xillinux is based upon the Xilinx distribution witch is based upon Ubuntu 12.04.
-In the Xillinux architecture there is a bus between the PL and PS named Xillybus.
-Xillybus is implemented as an IP core in PL and a corresponding Xillybus driver in the Xillinux kernel.
-In PL the IP core is interfaced through standard FIFO buffers and the Xillybus is reached in userspace through \textit{"/dev/xillybus\_"}.
-\todo[inline]{Mikkel: Check this path on Zybo.}
-
-\subsubsection*{Conclusion}
-Nodes on the network need not to be a specific micro-controller, they just need to able to use CAN.
-The Zybo board running Xillinux will be used for IMU, GPS and wireless network node to ease development as Linux includes both USB and network drivers. 
 
 
 \subsection{Data Collection}
@@ -353,19 +314,20 @@ Each CAN node needs the structure displayed on figure~\ref{fig:canbus_setup}.
 	\label{fig:canbus_setup}
 \end{figure}
 
-Starting from the bottom: The CAN bus itself.is a differential signal bus, meaning that the absolute value of each wire in the bus doesn't matter, but the difference between them matters. 
+Starting from the bottom: The CAN bus itself is a differential signal bus, meaning that the absolute value of each wire on the bus doesn't matter, but the difference between them matters. 
 The bus has to be made of twisted pair wires with a characteristic impedance of $\si{120 \ohm}$, and terminated at each end with a $\si{120 \ohm}$ resistor.
 That means, that if the bus is broken at any point, no communication will work, even if two nodes are still connected.
 Alternately, it is possible to terminate each node, but this greatly reduces transmission speed.\\
-
+\todo[inline]{Mikkel: Not sure I understand it.}
 The transceivers translate a Tx voltage signal to the differential CAN signal, and simultaneously translates the bus signal to Rx voltage signal. 
 For this reason, it is not possible to implement this in most if not all microprocessors.
 Because the CAN bus is differential, a transceiver would be able to read the signal it's putting out itself, but they do not transmit these to the Rx pin of the controller.
 Other than this blocking of its own signal, it will translate whatever the controller puts out with.
-The can transceivers CAN be bought online, but due to the simplicity of this circuitry, the group has designed and manufactured their own.\\
+The CAN transceivers can be bought online, but due to the simplicity of this circuitry, the group will design and manufacture their own.\\
+\todo[inline]{Mikkel: Above section is confusing for me.}
 
-The CAN controller can be standalone hardware, or in many cases be built into the microprocessor.
-The major advantage with having the controller built into the microprocessor is, that it would not otherwise require another protocol to communicate between the microprocessor and controller. 
+The CAN controller can be standalone hardware, but are in many cases built into the micro-controller.
+The major advantage with having the controller built into the micro-controller is, that it would not otherwise require another protocol to communicate between the microprocessor and controller. 
 The controller has an input and output FIFO, meaning that the CAN bus communication is asynchronous. 
 This is necessary as there is only one bus, and it is likely that there will be a queue of nodes trying to write to the bus.
 
@@ -376,6 +338,68 @@ Because of the specifications for this project, it would be more suitalbe to cre
 The CANopen encompasses a lot of data registers and addresses, that can be written to and read from, and it definitely lives up to the requirements.
 But it is possible to design a high level protocol, that is easy to learn, and has less overhead than CANopen.
 This protocol will be described in section~\ref{sub:CAN_protocol}.\\
+
+
+
+
+
+
+
+
+
+\subsection{Micro-controller}
+As described in section \ref{sec:data_collection} there should be a CAN network of nodes on the go-kart.
+Each node is a sensor or other data producing unit along with a micro-controller.
+From the perspective of the network the only requirement for the micro-controller is that it has a CAN controller.
+In principle the network could consist of 16 different micro-controllers.
+
+\subsubsection*{Sensor Nodes}
+As described in section \ref{sec:hardware_for_par}, it was chosen to use an IMU and a GPS with a USB interface. 
+As specified in the use cases one of the nodes needs to transfer data wirelessly from the go-kart to the stationary computer. 
+Both USB interface and wireless data transfer drivers are implemented in operating systems like Linux, Mac OS X and Windows.
+Thus choosing a micro-controller supporting such an operating system will greatly simply the code that needs to be written for those sensor nodes.
+Developing software for Linux is a part of a course that the group is attending therefore Linux will be used as the operating system.
+\\
+The Zybo board will be used for the sensor nodes as it has a built-in CAN controller, it has the ability to run Linux and the group has access to it.
+
+\subsubsection*{Zybo Board}
+The Zybo board has a Xilinx Zynq Z-7010 chip, which has a processing system (PS) part and a programmable logic (PL) part.
+The PS consists among other of a dual-core ARM Cortex-A9 processor and I/O peripherals including CAN and USB.
+The PL consists of a Xilinx 7-series Field programmable gate array. 
+The PL and PS are connected through a bus called AXI.
+The Zybo board itself is a developing platform consisting, among other, of several buttons, switches, LEDs and connections for USB, Ethernet, HDMI and several PMOD connectors.
+
+
+\subsubsection*{Linux on the Zybo Board}
+Several Linux distribution are configured to run on the Zybo board. 
+The group has experience with a the Xillinux \footnote{http://xillybus.com/xillinux} distribution, therefore this will be used.
+Xillinux is based upon the Xilinx distribution witch is based upon Ubuntu 12.04.
+In the Xillinux architecture there is a bus between the PL and PS named Xillybus.
+Xillybus is implemented as an IP core in PL and a corresponding Xillybus driver in the Xillinux kernel.
+In PL the IP core is interfaced through standard FIFO buffers and the Xillybus is reached in userspace through \textit{"/dev/xillybus\_"}.
+\todo[inline]{Mikkel: Check this path on Zybo.}
+
+\subsubsection*{Conclusion}
+Nodes on the network need not to be a specific micro-controller, they just need to able to use CAN.
+The Zybo board running Xillinux will be used for IMU, GPS and wireless network node to ease development as Linux includes both USB and network drivers. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 \subsection{Wireless transmission}
 The wireless transmission between the go-kart computer and the stationary computer could be a number of different technologies.
@@ -402,7 +426,6 @@ This gives a minimum requirement for the speed of the transmission to be ZZ Mbit
 It should be possibly to change the stationary computer and therefore the chosen wireless transmission technology should be compatible with standard computers running linux.
 The chosen hardware should be compatible with standard linux computers and the Zybo board. 
 Both have USB ports and Ethernet ports as a standard, therefore the chosen hardware should one of those.
-\todo[inline]{Mikkel: Remove about Zybo}
 
 \subsubsection{Technologies}
 Bluetooth is a technology that is compatible with standard computers running linux. 
