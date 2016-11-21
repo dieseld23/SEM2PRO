@@ -7,7 +7,7 @@ This section will present the analysis of the complete embedded system, through 
 \begin{itemize}
 \item Parameters of interest. The use cases do not describe what parameters should be monitored meaning that it should be investigated which are relevant to monitor.
 \item Hardware for monitoring parameters. It should be analysed what hardware is necessary in order to measure the parameters found to be relevant. 
-\item Amount and frequency of data????. Something clever about this. Martins sections should be used for it.
+\item Data rate. It should be analysed what amount of data can be expected from the sensors connected to the system.
 \item Data collection. It should be analysed how data is collected on the go-kart.
 \item Micro-controller. It should be analysed what micro-controller should be used on the go-kart.
 \item Wireless network. It should be analysed how data is transferred from the go-kart 	to the stationary computer.
@@ -147,7 +147,7 @@ The requirement in terms of each of these parts is given as:
 
 \subsection{Data Rate}
 This section will explore the amount of data that can be expected from a sensor connected to the system.
-In section~\label{sec:parameters}, a number of different parameters are presented which may be of interest to monitor.
+In section~\ref{sec:parameters}, a number of different parameters are presented which may be of interest to monitor.
 Many of these parameters pose different requirements in terms of the desired sample rate as well as the size of each sample.
 A temperature sensor, for instance, does not require nearly the same sampling frequency as an accelerometer.
 Due to these differences, clearly, the data rate expected from one sensor may differ wildly from another.
@@ -316,7 +316,7 @@ On the other hand, CANopen can be implemented using CANopenSocket\footnote{https
 This library is easily implemented in Linux and can use various hardware, one of them being a USB to CAN interface board named USBtin\footnote{http://www.fischl.de/usbtin/}.
 Another available module to use is the CANbus.
 Since CANbus is a technology widely used in the automotive industry, it is chosen for this system.
-
+\mikkel{Explain that CAN is good enough for the calculated data rate.}
 
 
 \subsection{CAN-bus}
@@ -339,9 +339,6 @@ Some hardware is necessary in order to properly realise a CAN network.
 The structure of each node can be seen on figure~\ref{fig:canbus_setup}.
 The following paragraphs explain the physical parts of this structure as well as the requirements of the protocol.
 
-\todo[inline]{Thomas: My understanding of our protocol is that we are just interpreting the CAN messages in a different way. Do we actually need a detailed explanation of the actual CAN protocol?}
-\todo[inline]{Thomas: Split this entire section into paragraphs, one for each (meaningful) box in figure~\ref{fig:canbus_setup}}
-
 \paragraph*{The CAN Bus}~\\
 The bus is shown on the bottom of figure~\ref{fig:canbus_setup}.
 It is a differential voltage bus.
@@ -350,7 +347,7 @@ The bus has to be made of twisted pair wires with a characteristic impedance of 
 This increases the EMC of the bus, as inductive noise present on one wire is likely also present on the other, and the noise will then cancel itself out.
 That means, that if the bus is broken at any point, no communication will be received, even if the receiving node still has a galvanic connection to the transmitting node.
 Alternatively, it is possible to terminate each node, but this greatly reduces transmission speed.\\
-\todo[inline]{Mikkel: Not sure I understand it.}
+
 \paragraph*{The CAN Transceiver (XCVR)}~\\
 As the CAN uses differential voltages, it is not possible to implement directly in the micro controllers.
 Typically a micro controller has digital ports putting out either $ 0 \si{\volt}$, or a fixed voltage level defined as "high".
@@ -360,8 +357,6 @@ As there are multiple nodes on the same bus, it is also important for one node t
 This is generally not possible for the micro controller, and it is necessary to use transceivers.
 The transceivers translate a Tx voltage signal from the micro controller to the differential CAN signal, and simultaneously translates the bus signal to Rx voltage signal.
 The transceivers monitor the bus while transmitting, to see if another node is being dominant, and if that is the case, it will start receiving data.
-
-\martin{I wrote it out a bit, I hope it's more understandable (this and the CAN bus above). Also moved the part where it says, we made our own PCB.}
 
 \paragraph*{The CAN Controller}~\\
 This element can be standalone hardware, but it is in many cases built into the micro-controller.
@@ -473,9 +468,9 @@ If the wireless transmitter and receiver are placed above the barrier then they 
 This track sets a minimum requirement of 80m transmission. 
 
 \subsubsection{Speed}
-The transferred data is from xx sensors producing a maximum of yy bites per sample. 
-Data is only used for human inspection and therefore a sample frequency of 100Hz would be sufficient.
-This gives a minimum requirement for the speed of the transmission to be ZZ Mbit/s. 
+The CANbus has a bandwidth of up to 1Mbit/s meaning that the wireless needs to be as fast or faster.
+%Data is only used for human inspection and therefore a sample frequency of 100Hz would be sufficient.
+%This gives a minimum requirement for the speed of the transmission to be ZZ Mbit/s. 
 
 \subsubsection{Compatibility}
 It should be possibly to change the stationary computer and therefore the chosen wireless transmission technology should be compatible with standard computers running linux.
@@ -506,7 +501,7 @@ It is a required that the found hardware is capable of doing an ad-hoc network.
 \begin{tabular}{|l|}
 \hline
 80m transmission range       \\ \hline
-ZZ Mbit/s                    \\ \hline
+1 Mbit/s bandwidth                  \\ \hline
 802.11n protocol             \\ \hline
 USB or Ethernet              \\ \hline
 ad-hoc network compatability \\ \hline
@@ -546,11 +541,10 @@ The described software is outlined in figure \ref{fig:setup_ui}.
 
 \begin{figure}[h]
 	\centering
-	\includegraphics{graphics/UI}
-	\caption{UI.....}
+	\includegraphics{graphics/stationary_software}
+	\caption{Structure of software on stationary computer.}
 	\label{fig:setup_ui}
 \end{figure}
-\mikkel{Change figure to what we talked about, Thomas.}
 
 \subsubsection*{Session}
 The software needs to set up a session between the stationary computer and the on-vehicle computer.
