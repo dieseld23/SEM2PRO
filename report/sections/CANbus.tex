@@ -14,6 +14,8 @@ The transceiver must support the standard ISO11898-2, as this is what the Sevcon
 The device SN65HVD232 from Texas instruments support this standard, and is supplied with 3.3 V, so it can be plugged right into the Zybo, and still communicate with the Sevcon even though its CAN bus uses $\si{5 \volt}$.
 According to TI itself\cite{3.3V_CAN}, this family of $\si{3.3 \volt}$ transceivers are compatible and interoparable with other \si{5 \volt} transceivers, so long as they support the same standard.\\
 
+PCBs for the CAN transceivers are reasonably simple in design and while they can be procured, it was decided to create a custom transceiver.
+This way it is possible to create a more mechanically solid stack.
 The transceivers have been mounted on boards, that plug directly into the Zybo's 12-pin PMOD connector, which will be stacked on top of each other. 
 The schematic is shown below.
 

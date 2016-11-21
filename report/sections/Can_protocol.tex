@@ -7,7 +7,6 @@ Due to the requirements of the on-kart network, it is decided to formulate a new
 	\item Simple and easy to learn.
 	\item Support for 16 nodes.
 	\item Broadcast data.
-	\todo[inline]{Thomas: "Defining" message types is not really a requirement, it's just part of the solution that turns out to be clever.}
 	\item Defining message types.
 	\item Variable data length - beyond 8 bytes per message
 	\item Expandable.
@@ -39,15 +38,15 @@ Generally nodes can either produce data, and/or receive commands.
 The Wifi node neither produces any kind of data nor receives commands, but it does receive data, and send out commands.
 Therefore, there is a special case, for where the Wifi node is sending.
 In this case, the subsequent four bits determines the recipient, leaving two bits for command type. 
-For this part, command types are only "Start broadcasting" and "Stop broadcasting", but could be extended to for instance "Set parameter" or "Set value", where the data field will indicate which parameter, and what is's set to.//
+For this part, command types are only "Start broadcasting" and "Stop broadcasting", but could be extended to for instance "Set parameter" or "Set value", where the data field will indicate which parameter, and what is's set to.\\
 
 The four node IDs are:
 \begin{table}[h!]
 	\begin{tabular}{{l} {l}}
 		Wifi node: & 0b0001 \\
 		IMU node: & 0b0011 \\
-		Sevcon node: & 0111 \\
-		GPS node: & 1110
+		Sevcon node: & 0b0111 \\
+		GPS node: & 0b1110
 	\end{tabular}
 \end{table}
 The reason for this naming is, that the Wifi node acts as a commander for the, and it's commands need higher priority.

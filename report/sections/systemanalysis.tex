@@ -52,8 +52,7 @@ This category comprises all information about the electrical aspects of the go-k
 	Measuring the voltage output of this potentiometer provides a simple way of monitoring the position of the throttle.
 	\item \textbf{Desired Currents:} Based on the current throttle position a set of desired currents are calculated.
 	Monitoring these allows spotting any discrepancies between the desired and the actual currents.
-	\item \textbf{Duty Cycles:}
-	\todo[inline]{Mikkel: What do you mean?}
+	\item \textbf{Duty Cycles:} Duty cycle is proportional to the voltage applied to the motor, and can be used to calculate the power going into the motor.
 	\item \textbf{Battery Voltage:} As the go-kart is electrical, naturally, it has a battery.
 	Monitoring the current battery status could give the user an indication of how much driving time is left, or how long until the batteries are recharged afterwards.
 	\item \textbf{Motor Angle:} Knowing the angle of the motor at all times gives a means of more accurately calculate the currents at specific times.
@@ -118,7 +117,7 @@ This means, it can be used for both asynchronous and synchronous motors of a wid
 The controller can then be set up for the particular motor and peripherals, and run without interfacing to another computer.
 However, it is also possible to read data from it while running, and in some cases set values.
 It is therefore possible to use this to access the electrical parameters. \\
-\todo[inline]{Mikkel: Martin add something here about CANOPEN?}
+\mikkel{Martin: add something here about CANOPEN?}
 
 
 \subsubsection*{Inertial Measurement Unit (IMU)}
@@ -345,33 +344,36 @@ The following paragraphs explain the physical parts of this structure as well as
 
 \paragraph*{The CAN Bus}~\\
 The bus is shown on the bottom of figure~\ref{fig:canbus_setup}.
-It is a differential signal bus.
-This means that the value on the bus is determined by the difference of the two wires, rather than the absolute value of either signal.
-The bus has to be made of twisted pair wires with a characteristic impedance of $\si{120 \ohm}$ and terminated at each end with a $\si{120 \ohm}$ resistor.
-That means, that if the bus is broken at any point, no communication will work, even if two nodes are still connected.
+It is a differential voltage bus.
+This means that the value on the bus is determined by the voltage difference of the two wires, rather than the absolute voltage of either wire.
+The bus has to be made of twisted pair wires with a characteristic impedance of $\si{120 \ohm}$ and terminated at each end with $\si{120 \ohm}$ resistors.
+This increases the EMC of the bus, as inductive noise present on one wire is likely also present on the other, and the noise will then cancel itself out.
+That means, that if the bus is broken at any point, no communication will be received, even if the receiving node still has a galvanic connection to the transmitting node.
 Alternatively, it is possible to terminate each node, but this greatly reduces transmission speed.\\
 \todo[inline]{Mikkel: Not sure I understand it.}
 \paragraph*{The CAN Transceiver (XCVR)}~\\
-The transceivers translate a Tx voltage signal to the differential CAN signal, and simultaneously translates the bus signal to Rx voltage signal. 
-For this reason, it is not possible to implement this in most if not all microprocessors.
-Because the CAN bus is differential, a transceiver would be able to read the signal it's putting out itself, but they do not transmit these to the Rx pin of the controller.
-Other than this blocking of its own signal, it will translate whatever the controller puts out with.
-CAN transceivers are reasonably simple in design and while they can be procured, it was decided to create a custom transceiver.
-\todo[inline]{Mikkel: Above section is confusing for me.}
-\todo[inline]{Thomas: And me too, The actual role of the xcvr is not clear from the text.}
-\todo[inline]{Thomas: What analysis resultet in us deciding to build our own? Is this the right place for this decision?}
+As the CAN uses differential voltages, it is not possible to implement directly in the micro controllers.
+Typically a micro controller has digital ports putting out either $ 0 \si{\volt}$, or a fixed voltage level defined as "high".
+Complementary, it also perceives a voltage level as either low or high. 
+As mentioned above, the absolute voltage of either wire of the CAN bus does not matter, but difference in voltage does. 
+As there are multiple nodes on the same bus, it is also important for one node to be able to dominate, and the other nodes to know that there is a dominant node. 
+This is generally not possible for the micro controller, and it is necessary to use transceivers.
+The transceivers translate a Tx voltage signal from the micro controller to the differential CAN signal, and simultaneously translates the bus signal to Rx voltage signal.
+The transceivers monitor the bus while transmitting, to see if another node is being dominant, and if that is the case, it will start receiving data.
+
+\martin{I wrote it out a bit, I hope it's more understandable (this and the CAN bus above). Also moved the part where it says, we made our own PCB.}
 
 \paragraph*{The CAN Controller}~\\
 This element can be standalone hardware, but it is in many cases built into the micro-controller.
-The major advantage of having the controller built into the micro-controller is that it would not otherwise require another protocol to communicate between the microprocessor and controller.
-\todo[inline]{Thomas: You mean that you would have to communicate with the controller through I2C, UART or w/e?}
-The controller has an input and an output FIFO, meaning that the CAN bus communication operates asynchronously. 
+The major advantage of having the controller built into the micro-controller is that it would not otherwise require another protocol, like UART or SPI, to communicate between the microprocessor and controller.
+A CAN controller (both standalone and built into a micro controller) has an input and an output FIFO, meaning that the CAN bus communication operates asynchronously. 
+It is not a real time network.
 This is necessary as there is only one bus and it is likely that there will be a queue of nodes trying to write to the bus.
 
 \paragraph*{Protocol}~\\
 The protocol in this case refers to a protocol running on top of CAN.
 CANopen is a widely used protocol made specifically to expand on the usability of CAN.
-The SevCon gen4 used on the go-kart utilises CANopen in its communication.
+The SevCon gen4, the motor controller used on the go-kart, utilizes CANopen in its communication.
 This makes CANopen a reasonable option to employ generally across the network.
 CANopen is, however, quite complex and implements many features which are not needed in the monitoring system being developed.
 Using CANopen would complicate greatly, the task of learning how to add new nodes to the system.
