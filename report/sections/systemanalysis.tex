@@ -12,7 +12,7 @@ This section will present the analysis of the complete embedded system, through 
 \item Micro-controller. It should be analysed what micro-controller should be used on the go-kart.
 \item Wireless network. It should be analysed how data is transferred from the go-kart 	to the stationary computer.
 \item Local storage. There needs to local storage on the go-kart and it needs to be analysed what kind this should be and how it should be implemented.
-\item UI. It should be be analysed how the transferred data should be presented to the user in an UI.
+\item Software on stationary computer. It should be be analysed how the software on stationary should prensent the transferred data to the user in an UI.
 \end{itemize}
 
 \subsection{Parameters of Interest}
@@ -493,19 +493,25 @@ Based on the requirements in table \ref{tab:req_wifi} it was chosen to us the TP
 
 
 
-\subsection{UI}
-Somewhere this should be answered!
+\subsection{Software on stationary computer}
+There needs to be a user interface on the stationary computer to let the user monitor the go-kart parameters and start/stop sensors. 
+This UI needs to present data in a graphical interface to ease the users "understanding".. Aaarh. Need.. Better... Words... 
+\todo[inline]{Mikkel: better words.}
+Different sensors will be added to the system continuously  
+This means that the software on the stationary computer needs to be expandable and that there should be developed a generic way to access the go-kart data.
+The generic structure should be similar to that of figure \ref{fig:setup_ui}.
 
 
+\begin{figure}[h]
+	\centering
+	\includegraphics{graphics/UI}
+	\caption{UI.....}
+	\label{fig:setup_ui}
+\end{figure}
 
-
-
-
-
-
-
-
-
+\subsubsection*{Simple UI}
+To develop a sophisticated graphical user interface is not the focus of this project and will therefore be omitted, but a simple UI should be implemented to give the system the wanted functionality shown in the use cases.
+It could be a command line UI giving the user the 
 
 \subsection{Local Storage}
 Somewhere this should be answered!
