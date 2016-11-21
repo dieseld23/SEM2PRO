@@ -230,23 +230,33 @@ Likely, different sample rates will be recorded to different log files
 
 \subsection{Data Collection}
 \label{sec:data_collection}
-\todo[inline]{Mikkel: Needs to be rewritten!}
-\subsubsection{Topology}
+As described earlier there needs to be several sensors on the system in order to measure relevant parameters.
+It should also be possible to add sensors at a later time by other developers. 
+One micro-controller could be used for all sensors, but it would not be feasible when the numbers of sensors grow. 
+The micro-controller would not have enough I/O peripherals to accommodate a lot of sensors. 
+It might also not have the needed computational power. 
+\\
+Therefore a network needs to be realized. Each node in the network being a micro-controller and one or more sensors.
+All sensor data needs to be collected by a node that transfers it wirelessly to the stationary computer.
+This node will also need to log data as this eases the task of transferring log data to the stationary computer.
+This node will be referred to as the wifi node.
+
+\subsubsection{Network Topology}
 
 There are various network topologies that can be used to setup the required node network for this project.
-These include the ring, bus, mesh ,star and tree topology. Before we specify which one is suitable, a brief description of the purpose and functionality of our network as well as an overview of their advantages and disadvantages are needed. 
+These include the ring-, bus-, mesh-, star- and tree-network topology. 
+Before choosing a topology, a brief description of the purpose and functionality of the network as well as an overview of their advantages and disadvantages are needed. 
 
 \paragraph{Purpose of the Network}~\\
 \todo{Add the abbreviation ov = on-vehicle somewhere somehow}
 The purpose of this network is to accommodate multiple nodes, such as sensors sub-networks and in general data-producers.
-These need to be able to communicate with the main on-vehicle computer as well as among them.
-The reasons for this is that the ov-computer is responsible for transmitting and receiving data from the stationary computer and other nodes may require data from other nodes to cooperate for a task.
-Also, the ov-computer, apart from communicating, will also handle processing that the rest of the nodes are not able to. 
+These nodes need to be able to transfer their data and receive massages from the wifi node.
+
+The reasons for this is, that the use cases specify that sensor data should be transferred wirelssly and it needs to be possibly to start and stop specific nodes.
 \\\\
-The communication between the various nodes does not require a central hub.
-Two nodes may need to communicate with one another without the control and the extra processing time of a centralized topology.
-Furthermore, in the case that one fails, the network as a whole should still be operative.
-Lastly, since it is a multi-node network and it may require more nodes in the future, a certain level of scalability is also required.
+The communication between the various nodes and the wifi node does not require a central hub.
+Furthermore, in the case that one node fails, the network as a whole should still be operative.
+Since it is a multi-node network and it may require more nodes in the future, scalability is also required.
 
 \paragraph{Different Topologies}~\\
 \begin{itemize}
@@ -272,10 +282,12 @@ It also requires a lot of connections and in case the top (root) node fails, the
 \end{itemize}
 
 \paragraph{Suitable Topology}~\\
-For our networking purpose, the mesh type is not suitable, since it adds extra hardware requirements such as processing power and many redundant connections.
-A node may be a simple sensor with a small microprocessor and hence, connecting it to such a network is not feasible.
-In our system, a small embedded board computer will be the ov-computer which requires to maintain its connection with the network even in case of failures and also possibly the central hub in centralized topologies that such as the star and the tree.
-Thus, these two topologies are not suited, since in case of its failure, the whole network fails.
+For the systems networking purpose, the mesh type is not suitable, since it adds extra hardware requirements such as processing power and many redundant connections.
+A node may be a simple sensor with a small micro-controller and hence, connecting it to such a network is not feasible.
+%In our system, a small embedded board computer will be the ov-computer which requires to maintain its connection with the network even in case of failures and also possibly the central hub in centralized topologies that such as the star and the tree.
+The star network requires a lot of connections which normally are not present at standard micro-controllers.
+%Thus, these two topologies are not suited, since in case of its failure, the whole network fails.
+Thus, the mesh and star networks are not suited for this system
 Scalability is also a requirement for the future connection of nodes.
 Although the majority of the types provide a level of scalability, the addition of extra nodes always decrease the overall performance of any network.
 Hence, a topology that balances the decrease in performance against the network's expansion is best suited for the project.\\\\
@@ -286,15 +298,16 @@ This type provides a good balance of reliability, scalability, hardware requirem
 
 \paragraph{Existing Technologies}~\\
 Different networking technologies exist in use today, such as Ethernet, CANbus, CANopen and Powerlink, among others.
-Canbus is widely used in the automotive industry with data rates up to 1Mbit/s for small networks lengths, but the classic Ethernet and Powerlink support data rates of at least 10Mbit/s.
+CANbus is widely used in the automotive industry with data rates up to 1Mbit/s for small networks lengths, but the classic Ethernet and Powerlink support data rates of at least 10Mbit/s.
 Furthermore, Powerlink is suitable for transmission of time-critical data and timing-synchronization of the nodes and CANopen networks are very robust and reliable.
 \paragraph{Choosing a Technology}~\\
+\todo[inline]{Mikkel: Remove were..}
 The two choices that were considered for the scope of this project were Powerlink and CANopen.
 The first one can be implemented using openPowerlink at a software level and utilizing PmodNIC100 modules provided by the university.
 On the other hand, CANopen can be implemented using CANopenSocket\footnote{https://github.com/CANopenNode/CANopenSocket}, an open source git project built on CANopenNode.
 This library is easily implemented in Linux and can use various hardware, one of them being a USB to CAN interface board named USBtin\footnote{http://www.fischl.de/usbtin/}.
-Another available module to use is the CANbus tranceiver breakout board from Copperhill which can be used by an IP core at a VHDL level that is available from Vivado IDE, greatly increasing the performance of such a network.
-Since CANbus is a technology widely used in the automotive industry, it is our first choice for developing our system.
+Another available module to use is the CANbus.
+Since CANbus is a technology widely used in the automotive industry, it is chosen for this system.
 
 
 
