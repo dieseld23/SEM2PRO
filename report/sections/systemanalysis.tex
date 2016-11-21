@@ -314,12 +314,12 @@ Since CANbus is a technology widely used in the automotive industry, it is chose
 
 \subsection{CAN-bus}
 The CAN (Controller Area Network) protocol was originally developed in the 1980's by Bosch.
-It is a multi-master network, where each node connects to a common bus, and any node is then able to broadcast data to all other nodes.
-It includes a substantial overhead of of 47 bits per message, and messages can vary from 0 to 8 bytes.
-This is described in section~\ref{sub:CanMessageFrame}
-The bus offers 1 Mbit/s on a bus up to 40 m of length, including overhead\\
-
-Each CAN node needs the structure displayed on figure~\ref{fig:canbus_setup}.
+It is a multi-master network, where each node connects to a common bus.
+All nodes are able to broadcast data to all other nodes.
+The CAN protocol includes an overhead of 47 bit per message.
+The data sent in a message can vary in size from 0 to 8 bytes.
+This is described in detail in section~\ref{sub:CanMessageFrame}.
+The bus offers 1 Mbit/s on a bus of up to 40 \si{\metre} of length.
 
 \begin{figure}[h!]
 	\centering
@@ -327,23 +327,38 @@ Each CAN node needs the structure displayed on figure~\ref{fig:canbus_setup}.
 	\caption{CAN node architecture}
 	\label{fig:canbus_setup}
 \end{figure}
+
+Some hardware is necessary in order to properly realise a CAN network.
+The structure of each node can be seen on figure~\ref{fig:canbus_setup}.
+The following paragraphs explain the physical parts of this structure as well as the requirements of the protocol.
+
+\todo[inline]{Thomas: My understanding of our protocol is that we are just interpreting the CAN messages in a different way. Do we actually need a detailed explanation of the actual CAN protocol?}
 \todo[inline]{Thomas: Split this entire section into paragraphs, one for each (meaningful) box in figure~\ref{fig:canbus_setup}}
-Starting from the bottom: The CAN bus itself is a differential signal bus, meaning that the absolute value of each wire on the bus doesn't matter, but the difference between them matters. 
-The bus has to be made of twisted pair wires with a characteristic impedance of $\si{120 \ohm}$, and terminated at each end with a $\si{120 \ohm}$ resistor.
+
+\paragraph*{The CAN Bus}
+The bus is shown on the bottom of figure~\ref{fig:canbus_setup}.
+It is a differential signal bus.
+This means that the value on the bus is determined by the difference of the two wires, rather than the absolute value of either signal.
+The bus has to be made of twisted pair wires with a characteristic impedance of $\si{120 \ohm}$ and terminated at each end with a $\si{120 \ohm}$ resistor.
 That means, that if the bus is broken at any point, no communication will work, even if two nodes are still connected.
-Alternately, it is possible to terminate each node, but this greatly reduces transmission speed.\\
+Alternatively, it is possible to terminate each node, but this greatly reduces transmission speed.\\
 \todo[inline]{Mikkel: Not sure I understand it.}
+\paragraph*{The CAN Transceiver (XCVR)}
 The transceivers translate a Tx voltage signal to the differential CAN signal, and simultaneously translates the bus signal to Rx voltage signal. 
 For this reason, it is not possible to implement this in most if not all microprocessors.
 Because the CAN bus is differential, a transceiver would be able to read the signal it's putting out itself, but they do not transmit these to the Rx pin of the controller.
 Other than this blocking of its own signal, it will translate whatever the controller puts out with.
-The CAN transceivers can be bought online, but due to the simplicity of this circuitry, the group will design and manufacture their own.\\
+CAN transceivers are reasonably simple in design and while they can be procured, it was decided to create a custom transceiver.
 \todo[inline]{Mikkel: Above section is confusing for me.}
+\todo[inline]{Thomas: And me too, The actual role of the xcvr is not clear from the text.}
+\todo[inline]{Thomas: What analysis resultet in us deciding to build our own? Is this the right place for this decision?}
 
-The CAN controller can be standalone hardware, but are in many cases built into the micro-controller.
-The major advantage with having the controller built into the micro-controller is, that it would not otherwise require another protocol to communicate between the microprocessor and controller. 
-The controller has an input and output FIFO, meaning that the CAN bus communication is asynchronous. 
-This is necessary as there is only one bus, and it is likely that there will be a queue of nodes trying to write to the bus.
+\paragraph*{The CAN Controller}
+This element can be standalone hardware, but it is in many cases built into the micro-controller.
+The major advantage of having the controller built into the micro-controller is that it would not otherwise require another protocol to communicate between the microprocessor and controller.
+\todo[inline]{Thomas: You mean that you would have to communicate with the controller through I2C, UART or w/e?}
+The controller has an input and an output FIFO, meaning that the CAN bus communication operates asynchronously. 
+This is necessary as there is only one bus and it is likely that there will be a queue of nodes trying to write to the bus.
 
 \paragraph*{Protocol}
 The protocol in this case refers to a protocol running on top of CAN.
