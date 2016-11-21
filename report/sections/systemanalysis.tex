@@ -259,6 +259,7 @@ Furthermore, in the case that one node fails, the network as a whole should stil
 Since it is a multi-node network and it may require more nodes in the future, scalability is also required.
 
 \paragraph{Different Topologies}~\\
+\todo[inline]{Thomas: This section needs to be cleaned of any statements such as "this is the simplest and cheapest...". They are broad conclusions that we have no merrits on saying}
 \begin{itemize}
 \item \textbf{Bus:} This is the simplest and cheapest topology.
 All nodes communicate through a central bus and it is scalable with the addition of extra nodes on the two ends of the cable.
@@ -343,7 +344,7 @@ The CAN controller can be standalone hardware, but are in many cases built into 
 The major advantage with having the controller built into the micro-controller is, that it would not otherwise require another protocol to communicate between the microprocessor and controller. 
 The controller has an input and output FIFO, meaning that the CAN bus communication is asynchronous. 
 This is necessary as there is only one bus, and it is likely that there will be a queue of nodes trying to write to the bus.
-
+\todo[inline]{Thomas: Infer new section about protocol, move till after the next section proposed in my todo below.}
 The protocol in this case refers to a protocol running on top of CAN.
 One clear option is the CANopen, which will also be discussed later because it is needed to communicate with the Sevcon. 
 Another option is to create our own protocol. 
@@ -358,7 +359,7 @@ This protocol will be described in section~\ref{sub:CAN_protocol}.\\
 
 
 
-
+\todo[inline]{Thomas: Section describing the requirements of the structure and what requirements that would that result in in terms of the protocol}
 
 \subsection{Micro-controller}
 As described in section \ref{sec:data_collection} there should be a CAN network of nodes on the go-kart.
@@ -386,7 +387,7 @@ The Zybo board itself is a developing platform consisting, among other, of sever
 \subsubsection*{Linux on the Zybo Board}
 Several Linux distribution are configured to run on the Zybo board. 
 The group has experience with a the Xillinux \footnote{http://xillybus.com/xillinux} distribution, therefore this will be used.
-Xillinux is based upon the Xilinx distribution witch is based upon Ubuntu 12.04.
+Xillinux is based upon the Xilinx distribution which is based upon Ubuntu 12.04.
 In the Xillinux architecture there is a bus between the PL and PS named Xillybus.
 Xillybus is implemented as an IP core in PL and a corresponding Xillybus driver in the Xillinux kernel.
 In PL the IP core is interfaced through standard FIFO buffers and the Xillybus is reached in userspace through \textit{"/dev/xillybus\_"}.
