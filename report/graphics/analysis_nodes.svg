@@ -15,7 +15,10 @@
    id="svg5394"
    version="1.1"
    inkscape:version="0.91 r13725"
-   sodipodi:docname="analysis_nodes.svg">
+   sodipodi:docname="analysis_nodes.svg"
+   inkscape:export-filename="/home/thomas/Documents/school/master/semester_2/sem_pro/report/graphics/analysis_nodes.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
   <defs
      id="defs5396" />
   <sodipodi:namedview
@@ -26,7 +29,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.8101934"
-     inkscape:cx="239.58584"
+     inkscape:cx="239.03342"
      inkscape:cy="923.06581"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -69,8 +72,8 @@
          x="163.2547"
          y="185.2372"
          style="font-size:11.00618839px">N<tspan
-   style="font-size:11.00618839px;baseline-shift:sub"
-   id="tspan6973">0</tspan></tspan></text>
+   style="font-size:65%;baseline-shift:sub"
+   id="tspan7881">0</tspan></tspan></text>
     <path
        style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 181.02814,167.3622 c 0,0 10,0 10,10 0,10 0,10 0,10 0,0 0,10 -10,10 -10,0 -20,0 -20,0 0,0 -10,0 -10,-10 0,-10 0,-10 0,-10 0,0 0,-10 10,-10 10,0 20,0 20,0 z"
