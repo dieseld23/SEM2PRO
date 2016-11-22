@@ -7,7 +7,6 @@ Due to the requirements of the on-kart network, it is decided to formulate a new
 	\item Simple and easy to learn.
 	\item Support for 16 nodes.
 	\item Broadcast data.
-	\item Defining message types.
 	\item Variable data length - beyond 8 bytes per message
 	\item Expandable.
 	\item Commands: Start/stop broadcasting 
@@ -31,8 +30,8 @@ The last 6 bits of the message ID would contain an identifier for what the data 
 This leaves 64 different message types for each node -- it is then the developers to utilize these the best. 
 If more message types are needed, the CAN protocol supports extended identifier, which adds 18 bits of identifiers.
 Each node will have a list of message IDs (10 bits), that it knows how to handle.
-If a message is not on that list, the node will ignore it.
-//
+If a message is not on that list, the node will ignore it.\\
+
 There are basically two types of nodes: The Wifi node acting a , and all other nodes.
 Generally nodes can either produce data, and/or receive commands.
 The Wifi node neither produces any kind of data nor receives commands, but it does receive data, and send out commands.
