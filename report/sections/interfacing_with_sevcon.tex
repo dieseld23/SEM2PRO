@@ -5,14 +5,8 @@
 
 %This section assumes that CANOpen has been adequately explained beforehand
 
-\section{Interfacing wiht Sevcon}\label{sec:interfacin_with_sevcon}
-The Sevcon Gen4 motor driver is a general purpose AC motor driver. 
-This means, it can be used for both asynchronous and synchronous motors of a wide range of sizes.
-The controller can then be set up for the particular motor and peripherals, and run without interfacing to another computer.
-However, it is also possible to read data from it in real time, and in some cases set values on the fly.
-It is therefore possible to use this as a node, or use a Zybo to interface with the Sevcon, until such time where another inverter is designed, and needs testing. \\
-
-\subsection{Physical Connection}\label{sub:sevcon_physical_connection}
+\paragraph*{Physical Connection}\label{sub:sevcon_physical_connection}~\\
+\todo[inline]{Mikkel: Something about Sevcon that I don't know where to put??}
 The Sevcon utilizes high speed CAN bus for data transfer, and adheres to ISO11898-2.
 As such it is recommended to use twisted pair wires with cross section area ranging from $0.5 \si{\milli \meter \squared}$ to $1.5 \si{\milli \meter \squared}$, and terminating the Zybo end with $120 \si{\ohm}$.
 On the Sevcon, this can be done by shorting pins 2 and 24, to utilize an internal termination resistor.
@@ -26,8 +20,8 @@ The 35 pin connector is shown below for reference:
 	\label{fig:35_pin_dsub}
 \end{figure}
 
-\subsection{CANOpen Object Dictionary}\label{sub:sevcon_object_dictionary}
-Because the sevcon is so general purpose, its object dictionary is very large, and holds a lot of objects that are completely irrelevant for this particular setup, such as motor slip, and speed control parameters. 
+\paragraph*{CANOpen Object Dictionary}\label{sub:sevcon_object_dictionary}~\\
+Because the Sevcon is so general purpose, its object dictionary is very large, and holds a lot of objects that are completely irrelevant for this particular setup, such as motor slip, and speed control parameters. 
 The object directory is documented in a 1400+ Excel file. 
 Some objects of interest are:
 
@@ -54,5 +48,4 @@ Some objects of interest are:
 
 Map to PDO: Can be read at a fixed time interval, so good for monitoring
 It does not produce Ia, Ib, Ic. and it does not produce the absolute electrical position, so we'll have to calculate that on the zybo from the sin/cosine values in objets 4630h-9 to -12
-
 
