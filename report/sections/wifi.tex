@@ -21,6 +21,7 @@ See figure \ref{fig:basic_network}.
 	\caption{A line of text}
 	\label{fig:basic_network}
 \end{figure}
+\martin{I'm not sure this figure adds much understanding to the report}
 
 These will be referred to as the off-kart network and the on-kart network, respectively, throughout the remainder of the report.
 The following sections will explore the creation of both of these networks in turn.
@@ -31,6 +32,7 @@ It was chosen to use this method as all modern laptops are equipped with the cap
 Hereafter the challenge lies in establishing an ad-hoc network between a zybo board and a PC.
 This network is created using the a USB-Wifi dongle on the Zybo board. 
 The following script is run to bring down the device, change the network type to ad-hoc, bring up the device, create the ad-hoc network and, finally, assign an IP-address to the device.
+\martin{bring down and bring up?}
 Note: some commands require super user access.
 For clarity, \texttt{sudo} is left out from all calls throughout this section.
 \begin{lstlisting}
@@ -65,6 +67,8 @@ Additionally:
 Bus 001 Device 002: ID 0cf3:9271 Atheros Communications, 
 	Inc. AR9271 802.11n
 \end{lstlisting}
+
+\martin{is one ath supposed to be lower case and the other upper case in the listings above?}
 As per these commands the operating system (OS) has correctly detected and loaded the driver.
 The \texttt{iproute2} package contains the utilities used to manipulate TCP/IP connections.
 \begin{lstlisting}
@@ -79,6 +83,8 @@ The \texttt{iproute2} package contains the utilities used to manipulate TCP/IP c
 	state DOWN mode DEFAULT group default qlen 1000
     link/ether ec:08:6b:1b:41:b3 brd ff:ff:ff:ff:ff:ff
 \end{lstlisting}
+\martin{We need to ensure, that the lines do not become wider than the textwidth}
+
 The device has been given the identifier \texttt{wlan0}.
 It can be brought up by:
 \begin{lstlisting}
@@ -94,7 +100,7 @@ At this point the device is up, as can be seen on the list of flags:
 \end{lstlisting}
 However, the \texttt{NO-CARRIER} flag is also set.
 This flag indicates a fault on the physical layer, i.e. a disconnected network cable or similar.
-However, running a scan on the device shows that it is able to correctly detect nearby networks:
+Running a scan on the device shows that it is able to correctly detect nearby networks:
 \begin{lstlisting}
 >>iw dev wlp2s0b1 scan | grep SSID
 SSID: SDU-WEBLOGIN
@@ -108,7 +114,7 @@ Clearly, there are differences between the two systems, one or more of which wer
 In order to eliminate these differences the versions of the involved software was brought up to date.
 The PC is running Arch Linux, a distribution using rolling release.
 This means that, generally, the software will always be at the latest stable release.
-The Xillinux distribution running on the Zybo board is based on the Ubuntu 12.04 release, the long term support version from 201, see \cite{xillinux}.
+The Xillinux distribution running on the Zybo board is based on the Ubuntu 12.04 release, the long term support version from 201, see \cite{xillinux}. \martin{which year?}
 As such, much of the software is outdated.
 The \texttt{iproute2} package as well as \texttt{network-manager} was updated to the latest version.
 Other than provide some experience with building and searching for dependencies, it did little to alleviate the issues.
@@ -159,7 +165,7 @@ default via 192.168.10.1 dev eth0 metric 100
 192.168.10.0/24 dev eth0 proto 
 	kernel scope link src 192.168.10.10 
 \end{lstlisting}
-\todo{Thomas: Get the correct table, wifi is missing}
+\thomas{Get the correct table, wifi is missing}
 As can be seen, messages on eth0 and wlan0 are both routed to the same address space, 192.168.10.0/24.
 Curiously, this did not pose an issue on the PC's.
 Changing the address space to something different corrected the problem.
@@ -173,4 +179,3 @@ Finally, a short bash script is written to quickly set up the network:
 >>iw wlan0 ibss join go-kart 2412
 >>ip addr add wlan0 196.178.10.9
 \end{lstlisting}
-\subsection{On-Kart Network}
