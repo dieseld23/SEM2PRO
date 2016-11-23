@@ -6,7 +6,7 @@
 %This section assumes that CANOpen has been adequately explained beforehand
 
 \paragraph*{Physical Connection}\label{sub:sevcon_physical_connection}~\\
-\todo[inline]{Mikkel: Something about sevcon that I don't know where to put??}
+\todo[inline]{Mikkel: Something about Sevcon that I don't know where to put??}
 The Sevcon utilizes high speed CAN bus for data transfer, and adheres to ISO11898-2.
 As such it is recommended to use twisted pair wires with cross section area ranging from $0.5 \si{\milli \meter \squared}$ to $1.5 \si{\milli \meter \squared}$, and terminating the Zybo end with $120 \si{\ohm}$.
 On the Sevcon, this can be done by shorting pins 2 and 24, to utilize an internal termination resistor.
@@ -21,7 +21,7 @@ The 35 pin connector is shown below for reference:
 \end{figure}
 
 \paragraph*{CANOpen Object Dictionary}\label{sub:sevcon_object_dictionary}~\\
-Because the sevcon is so general purpose, its object dictionary is very large, and holds a lot of objects that are completely irrelevant for this particular setup, such as motor slip, and speed control parameters. 
+Because the Sevcon is so general purpose, its object dictionary is very large, and holds a lot of objects that are completely irrelevant for this particular setup, such as motor slip, and speed control parameters. 
 The object directory is documented in a 1400+ Excel file. 
 Some objects of interest are:
 
