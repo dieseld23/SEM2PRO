@@ -1,10 +1,10 @@
 %!TEX root = ../main.tex
 
-\section{CAN bus}\label{sec:CANbus}
+\subsection{On-kart network}\label{sec:CANbus}
 The CAN is described in this section, starting with the implementation of the physical layer.
 After that, the CAN framework is described, and finally how this framework is used to create a protocol for this project
 
-\subsection{Physical Layer}\label{sub:CANphys}
+\subsubsection{Physical Layer}\label{sub:CANphys}
 The physical layer has three main parts: The CAN controller, the CAN transceiver and the bus itself. \\
 
 The Zybo supports CAN, and has a CAN controller in its PS.
@@ -47,7 +47,7 @@ Because the bus is so short, it isn't practical to make twisted pair, and this w
 The bus itself is also not $120 \si{\ohm}$, but experiment shows that it works.
 
 \todo{Polish the text and re-express some things such as send() function...}
-\subsection{Testing the CAN Stack for a Basic Network}
+\subsubsection{Testing the CAN Stack for a Basic Network}
 \martin{This testing should be moved to the bottom of this section, to test the protocol as well}
 After the design and printing of the stack board, testing it was the next step.
 The test included using one the CAN controllers within the Zynq chip with the purpose of showing that a basic CAN network between two Zybo boards could be implemented using the stack.
@@ -55,7 +55,7 @@ Specifically, the one Zybo was sending the input value of the buttons to the net
 After designing a basic architecture in Vivado and writing a source code, the test was successful, thus proving the basic functionality of a CAN network.
 All Zybo boards were programmed with the same architecture and source code.
 
-\subsubsection{Architecture}
+\paragraph{Architecture}
 In order to realize the above test, enabling the CAN controller inside the Zynq chip as well as including two AXI GPIO cores were necessary.
 One AXI GPIO was setup as leds 4bits while the other one as btns 4bits as it can be seen in figure \ref{fig:CAN_Testing_Architecture}. The architecture was firmly simple, but adequate to meet the purpose of the test.
 
@@ -66,7 +66,7 @@ One AXI GPIO was setup as leds 4bits while the other one as btns 4bits as it can
 	\label{fig:CAN_Testing_Architecture}
 \end{figure}
 
-\subsubsection{Source Code}
+\paragraph{Source Code}
 The programming for this task was done in C.
 The code from xcanps polled example provided by Xilinx documentation was used as a basis.
 The example shows the basic principle of sending and receiving messages on a loopback network on a single board.
@@ -78,7 +78,7 @@ As mentioned before, this source code was common and uploaded to both boards res
 
 \todo{We need a picture with 2 or better, 4 boards as stack! The coolest thing ever :P.}
 
-\subsection{CAN Message Frame}\label{sub:CanMessageFrame}
+\subsubsection{CAN Message Frame}\label{sub:CanMessageFrame}
 Messages sent over CAN is put into a frame. 
 One frame contains all the parts in figure~\ref{fig:CAN_frame_pdf}, whereas a message should not be restricted to just 8 bytes -- however it doesn't include any overhead.
 A zero input to the transceiver will result in a voltage difference on the CAN bus, and a one input will result in no difference. 
