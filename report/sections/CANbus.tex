@@ -115,10 +115,10 @@ One AXI GPIO was setup as leds 4bits while the other one as btns 4bits as it can
 The programming for this task was done in C.
 The code from xcanps polled example provided by Xilinx documentation was used as a basis.
 The example shows the basic principle of sending and receiving messages on a loopback network on a single board.
-With further modifications and the addition of extra functionalities such as reading button input and writing the output to the LEDs, the finalized developed code was suitable to successfully test the communication between two nodes on the CAN network.
+With further modifications and the addition of extra functionalities such as reading button input and writing the output to the LEDs, the finalized developed code was suitable to successfully test the communication between two nodes on the CAN network. The full code can be seen in the appendix.\catalin{Add the code to the appendix, but first let's add an appendixes part.}
 \\\\
-The basic principle for testing was to trigger an interrupt attached to the button presses, which then the send() function would send the value of the buttons to the network as a message.
-In turn, the receive() function was responsible of reading the message transmitted on the bus and writing the value as output to the LEDs.
+The basic principle for testing was to trigger an interrupt attached to the button presses, which then the SendFrame() function would send the value of the buttons to the network as a message.
+In turn, the RecvFrame() was responsible of reading the message transmitted on the bus and writing the value as output to the LEDs.
 As mentioned before, this source code was common and uploaded to both boards resulting in a two-way communication, since both of them had a SendFrame() and a RecvFrame() function, thus one controlling the LEDs of the other one.
 
 \todo{We need a picture with 2 or better, 4 boards as stack! The coolest thing ever :P.}
