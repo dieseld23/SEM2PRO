@@ -1,0 +1,45 @@
+%!TEX root = ../main.tex
+
+\subsection{Implementing CAN on Linux}
+The next step after testing the stack board and showing the basic functionality of the CAN network was to implement it using Linux running on the Zybo board.
+This step required enabling the CAN drivers that reside in the Xillinux kernel and gaining access to the CAN devices.
+This section will describe the necessary procedures that were followed, but the reader should be informed that the implementation of CAN was not successful due to lack of proper documentation. Other means to prove the concept of the project were taken into account.
+
+\subsubsection{Enabling the CAN Drivers}
+In order to enable the drivers on the Zynq7 Processing System, the Linux CAN driver guide \cite{Xilinx_wiki_Linux_CAN_driver} on the Xilinx wiki website \cite{Xilinx_wiki} was followed.
+The Kconfig file under the path \ref{code:can_kconfig_pathfile} needed to be configured.
+The entry at line 128 had to be changed as seen in the code snippet \ref{code:can_kconfig_contents_line128}.
+More specifically, lines 130 and 131 were originally as seen in the snippet \ref{code:can_kconfig_original_line130}.
+
+\begin{lstlisting}[caption={CAN Kconfig pathfile.},numbers=none,label=code:can_kconfig_pathfile]
+/usr/src/kernels/3.12.0-xillinux-1.3/drivers/net/can
+\end{lstlisting}
+
+\catalin{Xilinx CAN has "" around it, but LaTeX shows errors if inserted in the code snippet.}
+\catalin{Why do I get some questionmarks under references?"}
+
+\begin{lstlisting}[firstnumber=128,caption={Kconfig file contents from line 128.},label=code:can_kconfig_contents128]
+config CAN_XILINXCAN
+	tristate Xilinx CAN
+	depends on NET [=y] && CAN_DEV [=y] && CAN [=y] && (ARCH_ZYNQ || MICROBLAZE [=y])
+	default y
+	---help---
+	  Xilinx CAN driver. This driver supports both soft AXI CAN IP and
+	  Zynq CANPS IP.
+\end{lstlisting}
+
+\begin{lstlisting}[firstnumber=130,caption={Original content of lines 130 and 131.},label=code:can_kconfig_original_line130]
+	depends on CAN && (ARCH_ZYNQ || MICROBLAZE)
+	default n
+\end{lstlisting}
+
+Next, the modification of the device tree settings file was the second step, requiring an entry for the CAN PS to be inserted. The necessary file was located under the boot folder named as seen in \ref{code:dts_file_zybo}.
+
+\begin{lstlisting}[numbers=none,caption={Device tree settings file and its path.},label=code:dts_file_zybo]
+/boot/xillinux-1.3-zybo.dts
+\end{lstlisting}
+
+\begin{lstlisting}[caption={CAN Kconfig pathfile.},numbers=none,label=code:can_kconfig_pathfile]
+/usr/src/kernels/3.12.0-xillinux-1.3/drivers/net/can/
+\end{lstlisting}
+
