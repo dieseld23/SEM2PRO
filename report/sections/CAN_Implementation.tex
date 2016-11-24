@@ -51,12 +51,37 @@ Next, the modification of the device tree settings file was the second step, req
 As was previously mentioned, the implementation was unsuccessful. At the time of writing this report, 
 
 \subsubsection{Utilizing the AXI CAN core}
-\catalin{Should I show the arch design from Vivado with the AXI CAN?}
-Another way to implement a CAN network was to use the AXI CAN core that is available in the Vivado Suite, instead of gaining direct access to the CAN drivers. Unfortunately due to a license restriction from Xilinx, the core can only be used for simulation purposes and not actual hardware implementations.
+
+Another way to implement a CAN network was to use the AXI CAN core that is available in the Vivado Suite, instead of gaining direct access to the CAN drivers.
+Unfortunately due to a license restriction from Xilinx, the core can only be used for simulation purposes and not actual hardware implementations.
+This information became available after the process of creating the bistream file in the form of an error. The architecture can be seen in figure \ref{fig:CAN_Arch_with_AXI_CAN}.
+The core accepts a clock frequency from \SI{8}{\mega\hertz} to \SI{24}{\mega\hertz}, which in the block diagram is provided by the FCLK\_CLK1.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width = 1.2\linewidth]{graphics/Zybo_Arch_with_AXI_CAN.png}
+	\caption{Block diagram featuring the architecture in Vivado with the AXI CAN core.}
+	\label{fig:CAN_Arch_with_AXI_CAN}
+\end{figure}
 
 \catalin{Will opencores.org provide me with the valuable access we are currently seeking for this divine project? If yes, make a subsubsection}
 
 \subsubsection{Using can-utils for virtual nodes}
 
-During the development of this project, the can-utils tool was also used. It is a testing tool that can be executed on Linux and can be applied on real as well as virtual CAN devices. Initially it was used to create a virtual network with two nodes locally on a computer to gain a better understanding of how CAN networks function and how they can be configured. It was also intended to be used to test the actual network, but since the network was not implemented, further use of the tool was not necessary.
+During the development of this project, the can-utils tool was also used.
+It is a testing tool that can be executed on Linux and can be applied on real as well as virtual CAN devices.
+Initially it was used to create a virtual network with two nodes locally on a computer to gain a better understanding of how CAN networks function and how they can be configured.
+It was also intended to be used to test the actual network, but since the network was not implemented, further use of the tool was not necessary.
 \catalin{Rerun some virtual tests with can-utils to get code snippets}
+
+\subsection{Utilizing Service Virtualization for the Proof of Concept}
+
+In order to show that the system can be fully functional despite the unsuccessful attempt to implement it, a different approach than the actual implementation is needed.
+One way of doing that is to apply a method called service virtualization where one part of the system can be simulated to prove that the rest of the system is fully functional, given the presence of the missing simulated part.
+\\\\
+In this case, the system that was designed for this project can be divided into two parts or subsystems.
+The first one is the physical CAN network that was proved functional using bare\-metal code programmed using the JTAG mode \catalin{is this well expressed, JTAG mode?} on the Zybo board in the section \ref{sub:TestingCANStack_BareMetal}.
+The second part would be considered the subsystem present on Linux which included the protocol designed to be used with the CAN bus and the application which extracted the data from the sensors.
+\catalin{Some more words about how are we going to produce the data and how are we going to pass the data to the application etc.}
+The main idea was to run three tests separately, which combined together would prove that the system is fully functional given the fact that there would be access to the CAN controller and physical network from Linux. In other words, a virtualized connection or link between the Linux OS running on the Zybo board and the CAN devices on the Programmable Logic level \catalin{can controllers or devices or sth else?} was simulated.
+\catalin{more when Thomas makes an awesome illustration for this.}
