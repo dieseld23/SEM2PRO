@@ -20,8 +20,27 @@ Bandwidth is considering the amount of net data being transmitted per unit time,
 Bandwidth will be calculated for 8 byte frames, and bit stuffing will be omitted.\\
 
 The maximum operating data rate for the transceivers is 8 Mb/s.
-As 
+As mentioned in section~\ref{sub:CanMessageFrame}, the CAN frame 47 bits of overhead. 
+Including 8 bytes of data, this comes up to 111 bits. 
+Time per frame is:
+
+\begin{equation}
+\frac{111}{8 \cdot 10^6} = 1.39 \cdot 10^-5
+\end{equation}
+
+As each frame contains 8 bytes of data, the data rate becomes:
+
+\begin{equation}
+\frac{8}{1.39 \cdot 10^-5}= 5.77 \cdot 10^5
+\end{equation}
+
+That means, that the effective transfer rate is 577 kB/s, or 4.61 Mb/s
 
 \paragraph{Message filtering}
+Three Zybos will be needed for this test.
+One will act as a transmitter, and the two others will receive messages.\\
+The transmitting node will shift back and forth between three message IDs, and write a recursive message, i.e. counting up from zero.
+One receiving node will only accept one message ID, the other node will only accept another message ID, and the third message ID will be ignored by both.
+
 
 \paragraph{Priority when multiple node sending}
