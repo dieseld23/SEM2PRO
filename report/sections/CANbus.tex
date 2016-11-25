@@ -85,10 +85,12 @@ When the end of the message occurs, the node will try to send the message again.
 It might then be blocked again by another node, and there is a risk, that it will never send.
 It is the developer's responsibility to ensure that this doesn't happen.\\
 
-It is, that messages are extended by bit stuffing.
+Another automatic feature of can is called Bit stuffing
 If either 0 or 1 is written to the controller 5 consecutive times, the opposite polarity is interjected, or stuffed, into the stream. 
 This is done to ensure that receiving nodes remain synchronized with the transmitting node, as there is no clock signal.
 That means, that a frame can be extended by upwards of 20 \% if the data requires it.
+This is however not done to the EOF and IFS parts.
+This basically means, that the controllers may come out of synch at the end of each message, which doesn't really matter because because the frame is finished anyway.
 
 
 \subsubsection{Testing the CAN Stack for a Basic Network}
