@@ -44,3 +44,10 @@ One receiving node will only accept one message ID, the other node will only acc
 
 
 \paragraph{Priority when multiple node sending}
+Two Zybos will be needed for this test.
+Both Zybos will be prompted to send a message when an interrupt occurs on an input pin. 
+The data part of the messages don't matter, but the message IDs do; they need to be different.
+Zybo A will send the message ID 0b10101000000.
+Zybo B will have the message ID 0b10101010000.
+That means, that Zybo A has higher priority, and Zybo B will stop trying to send a message when the seventh bit occurs, and receive instead.
+It is assumed, that once Zybo A is done sending, (and its frame is acknowledged), Zybo B will succesfully retry its transmission. 
