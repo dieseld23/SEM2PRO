@@ -1,0 +1,28 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../include/client.hpp
+iostream
+-
+string
+-
+vector
+-
+boost/asio.hpp
+-
+
+/home/thomas/Documents/school/master/semester_2/sem_pro/code/client/src/client.cpp
+client.hpp
+/home/thomas/Documents/school/master/semester_2/sem_pro/code/client/src/client.hpp
+
+/home/thomas/Documents/school/master/semester_2/sem_pro/code/client/src/main.cpp
+client.hpp
+/home/thomas/Documents/school/master/semester_2/sem_pro/code/client/src/client.hpp
+thread
+-
+
