@@ -18,7 +18,7 @@
 \newcommand{\mikkel}[1]{\todo[inline,linecolor=green!100,backgroundcolor=red!70, bordercolor=green, author = Mikkel]{#1}}
 \newcommand{\martin}[1]{\todo[inline,color=blue!30, author = Martin]{#1}}
 %\newcommand{\thomas}[1]{\todo[inline,color=black!30, author = Thomas]{#1}}
-\newcommand{\thomas}[1]{\todo[inline,size=\tiny,linecolor=green!100,backgroundcolor=yellow!70, bordercolor=red, author = Thomas (som er vild med farver)]{#1}}
+ \newcommand{\thomas}[1]{\todo[inline,size=\tiny,linecolor=green!100,backgroundcolor=yellow!70, bordercolor=red, author = Thomas (som er vild med farver)]{#1}}
 \newcommand{\catalin}[1]{\todo[inline,color=pink!100, author = CataLinux]{#1}}
 
 %newcommand{\bb}[1]{\mathbb{#1}}
@@ -120,12 +120,18 @@ Skarup Jaedicke, Martin Brøchner Andersen, Catalin Ionut Ntemkas‎;}
 %\input{sections/Datalogging_requirements}
 %\input{sections/localnetwork_requirements}
 \newpage
+\input{sections/wifi}
 \input{sections/CANbus}
 \input{sections/Can_protocol}
-\input{sections/interfacing_with_sevcon}
-\input{sections/wifi}
+\input{sections/CAN_Implementation}
+\newpage
+\input{sections/implementation_of_sensors}
+\newpage
+\input{sections/CAN_bus_tests}
 \newpage
 \input{bib}
+\appendix
+\input{appendixes/bare_metal_code}
 \newpage
 \end{document}
 
