@@ -1,0 +1,84 @@
+%!TEX root = ../main.tex
+
+\subsection{Data Collection}
+\label{sec:data_collection}
+As described earlier there needs to be several sensors on the system in order to measure relevant parameters.
+It should also be possible to add sensors at a later time by other developers. 
+One micro-controller could be used for all sensors, but it would not be feasible when the numbers of sensors grow. 
+The micro-controller would not have enough I/O peripherals to accommodate a lot of sensors. 
+It might also not have the needed computational power. 
+\\
+Therefore a network needs to be realized. Each node in the network being a micro-controller and one or more sensors.
+All sensor data needs to be collected by a node that transfers it wirelessly to the stationary computer.
+This node will also need to log data as this eases the task of transferring log data to the stationary computer.
+This node will be referred to as the wifi node.
+
+\subsubsection{Network Topology}
+
+There are various network topologies that can be used to setup the required node network for this project.
+These include the ring-, bus-, mesh-, star- and tree-network topology. 
+Before choosing a topology, a brief description of the purpose and functionality of the network as well as an overview of their advantages and disadvantages are needed. 
+
+\paragraph{Purpose of the Network}~\\
+\todo{Add the abbreviation ov = on-vehicle somewhere somehow}
+The purpose of this network is to accommodate multiple nodes, such as sensors sub-networks and in general data-producers.
+These nodes need to be able to transfer their data and receive massages from the wifi node.
+
+The reasons for this is, that the use cases specify that sensor data should be transferred wirelssly and it needs to be possibly to start and stop specific nodes.
+\\\\
+The communication between the various nodes and the wifi node does not require a central hub.
+Furthermore, in the case that one node fails, the network as a whole should still be operative.
+Since it is a multi-node network and it may require more nodes in the future, scalability is also required.
+
+\paragraph{Different Topologies}~\\
+\todo[inline]{Thomas: This section needs to be cleaned of any statements such as "this is the simplest and cheapest...". They are broad conclusions that we have no merrits on saying}
+\begin{itemize}
+\item \textbf{Bus:} This is the simplest and cheapest topology.
+All nodes communicate through a central bus and it is scalable with the addition of extra nodes on the two ends of the cable.
+The central bus introduces the risk of complete network failure in case of the bus failure and the decrease in performance in case of many nodes or heavy traffic.
+\item \textbf{Ring:} All the nodes in this type of network form a ring, where each node is connected to its two neighbors.
+It has the advantages of the bus network as well and it shows better performance, even under heavy load.
+A centralized control is not required for this type and in case of a node failure, the ring breaks and it can continue to function as a bus network.
+It is scalable, but to a less extent than the bus.
+\item \textbf{Mesh:} In this type, each node has direct connections to each other node present in the network.
+That provides speed and reliability in case of node failures, but requires more hardware and processing power to manage the connections.
+It is very robust but scalability is certainly not one of its features.
+\item \textbf{Star:} The star topology is a centralized type of networking.
+All nodes are connected to a central hub, handling all the communication between them.
+It is fast, easy to implement and offers great reliability in case of node failures.
+The major disadvantage is that if the hub fails, the entire network fails.
+It can be scalable to a certain point, since the hub can be upgraded to handle more connections.
+\item \textbf{Tree:} The last type, the tree is an extension of the bus and the star topologies combined.
+It can be easily scalable, but that adds extra difficulty in its maintenance.
+It also requires a lot of connections and in case the top (root) node fails, then all the network is down as well.
+\item \textbf{Hybrid:} The last type is the hybrid one, where depending on the needs and purpose of the network, two or more topologies can be combined to achieve the best balance between their advantages and disadvantages.
+\end{itemize}
+
+\paragraph{Suitable Topology}~\\
+For the systems networking purpose, the mesh type is not suitable, since it adds extra hardware requirements such as processing power and many redundant connections.
+A node may be a simple sensor with a small micro-controller and hence, connecting it to such a network is not feasible.
+%In our system, a small embedded board computer will be the ov-computer which requires to maintain its connection with the network even in case of failures and also possibly the central hub in centralized topologies that such as the star and the tree.
+The star network requires a lot of connections which normally are not present at standard micro-controllers.
+%Thus, these two topologies are not suited, since in case of its failure, the whole network fails.
+Thus, the mesh and star networks are not suited for this system
+Scalability is also a requirement for the future connection of nodes.
+Although the majority of the types provide a level of scalability, the addition of extra nodes always decrease the overall performance of any network.
+Hence, a topology that balances the decrease in performance against the network's expansion is best suited for the project.\\\\
+The approach that fits the requirements is implementing a bus network, where each node may be a subnetwork of a different type depending on the needs, making it into a hybrid network having a bus topology as its basis.
+This type provides a good balance of reliability, scalability, hardware requirements and communication speed in comparison to the others.
+
+\subsubsection{Networking technology}
+
+\paragraph{Existing Technologies}~\\
+Different networking technologies exist in use today, such as Ethernet, CANbus, CANopen and Powerlink, among others.
+CANbus is widely used in the automotive industry with data rates up to 1Mbit/s for small networks lengths, but the classic Ethernet and Powerlink support data rates of at least 10Mbit/s.
+Furthermore, Powerlink is suitable for transmission of time-critical data and timing-synchronization of the nodes and CANopen networks are very robust and reliable.
+\paragraph{Choosing a Technology}~\\
+\todo[inline]{Mikkel: Remove were..}
+The two choices that were considered for the scope of this project were Powerlink and CANopen.
+The first one can be implemented using openPowerlink at a software level and utilizing PmodNIC100 modules provided by the university.
+On the other hand, CANopen can be implemented using CANopenSocket\footnote{https://github.com/CANopenNode/CANopenSocket}, an open source git project built on CANopenNode.
+This library is easily implemented in Linux and can use various hardware, one of them being a USB to CAN interface board named USBtin\footnote{http://www.fischl.de/usbtin/}.
+Another available module to use is the CANbus.
+Since CANbus is a technology widely used in the automotive industry, it is chosen for this system.
+\mikkel{Explain that CAN is good enough for the calculated data rate.}

@@ -15,9 +15,6 @@ public:
 		const char *host, const char *port);
 	void write(std::string);
 private:
-	const char *host;
-	const char *port;
-
 	void do_connect(tcp::resolver::iterator endpoint_iterator);
 	void do_write();
 	void do_read();

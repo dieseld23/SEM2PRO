@@ -10,5 +10,6 @@ include_directories(include)
 file(GLOB SOURCES "src/*.cpp")
 
 add_executable(server ${SOURCES})
+message(boost: ${Boost_Libraries})
 target_link_libraries(server ${Boost_LIBRARIES})
 

@@ -1,0 +1,174 @@
+%!TEX root = ../main.tex
+
+\subsection{Parameters of Interest}
+\label{sec:parameters}
+In developing new hardware or evaluating current hardware, it is necessary to be able to monitor a range of parameters.
+This section will investigate what parameters need to be logged in order to provide a useful and complete logging of the behavior of the go-kart.
+The parameters in question fall into three categories; Physical parameters, electrical parameters and mechanical parameters.
+These will be dealt with in turn in the following sections
+\paragraph*{Physical Parameters}
+This category comprises all information about the motion of the go-kart.
+\begin{itemize}
+	\item \textbf{Position, Absolute:} Providing a means to record the absolute position of the go-kart is a useful feature in certain fields.
+	Especially any form of localisation and path finding will be able to put this information to use.
+	The absolute position of the go-kart can be recorded using a GPS module or possibly by using a known starting coordinate and information about the relative movement of the go-kart.
+	\item \textbf{Position, Relative:} The relative position of the kart can be, as just mentioned, used to infer the absolute position of the go-kart.
+	Additionally it can provide a means to analyze a drivers performance on track the or detect drift while cornoring.
+	The relative position includes both translational, as well as rotational information.
+	This information can be gathered using an inertial measurement unit (IMU).
+	An IMU is a compound device, comprising of an accelerometer and a gyroscope and, in some cases, a magnetometer.
+	\item \textbf{Velocity:} The velocity of the go-kart is key in optimising lap-times, clearly, it is desirable to monitor this parameter.
+	It can be extracted by reading the motor encoders.
+	However, the driving wheels are prone to slippage when cornoring, this would give an inaccurate reading of the actual velocity of the go-kart.
+	Instead, a simple encoder can be mounted on either one, or both of the front wheels as these are freerunning and independent.
+	Once the rotational speed of the axle is known, the velocity of the go-kart can be infered using the tyre diameter.
+	\item \textbf{Acceleration:} It may be of interest to monitor the forces exerted on the go-kart, or, its acceleration, as it drives on the track.
+	This information is already provided by the accelerometer in the IMU mentioned above and as such provides no additional complication.
+\end{itemize}
+Three sensors are mentioned in this section.
+A GPS, an IMU and an encoder.
+In order to limit the scope of the project only the GPS and the IMU will be implemented.
+\paragraph*{Electrical Parameters}
+This category comprises all information about the electrical aspects of the go-kart.
+\begin{itemize}
+	\item \textbf{Motor Currents:} Providing a means of monitoring the currents flowing through the motor allows the user to calculate the torque exerted by the motor as well as the current power draw of the motor.
+	Knowing the currents could also prove an invaluable debugging tool when developing a new inverter for the go-kart.
+	\item \textbf{Throttle Position:} The throttle on the go-kart is connected to a potentiometer.
+	Measuring the voltage output of this potentiometer provides a simple way of monitoring the position of the throttle.
+	\item \textbf{Desired Currents:} Based on the current throttle position a set of desired currents are calculated.
+	Monitoring these allows spotting any discrepancies between the desired and the actual currents.
+	\item \textbf{Duty Cycles:} Duty cycle is proportional to the voltage applied to the motor, and can be used to calculate the power going into the motor.
+	\item \textbf{Battery Voltage:} As the go-kart is electrical, naturally, it has a battery.
+	Monitoring the current battery status could give the user an indication of how much driving time is left, or how long until the batteries are recharged afterwards.
+	\item \textbf{Motor Angle:} Knowing the angle of the motor at all times gives a means of more accurately calculate the currents at specific times.
+	Additionally, it can be used in Clarke-Parke transformations, again, providing information in debugging an inverter in development.
+\end{itemize}
+These parameters are all available from the sevcon gen4 motor controller mounted on the go-kart.
+This controller has a CANopen interface from which this data can be extracted.
+Any users who wish to add their own inverter will simply need to obey the API stated by the sevcon gen4 CANopen interface in order to correctly log the data.
+\paragraph*{Mechanical Information}
+This category comprises all information about the mechanical aspects of the go-kart.
+\begin{itemize}
+	\item \textbf{Steering Wheel Angle:} Monitoring the angle of the steering wheel allows analysing the performance of the driver.
+	In addition it opens up for the possibility of mechanical control of the go-kart.
+	Similarly to monitoring the velocity, the steering wheel angle can be monitored by adding an encoder to the steering column.
+	\item \textbf{Braking Pedal Position:} The braking system on the go-kart is similar to that of an ordinary car.
+	The braking disc is mounted on the driving axle and the braking calibers connected to the brake pedal by a series of oil-filled hoses.
+	Monitoring its actuation allows analysing the performance of the driver and as mentioned above, may potentially allow for mechanical control of the go-kart
+\end{itemize}
+As both of these parameters would require mechanical changes to the go-kart, they are beyond the scope of this project and as such will not be implemented.
+\subsubsection*{Conclusion}
+In this section a multitude of different parameters have been discussed.
+Most of them can be logged using just three components; a Sevcon Gen4 motor controller, an IMU and a GPS.
+These are the three components from which data logging will be implemented throughout this project.
+This provides a solid platform to prove the concept and additional sensory equipment can be added at a later date, should it be required.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsection{Hardware for Monitoring Parameters}
+\label{sec:hardware_for_par}
+In section \ref{sec:parameters} an overview of the different parameters that may be of interest for logging is given.
+It was concluded that three components would suffice as a proof of concept; the Sevcon Gen4 motor controller, an IMU and a GPS.
+This section will explore in more detail what requirements and communication schemes exists for each of the components.
+
+\subsubsection*{Sevcon Gen4 Motor Controller}
+\label{sec:interfacin_with_sevcon}
+
+The Sevcon Gen4 motor driver is a general purpose AC motor driver. 
+This means, it can be used for both asynchronous and synchronous motors of a wide range of sizes.
+The controller can then be set up for the particular motor and peripherals, and run without interfacing to another computer.
+However, it is also possible to read data from it while running, and in some cases set values.
+It is therefore possible to use this to access the electrical parameters. \\
+
+The Sevcon communicates through CANopen, which is a high level protocol running on top of CAN.
+This allows reading from and writing to a vast array of registers of varying length.\\
+
+\mikkel{Martin: add something here about CANOPEN?}
+
+
+\subsubsection*{Inertial Measurement Unit (IMU)}
+\label{sec:imu}
+IMU's, generally, exist in two versions.
+A 6D and a 9D version (Dimensions).
+Both include an accelerometer and a gyroscope, each adding three dimensions.
+In addition to these the 9D IMU includes a magnetometer, enabling measurement of absolute direction, as opposed to the relative measurement of direction granted by the gyroscope.
+The requirement in terms of each of these parts is given as:
+\begin{itemize}
+	\item \textbf{Accelerometer [\si{\metre\per\second^2}]:} As the name implies, the accelerometer measures accelerations.
+	That is, when the component changes velocity the acceleration exerted on the IMU is measured.
+	Professional drivers using professional grade go karts driving upwards of 250 \si{\kilo\metre\per\hour} can reach up to 2-3 g's of force exerted on them.
+	The go kart available in this project has a maximum speed of 50 \si{\kilo\metre\per\hour}.
+	Clearly, the forces exerted on this platform will be lower, however, a minimum requirement of $\pm$ 3g will be set for the accelerometer in the IMU.
+	This will ensure that bumps in the road doesn't saturate the accelerometer
+	\item \textbf{Gyroscope [\si{\degree\per\second}]:} 
+	A gyroscope in this sense consists of three gyroscopes spinning at high velocity.
+	When the IMU turns in around any of its axis, the change will be detected on one of the gyroscopes. 
+	The gyroscope part of the IMU will mostly be useful for detecting change in inclination, turning the go kart, or spinning out.
+	In the two former cases, the rate of change is fairly low, about 90 \si{\degree\per\second} for a sharp turn. 
+	But in case the driver spins out, or oversteers, this number is much higher. 
+	Therefore the minimum requirement of $\pm 360 \si{\degree\per\second}$.
+	\item \textbf{Magnetometer [\si{\tesla}]:} 
+	The magnetometer measures the magnetic flux density through the IMU.
+	This is done by three hall sensors measuring the flux density along three axis. 
+	This can be used to calculate the absolute orientation of the go-kart, both which way is north and which way is up.
+	This type of sensor is notoriously noise sensitive.
+	The flux density of the Earth's magnetic field ranges up to $65 \si{\micro\tesla}$.
+	By comparison, this is several orders of magnitude lower than the magnetic field generated by the motor, so it's important to place the IMU away from the motor and high power wires.
+	The scale of the magnetometer would need to be at least $\pm 75 \si{\micro \tesla}$.
+\end{itemize}
+Common for all sensors is, that the smallest range, that is larger than the requirements above, is preferred, as these will have finer resolution, while keeping the bitrate down.
+The accelerometer measures the second derivative of translation with respect to time. 
+The gyroscope measures the first derivative of rotation with respect to time.
+This leaves three elements, that can be calculated: absolute translation (position), first derivative of translation (speed), absolute rotation (yaw, pitch and roll) and second derivative of rotation.
+The absolute translation is measured by the GPS, and the others can be calculated by data fusion of the IMU measurements.\\
+
+VN-100 from Vectornav is a 9D IMU with built in data processing to deduce more elements, that are not directly measurable.
+Its ranges are generally much larger than the requirements, but at the same time, has fine enough resolution.
+The accelerometer: 16 bits,  $\pm 16 \si{\meter \per \second \squared}$
+
+\begin{table}
+	\centering
+	\begin{tabular}{ c | c c c}
+		{\textbf{Sensor}} & {\textbf{Range}} & {\textbf{Bit}} & {\textbf{LSB}}\\
+		\hline
+		{Accelerometer}	& { $\pm 16 \mathrm{g}$}					& {16}	& {$< 0.5 \mathrm{g}$}\\
+		{Gyroscope}		& { $\pm 2000\si{\degree \per \second}$ }	& {18}	& {$<0.02 \si{\degree \per \second}$}\\
+		{Magnetometer}	& { $\pm 250 \si{\micro \tesla}$}			& {11}	& {$0.15 \si{\micro \tesla}$}
+	\end{tabular}
+	\caption{List of the resolution of the internal ADCs on the Vectornav VN-100}
+	\label{tab:vectornav_measurement_resolution}
+\end{table}
+
+In addition to the IMU sensors, the VN-100 also records air pressure, which is of no concern to us.
+Apart from the raw data listed above, the VN-100 can calculate other parameters, such as quaternions, yaw, pitch, roll, absolute heading and altitude.
+I can also make the accelerometer data zero base, meaning when the go kart is standing still, 0g will be printed from the IMU, rather than the 1g caused by the gravitational pull of earth. 
+
+\subsubsection*{Global Positioning System (GPS)}
+\mikkel{Something here?}
+
+
+\subsubsection*{Conclusion}
+\todo[inline]{Table with chosen sensors and their interfaces}

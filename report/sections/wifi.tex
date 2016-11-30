@@ -1,5 +1,5 @@
 %!TEX root = ../main.tex
-\section{Networking}
+\subsection{Networking}
 The system deviced throughout this report seeks to ease the task of collecting data from the go-kart.
 This is done by creating a network on the go-kart which allows the user to more easily add additional sensors.
 In addition to providing a flexible platform for adding sensors, it will collect the data produced by the sensors on the network.
@@ -26,7 +26,7 @@ See figure \ref{fig:basic_network}.
 These will be referred to as the off-kart network and the on-kart network, respectively, throughout the remainder of the report.
 The following sections will explore the creation of both of these networks in turn.
 
-\subsection{Off-Kart Network}
+\subsubsection{Off-Kart Network}
 As mentioned above, the off-kart network is done using wifi.
 It was chosen to use this method as all modern laptops are equipped with the capability of connecting to such a network.
 Hereafter the challenge lies in establishing an ad-hoc network between a zybo board and a PC.
@@ -44,6 +44,8 @@ For clarity, \texttt{sudo} is left out from all calls throughout this section.
 >>ip addr add wlan0 196.178.10.9
 \end{lstlisting}
 It is verified working using the ping command from both the Zybo board and to the PC and vice versa.
+
+\paragraph*{Setting Up the Ad-Hoc Network}~\\
 Below is a thorough description of the challenges encountered while setting up this device as well as a brief explanation of the choice of device.
 \\~\\
 Two methods were immediately available for use: A usb wifi dongle and a PMOD wifi interface.
@@ -114,7 +116,7 @@ Clearly, there are differences between the two systems, one or more of which wer
 In order to eliminate these differences the versions of the involved software was brought up to date.
 The PC is running Arch Linux, a distribution using rolling release.
 This means that, generally, the software will always be at the latest stable release.
-The Xillinux distribution running on the Zybo board is based on the Ubuntu 12.04 release, the long term support version from 201, see \cite{xillinux}. \martin{which year?}
+The Xillinux distribution running on the Zybo board is based on the Ubuntu 12.04 release, the long term support version from 2012, see \cite{xillinux}.
 As such, much of the software is outdated.
 The \texttt{iproute2} package as well as \texttt{network-manager} was updated to the latest version.
 Other than provide some experience with building and searching for dependencies, it did little to alleviate the issues.

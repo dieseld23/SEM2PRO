@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
 #include <boost/asio.hpp>
 
 using boost::asio::ip::tcp;
