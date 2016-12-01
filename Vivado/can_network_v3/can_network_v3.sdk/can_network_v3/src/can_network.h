@@ -17,6 +17,8 @@
 #define XCANPS_MAX_FRAME_SIZE_IN_WORDS 	(XCANPS_MAX_FRAME_SIZE / sizeof(u32))
 #define FRAME_DATA_LENGTH 				8  /* Frame Data field length */
 
+#define indexFR_PUID		0
+#define indexFR_DATA		1
 
 /******************************************************************************
  * Nodes messages ID in the CAN Stack of 4 Zybos, from bottom to top.
@@ -31,7 +33,8 @@
 #define NODE_2			2	// Node 2 -> middle top
 #define NODE_3			3	// Node 3 -> top
 
-#define NODE_ID			NODE_3
+#define NODE_MSG_ID		2000
+#define NODE_ID			NODE_0
 
 
 /*
@@ -71,7 +74,7 @@ XCanPs *CanInstPtr;
 
 //========================================================= Function Prototypes
 int init_CANNet();
-int SendFrame(XCanPs *InstancePtr, int hex);
+int SendFrame(XCanPs *InstancePtr, int data);
 int RecvFrame(XCanPs *InstancePtr);
 int amISubscribed(int nodeID, int publisherID);
 

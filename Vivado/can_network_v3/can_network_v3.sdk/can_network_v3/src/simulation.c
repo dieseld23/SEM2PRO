@@ -98,23 +98,32 @@ int init_SimulationSystem_Btns(){
 	return XST_SUCCESS;
 }
 
+
+
+
+
+
 /******************************************************************************
  * 							INPUT PORT SIMULATION
  *****************************************************************************/
 //========================================================== Handler Interrupts
 void Handler_IPortInterrupts(void *InstancePtr)
 {
-	int hex = 0;
+	int value = 0;
 
 	XGpio_InterruptDisable(&IPortInst, BTN_INT);
 
 	// Ignore additional button presses
 	if ((XGpio_InterruptGetStatus(&IPortInst) & BTN_INT) != BTN_INT) { return; }
 
-	hex = XGpio_DiscreteRead(&IPortInst, 1);
+	value = XGpio_DiscreteRead(&IPortInst, 1);
+	if( state_IPort == STATE_DISABLED && value == 1)
+		state_IPort = STATE_ENABLED;
+	else if( state_IPort == STATE_ENABLED && value == 0 )
+		state_IPort = STATE_DISABLED;
 
 	//XGpio_DiscreteWrite(&LEDInst, LED_CHANNEL, hex);
-	SendFrame(CanInstPtr, hex);
+	SendFrame(CanInstPtr, value);
 
     (void)XGpio_InterruptClear(&IPortInst, BTN_INT);
     XGpio_InterruptEnable(&IPortInst, BTN_INT);

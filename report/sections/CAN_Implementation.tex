@@ -4,10 +4,11 @@
 
 The next step after testing the stack board and showing the basic functionality of the CAN network was to implement it using Linux running on the Zybo board.
 This step required enabling the CAN drivers that reside in the Xillinux kernel and gaining access to the CAN devices.
-This section describes the necessary procedures that were followed.
+This section describes the necessary procedures that were followed in order to gain control over the CAN network from Linux.
+\\
 At this point the reader should be informed that although the CAN controllers could be used on the Processing System using bare-metal code, the implementation of CAN on the Programmable Logic and the access to it from Linux was not successful.
 After a lot of effort to create a physically functional network and researching on how to implement it, the conclusion that the available documentation is lacking was reached. 
-Alternatively, other means to prove the concept of the project were taken into account.
+Alternatively, other means to prove the concept of the project were taken into account, as described in section \ref{sub:Utilizing_Svr_Virtualization}.
 
 \subsubsection{Enabling the CAN Drivers}
 
@@ -21,7 +22,6 @@ Originally, lines 130 and 131 were as seen in the snippet \ref{code:can_kconfig_
 \end{lstlisting}
 
 \catalin{Xilinx CAN has "" around it, but LaTeX shows errors if inserted in the code snippet.}
-\catalin{Why do I get some questionmarks under references?"}
 
 \begin{lstlisting}[firstnumber=128,caption={Kconfig file contents from line 128.},label=code:can_kconfig_contents128]
 config CAN_XILINXCAN
@@ -75,10 +75,11 @@ It was also intended to be used to test the actual network, but since the networ
 \catalin{Rerun some virtual tests with can-utils to get code snippets}
 
 \subsection{Utilizing Service Virtualization for the Proof of Concept}
+\label{sub:Utilizing_Svr_Virtualization}
 
 In order to show that the system can be fully functional despite the unsuccessful attempt to implement it, a different approach than the actual implementation is needed.
 One way of doing that is to apply a method called service virtualization where one part of the system can be simulated to prove that the rest of the system is fully functional, given the presence of the missing simulated part.
-\\\\
+\\
 In this case, the system that was designed for this project can be divided into two parts or subsystems.
 The first one is the physical CAN network that was proved functional using bare\-metal code programmed using the JTAG mode \catalin{is this well expressed, JTAG mode?} on the Zybo board in the section \ref{sub:TestingCANStack_BareMetal}.
 The second part would be considered the subsystem present on Linux which included the protocol designed to be used with the CAN bus and the application which extracted the data from the sensors.

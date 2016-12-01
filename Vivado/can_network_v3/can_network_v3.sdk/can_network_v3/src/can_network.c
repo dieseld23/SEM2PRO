@@ -84,7 +84,7 @@ int SendFrame(XCanPs *InstancePtr, int hex){
 	/*
 	 * Create correct values for Identifier and Data Length Code Register.
 	 */
-	TxFrame[0] = (u32)XCanPs_CreateIdValue((u32)NODE_ID, 0, 0, 0, 0);
+	TxFrame[0] = (u32)XCanPs_CreateIdValue((u32)NODE_MSG_ID, 0, 0, 0, 0);
 	TxFrame[1] = (u32)XCanPs_CreateDlcValue((u32)FRAME_DATA_LENGTH);
 
 	/*
@@ -92,8 +92,9 @@ int SendFrame(XCanPs *InstancePtr, int hex){
 	 * on receive.
 	 */
 	FramePtr = (u8 *)(&TxFrame[2]);
-	FramePtr[0] = hex;
-	xil_printf("NodeID: %d -> Sending: %d\n", NODE_ID, FramePtr[0]);
+	FramePtr[indexFR_PUID] = NODE_ID;
+	FramePtr[indexFR_DATA] = hex;
+	xil_printf("NodeID: %d -> Sending: %d\n", NODE_ID, FramePtr[indexFR_DATA]);
 
 	/*
 	 * Wait until TX FIFO has room.
@@ -117,8 +118,6 @@ int RecvFrame(XCanPs *InstancePtr)
 {
 	u8 *FramePtr;
 	int Status;
-	int Index;
-	int publisherID;
 
 	/*
 	 * Wait until a frame is received.
@@ -137,10 +136,8 @@ int RecvFrame(XCanPs *InstancePtr)
 		 */
 		if (RxFrame[0] !=
 			(u32)XCanPs_CreateIdValue((u32)NODE_ID, 0, 0, 0, 0)){
-			xil_printf("returning\n");
 			return XST_LOOPBACK_ERROR;
 		}
-		publisherID = (u32)XCanPs_CreateIdValue((u32)NODE_ID, 0, 0, 0, 0);
 		if ((RxFrame[1] & ~XCANPS_DLCR_TIMESTAMP_MASK) != TxFrame[1])
 			return XST_LOOPBACK_ERROR;
 
@@ -148,9 +145,10 @@ int RecvFrame(XCanPs *InstancePtr)
 		 * Verify Data field contents.
 		 */
 		FramePtr = (u8 *)(&RxFrame[2]);
-		xil_printf("NodeID: %d -> Received: %d from Publisher %d.\n", NODE_ID, FramePtr[0], publisherID);
-
-		XGpio_DiscreteWrite(&LEDInst, LED_CHANNEL, FramePtr[0]);
+		if( amISubscribed(NODE_ID, FramePtr[indexFR_PUID]) ){
+			xil_printf("NodeID: %d -> Received: %d from Publisher %d.\n", NODE_ID, FramePtr[indexFR_DATA], FramePtr[indexFR_PUID]);
+			XGpio_DiscreteWrite(&LEDInst, LED_CHANNEL, FramePtr[indexFR_DATA]);
+		}
 	}
 
 	return Status;

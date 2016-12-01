@@ -33,7 +33,7 @@ int main(){
 		xil_printf("FAILED: Initialising CAN Network...\n");
 		return XST_FAILURE;
 	}
-
+	state_IPort = STATE_DISABLED;
 	//================== Main Loop
 	while(1){
 		RecvFrame(CanInstPtr);

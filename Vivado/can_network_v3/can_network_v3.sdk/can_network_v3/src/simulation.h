@@ -15,6 +15,8 @@
 #define SIM_BTNS						1
 #define SIM_IPORT						0
 #define SIMULATION						SIM_BTNS
+#define STATE_ENABLED					1
+#define STATE_DISABLED					0
 #define LEDS_DEVICE_ID 					XPAR_AXI_GPIO_LEDS_DEVICE_ID
 #define BTNS_DEVICE_ID 					XPAR_AXI_GPIO_BTNS_DEVICE_ID
 #define IPORT_DEVICE_ID					XPAR_AXI_GPIO_IN_INTR_DEVICE_ID
@@ -27,6 +29,7 @@
 //======================================================== Variable Definitions
 XGpio LEDInst, BTNInst, IPortInst;
 XScuGic INTCInst;
+static int state_IPort;
 
 //========================================================= Function Prototypes
 void Handler_IPortInterrupts(void *InstancePtr);
