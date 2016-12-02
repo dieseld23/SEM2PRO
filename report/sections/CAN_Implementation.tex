@@ -4,10 +4,11 @@
 
 The next step after testing the stack board and showing the basic functionality of the CAN network was to implement it using Linux running on the Zybo board.
 This step required enabling the CAN drivers that reside in the Xillinux kernel and gaining access to the CAN devices.
-This section describes the necessary procedures that were followed.
+This section describes the necessary procedures that were followed in order to gain control over the CAN network from Linux.
+\\
 At this point the reader should be informed that although the CAN controllers could be used on the Processing System using bare-metal code, the implementation of CAN on the Programmable Logic and the access to it from Linux was not successful.
 After a lot of effort to create a physically functional network and researching on how to implement it, the conclusion that the available documentation is lacking was reached. 
-Alternatively, other means to prove the concept of the project were taken into account.
+Alternatively, other means to prove the concept of the project were taken into account, as described in section \ref{sub:Utilizing_Svr_Virtualization}.
 
 \subsubsection{Enabling the CAN Drivers}
 
@@ -21,7 +22,6 @@ Originally, lines 130 and 131 were as seen in the snippet \ref{code:can_kconfig_
 \end{lstlisting}
 
 \catalin{Xilinx CAN has "" around it, but LaTeX shows errors if inserted in the code snippet.}
-\catalin{Why do I get some questionmarks under references?"}
 
 \begin{lstlisting}[firstnumber=128,caption={Kconfig file contents from line 128.},label=code:can_kconfig_contents128]
 config CAN_XILINXCAN
@@ -38,7 +38,7 @@ config CAN_XILINXCAN
 	default n
 \end{lstlisting}
 
-Next, the modification of the device tree settings file was the second step, requiring an entry for the CAN PS to be inserted. The necessary file was located under the boot folder named as seen in \ref{code:dts_file_zybo}.
+The next step of the process was the modification of the device tree settings file, requiring an entry for the CAN PS to be inserted. The necessary file was located under the boot folder named as seen in \ref{code:dts_file_zybo}.
 
 \begin{lstlisting}[numbers=none,caption={Device tree settings file and its path.},label=code:dts_file_zybo]
 /boot/xillinux-1.3-zybo.dts
@@ -49,6 +49,7 @@ Next, the modification of the device tree settings file was the second step, req
 \end{lstlisting}
 \mikkel{Maybe you can provide some thoughts about the problem. Maybe also some words about the patching Xilinx-Digilent etc.}
 As was previously mentioned, the implementation was unsuccessful. At the time of writing this report, 
+\catalin{What did I want to say here?}
 
 \subsubsection{Utilizing the AXI CAN core}
 
@@ -75,13 +76,15 @@ It was also intended to be used to test the actual network, but since the networ
 \catalin{Rerun some virtual tests with can-utils to get code snippets}
 
 \subsection{Utilizing Service Virtualization for the Proof of Concept}
+\label{sub:Utilizing_Svr_Virtualization}
 
 In order to show that the system can be fully functional despite the unsuccessful attempt to implement it, a different approach than the actual implementation is needed.
 One way of doing that is to apply a method called service virtualization where one part of the system can be simulated to prove that the rest of the system is fully functional, given the presence of the missing simulated part.
-\\\\
+\\
 In this case, the system that was designed for this project can be divided into two parts or subsystems.
 The first one is the physical CAN network that was proved functional using bare\-metal code programmed using the JTAG mode \catalin{is this well expressed, JTAG mode?} on the Zybo board in the section \ref{sub:TestingCANStack_BareMetal}.
 The second part would be considered the subsystem present on Linux which included the protocol designed to be used with the CAN bus and the application which extracted the data from the sensors.
 \catalin{Some more words about how are we going to produce the data and how are we going to pass the data to the application etc.}
 The main idea was to run three tests separately, which combined together would prove that the system is fully functional given the fact that there would be access to the CAN controller and physical network from Linux. In other words, a virtualized connection or link between the Linux OS running on the Zybo board and the CAN devices on the Programmable Logic level \catalin{can controllers or devices or sth else?} was simulated.
 \catalin{more when Thomas makes an awesome illustration for this.}
+\catalin{How many tests in total for this proof of concept?}
