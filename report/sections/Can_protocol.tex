@@ -51,3 +51,16 @@ The four node IDs are:
 The reason for this naming is, that the Wifi node acts as a commander for the, and it's commands need higher priority.
 The IMU produces short data packages at a high rate, and the GPS node produces longer data packages at a lower rate. 
 Therefore it is of less concern if the GPS message is delayed due to obstruction from other nodes. 
+
+\catalin{Based on Node ids and messages ids, is this useful or not?}
+\subsubsection{Publisher-Subscriber Architecture}
+\catalin{Should I explain more about the architecture? Or is it the readers responsibility to read about it?}
+A mechanism was also necessary to control the receivers and transmitters of messages.
+One of the functionalities of the network was to provide the ability for various nodes to be able to send messages to specific nodes.
+Such a mechanism could easily be implemented using the Publisher-Subscriber architecture which would also make the network data-driven.
+Using this method, the communication among the various nodes was easily configured.
+\\
+This was achieved by implementing a two-dimensional array variable in the source code mapping the subscriptions of the nodes using the node id as row and publisher id as column.
+For simplicity and ease of use, a function for this purpose was made, accepting as parameters the node id and the publisher id contained in the received message.
+By receiving a message on the network, the function would be called and then would return true or false, according to the mapping array.
+\catalin{Refer to the code in the appendix or place the function here.}

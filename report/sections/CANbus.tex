@@ -99,9 +99,11 @@ This basically means, that the controllers may come out of synch at the end of e
 
 After the design and printing of the stack board, testing it was the next step.
 The test included using one the CAN controllers within the Zynq chip with the purpose of showing that a basic CAN network between two Zybo boards could be implemented using the stack.
-Specifically, the one Zybo was sending the input value of the buttons to the network in order to be received by the second one and turn on the on-board LEDs as a result.
+Specifically, the one Zybo was sending the input value of the buttons to the network in order to be received by the second one and turn on the appropriate on-board LEDs as a result.
 After designing a basic architecture in Vivado and writing a source code, the test was successful, thus proving the basic functionality of a CAN network.
+The messages sent from one node to the other one were received correctly, containing the intended value of the buttons. 
 All Zybo boards were programmed with the same architecture and source code.
+\catalin{Add a ref to appendix about the code}
 
 \paragraph{Architecture}
 In order to realize the above test, enabling the CAN controller inside the Zynq chip as well as including two AXI GPIO cores were necessary.

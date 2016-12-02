@@ -25,17 +25,16 @@
  * Keep the IDs in the range of [0,..., NODES_NUM] to be used properly
  * with the subscriptions mechanism implemented in amISubscribed()
  *****************************************************************************/
+#define NODES_NUM		4
+#define NODE_ID_WIFI	0x1	// Bottom, 			0b0001
+#define NODE_ID_IMU		0x3	// Middle bottom	0b0011
+#define NODE_ID_SEV		0x7	// Middle top		0b0111
+#define NODE_ID_GPS		0xE	// Top				0b1110
+
+#define NODE_ID			NODE_ID_WIFI
+
 #define SUBSCRIBED		1
 #define NOT_SUBSCRIBED	0
-#define NODES_NUM		4
-#define NODE_0			0	// Node 0 -> bottom
-#define NODE_1			1	// Node 1 -> middle bottom
-#define NODE_2			2	// Node 2 -> middle top
-#define NODE_3			3	// Node 3 -> top
-
-#define NODE_MSG_ID		2000
-#define NODE_ID			NODE_0
-
 
 /*
  * The Baud Rate Prescaler Register (BRPR) and Bit Timing Register (BTR)
@@ -60,7 +59,7 @@
  * This value is for a 40 Kbps baudrate assuming the CAN input clock frequency
  * is 24 MHz.
  */
-#define TEST_BRPR_BAUD_PRESCALAR	29
+#define TEST_BRPR_BAUD_PRESCALAR	3
 //======================================================== Variable Definitions
 /*
  * Buffers to hold frames to send and receive. These are declared as global so

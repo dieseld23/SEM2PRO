@@ -78,19 +78,19 @@ int init_CANNet(){
 //================================================================== Send Frame
 int SendFrame(XCanPs *InstancePtr, int hex){
 	u8 *FramePtr;
-	int Index;
 	int Status;
 
 	/*
 	 * Create correct values for Identifier and Data Length Code Register.
 	 */
-	TxFrame[0] = (u32)XCanPs_CreateIdValue((u32)NODE_MSG_ID, 0, 0, 0, 0);
+	TxFrame[0] = (u32)XCanPs_CreateIdValue((u32)NODE_ID, 0, 0, 0, 0);
 	TxFrame[1] = (u32)XCanPs_CreateDlcValue((u32)FRAME_DATA_LENGTH);
 
 	/*
 	 * Now fill in the data field with known values so we can verify them
 	 * on receive.
 	 */
+
 	FramePtr = (u8 *)(&TxFrame[2]);
 	FramePtr[indexFR_PUID] = NODE_ID;
 	FramePtr[indexFR_DATA] = hex;
