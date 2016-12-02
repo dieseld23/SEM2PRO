@@ -85,20 +85,25 @@ When the end of the message occurs, the node will try to send the message again.
 It might then be blocked again by another node, and there is a risk, that it will never send.
 It is the developer's responsibility to ensure that this doesn't happen.\\
 
-It is, that messages are extended by bit stuffing.
+Another automatic feature of can is called Bit stuffing
 If either 0 or 1 is written to the controller 5 consecutive times, the opposite polarity is interjected, or stuffed, into the stream. 
 This is done to ensure that receiving nodes remain synchronized with the transmitting node, as there is no clock signal.
 That means, that a frame can be extended by upwards of 20 \% if the data requires it.
+This is however not done to the EOF and IFS parts.
+This basically means, that the controllers may come out of synch at the end of each message, which doesn't really matter because because the frame is finished anyway.
 
 
 \subsubsection{Testing the CAN Stack for a Basic Network}
+\label{sub:TestingCANStack_BareMetal}
 \martin{This testing should be moved to the bottom of this section, to test the protocol as well}
 
 After the design and printing of the stack board, testing it was the next step.
 The test included using one the CAN controllers within the Zynq chip with the purpose of showing that a basic CAN network between two Zybo boards could be implemented using the stack.
-Specifically, the one Zybo was sending the input value of the buttons to the network in order to be received by the second one and turn on the on-board LEDs as a result.
+Specifically, the one Zybo was sending the input value of the buttons to the network in order to be received by the second one and turn on the appropriate on-board LEDs as a result.
 After designing a basic architecture in Vivado and writing a source code, the test was successful, thus proving the basic functionality of a CAN network.
+The messages sent from one node to the other one were received correctly, containing the intended value of the buttons. 
 All Zybo boards were programmed with the same architecture and source code.
+\catalin{Add a ref to appendix about the code}
 
 \paragraph{Architecture}
 In order to realize the above test, enabling the CAN controller inside the Zynq chip as well as including two AXI GPIO cores were necessary.
@@ -115,10 +120,10 @@ One AXI GPIO was setup as leds 4bits while the other one as btns 4bits as it can
 The programming for this task was done in C.
 The code from xcanps polled example provided by Xilinx documentation was used as a basis.
 The example shows the basic principle of sending and receiving messages on a loopback network on a single board.
-With further modifications and the addition of extra functionalities such as reading button input and writing the output to the LEDs, the finalized developed code was suitable to test the communication between two nodes on the CAN network.
-\\\\
-The basic principle for testing was to trigger an interrupt attached to the button presses, which then the send() function would send the value of the buttons to the network as a message.
-In turn, the receive() function was responsible of reading the message transmitted on the bus and writing the value as output to the LEDs.
-As mentioned before, this source code was common and uploaded to both boards resulting in a two-way communication, since both of them had a send() and a receive() function, thus one controlling the LEDs of the other one.
+With further modifications and the addition of extra functionalities such as reading button input and writing the output to the LEDs, the finalized developed code was suitable to successfully test the communication between two nodes on the CAN network. The full code can be seen in the appendix.
+\catalin{Add the code to the appendix, but first let's add an appendixes part.}
+The basic principle for testing was to trigger an interrupt attached to the button presses, which then the SendFrame() function would send the value of the buttons to the network as a message.
+In turn, the RecvFrame() was responsible of reading the message transmitted on the bus and writing the value as output to the LEDs.
+As mentioned before, this source code was common and uploaded to both boards resulting in a two-way communication, since both of them had a SendFrame() and a RecvFrame() function, thus one controlling the LEDs of the other one.
 
 \todo{We need a picture with 2 or better, 4 boards as stack! The coolest thing ever :P.}
