@@ -66,5 +66,20 @@ end
 
 build_frame_time = t_start - t(n)
 
+x=1;
+
+for n=2:length(CAN)
+    if CAN(n) ~= CAN(n-1)
+        T(x)=t(n);
+        x = x+1;
+    end
+end
+
+DT = T(2:length(T))-T(1:(length(T)-1));
+
+t_pulse = 0.8;
+n_pulse = 800;
+n0 = 7794;
+t0 = n0*t_pulse/n_pulse;
 
 
