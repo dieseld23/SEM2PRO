@@ -1,6 +1,6 @@
 %!TEX root = ../main.tex
 \catalin{IMPORTANT: In case we get the actual network running, don't forget to change the text accordingly (implementation not successful etc.)}
-\subsection{Implementing CAN on Linux}
+\subsection{Methods to implement CAN on Linux}
 
 The next step after testing the stack board and showing the basic functionality of the CAN network was to implement it using Linux running on the Zybo board.
 This step required enabling the CAN drivers that reside in the Xillinux kernel and gaining access to the CAN devices.
@@ -65,6 +65,43 @@ The core accepts a clock frequency from \SI{8}{\mega\hertz} to \SI{24}{\mega\her
 	\label{fig:CAN_Arch_with_AXI_CAN}
 \end{figure}
 
+\subsubsection{Utilizing Asymmetric Multiprocessing}
+
+Apart from using the AXI CAN core and the CAN drivers, the Zynq-7000 AP SoC provides the possibility of implementing a mechanism called asymmetric multiprocessing since there are two processors which share common memory as well as peripherals.
+The idea of this is to run Linux OS on one processor, while on the other one a bare-metal system, which both of them can communicate with each other.
+This was a proposed solution for the problem of accessing the CAN devices from Linux which was the most promising of the implementation methods discussed in this report, but due to lack of time, it was researched only at a theoretical level.
+A brief implementation description will be give in this section, but for more details, the reader may refer to the Xilinx document \cite{Xilinx_AMP}.
+
+\paragraph{Implementation details}
+In order to achieve asymmetric multiprocessing on the Zybo board, certain steps are required to be taken, but also a few precautions.
+An important one is to configure the two processors appropriately in order to use the shared memory without conflicts.
+A second one is to setup the CPU0 as the master, because that is the processor assigned for the Linux OS.
+It is also the one that will start CPU1 by writing a value to a specific address in memory.
+Also, Linux needs to be configured as symmetric multiprocessing with a maximum number of one CPUs.
+It is a good approach because it will ensure that Linux configures the interrupt control distributor (ICD) and the snoop control unit (SCU) appropriately for multi-CPU environment, but only running on one of the two CPUs.
+\\
+Applications for the bare-metal and the Linux part are also needed. Specifically, the former makes use of the fist stage boot loader (FSBL) as well as a custom application that will run on the CPU1 after it will be loaded by the FSBL into the memory.
+The latter, the Linux OS, uses two applications as well.
+The first one is RWMEM which is an utility providing the ability to read and write to various memory locations.
+The second one is the Soft UART, which constantly monitors the memory in order to receive data from the application running on the second processor, the bare-metal code.
+\\
+The next step is to create the Linux kernel and device tree, as well as the u-boot.
+Acquiring the root file system is also a requirement.
+One important note here is the modification of the device tree includes instructions for the Linux to only use one CPU and to not access certain amount of memory, which is reserved for the bare-metal application.
+For instructions for the creation of the kernel, u-boot and acquiring the root file system, the reader may refer to the Xilinx Wiki \cite{Xilinx_wiki}.
+\\
+Lastly, after all the above steps, the last one is to follow the appropriate procedures to copy the necessary files to an SD card. The files, including the applications, are:
+\begin{itemize}
+\item BOOT.BIN
+\item uramdisk.image.gz
+\item devicetree.dtb
+\item uImage
+\item rwmem.elf
+\item softUart.elf
+\end{itemize}
+
+The application for the CPU1 is included in the BOOT.BIN file.
+
 \subsubsection{Using can-utils for virtual nodes}
 
 During the development of this project, the can-utils tool was also used.
@@ -84,5 +121,5 @@ The first one is the physical CAN network that was proved functional using bare\
 The second part would be considered the subsystem present on Linux which included the protocol designed to be used with the CAN bus and the application which extracted the data from the sensors.
 \catalin{Some more words about how are we going to produce the data and how are we going to pass the data to the application etc.}
 The main idea was to run three tests separately, which combined together would prove that the system is fully functional given the fact that there would be access to the CAN controller and physical network from Linux. In other words, a virtualized connection or link between the Linux OS running on the Zybo board and the CAN devices on the Programmable Logic level \catalin{can controllers or devices or sth else?} was simulated.
-\catalin{more when Thomas makes an awesome illustration for this.}
+\catalin{more to add and modify when Thomas makes an awesome illustration for this.}
 \catalin{How many tests in total for this proof of concept?}
