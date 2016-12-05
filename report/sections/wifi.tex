@@ -30,7 +30,7 @@ The following sections will explore the creation of both of these networks in tu
 As mentioned above, the off-kart network is done using wifi.
 It was chosen to use this method as all modern laptops are equipped with the capability of connecting to such a network.
 Hereafter the challenge lies in establishing an ad-hoc network between a zybo board and a PC.
-This network is created using the a USB-Wifi dongle on the Zybo board. 
+This network is created using a USB-Wifi dongle on the Zybo board. 
 The following script is run to bring down the device, change the network type to ad-hoc, bring up the device, create the ad-hoc network and, finally, assign an IP-address to the device.
 \martin{bring down and bring up?}
 Note: some commands require super user access.
@@ -41,22 +41,32 @@ For clarity, \texttt{sudo} is left out from all calls throughout this section.
 >>iw wlan0 set type ibss
 >>ip link set wlan0 up
 >>iw wlan0 ibss join go-kart 2412
->>ip addr add wlan0 196.178.10.9
+>>ip addr add wlan0 196.178.10.10
 \end{lstlisting}
 It is verified working using the ping command from both the Zybo board and to the PC and vice versa.
 
+Upon setting up the ad-hoc network, a socket connection is created between the Zybo board and the PC using socat
+\begin{lstlisting}
+zybo>>socat - tcp-listen:2048
+pc>>socat - tcp:196.178.10.10
+\end{lstlisting}
+
+Messages can be passed through this connection by piping data to it.
+
+Following is a description of the steps taken to reach the approach explained above.
 \paragraph*{Setting Up the Ad-Hoc Network}~\\
 Below is a thorough description of the challenges encountered while setting up this device as well as a brief explanation of the choice of device.
 \\~\\
 Two methods were immediately available for use: A usb wifi dongle and a PMOD wifi interface.
 As the name implies, the latter is designed to be compatible with the PMOD interfaces on the zybo board (and a range of similar boards offered by Digilent Inc.).
 It converts TCP/IP to SPI and vice versa.
-However, since the zybo boards are already running a linux distribution, it was decided to attempt connecting through the usb wifi dongle.
+However, since the zybo boards are already running a linux distribution, it was decided to attempt connecting through the usb/wifi dongle.
 This decision marked the beginning of a long journey, the highlights of which are discussed below. 
 \\~\\
 The first step was to ensure that the correct drivers are present on the system.
-The usb dongle is a TP-LINK TL-WN722N.
-This device uses the Atheros AR9271 chipset and is on the list of supported devices for the ath9k\_htc driver on wireless.wiki.kernel.org.
+The usb/wifi dongle is a TP-LINK TL-WN722N.
+This device uses the Atheros AR9271 chipset and is on the list of supported devices for the ath9k\_htc driver (available on xillinux) on wireless.wiki.kernel.org.
+It is also capable of supporting ad-hoc networks, a crucial feature in setting up this network.
 Running \texttt{dmesg} prints the kernel log, revealing, amongst other things, what drivers are loaded.
 \begin{lstlisting}
 >>dmesg | grep ath
@@ -181,3 +191,48 @@ Finally, a short bash script is written to quickly set up the network:
 >>iw wlan0 ibss join go-kart 2412
 >>ip addr add wlan0 196.178.10.9
 \end{lstlisting}
+Since the system will not necessarily have an interface when it is mounted on the go-kart, it will have to automatically run this script on startup.
+On Xillinux, this can be achived by placing the script in \path{/etc/init.d/<script_name>}.
+
+\paragraph*{Making the connection}~\\
+Having correctly set up the network, the next step is to make a connection between the PC and the Zybo.
+This can be done using a variety of methods.
+For this project, three approaches were considered:
+
+\begin{itemize}
+	\item C
+	\item Boost
+	\item Socat
+\end{itemize}
+
+\thomas{What do we actually call this "connection", socket connection, TCP/IP connection, w/e connection?}
+
+\paragraph*{C}has already been used in other parts of the project. 
+For this reason, this was the first option to be considered.
+This option has the benefit of relying only on the standard C libraries.
+Although \cite{beej} was used as a reference in setting up the connection, it proved difficult to create a bi-directional connection across the ad-hoc network.
+
+\paragraph*{Boost}is a widely used C++ library.
+As the authors had prior knowledge with this library it became the next choice.
+asio is part of Boost and contains all of the tools necessary to set up a TCP/IP connection.
+Boost provides a multitude of different examples and tutorials on how to use asio, specifically the chat server from \cite{boostchat} was modified and formed the basis for the program used in setting up the connection\footnote{The code can be found on the enclosed USB-key at \path{/code/socket/} along with instructions on compiling.}.
+\thomas{Put server/client code on usbkey:/code/socket/}
+This approach was not without problems, however.
+As mentioned previously, Xillinux is based on an older version of ubuntu, as such, the version of cmake and Boost available on the platform is insufficient.
+In updating the software, one significant issue emerged; the size of the library.
+Boost takes up 684MB of space, making it infeasible for use on the ZB.
+Clearly, using a library the size of Boost for that one purpose, is unreasonable.
+
+\thomas{Not sure this is done, there is more to the story, but it seems irrelevant, given that we ended up scrapping this solution.}
+
+\paragraph*{\underline{So}cket\underline{cat}} is a command line utility that can be used to establish a bi-directional connection between two hosts.
+As opposed to the two prior solutions, socat is implemented and verified by the authors of the utility.
+
+\thomas{Clearly not done, explain the command structure, piping, single responsibility}
+
+\paragraph*{Conclusion}
+Throughout this section a connection was made between a PC and the ZB.
+It was chosen to use a usb/wifi-dongle to carry the signal on the ZB.
+The TP-LINK TL-WN722N, a general consumer dongle, was chosen for two reasons: The chipset of the dongle is supported by the available drivers and it is capable of creating ad-hoc networks.
+
+\thomas{More needs to be put here on setting up the ad-hoc network and that using socat is awesome.}
