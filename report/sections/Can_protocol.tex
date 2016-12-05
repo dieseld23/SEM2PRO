@@ -26,18 +26,21 @@ The message ID is split in to three portions, as seen on figure~\ref{fig:CAN_pro
 The first bit is set to 1 if this is a new message.
 If however the node needs to send more than 8 bytes in one package, this bit can be set to 0, thus blocking other nodes with higher priority.
 The subsequent four bits indicate the transmitting node ID, which will allow up to 16 nodes. 
-The last 6 bits of the message ID would contain an identifier for what the data portion of the frame contains.
+The last 6 bits of the message ID would determine the message type.
+This message type then determines 
 This leaves 64 different message types for each node -- it is then the developers to utilize these the best. 
 If more message types are needed, the CAN protocol supports extended identifier, which adds 18 bits of identifiers.
+This however also increases the overhead, and puts unnecessary load on the bus
 Each node will have a list of message IDs (10 bits), that it knows how to handle.
 If a message is not on that list, the node will ignore it.\\
 
-There are basically two types of nodes: The Wifi node acting a , and all other nodes.
+There are basically two types of nodes: The Wifi node acting as a commander, and all other nodes.
 Generally nodes can either produce data, and/or receive commands.
 The Wifi node neither produces any kind of data nor receives commands, but it does receive data, and send out commands.
-Therefore, there is a special case, for where the Wifi node is sending.
+Therefore, there is a special case, for when the Wifi node is sending.
 In this case, the subsequent four bits determines the recipient, leaving two bits for command type. 
-For this part, command types are only "Start broadcasting" and "Stop broadcasting", but could be extended to for instance "Set parameter" or "Set value", where the data field will indicate which parameter, and what is's set to.\\
+For now, command types are only "Start broadcasting" and "Stop broadcasting", but could be extended to for instance "Set parameter" or "Set value", where the data field will indicate which parameter, and what is's set to.
+If the recipient message ID is the WiFi node ID, then the command applies to all nodes.\\
 
 The four node IDs are:
 \begin{table}[h!]
