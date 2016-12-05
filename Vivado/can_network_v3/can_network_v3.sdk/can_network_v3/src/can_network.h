@@ -17,14 +17,6 @@
 #define XCANPS_MAX_FRAME_SIZE_IN_WORDS 	(XCANPS_MAX_FRAME_SIZE / sizeof(u32))
 #define FRAME_DATA_LENGTH 				8  /* Frame Data field length */
 
-#define indexFR_PUID		0
-#define indexFR_DATA		1
-
-/******************************************************************************
- * Nodes messages ID in the CAN Stack of 4 Zybos, from bottom to top.
- * Keep the IDs in the range of [0,..., NODES_NUM] to be used properly
- * with the subscriptions mechanism implemented in amISubscribed()
- *****************************************************************************/
 #define NODES_NUM		4
 #define NODE_ID_WIFI	0x1	// Bottom, 			0b0001
 #define NODE_ID_IMU		0x3	// Middle bottom	0b0011
@@ -33,8 +25,13 @@
 
 #define NODE_ID			NODE_ID_WIFI
 
+#define SUBSCRIPTIONS	5
 #define SUBSCRIBED		1
-#define NOT_SUBSCRIBED	0
+#define NOTSUBSCRIBED	0
+
+#define SHIFT_PRIOBIT		0x4
+#define SHIFT_NODEID		0x4
+#define SHIFT_MSGTYPE		0x2
 
 /*
  * The Baud Rate Prescaler Register (BRPR) and Bit Timing Register (BTR)
@@ -75,7 +72,20 @@ XCanPs *CanInstPtr;
 int init_CANNet();
 int SendFrame(XCanPs *InstancePtr, int data);
 int RecvFrame(XCanPs *InstancePtr);
-int amISubscribed(int nodeID, int publisherID);
+int createProtocolID(int priobit, int nodeID, int msgtype, int last2bits);
+struct ProtocolData decodeProtocolID(int protocolID);
+int getMessageID(struct ProtocolData pData);
+int amISubscribed(int msgid);
+
+struct ProtocolData {
+  int prioritybit;
+  int nodeID;
+  int msgtype;
+  int last2bits;
+};
+
+
+int subscriptions[SUBSCRIPTIONS] = {0xeb, 0xec,0xad,0x1d,0x3f};
 
 
 #endif /* SRC_CAN_NETWORK_H_ */

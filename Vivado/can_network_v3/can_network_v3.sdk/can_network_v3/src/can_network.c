@@ -83,7 +83,19 @@ int SendFrame(XCanPs *InstancePtr, int hex){
 	/*
 	 * Create correct values for Identifier and Data Length Code Register.
 	 */
-	TxFrame[0] = (u32)XCanPs_CreateIdValue((u32)NODE_ID, 0, 0, 0, 0);
+	//TxFrame[0] = (u32)XCanPs_CreateIdValue((u32)NODE_ID, 0, 0, 0, 0);
+
+	/* ========================================================================
+	 * HERE IS were we can assign the
+	 *
+	 * 		priority bit
+	 * 		node id
+	 * 		message type
+	 * 		last 2 bits
+	 *
+	 * as arguments for createProtocolID()
+	 * ======================================================================*/
+	TxFrame[0] = (u32)createProtocolID(0x0, NODE_ID, 0xb, 0x0);
 	TxFrame[1] = (u32)XCanPs_CreateDlcValue((u32)FRAME_DATA_LENGTH);
 
 	/*
@@ -92,9 +104,8 @@ int SendFrame(XCanPs *InstancePtr, int hex){
 	 */
 
 	FramePtr = (u8 *)(&TxFrame[2]);
-	FramePtr[indexFR_PUID] = NODE_ID;
-	FramePtr[indexFR_DATA] = hex;
-	xil_printf("NodeID: %d -> Sending: %d\n", NODE_ID, FramePtr[indexFR_DATA]);
+	FramePtr[0] = hex;
+	xil_printf("NodeID: %d -> Sending: %d with msg id: %x\n", NODE_ID, FramePtr[0], getMessageID( decodeProtocolID(TxFrame[0]) ));
 
 	/*
 	 * Wait until TX FIFO has room.
@@ -133,49 +144,80 @@ int RecvFrame(XCanPs *InstancePtr)
 	if (Status == XST_SUCCESS) {
 		/*
 		 * Verify Identifier and Data Length Code.
-		 */
 		if (RxFrame[0] !=
 			(u32)XCanPs_CreateIdValue((u32)NODE_ID, 0, 0, 0, 0)){
 			return XST_LOOPBACK_ERROR;
 		}
+		 */
 		if ((RxFrame[1] & ~XCANPS_DLCR_TIMESTAMP_MASK) != TxFrame[1])
 			return XST_LOOPBACK_ERROR;
 
-		/*
-		 * Verify Data field contents.
-		 */
 		FramePtr = (u8 *)(&RxFrame[2]);
-		if( amISubscribed(NODE_ID, FramePtr[indexFR_PUID]) ){
-			xil_printf("NodeID: %d -> Received: %d from Publisher %d.\n", NODE_ID, FramePtr[indexFR_DATA], FramePtr[indexFR_PUID]);
-			XGpio_DiscreteWrite(&LEDInst, LED_CHANNEL, FramePtr[indexFR_DATA]);
+		if( amISubscribed( RxFrame[0]) ){
+			xil_printf("NodeID: %d -> Received: %d with msg id: %x.\n", NODE_ID, FramePtr[0], getMessageID( decodeProtocolID(RxFrame[0]) ) );
+			XGpio_DiscreteWrite(&LEDInst, LED_CHANNEL, FramePtr[0]);
 		}
 	}
 
 	return Status;
 }
 
-//============================================================= Am I Subscribed
-int amISubscribed(int nodeID, int publisherID){
-	/*=========================== Subscriptions using NODE_IDs as indexes.
-	 *		Publishers->|	Node_0	|	Node_1	|	Node_2	|	Node_3	|
-	 *		Subscribers	|===============================================|
-	 *			Node_0	|		0	|		1	|		0	|		1	|	<- Example
-	 *			Node_1	|		x	|		x	|		x	|		x	|
-	 *			Node_2	|...
-	 *			Node_3	|...
+//============================================================= Protocol ID & Subscriptions
+int createProtocolID(int priobit, int nodeID, int msgtype, int last2bits){
+
+	/* It creates the 11bit number for our protocol. */
+
+	int protocolID;
+
+	protocolID = priobit<<SHIFT_PRIOBIT | nodeID;
+	protocolID = protocolID<<SHIFT_NODEID | msgtype;
+	protocolID = protocolID<<SHIFT_MSGTYPE | last2bits;
+
+	return protocolID;
+}
+
+struct ProtocolData decodeProtocolID(int protocolID){
+
+	/* It decodes the protocolID to create a struct with the
+	 * 4 values from our protocolID:
+	 *		priority bit
+	 *		node id
+	 *		message type
+	 *		last 2 bits
+	 *
+	 *	node id + message type = message id
 	 */
 
-	int subscriptions[NODES_NUM][NODES_NUM] = {
-			{0, 1, 1, 1},
-			{1, 0, 0, 0},
-			{1, 0, 1, 0},
-			{0, 1, 0, 0}
-	};
+	struct ProtocolData decodedData;
+	int pID;
+	pID = protocolID;
 
-	if( subscriptions[nodeID][publisherID] == 1 )
-		return SUBSCRIBED;
-	else{
-		xil_printf("Node %d not subscribed to publisher %d.\n", nodeID, publisherID);
-		return NOT_SUBSCRIBED;
+	decodedData.last2bits = pID & 0x3;
+
+	pID = pID>>SHIFT_MSGTYPE;
+	decodedData.msgtype = pID & 0xF;
+
+	pID = pID>>SHIFT_NODEID;
+	decodedData.nodeID = pID & 0xF;
+
+	decodedData.prioritybit = pID>>SHIFT_PRIOBIT;
+
+	return decodedData;
+}
+
+int getMessageID(struct ProtocolData pData){
+
+	/* It creates the message id = node id(shifted) + message type */
+
+	return (pData.nodeID<<0x4) | pData.msgtype;
+}
+
+int amISubscribed(int msgid){
+	int i = 0;
+
+	for( i=0 ; i<SUBSCRIPTIONS ; i++){
+	if( subscriptions[i] == msgid )
+	  return SUBSCRIBED;
 	}
+	return NOTSUBSCRIBED;
 }
