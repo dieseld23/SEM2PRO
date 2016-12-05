@@ -3,7 +3,12 @@
 \subsection{CAN Bus Tests}
 With the CAN controller available on the PS of the Zybo, the CAN bus will be tested to determine the transmission abilities of the network.
 The transceivers are able to work at up to 8 Mb/s, while the CAN controllers on the Zybo only guarantee functionality up to 1 Mb/s. 
-As the final implementation should be done in PL, there is nothing preventing the controller working at 8 Mb/s -- the FPGA can easily produce and interpret signals up to or beyond 8 Mb/s.
+As the final implementation should be done in PL, there is nothing preventing the controller working at 8 Mb/s -- the FPGA can easily produce and interpret signals up to or beyond 8 Mb/s.\\
+
+The purpose of these test is to show that the transceivers work, and that the bus does indeed transmit the correct message. 
+It is also relevant to test whether the CAN protocol acts according descriptions made in section~\ref{sub:CanMessageFrame}, in which case the protocol designed in section~\ref{sub:CAN_protocol} can be implemented.
+Performance parameters, such as bandwidth, are not immediately measurable, as they depend heavily on the controller.
+The tests performed will be: 
 
 \paragraph{Latency tests:} The time it takes to send one large frame
  
@@ -29,7 +34,7 @@ Using an oscilloscope, it is possible to measure the time it takes to send a mes
 
 The test will be performed for an 8 byte frame.
 The messages will be constructed, so that bit stuffing doesn't occur by writing 0xA1 to 0xA8. 
-The resulting voltage measurements are displayed on the figure below
+The resulting voltage measurements are displayed on figure~\ref{fig:CAN_test1_raw}
 
 \begin{figure}[h]
 	\centering
@@ -45,7 +50,7 @@ The software used for basis of this test does allow to adjust a pre-scaler, so t
 
 The CAN bus voltage can be interpreted to bits, to show what's actually being transmitted.
 This is done by measuring the voltage difference between the yellow and purple graphs, keeping in mind, that a difference in voltage corresponds to a zero, while no difference corresponds to a one.
-The CAN frame is displayed and interpreted on the figure below.
+The CAN frame is displayed and interpreted on figure~\ref{fig:CAN_test1_message}.
 
 \begin{figure}[h]
 	\centering
@@ -73,7 +78,7 @@ Bandwidth is considering the amount of net data being transmitted per unit time,
 Bandwidth will be calculated for 8 byte frames, and bit stuffing will be omitted.\\
 
 The maximum operating data rate for the transceivers is 8 Mb/s.
-As mentioned in section~\ref{sub:CanMessageFrame}, the CAN frame 47 bits of overhead. 
+As mentioned in section~\ref{sub:CanMessageFrame}, the CAN frame has 47 bits of overhead. 
 Including 8 bytes of data, this comes up to 111 bits. 
 Time per frame is:
 
@@ -87,7 +92,8 @@ As each frame contains 8 bytes of data, the data rate becomes:
 \frac{8}{1.39 \cdot 10^-5}= 5.77 \cdot 10^5
 \end{equation}
 
-That means, that the effective transfer rate is 577 kB/s, or 4.61 Mb/s
+That means, that the effective transfer rate is 577 kB/s, or 4.61 Mb/s with 8 Mb/s controllers. 
+With the controllers built into the PS of the Zybo, this effective rate comes down to 720 kb/s.
 
 \subsubsection{Message Priority}\label{sub:CAN_message priority}
 Two Zybos will be needed for this test.
