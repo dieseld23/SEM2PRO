@@ -219,5 +219,6 @@ int amISubscribed(int msgid){
 	if( subscriptions[i] == msgid )
 	  return SUBSCRIBED;
 	}
+	xil_printf("NodeID %d: Not subscribed to %d!!!\n", NODE_ID, msgid);
 	return NOTSUBSCRIBED;
 }
