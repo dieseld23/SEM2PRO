@@ -56,11 +56,27 @@ Therefore it is of less concern if the GPS message is delayed due to obstruction
 \subsubsection{Publisher-Subscriber Architecture}
 \catalin{Should I explain more about the architecture? Or is it the readers responsibility to read about it?}
 A mechanism was also necessary to control the receivers and transmitters of messages.
-One of the functionalities of the network was to provide the ability for various nodes to be able to send messages to specific nodes.
+One of the functionalities of the network was to provide the ability for various nodes to be able to send specific messages to other nodes.
 Such a mechanism could easily be implemented using the Publisher-Subscriber architecture which would also make the network data-driven.
-Using this method, the communication among the various nodes was easily configured.
-\\
-This was achieved by implementing a two-dimensional array variable in the source code mapping the subscriptions of the nodes using the node id as row and publisher id as column.
-For simplicity and ease of use, a function for this purpose was made, accepting as parameters the node id and the publisher id contained in the received message.
-By receiving a message on the network, the function would be called and then would return true or false, according to the mapping array.
+Using this method, the communication among the various nodes could be easily configured just by adding messages ids to an array variable containing the node's subscriptions.
+The use of this architecture was incorporated in the protocol functionality, along with a set of functions in the source code.
+\paragraph{Implementation in code}
+This was achieved by implementing a set of functions and an array variable of subscriptions for each node.
+The important mechanisms that needed to be provided by the source code were the creation of the message id, the decoding of it as well as getting the various portions such as the node id and the message type.
+The figure \ref{fig:SeqDiagram_SendFrame} shows the procedure of sending a frame containing data, which makes use of the protocol function createMsgID().
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width = 1.2\linewidth]{graphics/seqDiagram_SendFrame.png}
+	\caption{The sequence diagram of the process of sending a frame.}
+	\label{fig:SeqDiagram_SendFrame}
+\end{figure}
+\catalin{Receive Frame SeqDiag UNFINISHED}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width = 1.2\linewidth]{graphics/seqDiagram_RecvFrame.png}
+	\caption{The sequence diagram of the process of receiving a frame.}
+	\label{fig:SeqDiagram_RecvFrame}
+\end{figure}
+\catalin{Modify the two seq diagrams after a final discussion on the CAN protocol}
 \catalin{Refer to the code in the appendix or place the function here.}

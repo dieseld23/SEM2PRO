@@ -72,7 +72,7 @@ XCanPs *CanInstPtr;
 int init_CANNet();
 int SendFrame(XCanPs *InstancePtr, int data);
 int RecvFrame(XCanPs *InstancePtr);
-int createProtocolID(int priobit, int nodeID, int msgtype, int last2bits);
+int createMsgID(int priobit, int nodeID, int msgtype, int extensionbits);
 struct ProtocolData decodeProtocolID(int protocolID);
 int getMessageID(struct ProtocolData pData);
 int amISubscribed(int msgid);
@@ -81,7 +81,7 @@ struct ProtocolData {
   int prioritybit;
   int nodeID;
   int msgtype;
-  int last2bits;
+  int extensionbits;
 };
 
 

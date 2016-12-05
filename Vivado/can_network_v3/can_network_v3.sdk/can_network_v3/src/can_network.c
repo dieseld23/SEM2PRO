@@ -76,7 +76,7 @@ int init_CANNet(){
 }
 
 //================================================================== Send Frame
-int SendFrame(XCanPs *InstancePtr, int hex){
+int SendFrame(XCanPs *InstancePtr, int data){
 	u8 *FramePtr;
 	int Status;
 
@@ -91,11 +91,11 @@ int SendFrame(XCanPs *InstancePtr, int hex){
 	 * 		priority bit
 	 * 		node id
 	 * 		message type
-	 * 		last 2 bits
+	 * 		extension bits
 	 *
 	 * as arguments for createProtocolID()
 	 * ======================================================================*/
-	TxFrame[0] = (u32)createProtocolID(0x0, NODE_ID, 0xb, 0x0);
+	TxFrame[0] = (u32)createMsgID(0x0, NODE_ID, 0xb, 0x0);
 	TxFrame[1] = (u32)XCanPs_CreateDlcValue((u32)FRAME_DATA_LENGTH);
 
 	/*
@@ -104,7 +104,7 @@ int SendFrame(XCanPs *InstancePtr, int hex){
 	 */
 
 	FramePtr = (u8 *)(&TxFrame[2]);
-	FramePtr[0] = hex;
+	FramePtr[0] = data;
 	xil_printf("NodeID: %d -> Sending: %d with msg id: %x\n", NODE_ID, FramePtr[0], getMessageID( decodeProtocolID(TxFrame[0]) ));
 
 	/*
@@ -163,7 +163,7 @@ int RecvFrame(XCanPs *InstancePtr)
 }
 
 //============================================================= Protocol ID & Subscriptions
-int createProtocolID(int priobit, int nodeID, int msgtype, int last2bits){
+int createMsgID(int priobit, int nodeID, int msgtype, int extensionbits){
 
 	/* It creates the 11bit number for our protocol. */
 
@@ -171,7 +171,7 @@ int createProtocolID(int priobit, int nodeID, int msgtype, int last2bits){
 
 	protocolID = priobit<<SHIFT_PRIOBIT | nodeID;
 	protocolID = protocolID<<SHIFT_NODEID | msgtype;
-	protocolID = protocolID<<SHIFT_MSGTYPE | last2bits;
+	protocolID = protocolID<<SHIFT_MSGTYPE | extensionbits;
 
 	return protocolID;
 }
@@ -192,7 +192,7 @@ struct ProtocolData decodeProtocolID(int protocolID){
 	int pID;
 	pID = protocolID;
 
-	decodedData.last2bits = pID & 0x3;
+	decodedData.extensionbits = pID & 0x3;
 
 	pID = pID>>SHIFT_MSGTYPE;
 	decodedData.msgtype = pID & 0xF;
