@@ -12,15 +12,7 @@ The tests performed will be:
 
 \paragraph{Latency tests:} The time it takes to send one large frame
  
-
 \paragraph{Bandwidth:} How much raw data can be transmitted per unit time
-
-%\paragraph{Message filtering}
-%Three Zybos will be needed for this test.
-%One will act as a transmitter, and the two others will receive messages.\\
-%The transmitting node will shift back and forth between three message IDs, and write a recursive message, i.e. counting up from zero.
-%One receiving node will only accept one message ID, the other node will only accept another message ID, and the third message ID will be ignored by both.
-
 
 \paragraph{Priority when multiple node sending:} Ensuring, that higher message ID make way for the lower ones 
 
@@ -83,7 +75,7 @@ Including 8 bytes of data, this comes up to 111 bits.
 Time per frame is:
 
 \begin{equation}
-\frac{111}{8 \cdot 10^6} = 1.39 \cdot 10^-5
+\frac{111}{8 \cdot 10^6} = 1.39 \cdot 10^{-5}
 \end{equation}
 
 As each frame contains 8 bytes of data, the data rate becomes:
@@ -96,10 +88,29 @@ That means, that the effective transfer rate is 577 kB/s, or 4.61 Mb/s with 8 Mb
 With the controllers built into the PS of the Zybo, this effective rate comes down to 720 kb/s.
 
 \subsubsection{Message Priority}\label{sub:CAN_message priority}
-Two Zybos will be needed for this test.
-Both Zybos will be prompted to send a message when an interrupt occurs on an input pin. 
-The data part of the messages don't matter, but the message IDs do; they need to be different.
-Zybo A will send the message ID 0b10101000000.
-Zybo B will have the message ID 0b10101010000.
-That means, that Zybo A has higher priority, and Zybo B will stop trying to send a message when the seventh bit occurs, and receive instead.
-It is assumed, that once Zybo A is done sending, (and its frame is acknowledged), Zybo B will succesfully retry its transmission. 
+
+Two Zybos will be needed for this test, both transmitting.
+The two transmitting Zybos will prepare a CAN frame with the same data content, but different message IDs.
+Zybo A will send message ID 0b10100100000.
+Zybo B will send massage ID 0b10101000000
+I.e. only the fifth and sixth bits have been swapped, meaning that Zybo A will have the higher priority.
+Using a DC voltage source, the same GPIO port of each Zybo will be set high simultaneously.
+When this happens both Zybos will send their frame.
+Because of the asynchrous nature of the CAN protocol, it is still somewhat random which message gets transmitted first, so the frame will be sent twice. 
+This means, that after the first frame is sent from either one of the Zybos, both zybos will start transmitting at the same time. 
+In this case one Zybo must stop transmitting when it realizes that it has the lower priority.
+This is shown on figure~\ref{fig:CAN_test3_2TX}
+
+\begin{figure}
+	\centering
+	\includegraphics[width = \linewidth]{graphics/CAN_test3_2TX}
+	\caption{Voltage measurements taken at the TX pin of Zybo A (red) and Zybo B (blue).}
+	\label{fig:CAN_test3_2TX}
+\end{figure}
+
+The displayed frame is the second of four frames sent for this test, which is why the graph starts at $80 \si{\micro\second}$.
+Both Zybos start sending their frame simultaneously, and as there is no difference until the fifth bit of the message ID, neither Zybo is aware that the other is also sending.
+At the time $95.3\si{\micro\second}$, Zybo B (blue line on figure~\ref{fig:CAN_test3_2TX}) sends out high, whilst receiving low, meaning that another node is sending as well. 
+It will then cancel this attempt to transmit, and wait until the current frame has been transmitted before it will try again.
+Also note the Zybo B writing the acknowledge bit at the time $171 \si{\micro\second}$.
+Because of this, it is not strictly necessary to use a receiving Zybo, because the other node will confirm the CRC of the message.\\

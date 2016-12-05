@@ -1,0 +1,16 @@
+Physical implementation yet to do:
+	Service Virtualization using Xillybus
+	UI-Backend
+	Software Design of Wifi Node
+	Define Object dictionary
+	README for all code
+
+Together:
+	Tests/validation
+	Read and verify documentations
+	
+Documentation:
+	Can validation test
+	Advventures of Kernel Building
+	Advendures of Can Controller
+	Guidelines for Node implementation
