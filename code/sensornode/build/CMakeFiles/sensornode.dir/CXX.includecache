@@ -7,6 +7,8 @@
 #IncludeRegexTransform: 
 
 ../include/gps.hpp
+packer.hpp
+../include/packer.hpp
 iostream
 -
 fstream
@@ -25,6 +27,8 @@ unistd.h
 -
 
 ../include/node.hpp
+packer.hpp
+../include/packer.hpp
 iostream
 -
 vector
@@ -39,8 +43,6 @@ iostream
 -
 node.hpp
 ../include/node.hpp
-gps.hpp
-../include/gps.hpp
 bitset
 -
 

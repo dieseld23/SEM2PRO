@@ -15,19 +15,34 @@ using namespace std;
 int main()
 {
 	cout.precision(50); 
-	GPS gps_inst(13);
-	Packer_GPS packer_gps(&gps_inst);
-	Node_GPS gps_node(1, &packer_gps);
 
-	std::vector<packed_data> test;
-	packer_gps.get_gps_data(&test);
+	Node gps_node(1);					// New GPS node
 
+	Packer_GPS packer_gps;				// New GPS packer
+	packer_gps.set_node(&gps_node);
+
+	GPS gps_inst(13);					// New GPS sensor
 	gps_inst.set_path("/dev/ttyACM1");
+	gps_inst.set_packer(&packer_gps);
+
+	packer_gps.set_gps(&gps_inst);
+
+	// Start system
 	gps_inst.start_datacollection_file();
 	gps_inst.start();
 
-	
 
+
+
+
+	std::vector<packed_data> test;
+	
+/*
+	std::vector<bool>::iterator it;
+	for(it=long_info.begin() ; it < long_info.end(); it++) {
+		std::cout<< *it;  // prints d.
+	}
+*/
 	std::string str_dec = "55.11239213123";
 	double i_doub = std::stod (str_dec,nullptr);
 	cout <<"string = "<<str_dec<<"\n";
