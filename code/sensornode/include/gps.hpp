@@ -1,4 +1,7 @@
 #pragma once
+
+#include "packer.hpp"
+
 #include <iostream>
 #include <fstream> 
 #include <string>
@@ -6,7 +9,7 @@
 #include <mutex>
 #include <vector>
 #include <thread>  
-#include <unistd.h>			// SHould be removed
+#include <unistd.h>			// Should be removed
 
 #define LAT_NORTH	0
 #define LAT_SOUTH	1
@@ -32,8 +35,9 @@
 #define READ_FROM_IO		0
 #define READ_FROM_FILE		1
 
-enum state_type {GPTXT, GPRMC, GPVTG, GPGGA, GPGSA, GPGSV, GPGLL, UNKNOWN};
+class Packer_GPS;
 
+enum state_type {GPTXT, GPRMC, GPVTG, GPGGA, GPGSA, GPGSV, GPGLL, UNKNOWN};
 
 struct buffer {
 	std::vector<std::string> strings;
@@ -52,6 +56,7 @@ private:
 	std::string path;
 	buffer string_buffer;
 	std::thread read_from_file_thread;
+	Packer_GPS* packer;
 
 	state_type get_state(std::string *gps_data);
 	std::string get_data_string();
@@ -59,6 +64,7 @@ private:
 	void decode_RMC_message(std::string message);
 	void print_full_gps_data(void);
 	double minutes_to_degress(double minutes);
+	void send_data_to_node(void);
 public:
 	GPS(int);
 	void start(void);
@@ -70,5 +76,6 @@ public:
 	void readfile(buffer* buffer_in);
 	void start_datacollection_file(void);
 	void start_datacollection_io(void);
+	void set_packer(Packer_GPS*);
 };
 
