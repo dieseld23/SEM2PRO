@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include <thread>
-#include <ncurses.h>
 
 #include "backend.hpp"
 

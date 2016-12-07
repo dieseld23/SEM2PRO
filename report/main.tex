@@ -2,6 +2,11 @@
 \usepackage[utf8]{inputenc}
 \setcounter{tocdepth}{2} %Only show sections and subsections in toc.
 
+\usepackage{longtable} %used for acro
+\usepackage{acro} %list of acronyms
+
+\input{formalia/acronyms}
+
 \usepackage{colortbl}
 \usepackage{siunitx} %Package for SI units
 \sisetup{per-mode=fraction}
@@ -94,7 +99,6 @@
 Skarup Jaedicke, Martin Brøchner Andersen, Catalin Ionut Ntemkas‎}
 \date{dd/mm/2016}
 
-
 \begin{document}
 \input{sections/titlepage.tex}
 \newpage
@@ -105,6 +109,8 @@ Skarup Jaedicke, Martin Brøchner Andersen, Catalin Ionut Ntemkas‎}
 \newpage
 \listoftodos
 \listoftables
+\addcontentsline{toc}{section}{Acronyms}
+\printacronyms
 \clearpage
 \newpage
 \pagenumbering{arabic}
