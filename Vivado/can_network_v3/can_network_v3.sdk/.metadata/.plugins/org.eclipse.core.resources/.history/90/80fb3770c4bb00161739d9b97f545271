@@ -1,0 +1,24 @@
+
+-------------------------------------------------------------------------------
+						Southern Denmark University
+					MSc. in Engineering in Electronics
+								2nd semester
+
+			Project 2 - Monitoring of Sensor Data on the SDU Go-kart
+-------------------------------------------------------------------------------
+
+CAN Network Application Software for the Zynq-7000 Processing System
+Version: v0.3
+
+@uthor:	Catalin I. Ntemkas
+Date:	19/12/2016
+
+
+Description
+-----------
+This software was developed for the purpose of utilizing the CAN controllers
+present on the Processing System of the Zynq-7000 chip on the Zybo board as a
+step towards implementing a complete system of nodes communicating through CAN.
+The present versionIt includes initialisation functions for the various devices such as buttons,
+leds, ports and the can controllers. It also includes functions for the
+interrupt controller and for CAN packets.

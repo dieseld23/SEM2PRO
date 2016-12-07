@@ -3,6 +3,8 @@
 
 CMakeFiles/sensornode.dir/src/gps.cpp.o
  ../include/gps.hpp
+ ../include/node.hpp
+ ../include/packer.hpp
  /home/mikkeljaedicke/Documents/SEM2PRO/code/sensornode/src/gps.cpp
 CMakeFiles/sensornode.dir/src/main.cpp.o
  ../include/gps.hpp
@@ -17,3 +19,6 @@ CMakeFiles/sensornode.dir/src/packer.cpp.o
  ../include/node.hpp
  ../include/packer.hpp
  /home/mikkeljaedicke/Documents/SEM2PRO/code/sensornode/src/packer.cpp
+CMakeFiles/sensornode.dir/src/protocol.cpp.o
+ ../include/protocol.hpp
+ /home/mikkeljaedicke/Documents/SEM2PRO/code/sensornode/src/protocol.cpp

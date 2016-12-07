@@ -8,7 +8,7 @@
 #ifndef SRC_CAN_NETWORK_H_
 #define SRC_CAN_NETWORK_H_
 
-//=============================================================== Include Files
+//============================================================== Include Files
 #include "include_files.h"
 
 //============================================================== Define Section
@@ -17,14 +17,7 @@
 #define XCANPS_MAX_FRAME_SIZE_IN_WORDS 	(XCANPS_MAX_FRAME_SIZE / sizeof(u32))
 #define FRAME_DATA_LENGTH 				8  /* Frame Data field length */
 
-#define indexFR_PUID		0
-#define indexFR_DATA		1
-
-/******************************************************************************
- * Nodes messages ID in the CAN Stack of 4 Zybos, from bottom to top.
- * Keep the IDs in the range of [0,..., NODES_NUM] to be used properly
- * with the subscriptions mechanism implemented in amISubscribed()
- *****************************************************************************/
+//==================================================== Nodes IDs
 #define NODES_NUM		4
 #define NODE_ID_WIFI	0x1	// Bottom, 			0b0001
 #define NODE_ID_IMU		0x3	// Middle bottom	0b0011
@@ -33,8 +26,14 @@
 
 #define NODE_ID			NODE_ID_WIFI
 
+//==================================================== Auxiliary definitions
+#define SUBSCRIPTIONS	5
 #define SUBSCRIBED		1
-#define NOT_SUBSCRIBED	0
+#define NOTSUBSCRIBED	0
+
+#define SHIFT_PRIORITYBIT		0x4
+#define SHIFT_SENDERID			0x4
+#define SHIFT_MSGTYPE			0x2
 
 /*
  * The Baud Rate Prescaler Register (BRPR) and Bit Timing Register (BTR)
@@ -60,7 +59,9 @@
  * is 24 MHz.
  */
 #define TEST_BRPR_BAUD_PRESCALAR	3
-//======================================================== Variable Definitions
+
+
+//============================================================== Variable Definitions
 /*
  * Buffers to hold frames to send and receive. These are declared as global so
  * that they are not on the stack.
@@ -71,11 +72,26 @@ u32 RxFrame[XCANPS_MAX_FRAME_SIZE_IN_WORDS];
 XCanPs Can;
 XCanPs *CanInstPtr;
 
-//========================================================= Function Prototypes
+struct Packet {
+	u8 prioritybit;
+	u8 senderID;
+	u8 msgtype;
+	u8 sizeOfData;
+	u8* data;
+};
+int subscriptions[SUBSCRIPTIONS];
+
+//============================================================== Function Prototypes
 int init_CANNet();
 int SendFrame(XCanPs *InstancePtr, int data);
 int RecvFrame(XCanPs *InstancePtr);
-int amISubscribed(int nodeID, int publisherID);
+struct Packet recvFifoPacket( u16 msgid, u8 sizeOfData, u8* data);
+int sendFifoPacket(u16 msgid, u8 sizeOfData, u8* data);
+u8 getPriorityBit(u16 msgid);
+u8 getSenderID(u16 msgid);
+u8 getMsgType(u16 msgid);
+u16 createMsgID(u8 priorityBit, u8 senderID, u8 msgType);
+u8 amISubscribed(u16 msgid);
 
 
 #endif /* SRC_CAN_NETWORK_H_ */

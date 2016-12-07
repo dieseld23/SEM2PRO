@@ -48,20 +48,18 @@ This is necessary as there is only one bus and it is likely that there will be a
 
 \paragraph*{Protocol}~\\
 \martin{I changed this so that it doesn't mention CANopen, but instead talks about interpreting the base CAN protocol}
-The protocol in this case refers to a the interpretation of the CAN protocol.
+The protocol in this case is the high level protocol running on top of the CAN protocol.
 The design of this protocol will be described in more detail section~\ref{sub:CAN_protocol}. 
 Each CAN message comes with some overhead, that among other things can say something about what data the message contains.
-This part of the software will interpret this overhead and determine how to handle the data.
+This part of the software will interpret this overhead and determine how to handle the data.\\
 
-CANopen is a widely used protocol made specifically to expand on the usability of CAN.
-The SevCon gen4, the motor controller used on the go-kart, utilizes CANopen in its communication.
-This makes CANopen a reasonable option to employ generally across the network.
+CANopen is a comprehensive protocol that is already available.
+It is a widely used protocol, that utilises the CAN protocol, described in section~\ref{sub:CanMessageFrame}.
+Because the SevCon gen4, the motor controller used on the go-kart, utilizes CANopen in its communication, it is a reasonable option to employ in this network.
 CANopen is, however, quite extensive and implements many features which are not needed in the monitoring system being developed.
-Using CANopen would complicate greatly, the task of learning how to add new nodes to the system.
-Another option is to design a protocol that fulfills the requirements,
+For this reason it has been decided to design a custom protocol, a decision which is outlined in greater detail on page~\pageref{sub:CANopen}
 \thomas{Are the requirements of the protocol actually outlined at this point?}
 \thomas{At this point it needs to be clear that we want some scalability in the system, enabling us to add up to n (yes n, not 16), nodes. We may need to move figure \ref{fig:analysisnodes} to some other place.}
-while still maintaining a simple structure.
 As is shown on figure \ref{fig:analysisnodes}, it should be possible to add up to $n$ nodes.
 This requirement should be considered in determining the design of the protocol.
 
