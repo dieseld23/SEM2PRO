@@ -231,6 +231,33 @@ src/packer.cpp.s:
 	$(MAKE) -f CMakeFiles/sensornode.dir/build.make CMakeFiles/sensornode.dir/src/packer.cpp.s
 .PHONY : src/packer.cpp.s
 
+src/protocol.o: src/protocol.cpp.o
+
+.PHONY : src/protocol.o
+
+# target to build an object file
+src/protocol.cpp.o:
+	$(MAKE) -f CMakeFiles/sensornode.dir/build.make CMakeFiles/sensornode.dir/src/protocol.cpp.o
+.PHONY : src/protocol.cpp.o
+
+src/protocol.i: src/protocol.cpp.i
+
+.PHONY : src/protocol.i
+
+# target to preprocess a source file
+src/protocol.cpp.i:
+	$(MAKE) -f CMakeFiles/sensornode.dir/build.make CMakeFiles/sensornode.dir/src/protocol.cpp.i
+.PHONY : src/protocol.cpp.i
+
+src/protocol.s: src/protocol.cpp.s
+
+.PHONY : src/protocol.s
+
+# target to generate assembly for a file
+src/protocol.cpp.s:
+	$(MAKE) -f CMakeFiles/sensornode.dir/build.make CMakeFiles/sensornode.dir/src/protocol.cpp.s
+.PHONY : src/protocol.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -252,6 +279,9 @@ help:
 	@echo "... src/packer.o"
 	@echo "... src/packer.i"
 	@echo "... src/packer.s"
+	@echo "... src/protocol.o"
+	@echo "... src/protocol.i"
+	@echo "... src/protocol.s"
 .PHONY : help
 
 

@@ -27,13 +27,15 @@ unistd.h
 -
 
 ../include/node.hpp
-packer.hpp
-../include/packer.hpp
+thread
+-
 iostream
 -
 vector
 -
 bitset
+-
+mutex
 -
 
 ../include/packer.hpp
@@ -45,6 +47,8 @@ node.hpp
 ../include/node.hpp
 bitset
 -
+
+../include/protocol.hpp
 
 /home/mikkeljaedicke/Documents/SEM2PRO/code/sensornode/src/gps.cpp
 gps.hpp
@@ -77,4 +81,10 @@ node.hpp
 /home/mikkeljaedicke/Documents/SEM2PRO/code/sensornode/src/packer.cpp
 packer.hpp
 /home/mikkeljaedicke/Documents/SEM2PRO/code/sensornode/src/packer.hpp
+gps.hpp
+/home/mikkeljaedicke/Documents/SEM2PRO/code/sensornode/src/gps.hpp
+
+/home/mikkeljaedicke/Documents/SEM2PRO/code/sensornode/src/protocol.cpp
+protocol.hpp
+/home/mikkeljaedicke/Documents/SEM2PRO/code/sensornode/src/protocol.hpp
 

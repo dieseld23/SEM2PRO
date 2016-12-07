@@ -127,4 +127,11 @@ The basic principle for testing was to trigger an interrupt attached to the butt
 In turn, the RecvFrame() was responsible of reading the message transmitted on the bus and writing the value as output to the LEDs.
 As mentioned before, this source code was common and uploaded to both boards resulting in a two-way communication, since both of them had a SendFrame() and a RecvFrame() function, thus one controlling the LEDs of the other one.
 
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width = 1.1\linewidth]{graphics/StateDiagram_CanStackTestCode.pdf}
+	\caption{Behavioral diagram of the testing code.}
+	\label{fig:CAN_Testing_StateDiagr_Code}
+\end{figure}
+
 \todo{We need a picture with 2 or better, 4 boards as stack! The coolest thing ever :P.}

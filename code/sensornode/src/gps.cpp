@@ -52,8 +52,8 @@ void GPS::readfile(buffer *buffer_in){
 		usleep(100000);
 		std::string str(data_string_char);
 		if(!str.empty()){
-			buffer_in->mutex.lock();															// Blocking
-			buffer_in->strings.emplace(buffer_in->strings.begin(),str);			//Place str at beginning
+			buffer_in->mutex.lock();												// Blocking
+			buffer_in->strings.emplace(buffer_in->strings.begin(),str);				//Place str at beginning
 			//std::cout<<"line put: "<<str<<std::endl;
 			buffer_in->mutex.unlock();
 		}
@@ -89,8 +89,8 @@ void GPS::start(void){
 
 			case GPRMC:
 			decode_RMC_message(buff);
-
-			print_full_gps_data();
+			send_data_to_node();
+			//print_full_gps_data();
 			break;
 
 			case GPVTG:
@@ -262,7 +262,6 @@ void GPS::start_datacollection_io(void){
 }
 
 void GPS::start_datacollection_file(void){
-	std::cout<<"h";
 	read_from_file_thread = std::thread(&GPS::readfile,this,&this->string_buffer);  //START THREAD
 }
 

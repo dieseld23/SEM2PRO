@@ -8,6 +8,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/home/mikkeljaedicke/Documents/SEM2PRO/code/sensornode/src/main.cpp" "/home/mikkeljaedicke/Documents/SEM2PRO/code/sensornode/build/CMakeFiles/sensornode.dir/src/main.cpp.o"
   "/home/mikkeljaedicke/Documents/SEM2PRO/code/sensornode/src/node.cpp" "/home/mikkeljaedicke/Documents/SEM2PRO/code/sensornode/build/CMakeFiles/sensornode.dir/src/node.cpp.o"
   "/home/mikkeljaedicke/Documents/SEM2PRO/code/sensornode/src/packer.cpp" "/home/mikkeljaedicke/Documents/SEM2PRO/code/sensornode/build/CMakeFiles/sensornode.dir/src/packer.cpp.o"
+  "/home/mikkeljaedicke/Documents/SEM2PRO/code/sensornode/src/protocol.cpp" "/home/mikkeljaedicke/Documents/SEM2PRO/code/sensornode/build/CMakeFiles/sensornode.dir/src/protocol.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

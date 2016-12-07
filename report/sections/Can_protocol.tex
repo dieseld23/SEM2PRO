@@ -98,7 +98,6 @@ The reason for this naming is, that the Wifi node acts as a commander for the, a
 The IMU produces short data packages at a high rate, and the GPS node produces longer data packages at a lower rate. 
 Therefore it is of less concern if the GPS message is delayed due to obstruction from other nodes. 
 
-\catalin{Based on Node ids and messages ids, is this useful or not?}
 \subsubsection{Publisher-Subscriber Architecture}
 \catalin{Should I explain more about the architecture? Or is it the readers responsibility to read about it?}
 A mechanism was also necessary to control the receivers and transmitters of messages.
@@ -106,23 +105,27 @@ One of the functionalities of the network was to provide the ability for various
 Such a mechanism could easily be implemented using the Publisher-Subscriber architecture which would also make the network data-driven.
 Using this method, the communication among the various nodes could be easily configured just by adding messages ids to an array variable containing the node's subscriptions.
 The use of this architecture was incorporated in the protocol functionality, along with a set of functions in the source code.
-\paragraph{Implementation in code}
+\paragraph{Implementation in code}~\\
 This was achieved by implementing a set of functions and an array variable of subscriptions for each node.
 The important mechanisms that needed to be provided by the source code were the creation of the message id, the decoding of it as well as getting the various portions such as the node id and the message type.
-The figure \ref{fig:SeqDiagram_SendFrame} shows the procedure of sending a frame containing data, which makes use of the protocol function createMsgID().
+\\
+The figure \ref{fig:SeqDiagram_SendFrame} shows the procedure of sending a frame to the CAN network containing data, which makes use of the protocol function createMsgID().
+After returning the message id, the id and the data are put into the TxFrame to be sent once the FIFO has space.
+The actual sending is done with a call to the XCanPs function XCanPs\_Send().
+\\
+Similarly, the procedure of receiving a frame is shown in the figure \ref{fig:SeqDiagram_RecvFrame}.
+The node once it calls the RecvFrame() function, it waits in a loop until it receives a frame. Then, it checks the subscriptions in order to forward the packet for further processing or to ignore it.
 
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width = 1.2\linewidth]{graphics/seqDiagram_SendFrame.png}
+	\includegraphics[width = 1.1\linewidth]{graphics/SeqDiagram_SendFrame.pdf}
 	\caption{The sequence diagram of the process of sending a frame.}
 	\label{fig:SeqDiagram_SendFrame}
 \end{figure}
-\catalin{Receive Frame SeqDiag UNFINISHED}
+
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width = 1.2\linewidth]{graphics/seqDiagram_RecvFrame.png}
+	\includegraphics[width = 1.1\linewidth]{graphics/SeqDiagram_RecvFrame.pdf}
 	\caption{The sequence diagram of the process of receiving a frame.}
 	\label{fig:SeqDiagram_RecvFrame}
 \end{figure}
-\catalin{Modify the two seq diagrams after a final discussion on the CAN protocol}
-\catalin{Refer to the code in the appendix or place the function here.}

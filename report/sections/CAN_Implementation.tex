@@ -7,11 +7,12 @@ This step required enabling the CAN drivers that reside in the Xillinux kernel a
 This section describes the necessary procedures that were followed in order to gain control over the CAN network from Linux.
 \\
 At this point the reader should be informed that although the CAN controllers could be used on the Processing System using bare-metal code, the implementation of CAN on the Programmable Logic and the access to it from Linux was not successful.
-After a lot of effort to create a physically functional network and researching on how to implement it, the conclusion that the available documentation is lacking was reached. 
+After a lot of effort to create a physically functional network and researching on how to implement it, the conclusion that the available documentation is lacking was reached.
 Alternatively, other means to prove the concept of the project were taken into account, as described in section \ref{sub:Utilizing_Svr_Virtualization}.
 
 \subsubsection{Enabling the CAN Drivers}
 
+This was the first idea on how to utilize the CAN network using Linux.
 In order to enable the drivers on the Zynq7 Processing System, the Linux CAN driver guide \cite{Xilinx_wiki_Linux_CAN_driver} on the Xilinx wiki website \cite{Xilinx_wiki} was followed.
 The Kconfig file under the path \ref{code:can_kconfig_pathfile} needed to be configured.
 The entry at line 128 was changed as seen in the code snippet \ref{code:can_kconfig_contents_line128}.
@@ -38,24 +39,46 @@ config CAN_XILINXCAN
 	default n
 \end{lstlisting}
 
-The next step of the process was the modification of the device tree settings file, requiring an entry for the CAN PS to be inserted. The necessary file was located under the boot folder named as seen in \ref{code:dts_file_zybo}.
+The next step of the process was the modification of the device tree settings file, requiring an entry for the CAN PS to be inserted.
+The necessary file was located under the boot folder named as seen in \ref{code:dts_file_zybo}.
+The modifications can be seen in the snippet \ref{code:dts_changes_zybo} for can controllers as well as for the AXI CAN core.
 
 \begin{lstlisting}[numbers=none,caption={Device tree settings file and its path.},label=code:dts_file_zybo]
 /boot/xillinux-1.3-zybo.dts
 \end{lstlisting}
-
-\begin{lstlisting}[caption={CAN Kconfig pathfile.},numbers=none,label=code:can_kconfig_pathfile]
-/usr/src/kernels/3.12.0-xillinux-1.3/drivers/net/can/
+\catalin{Double quotes are problem here as well. FIX THEM WHENEVER}
+\begin{lstlisting}[caption={Device tree settings changes.},label=code:dts_changes_zybo]
+zynq_can_0: can@e0008000 {
+        compatible = xlnx,zynq-can-1.0;
+        clocks = <&clkc 19>, <&clkc 36>;
+        clock-names = can_clk, pclk;
+        reg = <0xe0008000 0x1000>;
+        interrupts = <0 28 4>;
+        interrupt-parent = <&intc>;
+        tx-fifo-depth = <0x40>;
+        rx-fifo-depth = <0x40>;
+    };
+axi_can_0: axi-can@40000000 {
+        compatible = xlnx,axi-can-1.00.a;
+        clocks = <&clkc 0>, <&clkc 1>;
+        clock-names = can_clk,s_axi_aclk;
+        reg = <0x40000000 0x10000>;
+        interrupt-parent = <&intc>;
+        interrupts = <0 59 1>;
+        tx-fifo-depth = <0x40>;
+        rx-fifo-depth = <0x40>;
+        };
 \end{lstlisting}
+
 \mikkel{Maybe you can provide some thoughts about the problem. Maybe also some words about the patching Xilinx-Digilent etc.}
-As was previously mentioned, the implementation was unsuccessful. At the time of writing this report, 
-\catalin{What did I want to say here?}
+As was previously mentioned, the implementation was unsuccessful. At the time, the research done on this topic did not lead to successfully enabling the drivers.
 
 \subsubsection{Utilizing the AXI CAN core}
 
 Another way to implement a CAN network was to use the AXI CAN core that is available in the Vivado Suite, instead of gaining direct access to the CAN drivers.
 Unfortunately due to a license restriction from Xilinx, the core can only be used for simulation purposes and not actual hardware implementations.
-This information became available after the process of creating the bistream file in the form of an error. The architecture can be seen in figure \ref{fig:CAN_Arch_with_AXI_CAN}.
+This information became available after the process of creating the bistream file in the form of an error, thus not allowing for further use of the core.
+The architecture can be seen in figure \ref{fig:CAN_Arch_with_AXI_CAN}.
 The core accepts a clock frequency from \SI{8}{\mega\hertz} to \SI{24}{\mega\hertz}, which in the block diagram is provided by the FCLK\_CLK1.
 
 \begin{figure}[h!]
@@ -70,10 +93,10 @@ The core accepts a clock frequency from \SI{8}{\mega\hertz} to \SI{24}{\mega\her
 Apart from using the AXI CAN core and the CAN drivers, the Zynq-7000 AP SoC provides the possibility of implementing a mechanism called asymmetric multiprocessing since there are two processors which share common memory as well as peripherals.
 The idea of this is to run Linux OS on one processor, while on the other one a bare-metal system, which both of them can communicate with each other.
 This was a proposed solution for the problem of accessing the CAN devices from Linux which was the most promising of the implementation methods discussed in this report, but due to lack of time, it was researched only at a theoretical level.
-A brief implementation description will be give in this section, but for more details, the reader may refer to the Xilinx document \cite{Xilinx_AMP}.
+A brief implementation description will be give in this section, but for more details about the instructions and applications, the reader may refer to the Xilinx document \cite{Xilinx_AMP}.
 
-\paragraph{Implementation details}
-In order to achieve asymmetric multiprocessing on the Zybo board, certain steps are required to be taken, but also a few precautions.
+\paragraph{Implementation details}~\\
+In order to achieve asymmetric multiprocessing on the Zybo board, certain steps are required to be taken, but also a few precautions as well.
 An important one is to configure the two processors appropriately in order to use the shared memory without conflicts.
 A second one is to setup the CPU0 as the master, because that is the processor assigned for the Linux OS.
 It is also the one that will start CPU1 by writing a value to a specific address in memory.
@@ -110,7 +133,7 @@ Initially it was used to create a virtual network with two nodes locally on a co
 It was also intended to be used to test the actual network, but since the network was not implemented, further use of the tool was not necessary.
 \catalin{Rerun some virtual tests with can-utils to get code snippets}
 
-\subsection{Utilizing Service Virtualization for the Proof of Concept}
+\subsubsection{Utilizing Service Virtualization for the Proof of Concept}
 \label{sub:Utilizing_Svr_Virtualization}
 
 In order to show that the system can be fully functional despite the unsuccessful attempt to implement it, a different approach than the actual implementation is needed.

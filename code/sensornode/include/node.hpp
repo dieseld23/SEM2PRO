@@ -1,37 +1,30 @@
 #pragma once
 
-#include "packer.hpp"
-
+#include <thread>  
 #include <iostream>
 #include <vector>
-#include <bitset>      
+#include <bitset>     
+#include <mutex>
 
-/*** Forward Declarations ***/
-class Packer_GPS;
-/****************************/
 
 struct packed_data {
-    std::vector<bool> messagetype;
-   	std::vector<bool> data;
+  std::vector<bool> messagetype;
+  std::vector<bool> data;
 };
-
-
 
 class Node {
-protected:
-    std::bitset<4> node_id;
-    std::vector<packed_data> data_out;
-  public:
-  	Node(void);
-    Node(int id);
-  	void put_data_packet(struct packed_data);
-};
-/*
-// Derived class
-class Node_GPS: public Node {
-	Packer_GPS* packer;
+private:
+  long int ms;
+  std::bitset<4> node_id;
+  std::thread node_thread;
+  std::vector<packed_data> data_out;
+  std::mutex data_out_mutex;
+  void print_vector_bool(std::vector<bool> vector);
+  int get_data_from_buffer(packed_data* data_packet);
 public:
-	Node_GPS(int, Packer_GPS*);
-	void get_gps_data(void);
+ Node(void);
+ Node(int id);
+ void start(void);
+ void loop(void);
+ void put_data_packet(struct packed_data);
 };
-*/
