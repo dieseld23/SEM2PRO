@@ -67,6 +67,11 @@ int SendFrame(XCanPs *InstancePtr, int data){
 	u8 *FramePtr;
 	int Status;
 
+	/*
+	 * Under full implementation, the message ID is provided from higher level
+	 * (Linux) and it would not need to be created here.
+	 * For testing purposes, it is created locally using createMsgID()
+	 */
 	TxFrame[0] = (u32)createMsgID(0x0, NODE_ID, 0xb);
 	TxFrame[1] = (u32)XCanPs_CreateDlcValue((u32)FRAME_DATA_LENGTH);
 

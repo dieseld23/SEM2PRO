@@ -53,7 +53,7 @@ The design of this protocol will be described in more detail section~\ref{sub:CA
 Each CAN message comes with some overhead, that among other things can say something about what data the message contains.
 This part of the software will interpret this overhead and determine how to handle the data.\\
 
-CANopen is a comprehensive protocol is already available, called CANopen.
+CANopen is a comprehensive protocol that is already available.
 It is a widely used protocol, that utilises the CAN protocol, described in section~\ref{sub:CanMessageFrame}.
 Because the SevCon gen4, the motor controller used on the go-kart, utilizes CANopen in its communication, it is a reasonable option to employ in this network.
 CANopen is, however, quite extensive and implements many features which are not needed in the monitoring system being developed.
