@@ -6,6 +6,10 @@
 
 #IncludeRegexTransform: 
 
+../include/canlink.hpp
+node.hpp
+../include/node.hpp
+
 ../include/gps.hpp
 packer.hpp
 ../include/packer.hpp
@@ -37,6 +41,10 @@ bitset
 -
 mutex
 -
+unistd.h
+-
+bitset
+-
 
 ../include/packer.hpp
 vector
@@ -49,6 +57,18 @@ bitset
 -
 
 ../include/protocol.hpp
+mutex
+-
+thread
+-
+vector
+-
+node.hpp
+../include/node.hpp
+
+/home/mikkeljaedicke/Documents/SEM2PRO/code/sensornode/src/canlink.cpp
+canlink.hpp
+/home/mikkeljaedicke/Documents/SEM2PRO/code/sensornode/src/canlink.hpp
 
 /home/mikkeljaedicke/Documents/SEM2PRO/code/sensornode/src/gps.cpp
 gps.hpp
@@ -71,12 +91,16 @@ packer.hpp
 /home/mikkeljaedicke/Documents/SEM2PRO/code/sensornode/src/packer.hpp
 gps.hpp
 /home/mikkeljaedicke/Documents/SEM2PRO/code/sensornode/src/gps.hpp
-bitset
--
+protocol.hpp
+/home/mikkeljaedicke/Documents/SEM2PRO/code/sensornode/src/protocol.hpp
+canlink.hpp
+/home/mikkeljaedicke/Documents/SEM2PRO/code/sensornode/src/canlink.hpp
 
 /home/mikkeljaedicke/Documents/SEM2PRO/code/sensornode/src/node.cpp
 node.hpp
 /home/mikkeljaedicke/Documents/SEM2PRO/code/sensornode/src/node.hpp
+protocol.hpp
+/home/mikkeljaedicke/Documents/SEM2PRO/code/sensornode/src/protocol.hpp
 
 /home/mikkeljaedicke/Documents/SEM2PRO/code/sensornode/src/packer.cpp
 packer.hpp
@@ -87,4 +111,6 @@ gps.hpp
 /home/mikkeljaedicke/Documents/SEM2PRO/code/sensornode/src/protocol.cpp
 protocol.hpp
 /home/mikkeljaedicke/Documents/SEM2PRO/code/sensornode/src/protocol.hpp
+canlink.hpp
+/home/mikkeljaedicke/Documents/SEM2PRO/code/sensornode/src/canlink.hpp
 
