@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Delete resource &apos;can_network_v3/src/can_test_main.c&apos;" deleteContents="false" description="Delete resource &apos;can_network_v3/src/can_test_main.c&apos;" element1="/can_network_v3/src/can_test_main.c" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1480515994769"/>
-</session>

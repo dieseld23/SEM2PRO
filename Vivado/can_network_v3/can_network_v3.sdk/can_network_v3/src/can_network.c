@@ -9,62 +9,49 @@
 #include "simulation.h"
 
 
-//================================================================ Init CAN Net
+//============================================================== Init CAN Net
 int init_CANNet(){
 
 	int Status;
 	CanInstPtr = &Can;
 	XCanPs_Config *ConfigPtr;
 
-	/*
-	 * Initialize the Can device.
-	 */
+	/* Initialize the Can device. */
 	ConfigPtr = XCanPs_LookupConfig(CAN_DEVICE_ID);
+
 	if (CanInstPtr == NULL) {
 		return XST_FAILURE;
 	}
-	Status = XCanPs_CfgInitialize(CanInstPtr,
-					ConfigPtr,
-					ConfigPtr->BaseAddr);
+	Status = XCanPs_CfgInitialize(CanInstPtr, ConfigPtr, ConfigPtr->BaseAddr);
 	if (Status != XST_SUCCESS) {
 		return XST_FAILURE;
 	}
 
-	/*
-	 * Run self-test on the device, which verifies basic sanity of the
-	 * device and the driver.
-	 */
+	/* Run self-test on the device, which verifies basic sanity of the
+	 * device and the driver. */
 	Status = XCanPs_SelfTest(CanInstPtr);
 	if (Status != XST_SUCCESS) {
 		return XST_FAILURE;
 	}
 
-	/*
-	 * Enter Configuration Mode so we can setup Baud Rate Prescaler
-	 * Register (BRPR) and Bit Timing Register (BTR).
-	 */
+	/* Enter Configuration Mode so we can setup Baud Rate Prescaler
+	 * Register (BRPR) and Bit Timing Register (BTR). */
 	XCanPs_EnterMode(CanInstPtr, XCANPS_MODE_CONFIG);
 	while(XCanPs_GetMode(CanInstPtr) != XCANPS_MODE_CONFIG);
 
-	/*
-	 * Setup Baud Rate Prescaler Register (BRPR) and
-	 * Bit Timing Register (BTR).
-	 */
+	/*  Setup Baud Rate Prescaler Register (BRPR) and
+	 * Bit Timing Register (BTR). */
 	XCanPs_SetBaudRatePrescaler(CanInstPtr, TEST_BRPR_BAUD_PRESCALAR);
 	XCanPs_SetBitTiming(CanInstPtr, TEST_BTR_SYNCJUMPWIDTH,
 				TEST_BTR_SECOND_TIMESEGMENT,
 
 				TEST_BTR_FIRST_TIMESEGMENT);
 
-	/*
-	 * Enter Loop Back or Normal Mode.
-	 */
+	/* Enter Loop Back or Normal Mode. */
 	XCanPs_EnterMode(CanInstPtr, XCANPS_MODE);
 	while(XCanPs_GetMode(CanInstPtr) != XCANPS_MODE);
 
-	/*
-	 * Send a test frame.
-	 */
+	/* Send a test frame. */
 	Status = SendFrame(CanInstPtr, 15);
 	if (Status != XST_SUCCESS) {
 		return Status;
@@ -75,45 +62,24 @@ int init_CANNet(){
 	return Status;
 }
 
-//================================================================== Send Frame
+//============================================================== Send Frame
 int SendFrame(XCanPs *InstancePtr, int data){
 	u8 *FramePtr;
 	int Status;
 
-	/*
-	 * Create correct values for Identifier and Data Length Code Register.
-	 */
-	//TxFrame[0] = (u32)XCanPs_CreateIdValue((u32)NODE_ID, 0, 0, 0, 0);
-
-	/* ========================================================================
-	 * HERE IS were we can assign the
-	 *
-	 * 		priority bit
-	 * 		node id
-	 * 		message type
-	 * 		extension bits
-	 *
-	 * as arguments for createProtocolID()
-	 * ======================================================================*/
-	TxFrame[0] = (u32)createMsgID(0x0, NODE_ID, 0xb, 0x0);
+	TxFrame[0] = (u32)createMsgID(0x0, NODE_ID, 0xb);
 	TxFrame[1] = (u32)XCanPs_CreateDlcValue((u32)FRAME_DATA_LENGTH);
-
-	/*
-	 * Now fill in the data field with known values so we can verify them
-	 * on receive.
-	 */
 
 	FramePtr = (u8 *)(&TxFrame[2]);
 	FramePtr[0] = data;
-	xil_printf("NodeID: %d -> Sending: %d with msg id: %x\n", NODE_ID, FramePtr[0], getMessageID( decodeProtocolID(TxFrame[0]) ));
 
-	/*
-	 * Wait until TX FIFO has room.
-	 */
+	// For testing purposes
+	xil_printf("NodeID: %d -> Sending: %d with msg id: %x\n", NODE_ID, FramePtr[0], TxFrame[0]);
+
+	/* Wait until TX FIFO has room. */
 	while (XCanPs_IsTxFifoFull(InstancePtr) == TRUE);
 
-	/*
-	 * Now send the frame.
+	/* Now send the frame.
 	 *
 	 * Another way to send a frame is keep calling XCanPs_Send() until it
 	 * returns XST_SUCCESS. No check on if TX FIFO is full is needed anymore
@@ -124,7 +90,7 @@ int SendFrame(XCanPs *InstancePtr, int data){
 	return Status;
 }
 
-//=============================================================== Receive Frame
+//============================================================== Receive Frame
 int RecvFrame(XCanPs *InstancePtr)
 {
 	u8 *FramePtr;
@@ -133,86 +99,84 @@ int RecvFrame(XCanPs *InstancePtr)
 	/*
 	 * Wait until a frame is received.
 	 */
-	while (XCanPs_IsRxEmpty(InstancePtr) == TRUE){
+	while (XCanPs_IsRxEmpty(InstancePtr) == TRUE);
 
-	}
-
-	/*
-	 * Receive a frame and verify its contents.
-	 */
+	/* Receive a frame and verify its contents. */
 	Status = XCanPs_Recv(InstancePtr, RxFrame);
 	if (Status == XST_SUCCESS) {
-		/*
-		 * Verify Identifier and Data Length Code.
-		if (RxFrame[0] !=
-			(u32)XCanPs_CreateIdValue((u32)NODE_ID, 0, 0, 0, 0)){
-			return XST_LOOPBACK_ERROR;
-		}
-		 */
+
 		if ((RxFrame[1] & ~XCANPS_DLCR_TIMESTAMP_MASK) != TxFrame[1])
 			return XST_LOOPBACK_ERROR;
 
 		FramePtr = (u8 *)(&RxFrame[2]);
-		if( amISubscribed( RxFrame[0]) ){
-			xil_printf("NodeID: %d -> Received: %d with msg id: %x.\n", NODE_ID, FramePtr[0], getMessageID( decodeProtocolID(RxFrame[0]) ) );
+
+		/* In case the node is not subscribed to a particular message type
+		 * it should just ignore the packet and NOT forward it to Linux */
+		if( amISubscribed( (u16)RxFrame[0]) ){
+			// For testing purposes
+			xil_printf("NodeID: %d -> Received: %d with msg id: %x.\n", NODE_ID, FramePtr[0], RxFrame[0] );
 			XGpio_DiscreteWrite(&LEDInst, LED_CHANNEL, FramePtr[0]);
+
+			sendFifoPacket((u16)RxFrame[0], (u8)RxFrame[1], FramePtr);
 		}
 	}
-
 	return Status;
 }
 
-//============================================================= Protocol ID & Subscriptions
-int createMsgID(int priobit, int nodeID, int msgtype, int extensionbits){
+/*============================================================== Fifo Packet
+ * These functions are meant for the communication between this software and
+ * Linux through xillybus Fifo.
+ * Under full implementation of the project, these functions would be more
+ * complex in order to be able to read and write to the xillybus FIFO
+ * effectively.
+ */
+struct Packet recvFifoPacket(u16 msgid, u8 sizeOfData, u8* data){
 
-	/* It creates the 11bit number for our protocol. */
+	struct Packet packet;
+	packet.prioritybit = getPriorityBit(msgid);
+	packet.senderID = getSenderID(msgid);
+	packet.msgtype = getMsgType(msgid);
+	packet.sizeOfData = sizeOfData;
+	packet.data = data;
 
-	int protocolID;
-
-	protocolID = priobit<<SHIFT_PRIOBIT | nodeID;
-	protocolID = protocolID<<SHIFT_NODEID | msgtype;
-	protocolID = protocolID<<SHIFT_MSGTYPE | extensionbits;
-
-	return protocolID;
+	return packet;
+}
+int sendFifoPacket(u16 msgid, u8 sizeOfData, u8* data){
+	/* To be implemented in case of an actual fifo between this software
+	 * and Linux.
+	 */
+	return XST_SUCCESS;
+}
+/*============================================================= Decode Message ID
+ */
+u8 getPriorityBit(u16 msgid){
+	return ( (msgid >> 0xa) & 0x1 );
+}
+u8 getSenderID(u16 msgid){
+	return ( (msgid >> 0x6) & 0xf );
+}
+u8 getMsgType(u16 msgid){
+	return ( msgid & 0x3f );
 }
 
-struct ProtocolData decodeProtocolID(int protocolID){
+/*============================================================= Message ID & Subscriptions
+ * Normally the message ID is received from Linux.
+ * This function is for testing purposes.
+ */
+u16 createMsgID(u8 priorityBit, u8 senderID, u8 msgType){
 
-	/* It decodes the protocolID to create a struct with the
-	 * 4 values from our protocolID:
-	 *		priority bit
-	 *		node id
-	 *		message type
-	 *		last 2 bits
+	/* It creates the 11bit message ID
 	 *
-	 *	node id + message type = message id
+	 *		Priority bit	Sender ID	Message type
+	 *			1 bit		 4 bits			6 bits
 	 */
 
-	struct ProtocolData decodedData;
-	int pID;
-	pID = protocolID;
-
-	decodedData.extensionbits = pID & 0x3;
-
-	pID = pID>>SHIFT_MSGTYPE;
-	decodedData.msgtype = pID & 0xF;
-
-	pID = pID>>SHIFT_NODEID;
-	decodedData.nodeID = pID & 0xF;
-
-	decodedData.prioritybit = pID>>SHIFT_PRIOBIT;
-
-	return decodedData;
+	int msgID = priorityBit<<SHIFT_PRIORITYBIT | senderID;
+	msgID = msgID<<SHIFT_SENDERID | msgType;
+	return msgID;
 }
 
-int getMessageID(struct ProtocolData pData){
-
-	/* It creates the message id = node id(shifted) + message type */
-
-	return (pData.nodeID<<0x4) | pData.msgtype;
-}
-
-int amISubscribed(int msgid){
+u8 amISubscribed(u16 msgid){
 	int i = 0;
 
 	for( i=0 ; i<SUBSCRIPTIONS ; i++){

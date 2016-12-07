@@ -12,9 +12,11 @@
 #include "include_files.h"
 
 //============================================================== Define Section
+//==================================================== Simulation Modes
 #define SIM_BTNS						1
 #define SIM_IPORT						0
 #define SIMULATION						SIM_BTNS
+
 #define STATE_ENABLED					1
 #define STATE_DISABLED					0
 #define LEDS_DEVICE_ID 					XPAR_AXI_GPIO_LEDS_DEVICE_ID
@@ -26,12 +28,12 @@
 #define BTN_INT 						XGPIO_IR_CH1_MASK
 #define LED_CHANNEL						1
 
-//======================================================== Variable Definitions
+//============================================================== Variable Definitions
 XGpio LEDInst, BTNInst, IPortInst;
 XScuGic INTCInst;
 static int state_IPort;
 
-//========================================================= Function Prototypes
+//============================================================== Function Prototypes
 void Handler_IPortInterrupts(void *InstancePtr);
 void Handler_BtnsInterrupts(void *InstancePtr);
 int init_SimulationSystem();

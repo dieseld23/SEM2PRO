@@ -70,7 +70,7 @@ The core accepts a clock frequency from \SI{8}{\mega\hertz} to \SI{24}{\mega\her
 Apart from using the AXI CAN core and the CAN drivers, the Zynq-7000 AP SoC provides the possibility of implementing a mechanism called asymmetric multiprocessing since there are two processors which share common memory as well as peripherals.
 The idea of this is to run Linux OS on one processor, while on the other one a bare-metal system, which both of them can communicate with each other.
 This was a proposed solution for the problem of accessing the CAN devices from Linux which was the most promising of the implementation methods discussed in this report, but due to lack of time, it was researched only at a theoretical level.
-A brief implementation description will be give in this section, but for more details, the reader may refer to the Xilinx document \cite{Xilinx_AMP}.
+A brief implementation description will be give in this section, but for more details about the instructions and applications, the reader may refer to the Xilinx document \cite{Xilinx_AMP}.
 
 \paragraph{Implementation details}
 In order to achieve asymmetric multiprocessing on the Zybo board, certain steps are required to be taken, but also a few precautions.

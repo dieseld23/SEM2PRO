@@ -1,0 +1,49 @@
+
+-------------------------------------------------------------------------------
+						Southern Denmark University
+					MSc. in Engineering in Electronics
+								2nd semester
+
+			Project 2 - Monitoring of Sensor Data on the SDU Go-kart
+-------------------------------------------------------------------------------
+
+CAN Network Application Software for the Zynq-7000 Processing System
+Version: v0.3
+
+@uthor:	Catalin I. Ntemkas
+Date:	19/12/2016
+
+
+1. DESCRIPTION
+--------------
+This software was developed for the purpose of utilizing the CAN controllers
+present on the Processing System of the Zynq-7000 chip on the Zybo board as a
+step towards implementing a complete system of nodes communicating through CAN.
+The present version includes initialisation functions for the various devices
+such as buttons, leds, ports and the can controllers. It also includes
+functions for the interrupt controller, for CAN packets and for simulation 
+purposes (e.g. pressing buttons to send a message).
+
+
+2. STRUCTURE
+------------
+The software has been structured in separate files, as described in the list
+below:
+
+	- main_program.c: 	Contains the main loop of the program and the call to
+						the initialisation functions.
+	- include_files.h:	Includes certain xilinx libraries that are used by the
+						code of the other files.
+	- simulation.c:		It contains the functions related to the buttons, leds
+						and the ports.
+	- simulation.h:		The header file for the simulation.c file.					
+    - can_network.c:	It contains the functions related to the CAN network.
+    					Specifically, functions for initialisation, sending
+    					and receiving frames, encoding and decoding the message
+    					id of a	frame and for checking the subscriptions of the
+    					node following the publisher-subscriber architecture.
+   	- can_network.h:	The header file for the can_network.c file.
+   	
+   	
+3. CONFIGURATION
+----------------
