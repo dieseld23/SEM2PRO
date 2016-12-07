@@ -35,6 +35,8 @@
 #define READ_FROM_IO		0
 #define READ_FROM_FILE		1
 
+class Packer_GPS;
+
 enum state_type {GPTXT, GPRMC, GPVTG, GPGGA, GPGSA, GPGSV, GPGLL, UNKNOWN};
 
 struct buffer {

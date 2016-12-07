@@ -12,10 +12,13 @@ CMakeFiles/sensornode.dir/src/main.cpp.o: ../include/packer.hpp
 CMakeFiles/sensornode.dir/src/main.cpp.o: ../src/main.cpp
 
 CMakeFiles/sensornode.dir/src/node.cpp.o: ../include/node.hpp
-CMakeFiles/sensornode.dir/src/node.cpp.o: ../include/packer.hpp
 CMakeFiles/sensornode.dir/src/node.cpp.o: ../src/node.cpp
 
+CMakeFiles/sensornode.dir/src/packer.cpp.o: ../include/gps.hpp
 CMakeFiles/sensornode.dir/src/packer.cpp.o: ../include/node.hpp
 CMakeFiles/sensornode.dir/src/packer.cpp.o: ../include/packer.hpp
 CMakeFiles/sensornode.dir/src/packer.cpp.o: ../src/packer.cpp
+
+CMakeFiles/sensornode.dir/src/protocol.cpp.o: ../include/protocol.hpp
+CMakeFiles/sensornode.dir/src/protocol.cpp.o: ../src/protocol.cpp
 
