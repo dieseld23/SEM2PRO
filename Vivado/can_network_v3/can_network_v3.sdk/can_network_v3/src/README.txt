@@ -1,10 +1,10 @@
 
 -------------------------------------------------------------------------------
-						Southern Denmark University
-					MSc. in Engineering in Electronics
-								2nd semester
+			Southern Denmark University
+			MSc. in Engineering in Electronics
+				2nd semester
 
-			Project 2 - Monitoring of Sensor Data on the SDU Go-kart
+		Project 2 - Monitoring of Sensor Data on the SDU Go-kart
 -------------------------------------------------------------------------------
 
 Title:		CAN Network Application Software for the Zynq-7000 PS
@@ -35,16 +35,16 @@ purposes (e.g. pressing buttons to send a message).
 2. CHANGELOG
 ------------
 	- v0.1:		First draft of code built on XCanPs polled example from Xilinx
-				documentation. Functionality of buttons interrupts and
-				controlling the LEDs was added.
+			documentation. Functionality of buttons interrupts and
+			controlling the LEDs was added.
 	- v0.2:		Software structured into separate files. Further improvements
-				and refactoring were made to ensure proper software execution
-				following the new file structure. Simulation mode for external
-				GPIO port was also added, including all proper functions for
-				initialising the device and the interrupt handler.
+			and refactoring were made to ensure proper software execution
+			following the new file structure. Simulation mode for external
+			GPIO port was also added, including all proper functions for
+			initialising the device and the interrupt handler.
 	- v0.3:		Publisher-subscriber architecture and a simple protocol for the
-				message id were added. Further refactoring and improvements to
-				were made to ensure proper use of the new functions.
+			message id were added. Further refactoring and improvements to
+			were made to ensure proper use of the new functions.
 
 3. STRUCTURE
 ------------
@@ -52,35 +52,35 @@ The software has been structured in separate files, as described in the list
 below:
 
 	- main_program.c: 	Contains the main loop of the program and the call to
-						the initialisation functions.
-	- include_files.h:	Includes certain xilinx libraries that are used by the
-						code of the other files.
+				the initialisation functions.
+	- include_files.h:	It includes certain xilinx libraries that are used by
+				the code of the other files.
 	- simulation.c:		It contains the functions related to the buttons, leds
-						and the ports.
+				and the ports.
 	- simulation.h:		The header file for the simulation.c file.					
-    - can_network.c:	It contains the functions related to the CAN network.
-    					Specifically, functions for initialisation, sending
-    					and receiving frames, encoding and decoding the message
-    					id of a	frame and for checking the subscriptions of the
-    					node following the publisher-subscriber architecture.
+    	- can_network.c:	It contains the functions related to the CAN network.
+    				Specifically, functions for initialisation, sending
+    				and receiving frames, encoding and decoding the message
+    				id of a	frame and for checking the subscriptions of the
+    				node following the publisher-subscriber architecture.
    	- can_network.h:	The header file for the can_network.c file.
    	
    	
 4. CONFIGURATION
 ----------------
 SIMULATION:	
-			There are two modes for simulation, which the program can only
-			enter during startup. In order to change the simulation mode, the
-			definition SIMULATION, located in simulation.h file needs to be
-			changed to one of the available values, SIM_BTNS and SIM_IPORT.
-			SIM_BTNS initialises and makes use of the buttons and LEDs, while
-			the SIM_IPORT utilises a GPIO port for external interrupts.
+		There are two modes for simulation, which the program can only
+		enter during startup. In order to change the simulation mode, the
+		definition SIMULATION, located in simulation.h file needs to be
+		changed to one of the available values, SIM_BTNS and SIM_IPORT.
+		SIM_BTNS initialises and makes use of the buttons and LEDs, while
+		the SIM_IPORT utilises a GPIO port for external interrupts.
 			
 CAN_NETWORK:	
-			The nodes identifiers present on the go-kart network, can be set in
-			the can_network.h file. The definition NODE_ID then may be assigned
-			to one of those values before running the application, depending on
-			what node (Zybo board) will be loaded to.
+		The nodes identifiers present on the go-kart network, can be set in
+		the can_network.h file. The definition NODE_ID then may be assigned
+		to one of those values before running the application, depending on
+		what node (Zybo board) will be loaded to.
 			
 			
 5. FUTURE DEVELOPMENT
@@ -101,7 +101,7 @@ latter case and have been left open for the necessary implementation of
 communication between the two running systems.
 
 			
-x. COPYRIGHT & LICENCING
+6. COPYRIGHT & LICENCING
 ------------------------
 Students are free to fully modify the application software for further
 development to accommodate their needs of future projects under the Master
