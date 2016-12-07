@@ -1,0 +1,17 @@
+
+-------------------------------------------------------------------------------
+						Southern Denmark University
+					MSc. in Engineering in Electronics
+								2nd semester
+
+			Project 2 - Monitoring of Sensor Data on the SDU Go-kart
+-------------------------------------------------------------------------------
+
+CAN Network Application Software for the Zynq-7000 Processing System
+@uthor: Catalin I. Ntemkas
+
+
+Description
+-----------
+This software was developed for the purpose of utilizing the CAN controllers
+present on the 

@@ -2,6 +2,11 @@
 \usepackage[utf8]{inputenc}
 \setcounter{tocdepth}{2} %Only show sections and subsections in toc.
 
+\usepackage{longtable} %used for acro
+\usepackage{acro} %list of acronyms
+
+\input{formalia/acronyms}
+
 \usepackage{colortbl}
 \usepackage{siunitx} %Package for SI units
 \sisetup{per-mode=fraction}
@@ -45,6 +50,8 @@
 \usepackage{standalone}
 \usepackage{circuitikz} 	%Utility to draw circuits in tikz
 
+\usepackage[T1]{fontenc}	% Quotes
+
 \usepackage{todonotes}
 \usepackage{listings}
 \lstset{
@@ -56,6 +63,7 @@
   keywordstyle=\color{blue},
   commentstyle=\color{green}\ttfamily,
   stringstyle=\color{mauve},
+  upquote=true
   %texcl=true 
 }
 
@@ -91,9 +99,8 @@
 
 \title{Electronics - 2. Semester Project}
 \author{Thomas Søndergaard Christensen, Mikkel 
-Skarup Jaedicke, Martin Brøchner Andersen, Catalin Ionut Ntemkas‎;}
+Skarup Jaedicke, Martin Brøchner Andersen, Catalin Ionut Ntemkas‎}
 \date{dd/mm/2016}
-
 
 \begin{document}
 \input{sections/titlepage.tex}
@@ -105,6 +112,8 @@ Skarup Jaedicke, Martin Brøchner Andersen, Catalin Ionut Ntemkas‎;}
 \newpage
 \listoftodos
 \listoftables
+\addcontentsline{toc}{section}{Acronyms}
+\printacronyms
 \clearpage
 \newpage
 \pagenumbering{arabic}

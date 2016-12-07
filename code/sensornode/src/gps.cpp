@@ -158,8 +158,6 @@ state_type GPS::get_state(std::string *gps_data){
 	return state;
 }
 
-
-
 int GPS::string_until_comma(std::string message, char *string, int *index){
 	int t;
 	int end_of_string = 0;
@@ -181,8 +179,6 @@ int GPS::string_until_comma(std::string message, char *string, int *index){
 	}
 	return end_of_string;
 }
-
-
 
 void GPS::decode_RMC_message(std::string message){
 	int index = 0;
@@ -242,7 +238,6 @@ void GPS::decode_RMC_message(std::string message){
 		i++;
 	}
 }
-
 
 void GPS::print_full_gps_data(void){
 	printf("Date: %d\n", this->date);

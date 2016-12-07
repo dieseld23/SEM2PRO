@@ -1,6 +1,5 @@
 #include <stdio.h>
 
-
 #define NODE_ID_WIFI	0x1	// Bottom, 		0b0001
 #define NODE_ID_IMU	0x3	// Middle bottom	0b0011
 #define NODE_ID_SEV	0x7	// Middle top		0b0111
@@ -8,12 +7,10 @@
 
 #define PRIOR_BIT		0x0
 #define NODE_ID			NODE_ID_GPS
-#define MSG_TYPE		0xB
-#define LAST2BITS		0x3
+#define MSG_TYPE		0x2B
 
 #define SHIFT_PRIOBIT		0x4
-#define SHIFT_NODEID		0x4
-#define SHIFT_MSGTYPE		0x2
+#define SHIFT_NODEID		0x6
 
 #define SUBSCRIPTIONS		5
 #define SUBSCRIBED		1
@@ -30,32 +27,14 @@ struct ProtocolData {
 int subscriptions[SUBSCRIPTIONS] = {0xeb,0xec,0xad,0x1d,0x3f};
 
 int createProtocolID(struct ProtocolData pData){
-  int protocolID;
+  int msgID;
   
-  protocolID = (pData.prioritybit)<<SHIFT_PRIOBIT | (pData.nodeID);
-  protocolID = protocolID<<SHIFT_NODEID | (pData.msgtype);
-  protocolID = protocolID<<SHIFT_MSGTYPE | (pData.last2bits);
+  msgID = (pData.prioritybit)<<SHIFT_PRIOBIT | (pData.nodeID);
+  msgID = msgID<<SHIFT_NODEID | (pData.msgtype);
   
-  return protocolID;
+  return msgID;
 }
 
-struct ProtocolData decodeProtocolID(int protocolID){
-  struct ProtocolData decodedData;
-  int pID;
-  pID = protocolID;
-  
-  decodedData.last2bits = pID & 0x3;
-  
-  pID = pID>>SHIFT_MSGTYPE;
-  decodedData.msgtype = pID & 0xF;
-  
-  pID = pID>>SHIFT_NODEID;
-  decodedData.nodeID = pID & 0xF;
-  
-  decodedData.prioritybit = pID>>SHIFT_PRIOBIT;  
-  
-  return decodedData;
-}
 
 int getMessageID(struct ProtocolData pData){
     return (pData.nodeID<<0x4) | pData.msgtype;
@@ -74,23 +53,32 @@ int amISubscribed(int msgid){
 int main(){
   
   struct ProtocolData pData;
-  int protocolID;
+  int msgID;
   
   
   pData.prioritybit = PRIOR_BIT;
   pData.nodeID = NODE_ID;
   pData.msgtype = MSG_TYPE;
-  pData.last2bits = LAST2BITS;
   
-  printf("Example:\n\tprioritybit: %x\n\tnodeID: %x\n\tmsgtype: %x\n\tlast2bits: %x\n\n", PRIOR_BIT, NODE_ID, MSG_TYPE, LAST2BITS);
+  printf("Example:\n\tprioritybit: %x\n\tnodeID: %x\n\tmsgtype: %x\n\n", PRIOR_BIT, NODE_ID, MSG_TYPE);
   
-  protocolID = createProtocolID(pData);
+  msgID = createProtocolID(pData);
   
-  printf("Created protocol ID: %x\n\n", protocolID);
-  
-  pData = decodeProtocolID(protocolID);  
-  printf("Decoding from protocolID %x:\n\tprioritybit: %x\n\tnodeID: %x\n\tmsgtype: %x\n\tlast2bits: %x\n\n", protocolID, pData.prioritybit, pData.nodeID, pData.msgtype, pData.last2bits);
+  printf("Created protocol ID: %x\n\n", msgID);
+   
+  printf("Decoding from msgID %x:\n\tprioritybit: %x\n\tsenderID: %x\n\tmsgtype: %x\n\n", msgID, getPriorityBit(msgID), getSenderID(msgID), getMsgType(msgID));
   
   printf("The message ID (nodeID and msgtype) is: %x, subscribed: %d\n\n", getMessageID(pData), amISubscribed(getMessageID(pData)));
   return 0;
+}
+
+
+int getPriorityBit(int msgid){
+	return ( (msgid >> 0xa) & 0x1 );
+}
+int getSenderID(int msgid){
+	return ( (msgid >> 0x6) & 0xf );
+}
+int getMsgType(int msgid){
+	return ( msgid & 0x3f );
 }

@@ -16,11 +16,10 @@ This node will be referred to as the wifi node.
 \subsubsection{Network Topology}
 
 There are various network topologies that can be used to setup the required node network for this project.
-These include the ring-, bus-, mesh-, star- and tree-network topology. 
+These include the ring, bus, mesh, star and tree network topology. 
 Before choosing a topology, a brief description of the purpose and functionality of the network as well as an overview of their advantages and disadvantages are needed. 
 
 \paragraph{Purpose of the Network}~\\
-\todo{Add the abbreviation ov = on-vehicle somewhere somehow}
 The purpose of this network is to accommodate multiple nodes, such as sensors sub-networks and in general data-producers.
 These nodes need to be able to transfer their data and receive massages from the wifi node.
 
@@ -32,9 +31,10 @@ Since it is a multi-node network and it may require more nodes in the future, sc
 
 \paragraph{Different Topologies}~\\
 \todo[inline]{Thomas: This section needs to be cleaned of any statements such as "this is the simplest and cheapest...". They are broad conclusions that we have no merrits on saying}
+\catalin{I understand for "cheapest", but simplest stands. Bus topology is the simplest. It is networks theory.}
 \begin{itemize}
-\item \textbf{Bus:} This is the simplest and cheapest topology.
-All nodes communicate through a central bus and it is scalable with the addition of extra nodes on the two ends of the cable.
+\item \textbf{Bus:}
+It is one of the simplest topologies, where all nodes communicate through a central bus and it is scalable with the addition of extra nodes on the two ends of the cable.
 The central bus introduces the risk of complete network failure in case of the bus failure and the decrease in performance in case of many nodes or heavy traffic.
 \item \textbf{Ring:} All the nodes in this type of network form a ring, where each node is connected to its two neighbors.
 It has the advantages of the bus network as well and it shows better performance, even under heavy load.
@@ -60,7 +60,7 @@ A node may be a simple sensor with a small micro-controller and hence, connectin
 %In our system, a small embedded board computer will be the ov-computer which requires to maintain its connection with the network even in case of failures and also possibly the central hub in centralized topologies that such as the star and the tree.
 The star network requires a lot of connections which normally are not present at standard micro-controllers.
 %Thus, these two topologies are not suited, since in case of its failure, the whole network fails.
-Thus, the mesh and star networks are not suited for this system
+Thus, the mesh and star networks are not suited for this system.
 Scalability is also a requirement for the future connection of nodes.
 Although the majority of the types provide a level of scalability, the addition of extra nodes always decrease the overall performance of any network.
 Hence, a topology that balances the decrease in performance against the network's expansion is best suited for the project.\\\\

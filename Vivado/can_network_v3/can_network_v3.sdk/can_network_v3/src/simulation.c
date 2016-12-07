@@ -11,25 +11,25 @@
 /******************************************************************************
  * 							BUTTONS SIMULATION
  *****************************************************************************/
-//========================================================== Handler Interrupts
+//============================================================== Handler Interrupts
 void Handler_BtnsInterrupts(void *InstancePtr)
 {
-	int hex = 0;
+	int btnHex = 0;
 
 	XGpio_InterruptDisable(&BTNInst, BTN_INT);
 
 	// Ignore additional button presses
 	if ((XGpio_InterruptGetStatus(&BTNInst) & BTN_INT) != BTN_INT) { return; }
 
-	hex = XGpio_DiscreteRead(&BTNInst, 1);
+	btnHex = XGpio_DiscreteRead(&BTNInst, 1);
 
 	//XGpio_DiscreteWrite(&LEDInst, LED_CHANNEL, hex);
-	SendFrame(CanInstPtr, hex);
+	SendFrame(CanInstPtr, btnHex);
 
     (void)XGpio_InterruptClear(&BTNInst, BTN_INT);
     XGpio_InterruptEnable(&BTNInst, BTN_INT);
 }
-//============================================================= Setup Functions
+//============================================================== Setup Functions
 int setupInterruptSystem_Btns(XScuGic *XScuGicInstancePtr)
 {
 	// Enable interrupt
@@ -44,7 +44,7 @@ int setupInterruptSystem_Btns(XScuGic *XScuGicInstancePtr)
 	return XST_SUCCESS;
 
 }
-//============================================ Initialise Interrupt Controllers
+//============================================================== Initialise Interrupt Controllers
 int init_IntrCtrlFunction_Btns(u16 DeviceId,  XGpio *GpioInstancePtr)
 {
 	XScuGic_Config *IntcConfig;
@@ -76,7 +76,7 @@ int init_IntrCtrlFunction_Btns(u16 DeviceId,  XGpio *GpioInstancePtr)
 
 	return XST_SUCCESS;
 }
-//======================================== Initialise Buttons Simulation System
+//============================================================== Initialise Buttons Simulation System
 int init_SimulationSystem_Btns(){
 	int status;
 
@@ -106,7 +106,7 @@ int init_SimulationSystem_Btns(){
 /******************************************************************************
  * 							INPUT PORT SIMULATION
  *****************************************************************************/
-//========================================================== Handler Interrupts
+//============================================================== Handler Interrupts
 void Handler_IPortInterrupts(void *InstancePtr)
 {
 	int value = 0;
@@ -128,7 +128,7 @@ void Handler_IPortInterrupts(void *InstancePtr)
     (void)XGpio_InterruptClear(&IPortInst, BTN_INT);
     XGpio_InterruptEnable(&IPortInst, BTN_INT);
 }
-//============================================================= Setup Functions
+//============================================================== Setup Functions
 int setupInterruptSystem_IPort(XScuGic *XScuGicInstancePtr)
 {
 	// Enable interrupt
@@ -143,7 +143,7 @@ int setupInterruptSystem_IPort(XScuGic *XScuGicInstancePtr)
 	return XST_SUCCESS;
 
 }
-//============================================ Initialise Interrupt Controllers
+//============================================================== Initialise Interrupt Controllers
 int init_IntrCtrlFunction_IPort(u16 DeviceId,  XGpio *GpioInstancePtr)
 {
 	XScuGic_Config *IntcConfig;
@@ -175,7 +175,7 @@ int init_IntrCtrlFunction_IPort(u16 DeviceId,  XGpio *GpioInstancePtr)
 
 	return XST_SUCCESS;
 }
-//========================================== Initialise IPort Simulation System
+//============================================================== Initialise IPort Simulation System
 int init_SimulationSystem_IPort(){
 	int status;
 
@@ -197,7 +197,7 @@ int init_SimulationSystem_IPort(){
 	return XST_SUCCESS;
 }
 
-//================================================ Initialise Simulation System
+//============================================================== Initialise Simulation System
 int init_SimulationSystem(){
 
 	if( SIMULATION == SIM_BTNS)
