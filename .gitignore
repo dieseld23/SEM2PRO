@@ -13,3 +13,15 @@ main.pdf
 *.bbl
 *.blg
 *.tdo
+*.glo
+*.glsdefs
+*.ist
+*.lot
+
+#sublime
+*.sublime-project
+*.sublime-workspace
+
+#c++
+bin/
+build/

@@ -1,0 +1,25 @@
+\section{Object Dictionary}\label{app:OD}
+
+
+\begin{table}[H]
+	\centering
+	\caption{Object Dictionary}
+	\label{tab:OD}
+	\begin{tabular}{llllll}
+		\textbf{Wifi 0001} & \textbf{Data Length} & \textbf{Data Types} & \textbf{Fields}       & \textbf{Scaling}   & \textbf{Units}                             \\
+		00                 & 0                    & -                   & Sync                  & -                  & -                                          \\
+		01                 & 1                    & -                   & Command               &                    &                                            \\
+		&                      &                     & 0x00 = Config         &                    &                                            \\
+		&                      &                     & 0x01 = Start          &                    &                                            \\
+		&                      &                     & 0x02 = Stop           &                    &                                            \\
+		\textbf{IMU 0010}  & \textbf{Data Length} & \textbf{Data Types} & \textbf{Fields}       & \textbf{Scaling}   & \textbf{Units}                             \\
+		000001             & 4                    & u32                 & Timestamp             & 1                  & ms                                         \\
+		001000             & 8                    & float               & Pressure, Temperature & 1, 1               & kPa, degC                                  \\
+		001001             & 6                    & s16                 & Ax, Ay, Az            & 0.00478            & \si\{\meter \per \second \squared\}        \\
+		001010             & 6                    & s16                 & Gx, Gy, Gz            & 0.000266           & rad/s                                      \\
+		001011             & 6                    & s16                 & Mx, My, Mz            & 0.15               & \si\{\micro \tesla\}                       \\
+		001100             & 24                   & s16                 & Ax, Ay, Az, Gx        & 0.00478,  0.000266 & \si\{\meter \per \second \squared\}, rad/s \\
+		&                      &                     & Gy, Gz, Mx, My        & 0.000266, 0.15     & rad/s, \si\{\micro \tesla\}                \\
+		&                      &                     & Mz, Yaw, Pitch, Roll  & 0.15, 1e-4         & \si\{\micro \tesla\}, degree              
+	\end{tabular}
+\end{table}
