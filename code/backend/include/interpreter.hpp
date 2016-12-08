@@ -16,13 +16,15 @@ class interpreter
 {
 public:
 	interpreter(fifo *fifo);
+	bool put(std::string msg);
 	
 private:
-	void recv(buffer *s_buff);
-	void interprete(buffer *s_buff);
+	//void recv(buffer *s_buff);
+	void intprt(buffer *s_buff);
+
 
 	buffer s_buff;
-	std::thread recv_t;
+	//std::thread recv_t;
 	std::thread intr_t;
 	fifo *fifo_o;
 };

@@ -19,13 +19,13 @@ coordinate_t backend::get_coordinate()
 
 	if (!v.empty())
 	{
-		lat_p = v.back().data.front() == LAT_NORTH ? 'N' : 'S';
+		lat_p = (v.back().data.front()-0x30 == LAT_NORTH) ? 'N' : 'S';
 		v.back().data.erase(v.back().data.begin());
 		lat = v.back().data.substr(0,31);
 		v.back().data.erase(
 				v.back().data.begin(),
 				v.back().data.begin()+31);
-		lon_p = v.back().data.front() == LONG_EAST ? 'E' : 'W';
+		lon_p = v.back().data.front()-0x30 == LONG_EAST ? 'E' : 'W';
 		v.back().data.erase(v.back().data.begin());
 		lon = v.back().data;
 
