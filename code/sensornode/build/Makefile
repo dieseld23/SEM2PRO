@@ -123,6 +123,33 @@ sensornode/fast:
 	$(MAKE) -f CMakeFiles/sensornode.dir/build.make CMakeFiles/sensornode.dir/build
 .PHONY : sensornode/fast
 
+src/canlink.o: src/canlink.cpp.o
+
+.PHONY : src/canlink.o
+
+# target to build an object file
+src/canlink.cpp.o:
+	$(MAKE) -f CMakeFiles/sensornode.dir/build.make CMakeFiles/sensornode.dir/src/canlink.cpp.o
+.PHONY : src/canlink.cpp.o
+
+src/canlink.i: src/canlink.cpp.i
+
+.PHONY : src/canlink.i
+
+# target to preprocess a source file
+src/canlink.cpp.i:
+	$(MAKE) -f CMakeFiles/sensornode.dir/build.make CMakeFiles/sensornode.dir/src/canlink.cpp.i
+.PHONY : src/canlink.cpp.i
+
+src/canlink.s: src/canlink.cpp.s
+
+.PHONY : src/canlink.s
+
+# target to generate assembly for a file
+src/canlink.cpp.s:
+	$(MAKE) -f CMakeFiles/sensornode.dir/build.make CMakeFiles/sensornode.dir/src/canlink.cpp.s
+.PHONY : src/canlink.cpp.s
+
 src/gps.o: src/gps.cpp.o
 
 .PHONY : src/gps.o
@@ -267,6 +294,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... sensornode"
+	@echo "... src/canlink.o"
+	@echo "... src/canlink.i"
+	@echo "... src/canlink.s"
 	@echo "... src/gps.o"
 	@echo "... src/gps.i"
 	@echo "... src/gps.s"

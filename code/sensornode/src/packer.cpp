@@ -44,6 +44,8 @@ std::vector<bool> Packer_GPS::get_lat_long_message(void){
 	long_info.insert(long_info.begin(), gps->get_long_dir() );
 
 	lat_long_mes = append_vector(lat_info,long_info);					// Joing lat and long into one 8 byte message
+	std::vector<bool> test;
+	std::vector<bool> test1;
 
 	//print_vector_bool(lat_long_mes);
 	return lat_long_mes;
