@@ -73,6 +73,8 @@ node.hpp
 /home/mikkeljaedicke/Documents/SEM2PRO/code/sensornode/src/canlink.cpp
 canlink.hpp
 /home/mikkeljaedicke/Documents/SEM2PRO/code/sensornode/src/canlink.hpp
+protocol.hpp
+/home/mikkeljaedicke/Documents/SEM2PRO/code/sensornode/src/protocol.hpp
 
 /home/mikkeljaedicke/Documents/SEM2PRO/code/sensornode/src/gps.cpp
 gps.hpp

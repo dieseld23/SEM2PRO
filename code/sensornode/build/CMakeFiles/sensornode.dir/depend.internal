@@ -4,6 +4,7 @@
 CMakeFiles/sensornode.dir/src/canlink.cpp.o
  ../include/canlink.hpp
  ../include/node.hpp
+ ../include/protocol.hpp
  /home/mikkeljaedicke/Documents/SEM2PRO/code/sensornode/src/canlink.cpp
 CMakeFiles/sensornode.dir/src/gps.cpp.o
  ../include/gps.hpp

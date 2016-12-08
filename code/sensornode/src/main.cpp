@@ -25,6 +25,8 @@ int main()
 	Node gps_node(14);					// New GPS node
 	Protocol protocol;					// New protocol
 	protocol.set_can_link(&can_link);	// Set
+	protocol.set_node(&gps_node);
+
 	can_link.set_protocol(&protocol);
 
 	Packer_GPS packer_gps;				// New GPS packer
@@ -39,7 +41,7 @@ int main()
 	packer_gps.set_gps(&gps_inst);		// Set
 	gps_node.set_protocol(&protocol);	// Set
 	gps_node.start();
-	
+
 	// Start system
 	gps_inst.start_datacollection_file();
 	gps_inst.start();
