@@ -9,6 +9,10 @@
 ../include/canlink.hpp
 node.hpp
 ../include/node.hpp
+string
+-
+sstream
+-
 
 ../include/gps.hpp
 packer.hpp

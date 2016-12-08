@@ -53,8 +53,22 @@ struct packed_data {
     print_vector_bool(this->data);
     std::cout << '\n';
   }
- 
+  void print(void){
+    print_sof();
+    print_node_id();
+    print_n_data_bytes();
+    print_messagetype();
+    print_data();
+  }
 };
+
+
+
+
+
+
+
+
 
 class Node {
 private:

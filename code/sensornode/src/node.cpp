@@ -46,7 +46,7 @@ void Node::loop(void){
 			data = 1;
 			temp_packet = get_data_from_buffer();
 			temp_packet.node_id = this->node_id;											// Add node id
-			packets_to_send.push_back(temp_packet); 										// Add to ...					
+			packets_to_send.insert(packets_to_send.begin(),temp_packet); 										// Add to ...					
 		}
 		if(data == 1){
 			while(!packets_to_send.empty()){
