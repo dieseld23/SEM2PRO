@@ -5,24 +5,20 @@
 
 interpreter::interpreter(fifo *fifo) : fifo_o(fifo)
 {
-	recv_t = std::thread(&interpreter::recv, this, &this->s_buff);
-	intr_t = std::thread(&interpreter::interprete, this, &this->s_buff);
+	//recv_t = std::thread(&interpreter::recv, this, &this->s_buff);
+	intr_t = std::thread(&interpreter::intprt, this, &this->s_buff);
 }
 
-void interpreter::recv(buffer *s_buff)
+bool interpreter::put(std::string msg)
 {
-	std::string msg;
-	while(1)
+	if (s_buff.mutex.try_lock())
 	{
-		std::cin >> msg;
-		
-		while(!s_buff->mutex.try_lock());
-		s_buff->strings.push_back(msg);
-		s_buff->mutex.unlock();
+		s_buff.strings.push_back(msg);
+		s_buff.mutex.unlock();
 	}
 }
 
-void interpreter::interprete(buffer *s_buff)
+void interpreter::intprt(buffer *s_buff)
 {
 	std::string msg, msgid, millis, data;
 

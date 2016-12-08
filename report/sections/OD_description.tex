@@ -1,0 +1,35 @@
+%!TEX root = ../main.tex
+\subsection{Object Dictionary}\label{sub:OD}
+In order to ensure that all message IDs are unique, an Object Dictionary is declared for this high level protocol.
+The name is inspired from CANopen, but unlike the CANopen Object Dictionary, this refers to the messages being transmitted on the, and not the parameters or variables on the CANopen node.
+Because of this, some variables appear in several message IDs, as it might be desirable to reconfigure some nodes to send different data, and the node should group data together to reduce the number of frames.\\
+
+At this time, there are four nodes in the Object Dictionary with their node ID in hex: Wifi 0x1, IMU 0x3, Sevcon 0x7 and GPS 0xD.
+The Wifi node is considered the master, and can command the other nodes, and as such it's portion of the OD is a bit different. 
+Common for the other three nodes is that the message type 0x01 is a four byte timestamp.
+Other than that, data messages start from 0x08.\\
+
+The object dictionary is in appendix~\ref{app:OD}
+\martin{I know, I know. This need to look differently. and be in an appendix}
+\begin{table}[H]
+	\centering
+	\caption{Object Dictionary}
+	\label{tab:OD}
+	\begin{tabular}{llllll}
+		\textbf{Wifi 0001} & \textbf{Data Length} & \textbf{Data Types} & \textbf{Fields}       & \textbf{Scaling}   & \textbf{Units}                             \\
+		00                 & 0                    & -                   & Sync                  & -                  & -                                          \\
+		01                 & 1                    & -                   & Command               &                    &                                            \\
+		&                      &                     & 0x00 = Config         &                    &                                            \\
+		&                      &                     & 0x01 = Start          &                    &                                            \\
+		&                      &                     & 0x02 = Stop           &                    &                                            \\
+		\textbf{IMU 0010}  & \textbf{Data Length} & \textbf{Data Types} & \textbf{Fields}       & \textbf{Scaling}   & \textbf{Units}                             \\
+		000001             & 4                    & u32                 & Timestamp             & 1                  & ms                                         \\
+		001000             & 8                    & float               & Pressure, Temperature & 1, 1               & kPa, degC                                  \\
+		001001             & 6                    & s16                 & Ax, Ay, Az            & 0.00478            & $\si{\meter \per \second \squared} $        \\
+		001010             & 6                    & s16                 & Gx, Gy, Gz            & 0.000266           & rad/s                                      \\
+		001011             & 6                    & s16                 & Mx, My, Mz            & 0.15               & $ \si{\micro \tesla} $                       \\
+		001100             & 24                   & s16                 & Ax, Ay, Az, Gx        & 0.00478,  0.000266 & $ \si{\meter \per \second \squared} $, rad/s \\
+		&                      &                     & Gy, Gz, Mx, My        & 0.000266, 0.15     & rad/s, $ \si{\micro \tesla} $                \\
+		&                      &                     & Mz, Yaw, Pitch, Roll  & 0.15, 1e-4         & $ \si{\micro \tesla} $, degree              
+	\end{tabular}
+\end{table}
