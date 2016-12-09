@@ -5,6 +5,11 @@
 
 %This section assumes that CANOpen has been adequately explained beforehand
 
+\subsubsection{Interfacing with Sevcon}\label{sub:Sevcon_interfacing}
+The working motor driver currently on the go-kart is in fact compatible with CAN.
+However, as it is a general purpose motor driver, it cannot be programmed to used the high level protocol designed in this project. 
+For this reason, and to make the network unaffected by replacement of the motor driver, it has been decided to use a Zybo to interface with the Sevcon.
+
 \paragraph*{Physical Connection}\label{sub:sevcon_physical_connection}~\\
 Communication with the Sevcon is done through a high speed CAN bus that needs to adhere to ISO11898-2.
 As described in section~\ref{sub:CANphys}, one transceiver board has two transceivers along with a terminal so that one Zybo can connect to the Sevcon using the second CAN controller.

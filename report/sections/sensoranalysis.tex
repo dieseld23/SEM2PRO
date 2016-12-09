@@ -104,10 +104,7 @@ However, it is also possible to read data from it while running, and in some cas
 It is therefore possible to use this to access the electrical parameters. \\
 
 The Sevcon communicates through CANopen, which is a high level protocol running on top of CAN.
-This allows reading from and writing to a vast array of registers of varying length.\\
-
-\mikkel{Martin: add something here about CANOPEN?}
-
+This allows reading from and writing to a vast array of registers of varying length, which is described in further detail on page pageref~\ref{sub:CANopen}\\
 
 \subsubsection*{Inertial Measurement Unit (IMU)}
 \label{sec:imu}
@@ -168,6 +165,11 @@ I can also make the accelerometer data zero base, meaning when the go kart is st
 
 \subsubsection*{Global Positioning System (GPS)}
 \mikkel{Something here?}
+A Global Navigation Satellite System is included on the Go Kart. 
+The purpose of this is to give absolute position readings at fixed intervals, much like a runner would be able to see their route on a map afterwards.
+However unlike a runner, \\
+
+It is definitely harder to specify the requirements for GPS than for the IMU. 
 
 
 \subsubsection*{Conclusion}
