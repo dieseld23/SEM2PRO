@@ -2,13 +2,7 @@
 #include "gps.hpp"
 
 Packer_GPS::Packer_GPS(void){
-	std::vector<bool> messagetype_1;		//LAT & LONG messagetype - "000001"
-	messagetype_1.push_back(0);
-	messagetype_1.push_back(0);
-	messagetype_1.push_back(0);
-	messagetype_1.push_back(0);
-	messagetype_1.push_back(0);
-	messagetype_1.push_back(1);
+	std::bitset<6> messagetype_1(1);		//LAT & LONG messagetype - "000001"
 
 	messagetypes.push_back(messagetype_1);
 }
@@ -64,7 +58,7 @@ void Packer_GPS::send_data_to_node(void){
 	}
 }
 
-void Packer_GPS::set_node(Node* node_in){
+void Packer::set_node(Node* node_in){
 	node = node_in;
 }
 

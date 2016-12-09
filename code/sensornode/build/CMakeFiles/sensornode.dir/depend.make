@@ -3,6 +3,7 @@
 
 CMakeFiles/sensornode.dir/src/canlink.cpp.o: ../include/canlink.hpp
 CMakeFiles/sensornode.dir/src/canlink.cpp.o: ../include/node.hpp
+CMakeFiles/sensornode.dir/src/canlink.cpp.o: ../include/protocol.hpp
 CMakeFiles/sensornode.dir/src/canlink.cpp.o: ../src/canlink.cpp
 
 CMakeFiles/sensornode.dir/src/gps.cpp.o: ../include/gps.hpp

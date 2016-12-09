@@ -9,7 +9,7 @@
 #include <mutex>
 #include <vector>
 #include <thread>  
-#include <unistd.h>			// Should be removed
+#include <unistd.h>
 
 #define LAT_NORTH	0
 #define LAT_SOUTH	1
@@ -50,7 +50,7 @@ private:
 	bool lat_dir;
 	double longitude;				//degree.decimals
 	bool long_dir;
-	bool status;						//
+	bool status;					
 	int time;						//time 14:30:29:00 = 14302900
 	int date;						//date 07/11/16 = 071116
 	std::string path;
@@ -66,7 +66,6 @@ private:
 	double minutes_to_degress(double minutes);
 	void send_data_to_node(void);
 public:
-	GPS(int);
 	void start(void);
 	void set_path(std::string);
 	double get_lat(void);

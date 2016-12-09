@@ -91,19 +91,22 @@ The core accepts a clock frequency from \SI{8}{\mega\hertz} to \SI{24}{\mega\her
 \subsubsection{Utilizing Asymmetric Multiprocessing}
 
 Apart from using the AXI CAN core and the CAN drivers, the Zynq-7000 AP SoC provides the possibility of implementing a mechanism called asymmetric multiprocessing since there are two processors which share common memory as well as peripherals.
+\\
 The idea of this is to run Linux OS on one processor, while on the other one a bare-metal system, which both of them can communicate with each other.
 This was a proposed solution for the problem of accessing the CAN devices from Linux which was the most promising of the implementation methods discussed in this report, but due to lack of time, it was researched only at a theoretical level.
-A brief implementation description will be give in this section, but for more details about the instructions and applications, the reader may refer to the Xilinx document \cite{Xilinx_AMP}.
+\\
+A brief implementation description will be given in this section, but for more details about the instructions and applications, the reader may refer to the Xilinx document \cite{Xilinx_AMP}.
 
-\paragraph{Implementation details}~\\
+\paragraph{Short Implementation description}~\\
 In order to achieve asymmetric multiprocessing on the Zybo board, certain steps are required to be taken, but also a few precautions as well.
 An important one is to configure the two processors appropriately in order to use the shared memory without conflicts.
 A second one is to setup the CPU0 as the master, because that is the processor assigned for the Linux OS.
 It is also the one that will start CPU1 by writing a value to a specific address in memory.
-Also, Linux needs to be configured as symmetric multiprocessing with a maximum number of one CPUs.
+\\
+Linux also needs to be configured as symmetric multiprocessing with a maximum number of one CPUs.
 It is a good approach because it will ensure that Linux configures the interrupt control distributor (ICD) and the snoop control unit (SCU) appropriately for multi-CPU environment, but only running on one of the two CPUs.
 \\
-Applications for the bare-metal and the Linux part are also needed. Specifically, the former makes use of the fist stage boot loader (FSBL) as well as a custom application that will run on the CPU1 after it will be loaded by the FSBL into the memory.
+Applications for the bare-metal and the Linux part are needed as well. Specifically, the former makes use of the fist stage boot loader (FSBL) as well as a custom application that will run on the CPU1 after it will be loaded by the FSBL into the memory.
 The latter, the Linux OS, uses two applications as well.
 The first one is RWMEM which is an utility providing the ability to read and write to various memory locations.
 The second one is the Soft UART, which constantly monitors the memory in order to receive data from the application running on the second processor, the bare-metal code.
