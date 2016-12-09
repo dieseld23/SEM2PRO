@@ -8,13 +8,8 @@ Node::Node(void){
 Node::Node(int id){
 	running = 1;
 	state = stopped;
-	std::bitset<4> bitset(id);
-	std::vector<bool> vector;
-
-	for(int i = 0; i<4; i++){
-		vector.insert(vector.begin(), bitset[i] );
-	}
-	node_id = vector;
+	std::bitset<4> bitset_id(id);
+	node_id = bitset_id;
 }
 
 
@@ -58,16 +53,13 @@ void Node::loop_out(void){
 	packed_data temp_packet;
 	int data = 0;
 	while(1){
-		//topped, clear, time_packing, get_data, send_data }
 		switch(state) {
 			case stopped: 
-    					//std::cout << "NODE IS STOPPED!!!\n\n"; // prints "1"
     					if(running == 1){
     						state = clear;
     					}
-            			break;       // and exits the switch
+            			break;
             case clear: 
-            			//std::cout << "Clear!\n";
              			data = 0;																			// Clear
 						packets_to_send.clear();															// Clear
 						if(running == 0){
@@ -78,7 +70,6 @@ void Node::loop_out(void){
 						}
 						break;
 			case time_packing:
-						//std::cout << "Time packet!\n";
 						ms_now = get_ms();																	// Get timestamp
 						packets_to_send.insert(packets_to_send.begin(),construct_time_packet(ms_now));		// Put in the first spot
 						if(running == 0){
@@ -89,7 +80,6 @@ void Node::loop_out(void){
 						} 
 						break;
 			case get_data:
-						//std::cout << "get data!\n";
 						while(data_in_buffer_test() == 1){													// Get all data packets available
 							data = 1;
 							temp_packet = get_data_from_buffer();
@@ -107,7 +97,6 @@ void Node::loop_out(void){
 						}
 						break;
 			case send_data:
-						//std::cout << "send data!\n";
 						while(!packets_to_send.empty()){
 							temp_packet = packets_to_send.back();										// Get packet
 							packets_to_send	.pop_back();												// Delete read packet
@@ -116,25 +105,6 @@ void Node::loop_out(void){
 						state = clear;
 						break;
 		}
-		// SHOULD BE MADE INTO STATE MACHINE! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-         /*
-
-
-		while(data_in_buffer_test() == 1){													// Get all data packets available
-			data = 1;
-			temp_packet = get_data_from_buffer();
-			temp_packet.node_id = this->node_id;											// Add node id
-			packets_to_send.insert(packets_to_send.begin(),temp_packet); 										// Add to ...					
-		}
-		if(data == 1){
-			while(!packets_to_send.empty()){
-				temp_packet = packets_to_send.back();										// Get packet
-				packets_to_send	.pop_back();												// Delete read packet
-				protocol->put_data_packet(temp_packet);										// Put packet in protocol
-			}
-		}
-		*/
-				// SHOULD BE MADE INTO STATE MACHINE! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	}
 }
 
@@ -142,9 +112,6 @@ void Node::counter(void){
 	while(1){
 		std::this_thread::sleep_for(std::chrono::milliseconds(1));
 		ms++;
-	/*if(ms%1000 == 0){
-		std::cout <<"ms: "<<ms<<std::endl;
-	} */
 	}
 }
 
@@ -158,19 +125,9 @@ void Node::print_vector_bool(std::vector<bool> vector){
 
 packed_data Node::get_data_from_buffer(void){
 	packed_data data_packet;
- 	//std::cout <<"I am here in get data!!!\n";
 	if(this->data_out_mutex.try_lock()){
-		//std::cout <<"I am here in get data!!!\n";
 		if(!this->data_out.empty()){
-			//std::cout <<"I am here in get data\n";
 			data_packet = this->data_out.back();
-			//std::cout<<"----------- Incoming message -----------\n";
-			//std::cout<<"Messageid: ";
-			//print_vector_bool(data_packet->messagetype);
-			//std::cout<<"\nData: ";
-			//print_vector_bool(data_packet->data);
-			//std::cout<<", data size: "<< data_packet->data.size() << "... ";
-			//std::cout<<"\n\n\n\n";
 			this->data_out.pop_back();
 		}
 		this->data_out_mutex.unlock();
@@ -191,10 +148,7 @@ int Node::data_in_buffer_test(void){
 
 packed_data Node::construct_time_packet(long int ms){
 
-	std::vector<bool> messagetype;		// time messagetype - "000000"
-	for(int i = 0; i<6; i++){
-		messagetype.push_back(0);	
-	}
+	std::bitset<6> messagetype(0);								// messagetype 000000
 	std::bitset<32> time_data_bitset(ms);
 	std::vector<bool> time_data = bitset32_to_vector(time_data_bitset);
 
@@ -228,19 +182,9 @@ void Node::put_event(int event){
 
 int Node::get_from_event_buffer(void){
 	int event;
- 	//std::cout <<"I am here in get data!!!\n";
 	if(this->event_buffer_mutex.try_lock()){
-		//std::cout <<"I am here in get data!!!\n";
 		if(!this->event_buffer.empty()){
-			//std::cout <<"I am here in get data\n";
 			event = this->event_buffer.back();
-			//std::cout<<"----------- Incoming message -----------\n";
-			//std::cout<<"Messageid: ";
-			//print_vector_bool(data_packet->messagetype);
-			//std::cout<<"\nData: ";
-			//print_vector_bool(data_packet->data);
-			//std::cout<<", data size: "<< data_packet->data.size() << "... ";
-			//std::cout<<"\n\n\n\n";
 			this->event_buffer.pop_back();
 		}
 		this->event_buffer_mutex.unlock();

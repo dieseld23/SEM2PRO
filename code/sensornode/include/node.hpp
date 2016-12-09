@@ -15,16 +15,16 @@ class Protocol;
 enum states { stopped, clear, time_packing, get_data, send_data };
 
 struct packed_data {
-  std::bitset<1> sof;    // HMM SHOULD ALL BE BITSET????? YES!!!!!
-  std::vector<bool> node_id;
+  std::bitset<1> sof;
+  std::bitset<4> node_id;
   std::bitset<4> n_data_bytes;
-  std::vector<bool> messagetype;
+  std::bitset<6> messagetype;
   std::vector<bool> data;
   void print_bool_packet(void){
     std::cout << sof;
-    print_vector_bool(this->node_id);
+    std::cout <<node_id;
     std::cout<<n_data_bytes;
-    print_vector_bool(this->messagetype);
+    std::cout<<messagetype;
     print_vector_bool(this->data);
   }
   void print_vector_bool(std::vector<bool> vector){
@@ -38,7 +38,7 @@ struct packed_data {
   }
   void print_node_id(void){
     std::cout<< "Node id: ";
-    print_vector_bool(this->node_id);
+    std::cout<< node_id;
     std::cout << '\n';
   }
   void print_n_data_bytes(void){
@@ -47,7 +47,7 @@ struct packed_data {
   }
   void print_messagetype(void){
     std::cout<< "Messagetype: ";
-    print_vector_bool(this->messagetype);
+    std::cout<<messagetype << '\n';
     std::cout << '\n';
   }
   void print_data(void){
@@ -73,7 +73,7 @@ private:
   bool running;
   states state;
   Protocol* protocol;
-  std::vector<bool> node_id;
+  std::bitset<4> node_id;
   std::thread loop_out_thread;
   std::thread loop_in_thread;
   

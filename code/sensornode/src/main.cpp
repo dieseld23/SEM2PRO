@@ -33,8 +33,8 @@ int main()
 	packer_gps.set_node(&gps_node);
 
 	
-
-	GPS gps_inst(13);					// New GPS sensor
+	GPS gps_inst;
+	//GPS gps_inst(12);					// New GPS sensor
 	gps_inst.set_path("/dev/ttyACM1");
 	gps_inst.set_packer(&packer_gps);
 
