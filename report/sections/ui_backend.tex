@@ -23,7 +23,18 @@ Upon receiving a message from the go-kart, socat will pipe the raw message to th
 The interpreter will proceed to extract the message id, the timestamp and the data.
 These are then put into a fifo buffer which will contain the latest 1024 data points for a given message id.
 \thomas{Why 1024? An arbitrary number that needs some sort of explanation..}
-The backend is a collection of functions which provide an API for the UI layer. 
+One of the requirements of this system is that it should be easily expandable.
+A consequence of this is that adding a new node on the system should require as few changes to the code as possible.
+Making this backend agnostic with respect to the type of data means that no changes are required when adding different nodes with different data types.
+However, full agnosticity throughout the entire backend would mean that the GUI programmer needs to know how to handle the binary data.
+Instead, it was decided to let the backend consist of a number of functions, written specifically for each node.
+The GPS node, for instance, may have a \texttt{get\_latitude()} function.
+In this manner, a simple API can be created which provides the GUI with access to the parameters that needs to be shown.
+The complete code can be found on the associated github repository in \path{code\backend\}.
+As a note, throughout this section it is assumed that the messages are of string type.
+Clearly, this is hugely inefficient as these are string representations of binary numbers.
+In testing the software this approach simplified the process greatly and was due to time pressure.
+It is unlikely that this choice will pose any issues in terms of performance since this code will be running on a PC, a platform that is several orders of magnitude faster than the ZB.
 
 \begin{figure}
 	\includegraphics[width=\linewidth]{graphics/backend_concept}
@@ -35,24 +46,26 @@ The backend is a collection of functions which provide an API for the UI layer.
 \end{figure}
 
 \begin{figure}[H]
-	\missingfigure{Backend Class Diagram}
-	%\includegraphics[width=\linewidth]{graphics/backend_class_diagram}
+	%\missingfigure{Backend Class Diagram}
+	\includegraphics[width=\linewidth]{graphics/backend_class_diagram}
 	\caption[Backend class diagram.]{Classdiagram of the backend.}
 	\label{fig:backendclass}
 \end{figure}
 
 From \ref{fig:backendconcept}, a class diagram has been created.
 This can be seen on figure \ref{fig:backendclass}.
-Four classes are created, each of which will be explained in more detail below
+The functionality is implemented in four classes, each of which will be explained in more detail below.
 
 \paragraph*{\texttt{receiver}}~\\
 This class is run in a separate thread.
 It continuously listens to std::io, waiting for input from the go-kart.
-Upon receiving a message, it is put into a buffer maintained by interpreter.
+Upon receiving a message, it is put into a message buffer maintained by interpreter.
 \paragraph*{\texttt{interpreter}}~\\
-As mentioned, this class holds a message buffer, shown in code \ref{code:msgbuffer}.
-Whenever a message is put in the buffer, it is split into its three components, a 10 bit message id, a 4 byte timestamp and an data of arbitrary length.
-On figure \ref{fig:backendmsg} is a depiction of a message.
+As mentioned, this class holds a message buffer, it is shown in code \ref{code:msgbuffer}.
+The buffer can be accessed from the receiver thread indirectly by a call to \texttt{put()} and the interpreter thread continously checks if data is present in the buffer.
+Since these threads are run simultaneously it is necessary to use a mutex to avoid race conditions.
+Whenever a message is put in the buffer, it is split into its three components, a 10 bit message id, a 4 byte timestamp and a string of data of arbitrary length.
+On figure \ref{fig:backendmsg} is a depiction of the messagetype.
 \begin{figure}[H]
 	\missingfigure{Backend Message (msgid/timestamp/data)}
 	%\includegraphics[width=\linewidth]{graphics/backend_class_diagram}
@@ -60,11 +73,84 @@ On figure \ref{fig:backendmsg} is a depiction of a message.
 	\label{fig:backendmsg}
 \end{figure}
 
-Once split, the information is stored using the put function 
-\begin{lstlisting}[caption=Buffer for holding incomming messages,label=code:msgbuffer]
+Once split, the information is stored using \texttt{put()} from the fifo. 
+\begin{lstlisting}[caption=Buffer for holding incoming messages,label=code:msgbuffer]
 struct buffer 
 {
   std::vector<std::string> strings;
   std::mutex mutex;
 };
+\end{lstlisting}
+\paragraph*{\texttt{fifo}}~\\
+This class implements a hashmap and functions to insert and extract data from the map.
+Each messageid has a flag associated with it to signal whenever new data is available.
+The hashmap uses the message id as the key and the data is \texttt{std::pair<std::vector<data\_t>, bool>}.
+That is, each message id is associated with a list of \texttt{data\_t} and a \texttt{bool} used as a flag.
+As with the buffer in the interpreter class, the fifo will be accessed from two threads running simultaneously and as such, mutexing is necessary.
+Mutexing is done on the \texttt{put()} and \texttt{get()} functions directly.
+The \texttt{put()} function is shown in code \ref{code:fifoput}.
+It takes a message id and a data frame.
+The \texttt{data\_t} type is a struct containing a timestamp and a string of data.
+Initially it will attempt to take the mutex, if it fails, the function returns false and the caller will have to try again until successful.
+When the mutex is locked, it searches through the hashmap for the message id.
+If the search fails this is the first message from that node, with that message type and a new entry is made in the hashmap.
+If the search succeeds the new data point is pushed onto the end of the data list.
+If there are 1024 points in the list already, the first element is deleted.
+Before returning true to indicate that the data has been put into the fifo, the flag is set high and the mutex is unlocked.
+
+\begin{lstlisting}[caption=Function used to insert new data into the hashmap,label=code:fifoput]
+bool fifo::put(std::string msgid, data_t data)
+{
+	if(mutex.try_lock())
+	{	
+		if (buffer.find(msgid) == buffer.end())
+		{
+			data_l list;
+			make_entry(data,list);
+
+			buffer.emplace(msgid,list);
+		}
+		else
+		{
+			buffer[msgid].first.push_back(data);
+			
+			if(buffer[msgid].first.size() > 1023)
+			{
+				buffer[msgid].first.erase(buffer[msgid].first.begin());
+			}
+		}
+		sem_set(msgid);
+		mutex.unlock();
+		return true;
+	}
+	return false;
+}
+\end{lstlisting}
+
+\texttt{get()} works similarly by first taking the mutex and then checking for the existence of the message id.
+If the message id is present, the flag is cleared, the data list is copied to the address given in the function call and true is returned to indicate success.
+
+\paragraph*{\texttt{backend}}~\\
+As mentioned previously, the backend is a collection of functions which interpret and present the data collected in the fifo for use in a potential GUI.
+This aims to hide some of the complexity of the underlying system from the GUI programmer.
+Any number of functions can be added to this class depending on the needs of the sensor.
+The general structure of a function can be seen in code \ref{code:backendfunction}.
+
+\begin{lstlisting}[caption=Function template for accesing data in fifo,label=code:backendfunction]
+coordinate_t backend::get_<PARAM>()
+{
+	std::vector<data_t> v;
+
+	while(!fifo_o->get(<MESSAGEID>, v));
+
+	if (!v.empty())
+	{
+		double t = std::stoi(v.back().millis);
+		std::string d = v.back().data;
+
+		/*Decipher d*/
+	}
+
+	return <PARAM>;
+}
 \end{lstlisting}
