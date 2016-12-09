@@ -8,26 +8,20 @@
 #define DECIMALS 				10000000
 #define LAT_LONG_MESSAGE_TYPE 	0
 
-/** Forward declartion **/
 struct packed_data;
 class GPS;
 class Node;
 
 class Packer {
 protected: 
-	std::vector< std::vector<bool> > messagetypes;
+	std::vector< std::bitset<6> > messagetypes;
 public:
-	//Packer(void);
-	//Packer(std::vector<int>);
-	//VIRTUAL CLASSES HERE?
-	//OVERVEJ HVILKE FUNKTIONER OG VARIABLER DER KAN FLYTTES HEROP!!!
+	Node* node;
+	void set_node(Node* node_in);
 };
 
-
-// Derived class
 class Packer_GPS: public Packer {
 private:
-	Node* node;
 	GPS* gps;
 	std::vector<bool> bitset31_to_vector(std::bitset<31>);
 	std::vector<bool> double_coordinate_to_bits(double coordinate);
@@ -37,6 +31,5 @@ private:
 public:
 	Packer_GPS(void);
 	void send_data_to_node(void);
-	void set_node(Node* node_in);
 	void set_gps(GPS* gps_in);
 };

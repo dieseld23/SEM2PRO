@@ -18,14 +18,11 @@ bool fifo::put(std::string msgid, data_t data)
 		}
 		else
 		{
-			if(buffer[msgid].first.size() < 1024)
-			{
-				buffer[msgid].first.push_back(data);
-			}
-			else
-			{
+			buffer[msgid].first.push_back(data);
+			
+			if(buffer[msgid].first.size() > 1023)
+			{	
 				buffer[msgid].first.erase(buffer[msgid].first.begin());
-				buffer[msgid].first.push_back(data);
 			}
 		}
 		sem_set(msgid);

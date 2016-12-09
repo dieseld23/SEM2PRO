@@ -1,14 +1,5 @@
 #include "gps.hpp"
 
-GPS::GPS(int t){
-	if(t == 13){		//DUMMY
-		latitude =  	55.3673383;						//55degree 22.04030minutes
-		lat_dir = 		LAT_NORTH;
-		longitude =  	10.4318467;						//10degree 25.91080minutes
-		long_dir = 		LONG_EAST;
-	}
-}
-
 double GPS::get_lat(void){
 	return latitude;
 }
@@ -37,14 +28,11 @@ void GPS::readfile(buffer *buffer_in){
 		t = 0;
 		while(1){
 			fscanf(fp,"%c",&tmp);
-			
 			if (tmp == '\n') {
-				//std::cout<<"newline!\n";
 				data_string_char[t]='\0';
 				break;
 			}
 			else {
-				//std::cout<<"not newline!\n";
 				data_string_char[t]=tmp;
 				t++;
 			}
@@ -54,7 +42,6 @@ void GPS::readfile(buffer *buffer_in){
 		if(!str.empty()){
 			buffer_in->mutex.lock();												// Blocking
 			buffer_in->strings.emplace(buffer_in->strings.begin(),str);				//Place str at beginning
-			//std::cout<<"line put: "<<str<<std::endl;
 			buffer_in->mutex.unlock();
 		}
 	}	
@@ -66,7 +53,6 @@ std::string GPS::get_data_string(){
 	if(this->string_buffer.mutex.try_lock()){
 		if(!this->string_buffer.strings.empty()){
 			str = this->string_buffer.strings.back();
-		//	std::cout<<"line read: "<<str<<std::endl;
 			this->string_buffer.strings.pop_back();
 		}
 		this->string_buffer.mutex.unlock();
@@ -79,7 +65,6 @@ void GPS::start(void){
 	enum state_type state = UNKNOWN;
 	while(1){
 		buff = get_data_string();
-		//printf(" %s \n", buff );
 		state = get_state(&buff);				
 
 		switch(state){

@@ -5,7 +5,7 @@
 In developing new hardware or evaluating current hardware, it is necessary to be able to monitor a range of parameters.
 This section will investigate what parameters need to be logged in order to provide a useful and complete logging of the behavior of the go-kart.
 The parameters in question fall into three categories; Physical parameters, electrical parameters and mechanical parameters.
-These will be dealt with in turn in the following sections
+These will be dealt with in turn in the following sections.
 \paragraph*{Physical Parameters}
 This category comprises all information about the motion of the go-kart.
 \begin{itemize}
@@ -61,6 +61,7 @@ As both of these parameters would require mechanical changes to the go-kart, the
 In this section a multitude of different parameters have been discussed.
 Most of them can be logged using just three components; a Sevcon Gen4 motor controller, an IMU and a GPS.
 These are the three components from which data logging will be implemented throughout this project.
+\mikkel{data loggin? maybe rephrase}
 This provides a solid platform to prove the concept and additional sensory equipment can be added at a later date, should it be required.
 
 
@@ -108,6 +109,7 @@ This allows reading from and writing to a vast array of registers of varying len
 
 \subsubsection*{Inertial Measurement Unit (IMU)}
 \label{sec:imu}
+\mikkel{Maybe remove all requirements because we just took the availabl sensors}
 IMU's, generally, exist in two versions.
 A 6D and a 9D version (Dimensions).
 Both include an accelerometer and a gyroscope, each adding three dimensions.

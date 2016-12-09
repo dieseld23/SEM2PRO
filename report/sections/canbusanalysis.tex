@@ -26,11 +26,12 @@ It is a differential voltage bus.
 This means that the value on the bus is determined by the voltage difference of the two wires, rather than the absolute voltage of either wire.
 The bus has to be made of twisted pair wires with a characteristic impedance of $\si{120 \ohm}$ and terminated at each end with $\si{120 \ohm}$ resistors.
 This increases the EMC of the bus, as inductive noise present on one wire is likely also present on the other, and the noise will then cancel itself out.
+\mikkel{Twisting the wires means that it is not allowed to break the wire? :)}
 That means, that if the bus is broken at any point, no communication will be received, even if the receiving node still has a galvanic connection to the transmitting node.
 Alternatively, it is possible to terminate each node, but this greatly reduces transmission speed.\\
 
 \paragraph*{The CAN Transceiver (XCVR)}~\\
-As the CAN uses differential voltages, it is not possible to implement directly in the micro controllers.
+As CAN uses differential voltages, it is not possible to implement directly in the micro controllers.
 Typically a micro controller has digital ports putting out either $ 0 \si{\volt}$, or a fixed voltage level defined as "high".
 Complementary, it also perceives a voltage level as either low or high. 
 As mentioned above, the absolute voltage of either wire of the CAN bus does not matter, but difference in voltage does. 
@@ -42,14 +43,16 @@ The transceivers monitor the bus while transmitting, to see if another node is b
 \paragraph*{The CAN Controller}~\\
 This element can be standalone hardware, but it is in many cases built into the micro-controller.
 The major advantage of having the controller built into the micro-controller is that it would not otherwise require another protocol, like UART or SPI, to communicate between the microprocessor and controller.
+\mikkel{not otherwise? = otherwise}
 A CAN controller (both standalone and built into a micro controller) has an input and an output FIFO, meaning that the CAN bus communication operates asynchronously. 
 It is not a real time network.
 This is necessary as there is only one bus and it is likely that there will be a queue of nodes trying to write to the bus.
 
 \paragraph*{Protocol}~\\
+\mikkel{We should tell why we need this kind of protocol.}
 \martin{I changed this so that it doesn't mention CANopen, but instead talks about interpreting the base CAN protocol}
 The protocol in this case is the high level protocol running on top of the CAN protocol.
-The design of this protocol will be described in more detail section~\ref{sub:CAN_protocol}. 
+The design of this protocol will be described in more detail in section~\ref{sub:CAN_protocol}. 
 Each CAN message comes with some overhead, that among other things can say something about what data the message contains.
 This part of the software will interpret this overhead and determine how to handle the data.\\
 
@@ -58,6 +61,7 @@ It is a widely used protocol, that utilises the CAN protocol, described in secti
 Because the SevCon gen4, the motor controller used on the go-kart, utilizes CANopen in its communication, it is a reasonable option to employ in this network.
 CANopen is, however, quite extensive and implements many features which are not needed in the monitoring system being developed.
 For this reason it has been decided to design a custom protocol, a decision which is outlined in greater detail on page~\pageref{sub:CANopen}
+\mikkel{pageref is ugly :(}
 \thomas{Are the requirements of the protocol actually outlined at this point?}
 \thomas{At this point it needs to be clear that we want some scalability in the system, enabling us to add up to n (yes n, not 16), nodes. We may need to move figure \ref{fig:analysisnodes} to some other place.}
 As is shown on figure \ref{fig:analysisnodes}, it should be possible to add up to $n$ nodes.
