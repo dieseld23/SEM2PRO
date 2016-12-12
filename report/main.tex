@@ -15,6 +15,11 @@
 \usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage{standalone}
+\usepackage{lscape} % to rotate OD table
+\usepackage{array,etoolbox}
+\preto\tabular{\setcounter{magicrownumbers}{0}}
+\newcounter{magicrownumbers}
+\newcommand\rownumber{\stepcounter{magicrownumbers}\arabic{magicrownumbers}}
 
 \usepackage[font={footnotesize}]{caption}
 \usepackage[font={footnotesize}]{subcaption}
@@ -55,9 +60,10 @@
 \usepackage{todonotes}
 \usepackage{listings}
 \lstset{
+  tabsize=3,
   frame=l,
-  language=bash,
-  basicstyle=\ttfamily,
+  language=c++,
+  basicstyle=\small,
   numbers=left,
   numberstyle=\tiny\color{gray},
   keywordstyle=\color{blue},
