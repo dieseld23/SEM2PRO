@@ -2,10 +2,12 @@
 
 \subsection{Parameters of Interest}
 \label{sec:parameters}
-In developing new hardware or evaluating current hardware, it is necessary to be able to monitor a range of parameters.
+In developing new hardware or evaluating current hardware, it is necessary to be able to monitor associated parameters.
 This section will investigate what parameters need to be logged in order to provide a useful and complete logging of the behavior of the go-kart.
-The parameters in question fall into three categories; Physical parameters, electrical parameters and mechanical parameters.
-These will be dealt with in turn in the following sections.
+The parameters in question fall into three categories; Translational parameters, electrical parameters and mechanical parameters.
+Clearly, developers may, in addition to the aforementioned categories, also have programmatical information, such as debug information from a motor controller.
+This section will deal only with the physical parameters.
+The three categories are dealt with in turn in the remainder of this section.
 \paragraph*{Physical Parameters}
 This category comprises all information about the motion of the go-kart.
 \begin{itemize}
@@ -16,7 +18,7 @@ This category comprises all information about the motion of the go-kart.
 	Additionally it can provide a means to analyze a drivers performance on track the or detect drift while cornoring.
 	The relative position includes both translational, as well as rotational information.
 	This information can be gathered using an inertial measurement unit (IMU).
-	An IMU is a compound device, comprising of an accelerometer and a gyroscope and, in some cases, a magnetometer.
+	An IMU is a compound device, comprised of an accelerometer, a gyroscope and, in some cases, a magnetometer.
 	\item \textbf{Velocity:} The velocity of the go-kart is key in optimising lap-times, clearly, it is desirable to monitor this parameter.
 	It can be extracted by reading the motor encoders.
 	However, the driving wheels are prone to slippage when cornoring, this would give an inaccurate reading of the actual velocity of the go-kart.
@@ -55,45 +57,22 @@ This category comprises all information about the mechanical aspects of the go-k
 	\item \textbf{Braking Pedal Position:} The braking system on the go-kart is similar to that of an ordinary car.
 	The braking disc is mounted on the driving axle and the braking calibers connected to the brake pedal by a series of oil-filled hoses.
 	Monitoring its actuation allows analysing the performance of the driver and as mentioned above, may potentially allow for mechanical control of the go-kart
+	\item \textbf{Temperature:} Certain parts of the go-kart directly impact driving performance with changing temperature.
+	Additionally, overheating the motor, the batteries or other components may cause expensive or dangerous failures.
 \end{itemize}
-As both of these parameters would require mechanical changes to the go-kart, they are beyond the scope of this project and as such will not be implemented.
+As both monitoring of the steering wheel angle and the braking pedal position would require mechanical changes to the go-kart, they are beyond the scope of this project and as such will not be implemented.
+
 \subsubsection*{Conclusion}
-In this section a multitude of different parameters have been discussed.
-Most of them can be logged using just three components; a Sevcon Gen4 motor controller, an IMU and a GPS.
-These are the three components from which data logging will be implemented throughout this project.
-\mikkel{data loggin? maybe rephrase}
-This provides a solid platform to prove the concept and additional sensory equipment can be added at a later date, should it be required.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+As mentioned in the beginning of the section, the parameters discussed throughout this section are limited to those that explain the physical aspects of the go-kart.
+A future project may wish to introduce a data producer which does not directly gather data from a sensor, but generates a filtered output of other sensory equipment.
+It is not possible to account for every parameter that a future developer may wish to add.
+In order to provide a proof of concept for the system it was decided to implement the control for three data producers; the Sevcon Gen4 motor controller, an IMU and a GPS.
 
 \subsection{Hardware for Monitoring Parameters}
 \label{sec:hardware_for_par}
 In section \ref{sec:parameters} an overview of the different parameters that may be of interest for logging is given.
 It was concluded that three components would suffice as a proof of concept; the Sevcon Gen4 motor controller, an IMU and a GPS.
-This section will explore in more detail what requirements and communication schemes exists for each of the components.
+This section will explore in more detail what requirements and communication schemes that exist for each of the components.
 
 \subsubsection*{Sevcon Gen4 Motor Controller}
 \label{sec:interfacin_with_sevcon}
@@ -113,7 +92,7 @@ This allows reading from and writing to a vast array of registers of varying len
 IMU's, generally, exist in two versions.
 A 6D and a 9D version (Dimensions).
 Both include an accelerometer and a gyroscope, each adding three dimensions.
-In addition to these the 9D IMU includes a magnetometer, enabling measurement of absolute direction, as opposed to the relative measurement of direction granted by the gyroscope.
+In addition to these the 9D IMU includes a magnetometer, enabling measurement of absolute direction, as opposed to the relative measurement of direction given by the gyroscope.
 The requirement in terms of each of these parts is given as:
 \begin{itemize}
 	\item \textbf{Accelerometer [\si{\metre\per\second^2}]:} As the name implies, the accelerometer measures accelerations.

@@ -1,23 +1,26 @@
 %!TEX root = ../main.tex
 
 \subsection{Data Rate}
-This section will explore the amount of data that can be expected from a sensor connected to the system.
-In section~\ref{sec:parameters}, a number of different parameters are presented which may be of interest to monitor.
+Which architecture is most suitable for the system is largely dependent on the amount of data that it has to support.
+This section will explore the amount of data that can be expected from a data producer connected to the system.
+\\~\\
 Many of these parameters pose different requirements in terms of the desired sample rate as well as the size of each sample.
 A temperature sensor, for instance, does not require nearly the same sampling frequency as an accelerometer.
-Due to these differences, clearly, the data rate expected from one sensor may differ wildly from another.
+Due to these differences the data rate expected from one data producer may differ wildly from another.
 In order to provide a safe estimate, the expected data rate is calculated using a "worst-case" sensor.
 That is, the type of sensor which set the highest requirements in terms of sampling frequency as well as data size.
-The IMU chosen for this project, see section~\ref{sec:imu}, is a 10-axis sensor.
-It provides data at a rate up to 300\si{\hertz} at 32 bit floating point precision.
+Again, it is not possible to foresee every application that may be developed in the future.
+Despite of this the IMU chosen for this project, see section~\ref{sec:imu}, is considered as the worst-case.
+It is is a 10-axis sensor that provides data at a rate up to 300\si{\hertz} at 32 bit floating point precision.
 This would result in a data rate of:
 
 $$300\cdot32\cdot10=96\,\text{Kb/s}$$
 
 As previously mentioned, this is the assumed worst case for the system.
-As such there may be only a few sensors providing data at this rate.
-Most other sensors will provide only limited data in relation to the IMU, either due to a much lower sampling frequency or an overall smaller data size.
-A GPS generally provides an update only at a few \si{\hertz} and an encoder, while it may have a reasonably high sampling rate, it is most likely not close to 32 bit resolution.
+As such there may be only a few data producers providing data at this rate.
+Most other producers will provide only limited data in relation to the IMU, either due to a much lower sampling frequency or an overall smaller data size.
+A GPS generally provides an update only at a few \si{\hertz}. 
+An encoder, while it may have a reasonably high sampling rate, it is most likely not close to 32 bit resolution.
 \\~\\
 Assuming five sensors running at the assumed worst-case rate and ten running at half that rate, the resulting data rate will be 960 Kb/s or approximately 1 Mb/s.
 

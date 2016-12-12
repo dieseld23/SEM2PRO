@@ -2,17 +2,20 @@
 \section{System Analysis} % (fold)
 \label{sec:system_analysis}
 A thorough system analysis is needed in order to design an embedded system that meets the needs expressed by the use cases. 
-This section will present the analysis of the complete embedded system, through the following topics:
+This section will present the analysis of the complete embedded system, touching on the following topics:
 
 \begin{itemize}
-\item Parameters of interest. The use cases do not describe what parameters should be monitored meaning that it should be investigated which are relevant to monitor.
-\item Hardware for monitoring parameters. It should be analysed what hardware is necessary in order to measure the parameters found to be relevant. 
-\item Data rate. It should be analysed what amount of data can be expected from the sensors connected to the system.
-\item Data collection. It should be analysed how data is collected on the go-kart.
-\item Micro-controller. It should be analysed what micro-controller should be used on the go-kart.
-\item Wireless network. It should be analysed how data is transferred from the go-kart 	to the stationary computer.
-\item Local storage. There needs to local storage on the go-kart and it needs to be analysed what kind this should be and how it should be implemented.
-\item Software on stationary computer. It should be be analysed how the software on stationary should present the transferred data to the user in an UI.
+	\item  \textbf{Parameters of interest:} In order to create a well-suited system it is necessary to gain knowledge of the type of parameters that may be of interest to monitor.
+	\item \textbf{Hardware for monitoring parameters:} Having a list of parameters, what hardware is necessary to collect and monitor these parameters.
+	\item \textbf{Data rate:} An investigation of the amount of data that can be expected from data producers connected to the system is required.
+	\item \textbf{Data collection:} A number of sensors and other data producers is expected to exist on the go-kart.
+	It is necessary to analyse how data from these is collected most effectively.
+	\item \textbf{Embedded platform:} An investigation of which requirements the platform running the go-kart part of the system should satisfy.
+	\item \textbf{Wireless network:} Data is required to be transmitted wirelessly from the go-kart to the monitoring station.
+	An investigation of the appropriate technology will be conducted.
+	\item \textbf{Local storage:} In order to log data, some form of local storage is required.
+	This investigation will examine what options exist on the available platform to choose the appropriate solution.
+	\item \textbf{Monitoring station interface:} An analysis of the appropriate interface on the stationary part of the system will be conducted.
 \end{itemize}
 
 \input{sections/sensoranalysis}
