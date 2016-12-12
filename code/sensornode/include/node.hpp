@@ -1,4 +1,28 @@
+/*****************************************************************************
+* University of Southern Denmark
+* 2. Semester Project (SEM2PRO)
+*
+* MODULENAME.: node
+*
+* PROJECT....: sensornode
+*
+* DESCRIPTION:  The node class is responsible for handling node operations such
+*               as stop, start and reset time. It is also responsible of 
+*               creating time messages each time there is new data.
+*
+* Change Log:
+******************************************************************************
+* Date    Id    Change
+* YYMMDD
+* --------------------
+* 161127  MJ    Module created.
+*
+*****************************************************************************/
+
+/***************************** Include files *******************************/
 #pragma once
+
+#include "data_packed.hpp"
 
 #include <thread>  
 #include <iostream>
@@ -6,65 +30,16 @@
 #include <bitset>     
 #include <mutex>
 #include <unistd.h>
-#include <bitset> 
 
+
+/*****************************    Defines    *******************************/
 #define MILLI_SECOND 1000
 
+
+/*****************************   Variables   *******************************/
 class Protocol;
 
 enum states { stopped, clear, time_packing, get_data, send_data };
-
-struct packed_data {
-  std::bitset<1> sof;
-  std::bitset<4> node_id;
-  std::bitset<4> n_data_bytes;
-  std::bitset<6> messagetype;
-  std::vector<bool> data;
-  void print_bool_packet(void){
-    std::cout << sof;
-    std::cout <<node_id;
-    std::cout<<n_data_bytes;
-    std::cout<<messagetype;
-    print_vector_bool(this->data);
-  }
-  void print_vector_bool(std::vector<bool> vector){
-    for (auto i : vector) {
-      std::cout << i;
-    }
-  }
-  void print_sof(void){
-    std::cout<< "Start of frame: ";
-    std::cout << sof << '\n';
-  }
-  void print_node_id(void){
-    std::cout<< "Node id: ";
-    std::cout<< node_id;
-    std::cout << '\n';
-  }
-  void print_n_data_bytes(void){
-    std::cout<< "Number of data bytes: ";
-    std::cout<<n_data_bytes << '\n';
-  }
-  void print_messagetype(void){
-    std::cout<< "Messagetype: ";
-    std::cout<<messagetype << '\n';
-    std::cout << '\n';
-  }
-  void print_data(void){
-    std::cout<< "Data: ";
-    print_vector_bool(this->data);
-    std::cout << '\n';
-  }
-  void print(void){
-    print_sof();
-    print_node_id();
-    print_n_data_bytes();
-    print_messagetype();
-    print_data();
-  }
-};
-
-
 
 class Node {
 private:
@@ -94,7 +69,6 @@ private:
   void set_ms(long int ms_in);
   long int get_ms(void);
 public:
- Node(void);
  Node(int id);
  void start(void);
  void loop_out(void);
@@ -103,3 +77,6 @@ public:
  void set_protocol(Protocol* protocol_in);
  void put_event(int);
 };
+
+/****************************** End Of Module *******************************/
+
