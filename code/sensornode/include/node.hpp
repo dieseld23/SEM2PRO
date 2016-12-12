@@ -51,8 +51,8 @@ private:
   std::bitset<4> node_id;
   std::thread loop_out_thread;
   std::thread loop_in_thread;
-  
   std::thread counter_thread;
+  
   std::vector<packed_data> data_out;
   std::mutex data_out_mutex;
   std::vector<int> event_buffer;
