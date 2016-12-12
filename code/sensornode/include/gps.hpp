@@ -1,3 +1,26 @@
+/*****************************************************************************
+* University of Southern Denmark
+* 2. Semester Project (SEM2PRO)
+*
+* MODULENAME.: gps
+*
+* PROJECT....: sensornode
+*
+* DESCRIPTION: 	The GPS class will take data from the physical GPS sensor and
+*				update its variables. As for now it is implemented to take data
+*				from a file with recorded GPS data.
+*
+* Change Log:
+******************************************************************************
+* Date    Id    Change
+* YYMMDD
+* --------------------
+* 161127  MJ    Module created.
+*
+*****************************************************************************/
+
+/***************************** Include files *******************************/
+
 #pragma once
 
 #include "packer.hpp"
@@ -11,6 +34,7 @@
 #include <thread>  
 #include <unistd.h>
 
+/*****************************    Defines    *******************************/
 #define LAT_NORTH	0
 #define LAT_SOUTH	1
 #define LONG_EAST	0
@@ -35,6 +59,8 @@
 #define READ_FROM_IO		0
 #define READ_FROM_FILE		1
 
+
+/*****************************   Variables   *******************************/
 class Packer_GPS;
 
 enum state_type {GPTXT, GPRMC, GPVTG, GPGGA, GPGSA, GPGSV, GPGLL, UNKNOWN};
@@ -56,8 +82,9 @@ private:
 	std::string path;
 	buffer string_buffer;
 	std::thread read_from_file_thread;
-	Packer_GPS* packer;
+	std::thread loop_in_thread;
 
+	Packer_GPS* packer;
 	state_type get_state(std::string *gps_data);
 	std::string get_data_string();
 	int string_until_comma(std::string message, char *string, int *index);
@@ -65,6 +92,7 @@ private:
 	void print_full_gps_data(void);
 	double minutes_to_degress(double minutes);
 	void send_data_to_node(void);
+	void loop(void);
 public:
 	void start(void);
 	void set_path(std::string);
@@ -77,4 +105,6 @@ public:
 	void start_datacollection_io(void);
 	void set_packer(Packer_GPS*);
 };
+
+/****************************** End Of Module *******************************/
 

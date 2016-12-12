@@ -2,12 +2,12 @@
 * University of Southern Denmark
 * 2. Semester Project (SEM2PRO)
 *
-* MODULENAME.: packer
+* MODULENAME.: canlink
 *
 * PROJECT....: sensornode
 *
-* DESCRIPTION: 	
-*
+* DESCRIPTION: 	The canlink class has the responsibility to transmit and 
+*				receive to/from CAN. (physical CAN-link is not implemented)
 *
 * Change Log:
 ******************************************************************************
@@ -19,43 +19,32 @@
 *****************************************************************************/
 
 /***************************** Include files *******************************/
+
 #pragma once
-#include <vector>
-#include <iostream>
 #include "node.hpp"
 
-#include <bitset>  
+#include <string>
+#include <sstream>
 
 /*****************************    Defines    *******************************/
-#define DECIMALS 				10000000
-#define LAT_LONG_MESSAGE_TYPE 	0
-
-
 /*****************************   Variables   *******************************/
-struct packed_data;
-class GPS;
-class Node;
+class Protocol;
 
-class Packer {
-protected: 
-	std::vector< std::bitset<6> > messagetypes;
-public:
-	Node* node;
-	void set_node(Node* node_in);
-};
-
-class Packer_GPS: public Packer {
+class CAN_link {
 private:
-	GPS* gps;
-	std::vector<bool> bitset31_to_vector(std::bitset<31>);
-	std::vector<bool> double_coordinate_to_bits(double coordinate);
-	std::vector<bool> get_lat_long_message(void);
-	void print_vector_bool(std::vector<bool> vector);
-	std::vector<bool> append_vector(std::vector<bool> vector, std::vector<bool> vector_to_append);
+	Protocol* protocol;
+	std::mutex data_out_mutex;
+	std::vector<packed_data> data_out;
+	std::thread loop_out_thread;
+	std::thread loop_in_thread;
+	packed_data get_data_from_buffer(void);
+	int data_in_buffer_test(void);
 public:
-	Packer_GPS(void);
-	void send_data_to_node(void);
-	void set_gps(GPS* gps_in);
+	CAN_link(void);
+	void loop_in(void);
+	void loop_out(void);
+	void send_to_can(packed_data packed_data_in);
+	void set_protocol(Protocol* protocol_in);
 };
 
 /****************************** End Of Module *******************************/

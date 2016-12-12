@@ -1,22 +1,70 @@
+
+/*****************************************************************************
+* University of Southern Denmark
+* 2. Semester Project (SEM2PRO)
+*
+* MODULENAME.: gps
+*
+* PROJECT....: sensornode
+*
+* DESCRIPTION: See module specification file (.h-file).
+*
+* Change Log:
+******************************************************************************
+* Date    Id    Change
+* YYMMDD
+* --------------------
+* 161127  MJ   	Module created.
+*
+*****************************************************************************/
+
+/***************************** Include files *******************************/
 #include "gps.hpp"
 
+
+/*****************************   Functions   *******************************/
+
+/*****************************************************************************
+*   Input    : 
+*   Output   : latitude
+*   Function : getter
+******************************************************************************/
 double GPS::get_lat(void){
 	return latitude;
 }
 
+/*****************************************************************************
+*   Input    : 
+*   Output   : longitude
+*   Function : getter
+******************************************************************************/
 double GPS::get_long(void){
 	return longitude;
 }
 
-
+/*****************************************************************************
+*   Input    : 
+*   Output   : longitude direction
+*   Function : getter
+******************************************************************************/
 bool GPS::get_long_dir(void){
 	return long_dir;
 }
 
+/*****************************************************************************
+*   Input    : 
+*   Output   : latitude direction
+*   Function : getter
+******************************************************************************/
 bool GPS::get_lat_dir(void){
 	return lat_dir;
 }
 
+/*****************************************************************************
+*   Input    : pointer to buffer
+*   Output   : -
+*   Function : Reads line from file and put in string buffer
+******************************************************************************/
 void GPS::readfile(buffer *buffer_in){
 	FILE *fp;
 	fp = fopen("../data/gps_test_data.txt", "r");
@@ -48,7 +96,12 @@ void GPS::readfile(buffer *buffer_in){
 	fclose(fp);
 }
 
-std::string GPS::get_data_string(){
+/*****************************************************************************
+*   Input    : -
+*   Output   : string
+*   Function : Gets a data string from buffer while handling mutex
+******************************************************************************/
+std::string GPS::get_data_string(void){
 	std::string str;
 	if(this->string_buffer.mutex.try_lock()){
 		if(!this->string_buffer.strings.empty()){
@@ -60,7 +113,21 @@ std::string GPS::get_data_string(){
 	return str;
 }
 
+/*****************************************************************************
+*   Input    : -
+*   Output   : -
+*   Function : starts the loop function in a thread
+******************************************************************************/
 void GPS::start(void){
+	loop_in_thread = std::thread(&GPS::loop,this);  
+}
+
+/*****************************************************************************
+*   Input    : -
+*   Output   : -
+*   Function : state machine decoding data and sending them to node
+******************************************************************************/
+void GPS::loop(void){
 	std::string buff;
 	enum state_type state = UNKNOWN;
 	while(1){
@@ -75,7 +142,6 @@ void GPS::start(void){
 			case GPRMC:
 			decode_RMC_message(buff);
 			send_data_to_node();
-			//print_full_gps_data();
 			break;
 
 			case GPVTG:
@@ -102,14 +168,23 @@ void GPS::start(void){
 				//Something
 			break;
 		}
-	}
+	}	
 }
 
+/*****************************************************************************
+*   Input    : string path
+*   Output   : 
+*   Function : setter
+******************************************************************************/
 void GPS::set_path(std::string set_path){
 	path = set_path;
 }
 
-
+/*****************************************************************************
+*   Input    : string
+*   Output   : state
+*   Function : decodes the state from string
+******************************************************************************/
 state_type GPS::get_state(std::string *gps_data){
 	enum state_type state = UNKNOWN;
 
@@ -143,6 +218,11 @@ state_type GPS::get_state(std::string *gps_data){
 	return state;
 }
 
+/*****************************************************************************
+*   Input    : string message, pointer to string, pointer to index
+*   Output   : if end of string is reached
+*   Function : determines the string until comma and puts in pointer to string
+******************************************************************************/
 int GPS::string_until_comma(std::string message, char *string, int *index){
 	int t;
 	int end_of_string = 0;
@@ -165,6 +245,11 @@ int GPS::string_until_comma(std::string message, char *string, int *index){
 	return end_of_string;
 }
 
+/*****************************************************************************
+*   Input    : string
+*   Output   : -
+*   Function : decodes RMC and updates the class information
+******************************************************************************/
 void GPS::decode_RMC_message(std::string message){
 	int index = 0;
 	char data_string[32];
@@ -224,6 +309,11 @@ void GPS::decode_RMC_message(std::string message){
 	}
 }
 
+/*****************************************************************************
+*   Input    : -
+*   Output   : -
+*   Function : prints gps data
+******************************************************************************/
 void GPS::print_full_gps_data(void){
 	printf("Date: %d\n", this->date);
 	printf("Time: %d\n", this->time);
@@ -232,23 +322,47 @@ void GPS::print_full_gps_data(void){
 	printf("Longitude & direction: %f, %i\n\n\n", this->longitude,this->long_dir);
 }
 
+/*****************************************************************************
+*   Input    : minutes
+*   Output   : degrees
+*   Function : converts minutes to degrees
+******************************************************************************/
 double GPS::minutes_to_degress(double minutes){
 	return minutes/60;
 }
 
-
+/*****************************************************************************
+*   Input    : 
+*   Output   : 
+*   Function : not implemented yet
+******************************************************************************/
 void GPS::start_datacollection_io(void){
 
 }
 
+/*****************************************************************************
+*   Input    : 
+*   Output   : 
+*   Function : 
+******************************************************************************/
 void GPS::start_datacollection_file(void){
 	read_from_file_thread = std::thread(&GPS::readfile,this,&this->string_buffer);  //START THREAD
 }
 
+/*****************************************************************************
+*   Input    : -
+*   Output   : -
+*   Function : sends data to node through packer
+******************************************************************************/
 void GPS::send_data_to_node(void){
 	packer->send_data_to_node();
 }
 
+/*****************************************************************************
+*   Input    : pointer to packer
+*   Output   : -
+*   Function : sets packer
+******************************************************************************/
 void GPS::set_packer(Packer_GPS* packer_in){
 	packer = packer_in;
 }

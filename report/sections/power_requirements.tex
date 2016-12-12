@@ -1,13 +1,28 @@
 %!TEX root = ../main.tex
 
-\section{Power Requirements}\label{sec:power_requirements}
+\subsection{Power Requirements}\label{sec:power_requirements}
 The Zybos need to be supplied with 5 V, which subsequently powers the sensors, the CAN busses and the WiFi.
 The Sevcon has a 5V output, but it can only supply $\si{100 \milli \ampere}$, which is nowhere near enough.
+It is therefore necessary to use a DC-DC converter to supply the nodes.
 Some tests along with datasheet lookups has been to determine the current needed for this system.\\
 
-By measurement, it has been found, that one Zybo board draws a maximum of $\si{475 \milli \ampere}$ during startup. 
+By measurement, it has been found, that one Zybo board draws a maximum of $\si{475 \milli \ampere}$ while running linux.
+The CAN transceivers consume up to 40 mA\cite{3.3V_CAN}. 
+The GPS module consumes up to 40 mA, the IMU consumes up to 56 mA. 
+Generally it is assumed that the sensors do not consume more than 75 mA per node, which brings the total current consumption up to 600 mA.
+For 16 nodes, this brings the total current up to 9.6 A.\\
 
-Idle mean: 396 mA
-Idle max: (short spikes reaching) 480 mA
-During login mean: 448 mA
-During apt-get update peak: 680 mA
+The source for this DC-DC converter will be the batteries on the Go-kart. 
+These vary depending on charge from 57.6 down to 40 V, so the DC-DC converter would need to be operable in this entire range.
+One example could be Mean Well SD-50C-5, which lives up to these requirements.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{r|l|l}
+		Parameter & Requirement & SD-50C-5 \\
+		\hline
+		Input voltage & 40-57.6 & 36-72 \\
+		Output voltage & 5 & 5 \\
+		Output Current & 9.6 & 10
+	\end{tabular}
+\end{table}

@@ -2,7 +2,7 @@
 #include <vector>
 #include <thread>   
 #include <mutex>
-#include <unistd.h>			// SHould be removed
+#include <unistd.h>
 
 #include "node.hpp"
 #include "packer.hpp"
@@ -18,6 +18,8 @@
 
 
 using namespace std;
+int not_used;
+
 int main()
 {
 	cout.precision(50); 
@@ -46,7 +48,9 @@ int main()
 	gps_inst.start_datacollection_file();
 	gps_inst.start();
 
-
-
-		return 0;
+	while(1){
+		// Run forever
+		usleep(1000);
 	}
+	return 0;
+}
