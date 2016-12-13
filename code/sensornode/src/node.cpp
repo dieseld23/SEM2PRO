@@ -39,11 +39,11 @@ Node::Node(int id){
 }
 
 /*****************************************************************************
-*   Input    : packed_data
+*   Input    : data_packet
 *   Output   : 
 *   Function : puts data packet in data_in buffer while handling mutex
 ******************************************************************************/
-void Node::put_data_packet(packed_data packed_data_in){
+void Node::put_data_packet(data_packet packed_data_in){
 	this->data_out_mutex.lock();								//Blocking
 	data_out.insert(data_out.begin(),packed_data_in);			//Put in beginning
 	this->data_out_mutex.unlock();
@@ -94,9 +94,9 @@ void Node::loop_in(void){
 ******************************************************************************/
 void Node::loop_out(void){
 	long int ms_now = 0;
-	std::vector<packed_data> packets_to_send;
-	packed_data time_packet;
-	packed_data temp_packet;
+	std::vector<data_packet> packets_to_send;
+	data_packet time_packet;
+	data_packet temp_packet;
 	int data = 0;
 	while(1){
 		switch(state) {
@@ -183,11 +183,11 @@ void Node::print_vector_bool(std::vector<bool> vector){
 
 /*****************************************************************************
 *   Input    : -
-*   Output   : packed_data
+*   Output   : data_packet
 *   Function : get data from data_out buffer while handling mutex
 ******************************************************************************/
-packed_data Node::get_data_from_buffer(void){
-	packed_data data_packet;
+data_packet Node::get_data_from_buffer(void){
+	data_packet data_packet;
 	if(this->data_out_mutex.try_lock()){
 		if(!this->data_out.empty()){
 			data_packet = this->data_out.back();
@@ -216,16 +216,16 @@ int Node::data_in_buffer_test(void){
 
 /*****************************************************************************
 *   Input    : ms
-*   Output   : packed_data
+*   Output   : data_packet
 *   Function : constructs a time packet with ms
 ******************************************************************************/
-packed_data Node::construct_time_packet(long int ms){
+data_packet Node::construct_time_packet(long int ms){
 
 	std::bitset<6> messagetype(0);								// messagetype 000000
 	std::bitset<32> time_data_bitset(ms);
 	std::vector<bool> time_data = bitset32_to_vector(time_data_bitset);
 
-	packed_data packed_data1;
+	data_packet packed_data1;
 	packed_data1.node_id = this->node_id;
 	packed_data1.messagetype = messagetype;
 	packed_data1.data = time_data;

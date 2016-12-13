@@ -1,5 +1,4 @@
 %!TEX root = ../main.tex
-\subsection{Networking}
 The system deviced throughout this report seeks to ease the task of collecting data from the go-kart.
 This is done by creating a network on the go-kart which allows the user to more easily add additional sensors.
 In addition to providing a flexible platform for adding sensors, it will collect the data produced by the sensors on the network.
@@ -26,7 +25,8 @@ See figure \ref{fig:basic_network}.
 These will be referred to as the off-kart network and the on-kart network, respectively, throughout the remainder of the report.
 The following sections will explore the creation of both of these networks in turn.
 
-\subsubsection{Off-Kart Network}
+\thomas{The above section was meant as an introduction to both the on-vehicle and off-vehicle sections, now it is an orphan...}
+
 As mentioned above, the off-kart network is done using wifi.
 It was chosen to use this method as all modern laptops are equipped with the capability of connecting to such a network.
 Hereafter the challenge lies in establishing an ad-hoc network between a zybo board and a PC.
@@ -54,7 +54,7 @@ pc>>socat - tcp:196.178.10.10
 Messages can be passed through this connection by piping data to it.
 
 Following is a description of the steps taken to reach the approach explained above.
-\paragraph*{Setting Up the Ad-Hoc Network}~\\
+\subsection{Setting Up the Ad-Hoc Network}~\\
 Below is a thorough description of the challenges encountered while setting up this device as well as a brief explanation of the choice of device.
 \\~\\
 Two methods were immediately available for use: A usb wifi dongle and a PMOD wifi interface.
@@ -192,7 +192,7 @@ Finally, a short bash script is written to quickly set up the network:
 Since the system will not necessarily have an interface when it is mounted on the go-kart, it will have to automatically run this script on startup.
 On Xillinux, this can be achived by placing the script in \path{/etc/init.d/<script_name>}.
 
-\paragraph*{Making the connection}~\\
+\subsection{Making the connection}~\\
 Having correctly set up the network, the next step is to make a connection between the PC and the Zybo.
 This can be done using a variety of methods.
 For this project, three approaches were considered:
@@ -251,7 +251,8 @@ Piping is commonly used on linux systems to connect the io of programs.
 The linux philosophy is that one program should do one thing and do it well.
 If more functionality is needed, multiple single-purpose programs are interconnected using pipes.
 
-\paragraph*{Conclusion}
+\subsection{Conclusion}
+
 Throughout this section a connection was made between a PC and the ZB.
 It was chosen to use a usb/wifi-dongle to carry the signal on the ZB.
 The TP-LINK TL-WN722N, a general consumer dongle, was chosen for two reasons: The chipset of the dongle is supported by the available drivers and it is capable of creating ad-hoc networks.

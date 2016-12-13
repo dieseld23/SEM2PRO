@@ -14,7 +14,7 @@ string
 sstream
 -
 
-../include/data_packed.hpp
+../include/data_packet.hpp
 iostream
 -
 vector
@@ -43,8 +43,8 @@ unistd.h
 -
 
 ../include/node.hpp
-data_packed.hpp
-../include/data_packed.hpp
+data_packet.hpp
+../include/data_packet.hpp
 thread
 -
 iostream

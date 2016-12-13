@@ -279,14 +279,19 @@
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:29.34983635px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        x="490.16599"
-       y="161.11925"
+       y="153.97646"
        id="text4740-7-5-6-4"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          x="490.16599"
-         y="161.11925"
+         y="153.97646"
          style="font-size:11.00618839px;text-align:center;text-anchor:middle"
-         id="tspan7201-9-7">Add data producer</tspan></text>
+         id="tspan7201-9-7">Add/Modify</tspan><tspan
+         sodipodi:role="line"
+         x="490.16599"
+         y="167.73419"
+         style="font-size:11.00618839px;text-align:center;text-anchor:middle"
+         id="tspan9603"> data producer</tspan></text>
     <path
        style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 542.40059,150.52574 c 0,0 0,-10 -10,-10 -10,0 -85,0 -85,0 0,0 -10,0 -10,10 0,10 0,15 0,15 0,0 0,10 10,10 10,0 85,0 85,0 0,0 10,0 10,-10 0,-10 0,-10 0,-10 z"
@@ -342,8 +347,8 @@
        id="path8378-5"
        inkscape:connector-curvature="0" />
     <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:2,4;stroke-dashoffset:0"
-       d="M 425,67.362205 425,307.3622"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:2, 4;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 425,90.219348 0,197.142862"
        id="path9275"
        inkscape:connector-curvature="0" />
     <text

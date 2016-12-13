@@ -1,10 +1,9 @@
 %!TEX root = ../main.tex
-
-\subsection{On-kart network}\label{sec:CANbus}
+\label{sec:CANbus}
 The CAN is described in this section, starting with the implementation of the physical layer.
 After that, the CAN framework is described, and finally how this framework is used to create a protocol for this project
 
-\subsubsection{Physical Layer}\label{sub:CANphys}
+\subsection{Physical Layer}\label{sub:CANphys}
 The physical layer has three main parts: The CAN controller, the CAN transceiver and the bus itself. \\
 
 The Zybo supports CAN, and has a CAN controller in its PS.
@@ -48,7 +47,7 @@ The bus itself is also not $120 \si{\ohm}$, but experiment shows that it works.
 
 \todo{Polish the text and re-express some things such as send() function...}
 
-\subsubsection{CAN Message Frame}\label{sub:CanMessageFrame}
+\subsection{CAN Message Frame}\label{sub:CanMessageFrame}
 Messages sent over CAN is put into a frame. 
 One frame contains all the parts in figure~\ref{fig:CAN_frame_pdf}, whereas a message should not be restricted to just 8 bytes -- however it doesn't include any overhead.
 A zero input to the transceiver will result in a voltage difference on the CAN bus, and a one input will result in no difference. 
@@ -93,7 +92,16 @@ This is however not done to the EOF and IFS parts.
 This basically means, that the controllers may come out of synch at the end of each message, which doesn't really matter because because the frame is finished anyway.
 
 
-\subsubsection{Testing the CAN Stack for a Basic Network}
+<<<<<<< HEAD
+\subsubsection{Designing a Basic Network}
+\label{sub:TestingCANStack_BareMetal}
+\martin{This testing should be moved to the bottom of this section, to test the protocol as well}
+
+\paragraph{Architecture}
+In order to realize a basic network, enabling the CAN controller inside the Zynq chip as well as including two AXI GPIO cores were necessary.
+One AXI GPIO was setup as leds 4bits while the other one as btns 4bits as it can be seen in figure \ref{fig:CAN_Testing_Architecture}. The architecture was firmly simple, but adequate to meet the purpose of basic communication between nodes.
+=======
+\subsection{Testing the CAN Stack for a Basic Network}
 \label{sub:TestingCANStack_BareMetal}
 \martin{This testing should be moved to the bottom of this section, to test the protocol as well}
 
@@ -105,27 +113,25 @@ The messages sent from one node to the other one were received correctly, contai
 All Zybo boards were programmed with the same architecture and source code.
 \catalin{Add a ref to appendix about the code}
 
-\paragraph{Architecture}
+\subsubsection{Architecture}
 In order to realize the above test, enabling the CAN controller inside the Zynq chip as well as including two AXI GPIO cores were necessary.
 One AXI GPIO was setup as leds 4bits while the other one as btns 4bits as it can be seen in figure \ref{fig:CAN_Testing_Architecture}. The architecture was firmly simple, but adequate to meet the purpose of the test.
+>>>>>>> 03cb1e1740d3de5f44c82591c7f0e0a26746e531
 
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width = 1.1\linewidth]{graphics/Zybo_BasicTestingArchitecture_for_CAN.png}
-	\caption{Block diagram featuring the testing architecture in Vivado.}
+	\caption{Block diagram featuring the basic architecture in Vivado.}
 	\label{fig:CAN_Testing_Architecture}
 \end{figure}
 
-\paragraph{Source Code}
+\subsubsection{Source Code}
 The programming for this task was done in C.
 The code from xcanps polled example provided by Xilinx documentation was used as a basis.
 The example shows the basic principle of sending and receiving messages on a loopback network on a single board.
-With further modifications and the addition of extra functionalities such as reading button input and writing the output to the LEDs, the finalized developed code was suitable to successfully test the communication between two nodes on the CAN network. The full code can be seen in the appendix.
-\catalin{Add the code to the appendix, but first let's add an appendixes part.}
-\catalin{Add some diagrams.}
-The basic principle for testing was to trigger an interrupt attached to the button presses, which then the SendFrame() function would send the value of the buttons to the network as a message.
+With further modifications and the addition of extra functionalities such as reading button input and writing the output to the LEDs, the finalized developed code was suitable to test the communication between two nodes on the CAN network, as described in section \ref{sub:TestingCANStack_BareMetal}.
+The basic principle for proving the basic communication was to trigger an interrupt attached to the button presses, which then the SendFrame() function would send the value of the buttons to the network as a message.
 In turn, the RecvFrame() was responsible of reading the message transmitted on the bus and writing the value as output to the LEDs.
-As mentioned before, this source code was common and uploaded to both boards resulting in a two-way communication, since both of them had a SendFrame() and a RecvFrame() function, thus one controlling the LEDs of the other one.
 
 \begin{figure}[h!]
 	\centering

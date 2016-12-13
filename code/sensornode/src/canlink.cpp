@@ -41,7 +41,7 @@ CAN_link::CAN_link(void){
 *   Output   : -
 *   Function : Sends data do can and handles mutex
 ******************************************************************************/
-void CAN_link::send_to_can(packed_data packed_data_in){
+void CAN_link::send_to_can(data_packet packed_data_in){
 	this->data_out_mutex.lock();								//Blocking
 	data_out.insert(data_out.begin(),packed_data_in);
 	this->data_out_mutex.unlock();
@@ -54,7 +54,7 @@ void CAN_link::send_to_can(packed_data packed_data_in){
 ******************************************************************************/
 void CAN_link::loop_out(void){
 	
-	packed_data data_packet;
+	data_packet data_packet;
 	while(1){
 		if(data_in_buffer_test()){
 			data_packet = get_data_from_buffer();
@@ -86,8 +86,8 @@ void CAN_link::loop_in(void){
 *   Output   : data from buffer
 *   Function : Gets one element from out-buffer while handling mutex
 ******************************************************************************/
-packed_data CAN_link::get_data_from_buffer(void){
-	packed_data data_packet;
+data_packet CAN_link::get_data_from_buffer(void){
+	data_packet data_packet;
 	if(this->data_out_mutex.try_lock()){
 		if(!this->data_out.empty()){
 			data_packet = this->data_out.back();
