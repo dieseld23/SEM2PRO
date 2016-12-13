@@ -1,5 +1,4 @@
 %!TEX root = ../main.tex
-\subsection{Node Software}
 An example of a node can be seen in figure \ref{fig:gps_node}.
 
 \begin{figure}[!h]
@@ -29,7 +28,7 @@ The coming sections will explain the design of the node software that will provi
 
 The first section will explain the software running on the userspace in Linux, whereas the next section will address the use of the built in CAN controller.	
 
-\subsubsection*{Userspace Software}
+\subsection{Userspace Software}
 To design modular software it needs to be analyzed which responsibilities are the same for all nodes and which are sensor specific.
 The sensor specific tasks are found to be getting data from sensor and to pack data according to the specified protocol.
 The remaining responsibilities are the same for all nodes in the system. 
@@ -44,5 +43,5 @@ Left side is bla bla bla.
 \end{figure}
 
 
-\subsubsection*{CAN Controller Software}
+\subsection{CAN Controller Software}
 \mikkel{Catalins stuff should be here?}

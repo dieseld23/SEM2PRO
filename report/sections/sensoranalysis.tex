@@ -1,6 +1,6 @@
 %!TEX root = ../main.tex
 
-\subsection{Parameters of Interest}
+\section{Parameters of Interest}
 \label{sec:parameters}
 In developing new hardware or evaluating current hardware, it is necessary to be able to monitor associated parameters.
 This section will investigate what parameters need to be logged in order to provide a useful and complete logging of the behavior of the go-kart.
@@ -8,7 +8,7 @@ The parameters in question fall into three categories; Translational parameters,
 Clearly, developers may, in addition to the aforementioned categories, also have programmatical information, such as debug information from a motor controller.
 This section will deal only with the physical parameters.
 The three categories are dealt with in turn in the remainder of this section.
-\paragraph*{Physical Parameters}
+\subsection{Physical Parameters}
 This category comprises all information about the motion of the go-kart.
 \begin{itemize}
 	\item \textbf{Position, Absolute:} Providing a means to record the absolute position of the go-kart is a useful feature in certain fields.
@@ -30,7 +30,7 @@ This category comprises all information about the motion of the go-kart.
 Three sensors are mentioned in this section.
 A GPS, an IMU and an encoder.
 In order to limit the scope of the project only the GPS and the IMU will be implemented.
-\paragraph*{Electrical Parameters}
+\subsection{Electrical Parameters}
 This category comprises all information about the electrical aspects of the go-kart.
 \begin{itemize}
 	\item \textbf{Motor Currents:} Providing a means of monitoring the currents flowing through the motor allows the user to calculate the torque exerted by the motor as well as the current power draw of the motor.
@@ -48,7 +48,7 @@ This category comprises all information about the electrical aspects of the go-k
 These parameters are all available from the sevcon gen4 motor controller mounted on the go-kart.
 This controller has a CANopen interface from which this data can be extracted.
 Any users who wish to add their own inverter will simply need to obey the API stated by the sevcon gen4 CANopen interface in order to correctly log the data.
-\paragraph*{Mechanical Information}
+\subsection{Mechanical Information}
 This category comprises all information about the mechanical aspects of the go-kart.
 \begin{itemize}
 	\item \textbf{Steering Wheel Angle:} Monitoring the angle of the steering wheel allows analysing the performance of the driver.
@@ -61,20 +61,25 @@ This category comprises all information about the mechanical aspects of the go-k
 	Additionally, overheating the motor, the batteries or other components may cause expensive or dangerous failures.
 \end{itemize}
 As both monitoring of the steering wheel angle and the braking pedal position would require mechanical changes to the go-kart, they are beyond the scope of this project and as such will not be implemented.
+The temperature of the motor and its controller is provided by the sevcon gen4.
+All other temperatures would require installation of thermometers on the vehicle.
 
-\subsubsection*{Conclusion}
+\subsection{Conclusion}
 As mentioned in the beginning of the section, the parameters discussed throughout this section are limited to those that explain the physical aspects of the go-kart.
 A future project may wish to introduce a data producer which does not directly gather data from a sensor, but generates a filtered output of other sensory equipment.
 It is not possible to account for every parameter that a future developer may wish to add.
 In order to provide a proof of concept for the system it was decided to implement the control for three data producers; the Sevcon Gen4 motor controller, an IMU and a GPS.
 
-\subsection{Hardware for Monitoring Parameters}
+\section{Hardware for Monitoring Parameters}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤
+
 \label{sec:hardware_for_par}
 In section \ref{sec:parameters} an overview of the different parameters that may be of interest for logging is given.
 It was concluded that three components would suffice as a proof of concept; the Sevcon Gen4 motor controller, an IMU and a GPS.
 This section will explore in more detail what requirements and communication schemes that exist for each of the components.
 
-\subsubsection*{Sevcon Gen4 Motor Controller}
+\subsection{Sevcon Gen4 Motor Controller}
 \label{sec:interfacin_with_sevcon}
 
 The Sevcon Gen4 motor driver is a general purpose AC motor driver. 
@@ -86,7 +91,7 @@ It is therefore possible to use this to access the electrical parameters. \\
 The Sevcon communicates through CANopen, which is a high level protocol running on top of CAN.
 This allows reading from and writing to a vast array of registers of varying length, which is described in further detail on page pageref~\ref{sub:CANopen}\\
 
-\subsubsection*{Inertial Measurement Unit (IMU)}
+\subsection{Inertial Measurement Unit (IMU)}
 \label{sec:imu}
 \mikkel{Maybe remove all requirements because we just took the availabl sensors}
 IMU's, generally, exist in two versions.
@@ -144,7 +149,7 @@ In addition to the IMU sensors, the VN-100 also records air pressure, which is o
 Apart from the raw data listed above, the VN-100 can calculate other parameters, such as quaternions, yaw, pitch, roll, absolute heading and altitude.
 I can also make the accelerometer data zero base, meaning when the go kart is standing still, 0g will be printed from the IMU, rather than the 1g caused by the gravitational pull of earth. 
 
-\subsubsection*{Global Positioning System (GPS)}
+\subsection{Global Positioning System (GPS)}
 \mikkel{Something here?}
 A Global Navigation Satellite System is included on the Go Kart. 
 The purpose of this is to give absolute position readings at fixed intervals, much like a runner would be able to see their route on a map afterwards.
@@ -153,5 +158,5 @@ However unlike a runner, \\
 It is definitely harder to specify the requirements for GPS than for the IMU. 
 
 
-\subsubsection*{Conclusion}
+\subsection{Conclusion}
 \todo[inline]{Table with chosen sensors and their interfaces}

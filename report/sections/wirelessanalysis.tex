@@ -1,10 +1,10 @@
 %!TEX root = ../main.tex
 
-\subsection{Wireless transmission}
+\section{Wireless transmission}
 The wireless transmission between the go-kart computer and the stationary computer could be a number of different technologies.
 This section seeks to find an appropriate one.
 
-\subsubsection{Range}
+\subsection{Range}
 The range of the transmission is determined by the length of the test track. 
 Normally the SDU kart is tested on parking lots with a maximum lenght of 50m and width of 20m.
 There are almost no obstacles for the transmission on such a parking lot. 
@@ -16,17 +16,17 @@ The track is about 70m long and 40m in width with no obstacles other than the ba
 If the wireless transmitter and receiver are placed above the barriers then the barriers will not be an obstruction on the transmission. 
 This track sets a minimum requirement of 80m transmission. 
 
-\subsubsection{Speed}
+\subsection{Speed}
 The CANbus has a bandwidth of up to 1Mbit/s meaning that the wireless needs to be as fast or faster.
 %Data is only used for human inspection and therefore a sample frequency of 100Hz would be sufficient.
 %This gives a minimum requirement for the speed of the transmission to be ZZ Mbit/s. 
 
-\subsubsection{Compatibility}
+\subsection{Compatibility}
 It should be possibly to change the stationary computer and therefore the chosen wireless transmission technology should be compatible with standard computers running linux.
 The chosen hardware should be compatible with standard linux computers and the Zybo board. 
 Both have USB ports and Ethernet ports as a standard, therefore the chosen hardware should one of those.
 
-\subsubsection{Technologies}
+\subsection{Technologies}
 Bluetooth is a technology that is compatible with standard computers running linux. 
 Bluetooth 5.0 has a maximum speed of 50Mbit/s, which is sufficient.
 The range of typical class 2 Bluetooth device is 10m \footnote{https://en.wikipedia.org/wiki/Bluetooth}.
@@ -41,7 +41,7 @@ The 802.11n protocol generally has the best range compared to the other 802.11 p
 A local network between computers without connection to existing networks such as the internet is referred to as an ad-hoc network. 
 It is a required that the found hardware is capable of doing an ad-hoc network.
 
-\subsubsection{Conclusion} 
+\subsection{Conclusion} 
 
 \begin{table}[]
 \centering

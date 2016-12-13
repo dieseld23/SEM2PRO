@@ -1,11 +1,10 @@
 %!TEX root = ../main.tex
-\subsection{\acs{ui} Backend}
 \thomas{ensure that they actually do state that this is a requirement}
 The requirements state that it should be simple to add additional sensors to the system.
 Adding a sensor includes creating a way of easily accessing and showing the data on the observing system.
 This section will explain the design of the backend that will provide this functionality.
 
-\subsubsection*{Data Format}
+\subsection{Data Format}
 Depending on the author of the data (which node produced the data) the data may be inherently different.
 The interpretation of data is therefore not uniform across the entire system.
 For this reason, it is necessary to create a system that is agnostic with respect to the type and amount of data being handled.
@@ -16,7 +15,7 @@ Additionally each message will be associated with a four byte timestamp.
 This timestamp is given as the time in milliseconds since startup and is associated with message type <type>. \thomas{insert correct message type}
 \thomas{We need to agree on a way to write nodeid,msgid,msgtype throughout the report}
 
-\subsubsection*{Backend Architecture}
+\subsection{Backend Architecture}
 An overview of the functionality can be seen in figure \ref{fig:backendconcept}.
 As can be seen, this architecture provides the link between the receiving program (socat) and a potential \acs{gui}.
 Upon receiving a message from the go-kart, socat will pipe the raw message to the interpreter.
@@ -56,11 +55,11 @@ From \ref{fig:backendconcept}, a class diagram has been created.
 This can be seen on figure \ref{fig:backendclass}.
 The functionality is implemented in four classes, each of which will be explained in more detail below.
 
-\paragraph*{\texttt{receiver}}~\\
+\subsubsection{\texttt{receiver}}~\\
 This class is run in a separate thread.
 It continuously listens to std::io, waiting for input from the go-kart.
 Upon receiving a message, it is put into a message buffer maintained by interpreter.
-\paragraph*{\texttt{interpreter}}~\\
+\subsubsection{\texttt{interpreter}}~\\
 As mentioned, this class holds a message buffer, it is shown in code \ref{code:msgbuffer}.
 The buffer can be accessed from the receiver thread indirectly by a call to \texttt{put()} and the interpreter thread continously checks if data is present in the buffer.
 Since these threads are run simultaneously it is necessary to use a mutex to avoid race conditions.
@@ -81,7 +80,7 @@ struct buffer
   std::mutex mutex;
 };
 \end{lstlisting}
-\paragraph*{\texttt{fifo}}~\\
+\subsubsection{\texttt{fifo}}~\\
 This class implements a hashmap and functions to insert and extract data from the map.
 Each messageid has a flag associated with it to signal whenever new data is available.
 The hashmap uses the message id as the key and the data is \texttt{std::pair<std::vector<data\_t>, bool>}.
@@ -130,14 +129,14 @@ bool fifo::put(std::string msgid, data_t data)
 \texttt{get()} works similarly by first taking the mutex and then checking for the existence of the message id.
 If the message id is present, the flag is cleared, the data list is copied to the address given in the function call and true is returned to indicate success.
 
-\paragraph*{\texttt{backend}}~\\
+\subsubsection{\texttt{frontend}}~\\
 As mentioned previously, the backend is a collection of functions which interpret and present the data collected in the fifo for use in a potential GUI.
 This aims to hide some of the complexity of the underlying system from the GUI programmer.
 Any number of functions can be added to this class depending on the needs of the sensor.
-The general structure of a function can be seen in code \ref{code:backendfunction}.
+The general structure of a function can be seen in code \ref{code:frontendfunction}.
 
-\begin{lstlisting}[caption=Function template for accesing data in fifo,label=code:backendfunction]
-coordinate_t backend::get_<PARAM>()
+\begin{lstlisting}[caption=Function template for accesing data in fifo,label=code:frontendfunction]
+coordinate_t frontend::get_<PARAM>()
 {
 	std::vector<data_t> v;
 
