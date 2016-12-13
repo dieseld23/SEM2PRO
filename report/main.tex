@@ -84,6 +84,8 @@
 \counterwithin{figure}{section}
 \counterwithin{equation}{section}
 
+\setcounter{tocdepth}{2}
+
 %Make counter of listings specific to sections
 \AtBeginDocument{%
   \counterwithin*{lstlisting}{section}
@@ -124,18 +126,24 @@ Skarup Jaedicke, Martin Brøchner Andersen, Catalin Ionut Ntemkas‎}
 \clearpage
 \newpage
 \pagenumbering{arabic}
+\part{Preface}
 \input{sections/introduction}
 \newpage
 \input{sections/systemdescription}
 \newpage
+\part{Analysis}
 \input{sections/systemanalysis}
 \newpage
+\part{Requirements}
 \input{sections/systemrequirements}
 \newpage
+\part{Implementation}
 \input{sections/implementation}
 \newpage
+\part{Verification}
 \input{sections/verification}
 \newpage
+\part{Postface}
 \input{bib}
 \appendix
 \input{appendixes/bare_metal_code}

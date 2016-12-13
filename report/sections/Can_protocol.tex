@@ -1,8 +1,8 @@
 %!TEX root = ../main.tex
 
-\subsubsection{High Level CAN protocol}\label{sub:CAN_protocol}
+\subsection{High Level CAN protocol}\label{sub:CAN_protocol}
 Due to the requirements of the on-kart network, it is decided to formulate a new protocol specifically for this project. The requirements are listed below.\\
-\paragraph{On-kart network requirements}:
+\subsubsection{On-kart network requirements}:
 \begin{itemize}
 	\item Simple and easy to learn.
 	\item Support for 16 nodes.
@@ -98,14 +98,14 @@ The reason for this naming is, that the Wifi node acts as a commander for the, a
 The IMU produces short data packages at a high rate, and the GPS node produces longer data packages at a lower rate. 
 Therefore it is of less concern if the GPS message is delayed due to obstruction from other nodes. 
 
-\subsubsection{Publisher-Subscriber Architecture}
+\subsection{Publisher-Subscriber Architecture}
 \catalin{Should I explain more about the architecture? Or is it the readers responsibility to read about it?}
 A mechanism was also necessary to control the receivers and transmitters of messages.
 One of the functionalities of the network was to provide the ability for various nodes to be able to send specific messages to other nodes.
 Such a mechanism could easily be implemented using the Publisher-Subscriber architecture which would also make the network data-driven.
 Using this method, the communication among the various nodes could be easily configured just by adding messages ids to an array variable containing the node's subscriptions.
 The use of this architecture was incorporated in the protocol functionality, along with a set of functions in the source code.
-\paragraph{Implementation in code}~\\
+\subsubsection{Implementation in code}~\\
 This was achieved by implementing a set of functions and an array variable of subscriptions for each node.
 The important mechanisms that needed to be provided by the source code were the creation of the message id, the decoding of it as well as getting the various portions such as the node id and the message type.
 \\
