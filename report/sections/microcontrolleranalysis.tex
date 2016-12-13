@@ -1,12 +1,12 @@
 %!TEX root = ../main.tex
 
-\subsection{Micro-controller}
+\section{Embedded Platform}
 As described in section \ref{sec:data_collection} there should be a CAN network of nodes on the go-kart.
 Each node is a sensor or other data producing unit along with a micro-controller.
 From the perspective of the network the only requirement for the micro-controller is that it has a CAN controller.
 In principle the network could consist of 16 different micro-controllers.
 \thomas{Explain different versions of CAN setup}
-\subsubsection*{Sensor Nodes}
+\subsection{Sensor Nodes}
 As described in section \ref{sec:hardware_for_par}, it was chosen to use an IMU and a GPS with a USB interface. 
 As specified in the use cases one of the nodes needs to transfer data wirelessly from the go-kart to the stationary computer. 
 Both USB interface and wireless data transfer drivers are implemented in operating systems like Linux, Mac OS X and Windows.
@@ -15,7 +15,7 @@ Developing software for Linux is a part of a course that the group is attending 
 \\
 The \ac{zybo} will be used for the sensor nodes as it has a built-in CAN controller, it has the ability to run Linux and the group has access to it.
 
-\subsubsection*{Zybo Board}
+\subsection{Zybo Board}
 The Zybo board has a Xilinx Zynq Z-7010 chip, which has a processing system (PS) part and a programmable logic (PL) part.
 The PS consists among other of a dual-core ARM Cortex-A9 processor and I/O peripherals including CAN and USB.
 The PL consists of a Xilinx 7-series Field programmable gate array. 
@@ -23,7 +23,7 @@ The PL and PS are connected through a bus called AXI.
 The Zybo board itself is a developing platform consisting, among other, of several buttons, switches, LEDs and connections for USB, Ethernet, HDMI and several PMOD connectors.
 
 
-\subsubsection*{Linux on the Zybo}
+\subsubsection{Linux on the Zybo}
 Several Linux distribution are configured to run on the Zybo. 
 The group has experience with a the Xillinux \footnote{http://xillybus.com/xillinux} distribution, therefore this will be used.
 Xillinux is based upon the Xilinx distribution which is based upon Ubuntu 12.04.
@@ -32,6 +32,6 @@ Xillybus is implemented as an IP core in PL and a corresponding Xillybus driver 
 In PL the IP core is interfaced through standard FIFO buffers and the Xillybus is reached in userspace through \textit{"/dev/xillybus\_"}.
 \mikkel{Should there be a figure showing PS and PL on the ZYBO?}
 
-\subsubsection*{Conclusion}
+\subsection{Conclusion}
 Nodes on the network need not to be a specific micro-controller, they just need to able to use CAN.
 The Zybo board running Xillinux will be used for IMU, GPS and wireless network node to ease development as Linux includes both USB and network drivers. 
