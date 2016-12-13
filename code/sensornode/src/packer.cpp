@@ -90,7 +90,7 @@ std::vector<bool> Packer_GPS::get_lat_long_message(void){
 *   Function : Sends all data to node
 ******************************************************************************/
 void Packer_GPS::send_data_to_node(void){
-	packed_data packed_data_inst;
+	data_packet packed_data_inst;
 
 	for(int i = 0; i<messagetypes.size(); i++){
 		packed_data_inst.messagetype = messagetypes[i];

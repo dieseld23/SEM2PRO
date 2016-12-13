@@ -23,7 +23,7 @@
 #include <vector>
 #include <bitset>   
 
-struct packed_data {
+struct data_packet {
   std::bitset<1> sof;
   std::bitset<4> node_id;
   std::bitset<4> n_data_bytes;

@@ -42,35 +42,35 @@ Protocol::Protocol(void){
 *				length. Sends messages to can_lin class.
 ******************************************************************************/
 void Protocol::loop_out(void){
-	packed_data data_packet, temp_packet;
-	std::vector<packed_data> data_to_send;
+	data_packet data_packet_inst, temp_packet;
+	std::vector<data_packet> data_to_send;
 	int sof = SOF_TRUE;
 	while(1){
 		if(data_in_buffer_out_test()){											// If there is data in buffer
-			data_packet = get_data_from_buffer_out();							// Fetch data
-			if(data_packet.data.size() > EIGHT_BYTES){							// If data is more than 8 bytes
+			data_packet_inst = get_data_from_buffer_out();							// Fetch data
+			if(data_packet_inst.data.size() > EIGHT_BYTES){							// If data is more than 8 bytes
 				sof = SOF_TRUE;
-				while(!data_packet.data.empty()){								// while not empty
+				while(!data_packet_inst.data.empty()){								// while not empty
 					temp_packet.data.clear();									// Clear temp_packet data
 					for(int i = 0; i<64; i++){
-						if(data_packet.data.empty()){
+						if(data_packet_inst.data.empty()){
 							break;
 						}
-						temp_packet.data.push_back(data_packet.data.front());	// Copy first item of data_packet to temp_packet
-						data_packet.data.erase(data_packet.data.begin());		// Erase first item of data_packet
+						temp_packet.data.push_back(data_packet_inst.data.front());	// Copy first item of data_packet to temp_packet
+						data_packet_inst.data.erase(data_packet_inst.data.begin());		// Erase first item of data_packet
 					}
 					temp_packet.sof = sof;										// Copy sof
-					temp_packet.node_id = data_packet.node_id;					// Copy node id
+					temp_packet.node_id = data_packet_inst.node_id;					// Copy node id
 					std::bitset<4> n_data_bytes_t ( temp_packet.data.size()/8 );// Calculate size
 					temp_packet.n_data_bytes = n_data_bytes_t;					// Insert size
-					temp_packet.messagetype = data_packet.messagetype;			// Copy messagetype
+					temp_packet.messagetype = data_packet_inst.messagetype;			// Copy messagetype
 					sof = SOF_FALSE;											// set sof to FALSE
   					data_to_send.insert(data_to_send.begin(),temp_packet);		// Put packet in data_to_send
   				}
   			}else{
-  				append_n_of_data_bytes(&data_packet);
-  				data_packet.sof = SOF_TRUE;
-  				data_to_send.insert(data_to_send.begin(),data_packet);
+  				append_n_of_data_bytes(&data_packet_inst);
+  				data_packet_inst.sof = SOF_TRUE;
+  				data_to_send.insert(data_to_send.begin(),data_packet_inst);
   			}
 
 																				// All data to send is in data_to_send
@@ -86,7 +86,7 @@ void Protocol::loop_out(void){
 *   Output   : -
 *   Function : puts data in data_out buffer while handling mutex
 ******************************************************************************/
-void Protocol::put_data_packet(packed_data packed_data_in){
+void Protocol::put_data_packet(data_packet packed_data_in){
 	this->data_out_mutex.lock();												//Blocking
 	data_out.insert(data_out.begin(),packed_data_in);
 	this->data_out_mutex.unlock();
@@ -97,16 +97,16 @@ void Protocol::put_data_packet(packed_data packed_data_in){
 *   Output   : data
 *   Function : Gets data from data_out buffer while handling mutex
 ******************************************************************************/
-packed_data Protocol::get_data_from_buffer_out(void){
-	packed_data data_packet;
+data_packet Protocol::get_data_from_buffer_out(void){
+	data_packet data_packet_inst;
 	if(this->data_out_mutex.try_lock()){
 		if(!this->data_out.empty()){
-			data_packet = this->data_out.back();
+			data_packet_inst = this->data_out.back();
 			this->data_out.pop_back();
 		}
 		this->data_out_mutex.unlock();
 	}
-	return data_packet;
+	return data_packet_inst;
 }
 
 /*****************************************************************************
@@ -130,7 +130,7 @@ int Protocol::data_in_buffer_out_test(void){
 *   Output   : -
 *   Function : Calculates and appends datalength to struct
 ******************************************************************************/
-void Protocol::append_n_of_data_bytes(packed_data* packed_data_in){
+void Protocol::append_n_of_data_bytes(data_packet* packed_data_in){
 	int n_bytes = packed_data_in->data.size()/8;
 	std::bitset<4> bitset(n_bytes);
 	packed_data_in->n_data_bytes = bitset;

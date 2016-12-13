@@ -34,16 +34,16 @@ class CAN_link {
 private:
 	Protocol* protocol;
 	std::mutex data_out_mutex;
-	std::vector<packed_data> data_out;
+	std::vector<data_packet> data_out;
 	std::thread loop_out_thread;
 	std::thread loop_in_thread;
-	packed_data get_data_from_buffer(void);
+	data_packet get_data_from_buffer(void);
 	int data_in_buffer_test(void);
 public:
 	CAN_link(void);
 	void loop_in(void);
 	void loop_out(void);
-	void send_to_can(packed_data packed_data_in);
+	void send_to_can(data_packet packed_data_in);
 	void set_protocol(Protocol* protocol_in);
 };
 
