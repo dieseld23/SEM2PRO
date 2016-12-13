@@ -142,16 +142,48 @@ The accelerometer: 16 bits,  $\pm 16 \si{\meter \per \second \squared}$
 
 In addition to the IMU sensors, the VN-100 also records air pressure, which is of no concern to us.
 Apart from the raw data listed above, the VN-100 can calculate other parameters, such as quaternions, yaw, pitch, roll, absolute heading and altitude.
-I can also make the accelerometer data zero base, meaning when the go kart is standing still, 0g will be printed from the IMU, rather than the 1g caused by the gravitational pull of earth. 
+I can also make the accelerometer data zero base, meaning when the go kart is standing still, 0g will be printed from the IMU, rather than the 1g caused by the gravitational pull of earth. \\
+
+The Vectornav comes in a rugged, waterproof casing with a USB cable going out.
+Drivers are available on Linux, where one can easily call functions to return the latest values on multiple axes at the same time.
 
 \subsubsection*{Global Positioning System (GPS)}
 \mikkel{Something here?}
-A Global Navigation Satellite System is included on the Go Kart. 
+A GPS sensor is included on the Go Kart. 
 The purpose of this is to give absolute position readings at fixed intervals, much like a runner would be able to see their route on a map afterwards.
-However unlike a runner, \\
+However unlike a runner, a go kart is not supposed to drive at a constant speed nor in a straight line, and as such a GPS is likely too slow to be used on it's own.
+The update rate of the position depends on the rate of messages sent out which is several seconds, which means that the GPS location is update at best a few times per second. 
+The only parameter is then really the precision. \\
 
-It is definitely harder to specify the requirements for GPS than for the IMU. 
+It was possible to borrow a GPS sensor from U-blox from Kjeld Jensen, the NEO-6P.
+This has a data rate of 5 Hz, and a Circular Error Probability (CEP) of down to 2 m.
+This means, that any position measurement has a 50 \% chance of being within a radius of 2 m from the actual position. 
+This is very good compared to other GPS modules, but is barely precise enough to determine which side of a go kart track, the Go Kart starts in. 
+Further precision is however a possibility using a base station, solutions, that U-blox does offer.\\
 
+This is a tremendously good GPS module, and will give a good platform for data fusion, should later semester project want to work with this. 
+One downside however is, that it only uses GPS, and not GLONASS or Galileo, which inherently limits the number of satellites visible to the node at any one point. 
+Furthermore, a GPS module would only work outdoors, and the nearest Go Kart course to here is indoor, in which case a local position system would be preferred.\\
+
+The U-blox NEO-6P is mounted on a custom made PCB with a min USB port and a connector for the antenna. 
+Drivers are available for Linux, so that a stream of messages can be read out and converted to the correct data format.
+\martin{verification}
 
 \subsubsection*{Conclusion}
 \todo[inline]{Table with chosen sensors and their interfaces}
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|l|l|l|}
+		\hline
+		\textbf{Sensor} & \textbf{Brand} & \textbf{Interface} \\
+		\hline
+		Motor controller & Sevcon Gen4 & CAN open \\ 
+		\hline
+		IMU & Vectornav VN-100 & USB, drivers for Linux\\
+		\hline
+		GPS & U-blox NEO-6p & USB, drivers for Linux\\
+		\hline
+		
+	\end{tabular}
+\end{table}
