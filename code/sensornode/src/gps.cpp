@@ -254,7 +254,6 @@ void GPS::decode_RMC_message(std::string message){
 	int index = 0;
 	char data_string[32];
 	int end_of_string = 0;
-	int temp=0;
 	int i = 0;
 
 	while(!end_of_string){

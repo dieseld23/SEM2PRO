@@ -22,7 +22,7 @@
 /***************************** Include files *******************************/
 #pragma once
 
-#include "data_packed.hpp"
+#include "data_packet.hpp"
 
 #include <thread>  
 #include <iostream>
@@ -53,16 +53,16 @@ private:
   std::thread loop_in_thread;
   std::thread counter_thread;
   
-  std::vector<packed_data> data_out;
+  std::vector<data_packet> data_out;
   std::mutex data_out_mutex;
   std::vector<int> event_buffer;
   std::mutex event_buffer_mutex;
 
   void print_vector_bool(std::vector<bool> vector);
-  packed_data get_data_from_buffer(void);
+  data_packet get_data_from_buffer(void);
   int data_in_buffer_test(void);
   void counter(void);
-  packed_data construct_time_packet(long int ms);
+  data_packet construct_time_packet(long int ms);
   std::vector<bool> bitset32_to_vector(std::bitset<32> bitset);
   int get_from_event_buffer(void);
   int evnt_in_event_buffer_test(void);
@@ -73,7 +73,7 @@ public:
  void start(void);
  void loop_out(void);
  void loop_in(void);
- void put_data_packet(struct packed_data);
+ void put_data_packet(struct data_packet);
  void set_protocol(Protocol* protocol_in);
  void put_event(int);
 };

@@ -32,7 +32,7 @@
 
 
 /*****************************   Variables   *******************************/
-struct packed_data;
+struct data_packet;
 class GPS;
 class Node;
 
