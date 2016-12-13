@@ -44,4 +44,36 @@ Left side is bla bla bla.
 
 
 \subsection{CAN Controller Software}
-\mikkel{Catalins stuff should be here?}
+\subsubsection{Implementation in code}~\\
+This was achieved by implementing a set of functions and an array variable of subscriptions for each node.
+The important mechanisms that needed to be provided by the source code were the creation of the message id, the decoding of it as well as getting the various portions such as the node id and the message type.
+\\
+The figure \ref{fig:SeqDiagram_SendFrame} shows the procedure of sending a frame to the CAN network containing data, which makes use of the protocol function createMsgID().
+After returning the message id, the id and the data are put into the TxFrame to be sent once the FIFO has space.
+The actual sending is done with a call to the XCanPs function XCanPs\_Send().
+\\
+Similarly, the procedure of receiving a frame is shown in the figure \ref{fig:SeqDiagram_RecvFrame}.
+The node once it calls the RecvFrame() function, it waits in a loop until it receives a frame. Then, it checks the subscriptions in order to forward the packet for further processing or to ignore it.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width = 1.1\linewidth]{graphics/SeqDiagram_SendFrame.pdf}
+	\caption{The sequence diagram of the process of sending a frame.}
+	\label{fig:SeqDiagram_SendFrame}
+\end{figure}
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width = 1.1\linewidth]{graphics/SeqDiagram_RecvFrame.pdf}
+	\caption{The sequence diagram of the process of receiving a frame.}
+	\label{fig:SeqDiagram_RecvFrame}
+\end{figure}
+
+
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width = 1.1\linewidth]{graphics/StateDiagram_CanStackTestCode.pdf}
+	\caption{Behavioral diagram of the basic source code.}
+	\label{fig:CAN_Testing_StateDiagr_Code}
+\end{figure}
