@@ -25,3 +25,6 @@ main.pdf
 #c++
 bin/
 build/
+
+*.s#?
+*.b#?

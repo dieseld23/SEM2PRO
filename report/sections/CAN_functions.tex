@@ -1,0 +1,45 @@
+%!TEX root = ../main.tex
+\subsection{Functions of the CAN protocol}\label{sec:CAN_functions}
+Some added functionality is necessary for the High Level protocol, which will increase the usability of the protocol.
+
+\paragraph*{Timestamps}
+As mentioned in section~\ref{sec:CAN-bus} the CAN protocol is not real time, which means all data on the bus must be timestamped. 
+This way, the latency of each data point will be known, and it would be possible to work with data fusion.
+The resolution of the timestamps has been decided to be 1 ms, as this leaves sufficient accuracy for the sensors analysed in this project.
+This presents several challenges, in terms of what the time reference is and how to convey timestamps with adequate precision without creating too much overhead. 
+For a node running Linux, the Epoch timestamp is available, but this is not available on baremetal code - it is also too coarse, as it only updates every second.
+Instead a counter will be implemented on each node, incrementing an s32 integer every 1 ms.
+This gives 24.8 days before overflowing.\\
+
+Because a standard s32 integer takes 4 bytes, it would introduce a large overhead if the timestamp is sent with every message. 
+Instead, each timestamp will determine the time of all subsequent data messages, until a new timestamp is sent. 
+As an example, the pseudo code below describes the transmission of all nine axes of the IMU with the same timestamp.
+Additionally, the IMU can transmit pressure and temperature measurements, but as these are slower signals, they would be transmitted at a lower rate.
+
+\begin{lstlisting}
+Send Timestamp
+Send Ax, Ay, Az
+Send Gx, Gy, Gz
+Send Mx, My, Mz
+Wait
+Send Timestamp
+Send Ax, Ay, Az
+Send Gx, Gy, Gz
+Send Mx, My, Mz
+Send Pressure, Temperature
+Wait
+\end{lstlisting}
+
+Lines 2-4 are measurements taken at the timestamp in line 1.
+The WiFi node then saves each of these nine data points with the corresponding timestamp.
+Lines 7-10 refer to the timestamp at line 6.\\
+Because of the Tx Fifo in the CAN controller, it is possible to build and send four or five frames simultaneously, and let 
+
+
+\paragraph*{Commands}
+
+\paragraph*{Synchronization}
+
+\paragraph*{Multiframe Messages}
+
+\paragraph*{Datatype and Scaling}

@@ -1,6 +1,6 @@
 %!TEX root = ../main.tex
 
-\subsection{CAN-bus}
+\subsection{CAN-bus}\label{sec:CAN-bus}
 The CAN (Controller Area Network) protocol was originally developed in the 1980's by Bosch.
 It is a multi-master network, where each node connects to a common bus.
 All nodes are able to broadcast data to all other nodes.
@@ -42,8 +42,7 @@ The transceivers monitor the bus while transmitting, to see if another node is b
 
 \paragraph*{The CAN Controller}~\\
 This element can be standalone hardware, but it is in many cases built into the micro-controller.
-The major advantage of having the controller built into the micro-controller is that it would not otherwise require another protocol, like UART or SPI, to communicate between the microprocessor and controller.
-\mikkel{not otherwise? = otherwise}
+The major advantage of having the controller built into the micro-controller is that it would otherwise require another protocol, like UART or SPI, to communicate between the microprocessor and controller.
 A CAN controller (both standalone and built into a micro controller) has an input and an output FIFO, meaning that the CAN bus communication operates asynchronously. 
 It is not a real time network.
 This is necessary as there is only one bus and it is likely that there will be a queue of nodes trying to write to the bus.
