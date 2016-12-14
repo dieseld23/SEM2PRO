@@ -45,8 +45,6 @@ The stack is visible below
 Because the bus is so short, it isn't practical to make twisted pair, and this will work fine.
 The bus itself is also not $120 \si{\ohm}$, but experiment shows that it works.
 
-\todo{Polish the text and re-express some things such as send() function...}
-
 \subsection{CAN Message Frame}\label{sub:CanMessageFrame}
 Messages sent over CAN is put into a frame. 
 One frame contains all the parts in figure~\ref{fig:CAN_frame_pdf}, whereas a message should not be restricted to just 8 bytes -- however it doesn't include any overhead.
@@ -92,6 +90,7 @@ This is however not done to the EOF and IFS parts.
 This basically means, that the controllers may come out of synch at the end of each message, which doesn't really matter because because the frame is finished anyway.
 
 \subsection{Designing a Basic CAN Network}
+\martin{I think thes whole section belongs in the verification part.}
 \label{sub:TestingCANStack_BareMetal}
 \subsubsection{Architecture}
 In order to realize a basic network, enabling the CAN controller inside the Zynq chip as well as including two AXI GPIO cores were necessary.
