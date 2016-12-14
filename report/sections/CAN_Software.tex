@@ -27,11 +27,13 @@ Using this method, the communication among the various nodes could be easily con
 The use of this architecture was incorporated in the protocol functionality, along with a set of functions in the source code and an array variable of subscriptions for each node.
 
 \subsubsection{Main Loop}
-Since the whole system that was intended to be designed for this project could not be put together, an approach to simulate the network in various ways was needed.
-Specifically, sending messages arbitrary was achieved by implementing button interrupts and the case where multiple nodes would send messages simultaneously by GPIO port interrupts.
-For details on how the different tests were done the reader may refer to section \ref{sub:CAN_Bus_Tests}.
-Due to conflicts between the interrupt controllers and handlers, only one of the two simulation cases could be active during runtime.
-Depending on the value of a macro definition in the source code the desired devices (buttons or GPIO) would be initialized.
+Since the whole system, that was intended to be designed for this project, could not be put together, an approach to simulate the network in various ways was needed.
+Specifically, sending arbitrary messages was achieved by implementing button interrupts
+%\martin{I removed some text, that doesn't fit with the validation part}
+%and the case where multiple nodes would send messages simultaneously by GPIO port interrupts.
+%For details on how the different tests were done the reader may refer to section \ref{sub:CAN_Bus_Tests}.
+%Due to conflicts between the interrupt controllers and handlers, only one of the two simulation cases could be active during runtime.
+%Depending on the value of a macro definition in the source code the desired devices (buttons or GPIO) would be initialized.
 
 \paragraph{Button Interrupts Runtime}~\\
 As seen in behavioral diagram in figure \ref{fig:StateDiagram_CANSoft_BtnsIntr}, the program waits for button pushes or for receiving data in the FIFO in the main loop.
