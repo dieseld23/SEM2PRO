@@ -68,12 +68,13 @@ private:
   int evnt_in_event_buffer_test(void);
   void set_ms(long int ms_in);
   long int get_ms(void);
+  void buffer_clear(void);
 public:
  Node(int id);
  void start(void);
  void loop_out(void);
  void loop_in(void);
- void put_data_packet(struct data_packet);
+ void put_data_packet(data_packet);
  void set_protocol(Protocol* protocol_in);
  void put_event(int);
 };

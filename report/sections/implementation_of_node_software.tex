@@ -1,18 +1,20 @@
 %!TEX root = ../main.tex
-
-A node can be any kind of microcontroller, but this section will only address the case where a Zybo board is used as node microcontroller. 
-The requirements state that it should be simple to add nodes to the system. 
-To realize this the node software should be designed to be modular.
-It should be easily identified what software and what interface a developer of a new node must adhere to.
-
+\mikkel{An introductiontion needs to be here!}
+The designed network generally have two types of nodes, a generic sensor node and the wifi node.
+This section will seek to design and implement software that adheres to the requirements listed earlier.
+A node can be any kind of microcontroller, but this section will only address the case where a Zybo board is used. 
 
 \subsection{Sensor Node}
+\label{sec:sensor_node}
+The requirements state that it should be simple to add new sensor nodes to the system. 
+To realize this the node software should be designed to be modular.
+It should be easily identified what software and what interface a developer of a new sensor node must adhere to.
+
 An example of a node can be seen in figure \ref{fig:gps_node}.
 
 \mikkel{Where to put this text?}
 
-The coming sections will explain the design of the node software that will provide the mentioned functionality using the design requirement.
-
+%The coming sections will explain the design of the node software that will provide the mentioned functionality using the design requirement.
 
 \begin{figure}[!h]
 \centering
@@ -23,6 +25,8 @@ The coming sections will explain the design of the node software that will provi
 \mikkel{Maybe change this figure to reflect the real system???}
 
 This specific node has a GPS attached to it connected through a USB interface, but in general it could be any kind of data producing unit connected through any kind of interface.
+\mikkel{How do we do this referencing nicely?}
+From the requirements, table \ref{tab:requirements}, it is found that the sensor node software needs to fulfill requirements 1,2,6,10,11,12,20 and 21.
 From the analysis section is it clear that a sensor node has the following responsibilities:
 
 \begin{itemize}
@@ -33,15 +37,16 @@ From the analysis section is it clear that a sensor node has the following respo
 \item Get data from CAN network.
 \item React to commands sent to it.
 \end{itemize}
-As described earlier the responsibility of sending data using a CAN controller and receiving data from the CAN network is done in the earlier in the described bare-metal code.
-This section will focus on the designing and implementing the code that implements the rest of the listed functionality.
+
+As described earlier the responsibility of sending data using a CAN controller and receiving data from the CAN network is done in the earlier described bare-metal code.
+This section will focus on the designing and implementing code that provide the rest of the listed functionalities.
 
 Analyzing on the procedure when data goes from a sensor to the CAN program resulted in the block diagram of figure \ref{fig:block_gps}.
 
 \begin{figure}[!h]
 \centering
 \includegraphics[width=1\textwidth]{graphics/block_diagram.png}
-\caption{.....}
+\caption{Should be something with ingoing and outgoing data.}
 \label{fig:block_gps}
 \end{figure}
 
@@ -80,6 +85,8 @@ It will be passed between the classes and they will each add their own informati
 
 The classes and their tasks from figure \ref{code:data_packet} will be explained here.
 
+\mikkel{Put color explanation here?}
+
 ~\\ \par \textbf{GPS class} ~ \\
 The GPS class needs to extract data from a connected GPS unit and update its own variables with that data.
 The specific GPS unit used in this project has a USB interface and uses the NMEA protocol to format data.
@@ -88,11 +95,11 @@ The specific GPS unit used in this project has a USB interface and uses the NMEA
 The Packer\_GPS class is also sensor specific and is the link between the sensor and the data agnostic node.
 It is hard-coded with the message types that the sensor is allowed to send onto the network.
 It has the responsibility to pack data according to the developed protocol.
+Data in the form of a vector of booleans are then put into the data\_packet struct and passed to the node class.
 The reason for making a separate class for the packer and not putting the functionality into the GPS class is that if the specification of the protocol or message types change, only this class needs to be modified.
 
 ~\\ \par \textbf{Node class} ~ \\
-The Node class receives data in a vector of booleans from the Packer class.
-The class needs to put the received data in a data\_packet struct and append its node id to it.
+The Node class data\_packets from the Packer class it then needs to append its node id to it.
 It needs to create a timestamp data\_packet each time data is to be sent.
 In order to create the time message the class needs to keep track of milliseconds since last received synchronize message.
 The class receives start, stop or synchronize events from the protocol class and reacts to those accordingly.
@@ -103,6 +110,7 @@ If it receives data\_packets where there are more than eight data bytes it needs
 The additional data\_packets must have the same node id and message types, but the start of frame, sof, bit should be set accordingly.
 The class also needs to append number of data bytes, n\_data\_bytes, to each data\_packet.
 On data\_packets coming from the CAN network the class needs to use the last two bits of the messagetype to decode which command is sent to the node.
+\martin{This may or may not be adressed to the node, so it should be handled in node.}
 
 ~\\ \par \textbf{CAN\_link class} ~ \\
 The CAN\_link class has the responsibility of transferring and receiving data to and from the CAN program.
@@ -110,10 +118,28 @@ As this interface has not yet been implemented this class makes use of the stand
 Meaning that data from the sensor will be printed in the shell and data to the node should be written to the shell. 
 
 \subsubsection*{Passing data between classes}
-Threads, buffer and mutexes.
-Communication between classes is realised by having buffers for all data going into a class.
-The buffers will be read by looping functions running in separate threads.
-All buffers have a associated mutex to the implementation thread safe.
+Communication between classes is realised by using the producer-consumer pattern.
+As the name implies one class produces data and puts this in a queue where another class consumes by taking data out of the queue.
+To get the producer and consumer functions to run in parallel they are run in separate threads.
+All queues are protected by a mutex to make the software thread-safe.
+
+\subsubsection*{Node class functionality}
+The functionalities of the Node class on outgoing data is implemented using a state machine.
+It is shown in figure \ref{fig:state_machine}.
+\begin{figure}[!h]
+\centering
+\missingfigure[figwidth=1\textwidth]{State machine diagram}
+\caption{State machine.....}
+\label{fig:state_machine}
+\end{figure}
+
+\mikkel{A little more text here when the figures are ready.}
+
+\subsubsection*{Implementing a new Sensor node}
+When developing a new node with another sensor the generic classes CAN\_link, Protocol and Node should be used. 
+New classes should be developed to extract data from sensor, pack data according to protocol and put the data in a data\_packet.
+It is advantageous to implement this functionality into Packer\_Sensor and Sensor classes to keep a similar software design through the nodes.
+The interface to the generic Node class is a call to its function \texttt{put\_data\_packet(data\_packet)}.
 
 \subsection{Wifi Node}
 \mikkel{We should design something or at least make some block diagrams of what needs to happen with data here.}

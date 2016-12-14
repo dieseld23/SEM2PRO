@@ -59,7 +59,7 @@ The functionality is implemented in four classes, each of which will be explaine
 This class is run in a separate thread.
 It continuously listens to std::io, waiting for input from the go-kart.
 Upon receiving a message, it is put into a message buffer maintained by interpreter.
-\subsubsection{\texttt{interpreter}}~\\
+\subsubsection{\texttt{interpreter}}\label{sub:backend_intepreter}~\\
 As mentioned, this class holds a message buffer, it is shown in code \ref{code:msgbuffer}.
 The buffer can be accessed from the receiver thread indirectly by a call to \texttt{put()} and the interpreter thread continously checks if data is present in the buffer.
 Since these threads are run simultaneously it is necessary to use a mutex to avoid race conditions.

@@ -101,58 +101,60 @@ void Node::loop_out(void){
 	while(1){
 		switch(state) {
 			case stopped: 
-    					if(running == 1){
-    						state = clear;
-    					}
-            			break;
-            case clear: 
-             			data = 0;																			// Clear
-						packets_to_send.clear();															// Clear
-						if(running == 0){
-							state = stopped;
-						}
-						else{
-							state = time_packing;
-						}
-						break;
+				buffer_clear();
+				if(running == 1){
+					state = clear;
+				}
+				break;
+			case clear: 
+             	data = 0;																			// Clear
+				packets_to_send.clear();															// Clear
+				data = data_in_buffer_test();
+				if(running == 0){
+					state = stopped;
+				}
+				else if (data == 1){
+					state = time_packing;
+				}
+				else{
+					state = clear;
+				}
+				break;
 			case time_packing:
-						ms_now = get_ms();																	// Get timestamp
-						packets_to_send.insert(packets_to_send.begin(),construct_time_packet(ms_now));		// Put in the first spot
-						if(running == 0){
-							state = stopped;
-						}
-						else{
-							state = get_data;
-						} 
-						break;
+				ms_now = get_ms();																	// Get timestamp
+				packets_to_send.insert(packets_to_send.begin(),construct_time_packet(ms_now));		// Put in the first spot
+				if(running == 0){
+					state = stopped;
+				}
+				else{
+					state = get_data;
+				} 
+				break;
 			case get_data:
-						while(data_in_buffer_test() == 1){													// Get all data packets available
-							data = 1;
-							temp_packet = get_data_from_buffer();
-							temp_packet.node_id = this->node_id;											// Add node id
-							packets_to_send.insert(packets_to_send.begin(),temp_packet); 					// Add to ...					
-						}
-						if(running == 0){
-							state = stopped;
-						}
-						else if(data == 1){
-							state = send_data;
-						} 
-						else{
-							state = clear;
-						}
-						break;
+				while(data_in_buffer_test() == 1){													// Get all data packets available
+					data = 1;
+					temp_packet = get_data_from_buffer();
+					temp_packet.node_id = this->node_id;											// Add node id
+					packets_to_send.insert(packets_to_send.begin(),temp_packet); 					// Add to ...					
+				}
+				if(running == 0){
+					state = stopped;
+				}
+				else {	
+					state = send_data;
+				} 
+				break;
 			case send_data:
-						while(!packets_to_send.empty()){
-							temp_packet = packets_to_send.back();										// Get packet
-							packets_to_send	.pop_back();												// Delete read packet
-							protocol->put_data_packet(temp_packet);										// Put packet in protocol
-						}
-						state = clear;
-						break;
+				while(!packets_to_send.empty()){
+					temp_packet = packets_to_send.back();										// Get packet
+					packets_to_send	.pop_back();												// Delete read packet
+					protocol->put_data_packet(temp_packet);										// Put packet in protocol
+				}
+				state = clear;
+				break;
+			}
 		}
 	}
-}
 
 /*****************************************************************************
 *   Input    : -
@@ -322,4 +324,20 @@ long int Node::get_ms(void){
 	this->ms_mutex.unlock();
 
 	return ms_out;
+}
+
+
+
+/*****************************************************************************
+*   Input    : -
+*   Output   : -
+*   Function : Clears the data_out buffer
+******************************************************************************/
+void Node::buffer_clear(void){
+	if(this->data_out_mutex.try_lock()){
+		if(!this->data_out.empty()){
+			this->data_out.clear();
+		}
+		this->data_out_mutex.unlock();
+	}
 }
