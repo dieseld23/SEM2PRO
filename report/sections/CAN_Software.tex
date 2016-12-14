@@ -1,8 +1,9 @@
 
+
+\subsection{CAN Controller Software}
 \catalin{Explain the code in more detail. Also mention the interrupt part for gpio.}
 \catalin{Bullet list: What other functionalities? And, 1st letters capitals or not?}
 \catalin{Better titles}
-\subsection{CAN Controller Software}
 \subsubsection{Main Functionalities}~\\
 As mentioned in section \ref{sub:Basic_SourceCode}, the code was based on the xcanps polled example available by Xilinx documentation.
 The important functionalities that needed to be provided by the final software version included:
@@ -17,6 +18,7 @@ The important functionalities that needed to be provided by the final software v
 
 \subsubsection{Publisher-Subscriber Architecture}
 \catalin{Should I explain more about the architecture? Or is it the readers responsibility to read about it?}
+\martin{Deja vú. I feel like this is described already}
 A mechanism was also necessary to control the receivers and transmitters of messages.
 One of the functionalities of the network was to provide the ability for various nodes to be able to send specific messages to other nodes.
 Such a mechanism could easily be implemented using the Publisher-Subscriber architecture which would also make the network data-driven.

@@ -94,9 +94,9 @@ The core accepts a clock frequency from \SI{8}{\mega\hertz} to \SI{24}{\mega\her
 
 \subsubsection{Utilizing Asymmetric Multiprocessing}
 
-Apart from using the AXI CAN core and the CAN drivers, the Zynq-7000 AP SoC provides the possibility of implementing a mechanism called asymmetric multiprocessing since there are two processors which share common memory as well as peripherals.
+Apart from using the AXI CAN core and the CAN drivers, the Zynq-7000 AP SoC provides the possibility of implementing a mechanism called asymmetric multiprocessing since there are two processors which share common memory as well as peripherals.\\
 \martin{CAN controllers instead of CAN drivers?}
-\\
+
 The idea of this is to run Linux OS on one processor, while on the other one a bare-metal system, which both of them can communicate with each other.
 This was a proposed solution for the problem of accessing the CAN devices from Linux which was the most promising of the implementation methods discussed in this report, but due to lack of time, it was researched only at a theoretical level.
 \\
@@ -120,9 +120,9 @@ The next step is to create the Linux kernel and device tree, as well as the u-bo
 \martin{So we need to build a new kernel anyway, which was also the brick wall we hit when trying to access the CAN controllers straight from Linux?}
 Acquiring the root file system is also a requirement.
 One important note here is the modification of the device tree includes instructions for the Linux to only use one CPU and to not access certain amount of memory, which is reserved for the bare-metal application.
-For instructions for the creation of the kernel, u-boot and acquiring the root file system, the reader may refer to the Xilinx Wiki \cite{Xilinx_wiki}.
+For instructions for the creation of the kernel, u-boot and acquiring the root file system, the reader may refer to the Xilinx Wiki \cite{Xilinx_wiki}.\\
 \martin{I don't think we should refer to the whole xilinx wiki. Specific articles or nothing}
-\\
+
 Lastly, after all the above steps, the last one is to follow the appropriate procedures to copy the necessary files to an SD card. The files, including the applications, are:
 \begin{itemize}
 \item BOOT.BIN
@@ -152,9 +152,17 @@ In order to show that the system can be fully functional despite the unsuccessfu
 One way of doing that is to apply a method called service virtualization where one part of the system can be simulated to prove that the rest of the system is fully functional, given the presence of the missing simulated part.
 \\
 In this case, the system that was designed for this project can be divided into two parts or subsystems.
-The first one is the physical CAN network that was proved functional using bare\-metal code programmed using the JTAG mode \catalin{is this well expressed, JTAG mode?} \martin{I think bare metal by it self is descriptive enough} on the Zybo board in the section \ref{sub:TestingCANStack_BareMetal}.
+The first one is the physical CAN network to this point is only functional in bare\-metal code, which is described in section~\ref{sub:CAN_Bus_Tests}.
 The second part would be considered the subsystem present on Linux which included the protocol designed to be used with the CAN bus and the application which extracted the data from the sensors.
-\catalin{Some more words about how are we going to produce the data and how are we going to pass the data to the application etc.}
-The main idea was to run three tests separately, which combined together would prove that the system is fully functional given the fact that there would be access to the CAN controller and physical network from Linux. In other words, a virtualized connection or link between the Linux OS running on the Zybo board and the CAN devices on the Programmable Logic level \catalin{can controllers or devices or sth else?} was simulated.
-\catalin{more to add and modify when Thomas makes an awesome illustration for this.}
-\catalin{How many tests in total for this proof of concept?}
+This is described in section~\ref{sec:node_software}
+The connection between the two subsystems is the service virtualization and could be replaced either by a software buffer.
+
+
+
+%\catalin{Some more words about how are we going to produce the data and how are we going to pass the data to the application etc.}
+%
+%The main idea was to run three tests separately, which combined together would prove that the system is fully functional given the fact that there would be access to the CAN controller and physical network from Linux. In other words, a virtualized connection or link between the Linux OS running on the Zybo board and the CAN devices on the Programmable Logic level \catalin{can controllers or devices or sth else?} was simulated.
+%
+%\catalin{more to add and modify when Thomas makes an awesome illustration for this.}
+%
+%\catalin{How many tests in total for this proof of concept?}
