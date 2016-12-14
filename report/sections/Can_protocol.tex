@@ -81,7 +81,7 @@ Generally nodes can either produce data, and/or receive commands.
 The Wifi node neither produces any kind of data nor receives commands, but it does receive data, and send out commands.
 Therefore, there is a special case, for when the Wifi node is sending.
 In this case, the subsequent four bits determines the recipient, leaving two bits for command type. 
-For now, command types are only "Start broadcasting" and "Stop broadcasting", but could be extended to for instance "Set parameter" or "Set value", where the data field will indicate which parameter, and what is's set to.
+For now, command types are only "Start broadcasting" and "Stop broadcasting", but could be extended to for instance "Set parameter" or "Set value", where the data field will indicate which parameter, and what it's set to.
 If the recipient message ID is the WiFi node ID, then the command applies to all nodes.\\
 
 The four node IDs are:
@@ -97,11 +97,3 @@ The four node IDs are:
 The reason for this naming is, that the Wifi node acts as a commander for the, and it's commands need higher priority.
 The IMU produces short data packages at a high rate, and the GPS node produces longer data packages at a lower rate. 
 Therefore it is of less concern if the GPS message is delayed due to obstruction from other nodes. 
-
-\subsection{Publisher-Subscriber Architecture}
-\catalin{Should I explain more about the architecture? Or is it the readers responsibility to read about it?}
-A mechanism was also necessary to control the receivers and transmitters of messages.
-One of the functionalities of the network was to provide the ability for various nodes to be able to send specific messages to other nodes.
-Such a mechanism could easily be implemented using the Publisher-Subscriber architecture which would also make the network data-driven.
-Using this method, the communication among the various nodes could be easily configured just by adding messages ids to an array variable containing the node's subscriptions.
-The use of this architecture was incorporated in the protocol functionality, along with a set of functions in the source code.

@@ -12,7 +12,7 @@ An IP core is also available if FPGA implementation was desired.\\
 The CAN transceiver is connected to the controller by Rx and Tx voltage signals, and connects to the bus through two differential ports. 
 The transceiver must support the standard ISO11898-2, as this is what the Sevcon motor driver uses.
 The device SN65HVD232 from Texas instruments support this standard, and is supplied with 3.3 V, so it can be plugged right into the Zybo, and still communicate with the Sevcon even though its CAN bus uses $\si{5 \volt}$.
-According to TI itself\cite{3.3V_CAN}, this family of $\si{3.3 \volt}$ transceivers are compatible and interoparable with other \si{5 \volt} transceivers, so long as they support the same standard.\\
+According to TI itself\cite{3.3V_CAN}, this family of $3.3 \si{\volt}$ transceivers are compatible and interoperable with other \si{5 \volt} transceivers, so long as they support the same standard.\\
 
 PCBs for the CAN transceivers are reasonably simple in design and while they can be procured, it was decided to create a custom transceiver.
 This way it is possible to create a more mechanically solid stack.
