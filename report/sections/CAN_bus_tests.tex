@@ -1,6 +1,6 @@
 %!TEX root = ../main.tex
 
-\subsection{CAN Bus Tests}
+\section{CAN Bus}
 \label{sub:CAN_Bus_Tests}
 With the CAN controller available on the PS of the Zybo, the CAN bus will be tested to determine the transmission abilities of the network.
 The transceivers are able to work at up to 8 Mb/s, while the CAN controllers on the Zybo only guarantee functionality up to 1 Mb/s. 
@@ -10,7 +10,7 @@ The purpose of these test is to show that the transceivers work, and that the bu
 It is also relevant to test whether the CAN protocol acts according descriptions made in section~\ref{sub:CanMessageFrame}, in which case the protocol designed in section~\ref{sub:CAN_protocol} can be implemented.
 Performance parameters, such as bandwidth, are not immediately measurable, as they depend heavily on the controller.
 The tests performed will be: 
-
+\mikkel{Should these paragraph be made into something else? maybe list?}
 \paragraph{Basic communication:} Proving the ability for basic communication between nodes
 
 \paragraph{Latency tests:} The time it takes to send one large frame
@@ -19,7 +19,7 @@ The tests performed will be:
 
 \paragraph{Priority when multiple node sending:} Ensuring, that higher message ID make way for the lower ones 
 
-\subsubsection{Basic Communication Using the CAN Stack}
+\subsection{Basic Communication Using the CAN Stack}
 \label{sub:TestingCANStack_BareMetal}
 After the design and printing of the stack board, testing it was the next step.
 The test included using one the CAN controllers within the Zynq chip with the purpose of showing that a basic CAN network between two Zybo boards could be implemented using the stack.
@@ -31,7 +31,7 @@ The test was successful with more than two Zybo boards as well, proving the abil
 In the last case, the button values sent from one node were received by all the other nodes turning on the same LEDs.
 All Zybo boards were programmed with the same architecture and source code.
 
-\subsubsection{Latency Test}\label{sub:CAN_latency}
+\subsection{Latency Test}\label{sub:CAN_latency}
 For this test, only two Zybos are needed.
 One node prepares a frame for transmission, then sets a GPIO pin high.
 It then performs the necessary checks and writes the message details to the TX fifo, and then sets its GPIO pin low. \\
@@ -79,7 +79,7 @@ Additionally this controller uses 5 bits for the IFS part of the frame, rather t
 
 
 
-\subsubsection{Bandwidth}\label{sub:CAN_bandwidth}
+\subsection{Bandwidth}\label{sub:CAN_bandwidth}
 This will be calculated, as the faster controllers are not available.
 Bandwidth is considering the amount of net data being transmitted per unit time, when excluding the overhead.
 Bandwidth will be calculated for 8 byte frames, and bit stuffing will be omitted.\\
@@ -102,7 +102,7 @@ As each frame contains 8 bytes of data, the data rate becomes:
 That means, that the effective transfer rate is 577 kB/s, or 4.61 Mb/s with 8 Mb/s controllers. 
 With the controllers built into the PS of the Zybo, this effective rate comes down to 720 kb/s.
 
-\subsubsection{Message Priority}\label{sub:CAN_message priority}
+\subsection{Message Priority}\label{sub:CAN_message priority}
 
 Two Zybos will be needed for this test, both transmitting.
 The two transmitting Zybos will prepare a CAN frame with the same data content, but different message IDs.
@@ -130,7 +130,7 @@ It will then cancel this attempt to transmit, and wait until the current frame h
 Also note the Zybo B writing the acknowledge bit at the time $171 \si{\micro\second}$.
 Because of this, it is not strictly necessary to use a receiving Zybo, because the other node will confirm the CRC of the message.\\
 
-\subsubsection{Conclusion}\label{sub:CAN_test_conclusion}
+\subsection{Conclusion}\label{sub:CAN_test_conclusion}
 It has been proven that the CAN hardware does work, and it is possible to transmit a message from one Zybo to another, without error.
 The substantial overhead does limit the potential bandwidth a great deal, and furthermore the controller on the PS of the Zybo can only work up to 1.25 MB/s. 
 Additionally it was possible to measure the time it takes to construct a CAN frame, although this might vary a great deal from one controller to the next.
