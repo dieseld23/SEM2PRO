@@ -1,7 +1,7 @@
 %!TEX root = ../main.tex
 
-\subsection{CAN-bus}\label{sec:CAN-bus}
-The CAN (Controller Area Network) protocol was originally developed in the 1980's by Bosch.
+\subsection{Controller Area Network (CAN)}\label{sec:CAN-bus}
+The CAN protocol was originally developed in the 1980's by Bosch.
 It is a multi-master network, where each node connects to a common bus.
 All nodes are able to broadcast data to all other nodes.
 The CAN protocol includes an overhead of 47 bit per message.
@@ -23,8 +23,8 @@ The following paragraphs explain the physical parts of this structure as well as
 \paragraph*{The CAN Bus}~\\
 The bus is shown on the bottom of figure~\ref{fig:canbus_setup}.
 It is a differential voltage bus.
-This means that the value on the bus is determined by the voltage difference of the two wires, rather than the absolute voltage of either wire.
-The bus has to be made of twisted pair wires with a characteristic impedance of $\si{120 \ohm}$ and terminated at each end with $\si{120 \ohm}$ resistors.
+This means that the value on the bus is determined by the voltage difference between the two wires, rather than the absolute voltage of either wire.
+The bus has to be made with twisted pair wires with a characteristic impedance of $\si{120 \ohm}$ and terminated at each end with $\si{120 \ohm}$ resistors.
 This increases the EMC of the bus, as inductive noise present on one wire is likely also present on the other, and the noise will then cancel itself out.
 \mikkel{Twisting the wires means that it is not allowed to break the wire? :)}
 That means, that if the bus is broken at any point, no communication will be received, even if the receiving node still has a galvanic connection to the transmitting node.
@@ -33,21 +33,25 @@ Alternatively, it is possible to terminate each node, but this greatly reduces t
 \paragraph*{The CAN Transceiver (XCVR)}~\\
 As CAN uses differential voltages, it is not possible to implement directly in the micro controllers.
 Typically a micro controller has digital ports putting out either $ 0 \si{\volt}$, or a fixed voltage level defined as "high".
-Complementary, it also perceives a voltage level as either low or high. 
+That is, depending on the voltage level, the signal is perceived as either high or low.
 As mentioned above, the absolute voltage of either wire of the CAN bus does not matter, but difference in voltage does. 
-As there are multiple nodes on the same bus, it is also important for one node to be able to dominate, and the other nodes to know that there is a dominant node. 
+As there are multiple nodes on the same bus, it is also important for one node to be able to dominate, and the other nodes to know that there is a dominant node.
+\thomas{The "dominant node" discussion is unclear to me, why can a micro-controller not handle this?} 
 This is generally not possible for the micro controller, and it is necessary to use transceivers.
 The transceivers translate a Tx voltage signal from the micro controller to the differential CAN signal, and simultaneously translates the bus signal to Rx voltage signal.
 The transceivers monitor the bus while transmitting, to see if another node is being dominant, and if that is the case, it will start receiving data.
 
 \paragraph*{The CAN Controller}~\\
 This element can be standalone hardware, but it is in many cases built into the micro-controller.
-The major advantage of having the controller built into the micro-controller is that it would otherwise require another protocol, like UART or SPI, to communicate between the microprocessor and controller.
-A CAN controller (both standalone and built into a micro controller) has an input and an output FIFO, meaning that the CAN bus communication operates asynchronously. 
-It is not a real time network.
-This is necessary as there is only one bus and it is likely that there will be a queue of nodes trying to write to the bus.
+The major advantage of having the controller built into the micro-controller is that it would otherwise require additional communication, like UART or SPI, for the communication between the microprocessor and controller.
+A CAN controller (both standalone and built-in) has an input and output FIFO, meaning that the CAN bus communication can operate asynchronously.
+This does, however, mean that it can not be used as a real time network.
+Asynchronous operation is necessary as there is only one bus and it is possible that nodes will attempt to transmit messages simultaneously.
 
 \paragraph*{Protocol}~\\
+CAN defines a protocol that nodes on a CAN bus should adhere to.
+A detailed description
+
 \mikkel{We should tell why we need this kind of protocol.}
 \martin{I changed this so that it doesn't mention CANopen, but instead talks about interpreting the base CAN protocol}
 The protocol in this case is the high level protocol running on top of the CAN protocol.
