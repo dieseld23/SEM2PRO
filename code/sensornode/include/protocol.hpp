@@ -50,20 +50,20 @@ private:
 	CAN_link* can_link;
 	Node* node;
 	std::mutex data_out_mutex;
-	std::vector<packed_data> data_out;
+	std::vector<data_packet> data_out;
 	std::mutex data_in_mutex;
 	std::vector<std::bitset<11>> data_in;
 	std::thread loop_in_thread;
 	std::thread loop_out_thread;
-	packed_data get_data_from_buffer_out(void);
+	data_packet get_data_from_buffer_out(void);
 	int data_in_buffer_out_test(void);
 	std::bitset<11> get_data_from_buffer_in(void);
 	int data_in_buffer_in_test(void);
 	std::bitset<2> bitset11_to_bitset2(std::bitset<11> bitset_in);
-	void append_n_of_data_bytes(packed_data* packed_data_in);
+	void append_n_of_data_bytes(data_packet* packed_data_in);
 public:
 	Protocol(void);
-	void put_data_packet(packed_data packed_data_in);
+	void put_data_packet(data_packet packed_data_in);
 	void put_messageid_from_can(std::bitset<11>);
 	void loop_out(void);
 	void loop_in(void);

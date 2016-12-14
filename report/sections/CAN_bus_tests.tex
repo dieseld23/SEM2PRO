@@ -10,11 +10,25 @@ It is also relevant to test whether the CAN protocol acts according descriptions
 Performance parameters, such as bandwidth, are not immediately measurable, as they depend heavily on the controller.
 The tests performed will be: 
 
+\paragraph{Basic communication:} Proving the ability for basic communication between nodes
+
 \paragraph{Latency tests:} The time it takes to send one large frame
  
 \paragraph{Bandwidth:} How much raw data can be transmitted per unit time
 
 \paragraph{Priority when multiple node sending:} Ensuring, that higher message ID make way for the lower ones 
+
+\subsubsection{Basic Communication Using the CAN Stack}
+\label{sub:TestingCANStack_BareMetal}
+After the design and printing of the stack board, testing it was the next step.
+The test included using one the CAN controllers within the Zynq chip with the purpose of showing that a basic CAN network between two Zybo boards could be implemented using the stack.
+Specifically, the one Zybo was sending the input value of the buttons to the network in order to be received by the second one and turn on the appropriate on-board LEDs as a result.
+After programming the FPGA with the basic architecture designed in Vivado as seen in figure \ref{fig:CAN_Testing_Architecture} and uploading the source code written in Vivado SDK, the test was successful, thus proving the basic functionality of a CAN network.
+The messages sent from the first node to the second one were received correctly, containing the intended value of the buttons.
+A two-way communication was also proven, since both boards had a SendFrame() and a RecvFrame() function (common source code), thus one controlling the LEDs of the other one.
+The test was successful with more than two Zybo boards as well, proving the ability to create a network of multiple nodes communicating with each other.
+In the last case, the button values sent from one node were received by all the other nodes turning on the same LEDs.
+All Zybo boards were programmed with the same architecture and source code.
 
 \subsubsection{Latency Test}\label{sub:CAN_latency}
 For this test, only two Zybos are needed.
