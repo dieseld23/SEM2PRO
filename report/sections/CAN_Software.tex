@@ -46,6 +46,7 @@ In the former case, a message is sent to the network containing the value of the
 \end{figure}
 
 \paragraph{GPIO Interrupts Runtime}~\\
+\martin{Do we use this? I didn't use interrupts for my code}
 The software's behavior is similar in this case, as well as it can be seen in figure \ref{fig:StateDiagram_CANSoft_GPIOIntr}.
 The difference is that instead of button values, dummy data may be inserted into the TxFrame according to the simulation needs and the receiving data is only presented in the SDK terminal.
 \begin{figure}[h!]
@@ -56,6 +57,8 @@ The difference is that instead of button values, dummy data may be inserted into
 \end{figure}
 
 \subsubsection{Sending and Receiving Frames}
+\martin{We probably should document something about the xcanps examples used in the verification}
+\martin{Describe createMsgID()?}
 The figure \ref{fig:SeqDiagram_SendFrame} shows the procedure of sending a frame to the CAN network containing data, which makes use of the protocol function createMsgID().
 After returning the message id, the id and the data are put into the TxFrame to be sent once the FIFO has space.
 The actual sending is done with a call to the XCanPs function XCanPs\_Send().
