@@ -1,8 +1,10 @@
 
+
+\subsection{CAN Controller Software}
 \catalin{Explain the code in more detail. Also mention the interrupt part for gpio.}
 \catalin{Bullet list: What other functionalities? And, 1st letters capitals or not?}
 \catalin{Better titles}
-\subsection{CAN Controller Software}
+\martin{Write introduction explaining that this code is for testing, because we were missing the link betwen linux and CAN.}
 \subsubsection{Main Functionalities}~\\
 As mentioned in section \ref{sub:Basic_SourceCode}, the code was based on the xcanps polled example available by Xilinx documentation.
 The important functionalities that needed to be provided by the final software version included:
@@ -12,6 +14,7 @@ The important functionalities that needed to be provided by the final software v
 \item decoding of the message id parts, such as the node id, the message type and the command
 \item handling interrupts from buttons and a GPIO port
 \item controlling the LEDs
+\martin{buttons and leds aren't part of the final software? Or are we still talking about the software for testing?}
 \item accepting and ignoring messages according to a subscriptions list
 \end{itemize}
 
