@@ -3,16 +3,20 @@
 \section{Data Collection}
 \label{sec:data_collection}
 As described in previous sections, the system will have to support the use of several data producers.
-In addition to this, the it should also be possible to easily add additional data producers at a later time.
+In addition to this, it should also be possible to easily add additional data producers at a later time.
 It is possible to implement the support of many producers on a single platform, however, eventually the platform would likely run out of I/O for additional support.
-The single-platform approach would also likely not meet the requirements of the computational requirements set by the equipment.
+The single-platform approach would also likely not meet the requirements of the computational requirements set by the increasing amount of equipment.
 This implies that a multi-platform system is the correct approach for this system.
-Each platform, or node, would then implement the functionality of one or more data producers.
+Each platform, or node, would then implement the functionality of one or more data producers.\\
 The data needs to be collected from all of the nodes, then logged and transmitted wirelessly to the monitoring station.
-The type of network depends largely on the number of nodes that it has to support.
-A project on SDU, Formula Student, has a similar (although slightly more professional) platform for which a network has been developed.
+The type of network depends greatly on the number of nodes that it has to support.
+A project on SDU, Formula Student, has a similar platform for which a network has been developed.
 On that platform seven nodes are connected on the network.
-The parameters found in section \ref{sec:parameters}
+The parameters found in section \ref{sec:parameters} can be measured using five different types of sensors.
+This project does, however, aim to give users the ability to add their own nodes.
+For this reason the limit of supported nodes is set to 16.
+It is worth noting that the structure of each node is irrelevant, so long as it adheres to the networks communication standards.
+This means that a node can potentially comprise several sensors or perhaps a complete seperate network of nodes.
 
 \subsection{Network Topology}
 
@@ -67,9 +71,10 @@ Although the majority of the types provide a level of scalability, the addition 
 Hence, a topology that balances the decrease in performance against the network's expansion is best suited for the project.\\\\
 The approach that fits the requirements is implementing a bus network, where each node may be a subnetwork of a different type depending on the needs, making it into a hybrid network having a bus topology as its basis.
 This type provides a good balance of reliability, scalability, hardware requirements and communication speed in comparison to the others.
-
 \subsection{Networking technology}
 
+\thomas{I think we need to discuss the topology/technology sections. In my view, it matters very little what topologies we like - what matters is what technologies are available, if that is of ring/bus/whatever topology then fine, we can discuss that.}
+\thomas{We have 2 pages discussing the abstract of topologies but only 1/4 page discussing pros and cons of the different actual technologies?}
 \subsubsection{Existing Technologies}~\\
 \mikkel{Ethernet and Powerlink is not bus?}
 Different networking technologies exist in use today, such as Ethernet, CANbus, CANopen and Powerlink, among others.
