@@ -78,19 +78,18 @@ The protocol cla
 \label{fig:node_class_diagram}
 \end{figure}
 
-\catalin{Explain the code in more detail}
+\catalin{Explain the code in more detail. Also mention the interrupt part for gpio.}
 \subsection{CAN Controller Software}
 \subsubsection{Implementation in code}~\\
 As mentioned in section \ref{sub:Basic_SourceCode}, the code was based on the xcanps polled example available by Xilinx documentation.
 The important functionalities that needed to be provided by the final software version included:
-
 \begin{itemize}
 \item receiving and sending of frames
-\item the creation of the message id
-\item the decoding of the message id parts, such as the node id, the message type etc. \catalin{what else?}
+\item creating the message id
+\item decoding of the message id parts, such as the node id, the message type etc. \catalin{what else?}
 \item handling button interrupts
 \item controlling the LEDs
-\item subscriptions lookup
+\item accepting and ignoring messages according to the subscriptions list
 \end{itemize}
 \catalin{What other functionalities? And, 1st letters capitals or not?}
 The figure \ref{fig:SeqDiagram_SendFrame} shows the procedure of sending a frame to the CAN network containing data, which makes use of the protocol function createMsgID().
