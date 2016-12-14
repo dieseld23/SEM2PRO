@@ -44,12 +44,21 @@ This section will focus on the designing and implementing code that provide the 
 Analyzing on the procedure when data goes from a sensor to the CAN program resulted in the block diagram of figure \ref{fig:block_gps}.
 
 \begin{figure}[!h]
-\centering
-\includegraphics[width=1\textwidth]{graphics/block_diagram.png}
-\caption{Should be something with ingoing and outgoing data.}
-\label{fig:block_gps}
+    \centering
+    \begin{subfigure}[b]{0.33\textwidth}
+        \includegraphics[width=\textwidth]{graphics/FlowChart_Node_Packing}
+        \caption{Ingoing data....}
+        \label{fig:filter_full}
+    \end{subfigure}
+    ~
+    \begin{subfigure}[b]{0.33\textwidth}
+        \includegraphics[width=\textwidth]{graphics/FlowChart_Node_Unpacking}
+        \caption{Two minu.}
+        \label{fig:filter_2}
+    \end{subfigure}
+        \caption{Outgoing data.}
+           \label{fig:filter_fulll}
 \end{figure}
-
 To design modular software it needs to be analyzed which blocks are the same for all nodes and which are sensor specific.
 The sensor specific tasks are found to be extracting data from sensor and to pack data according to the protocol.
 The remaining tasks are the same for all sensor nodes in the system. 
@@ -95,21 +104,21 @@ The specific GPS unit used in this project has a USB interface and uses the NMEA
 The Packer\_GPS class is also sensor specific and is the link between the sensor and the data agnostic node.
 It is hard-coded with the message types that the sensor is allowed to send onto the network.
 It has the responsibility to pack data according to the developed protocol.
-Data in the form of a vector of booleans are then put into the data\_packet struct and passed to the node class.
+Data in the form of a vector of booleans are then put into the \texttt{data\_packet} struct and passed to the node class.
 The reason for making a separate class for the packer and not putting the functionality into the GPS class is that if the specification of the protocol or message types change, only this class needs to be modified.
 
 ~\\ \par \textbf{Node class} ~ \\
-The Node class data\_packets from the Packer class it then needs to append its node id to it.
-It needs to create a timestamp data\_packet each time data is to be sent.
+The Node class gets \texttt{data\_packets} from the Packer class it then needs to append its node id to it.
+It needs to create a timestamp \texttt{data\_packet} each time data is to be sent.
 In order to create the time message the class needs to keep track of milliseconds since last received synchronize message.
 The class receives start, stop or synchronize events from the protocol class and reacts to those accordingly.
 
 ~\\ \par \textbf{Protocol class} ~ \\
-The protocol class receives data\_packets from the node class. 
-If it receives data\_packets where there are more than eight data bytes it needs to create additional data\_packets and distribute data to them. 
-The additional data\_packets must have the same node id and message types, but the start of frame, sof, bit should be set accordingly.
-The class also needs to append number of data bytes, n\_data\_bytes, to each data\_packet.
-On data\_packets coming from the CAN network the class needs to use the last two bits of the messagetype to decode which command is sent to the node.
+The protocol class receives \texttt{data\_packets} from the node class. 
+If it receives \texttt{data\_packets} where there are more than eight data bytes it needs to create additional \texttt{data\_packets} and distribute data to them. 
+The additional \texttt{data\_packets} must have the same node id and message types, but the start of frame, sof, bit should be set accordingly.
+The class also needs to append number of data bytes, \texttt{n\_data\_bytes}, to each \texttt{data\_packet}.
+On \texttt{data\_packets} coming from the CAN network the class needs to use the last two bits of the messagetype to decode which command is sent to the node.
 \martin{This may or may not be adressed to the node, so it should be handled in node.}
 
 ~\\ \par \textbf{CAN\_link class} ~ \\
