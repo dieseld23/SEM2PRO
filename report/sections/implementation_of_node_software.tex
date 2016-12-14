@@ -6,7 +6,7 @@ To realize this the node software should be designed to be modular.
 It should be easily identified what software and what interface a developer of a new node must adhere to.
 
 
-\subsection{Sensor Node}
+\subsection{Sensor Node}\label{sec:sensor_node}
 An example of a node can be seen in figure \ref{fig:gps_node}.
 
 \mikkel{Where to put this text?}
@@ -103,6 +103,7 @@ If it receives data\_packets where there are more than eight data bytes it needs
 The additional data\_packets must have the same node id and message types, but the start of frame, sof, bit should be set accordingly.
 The class also needs to append number of data bytes, n\_data\_bytes, to each data\_packet.
 On data\_packets coming from the CAN network the class needs to use the last two bits of the messagetype to decode which command is sent to the node.
+\martin{This may or may not be adressed to the node, so it should be handled in node.}
 
 ~\\ \par \textbf{CAN\_link class} ~ \\
 The CAN\_link class has the responsibility of transferring and receiving data to and from the CAN program.
