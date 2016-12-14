@@ -49,26 +49,29 @@ This does, however, mean that it can not be used as a real time network.
 Asynchronous operation is necessary as there is only one bus and it is possible that nodes will attempt to transmit messages simultaneously.
 
 \paragraph*{Protocol}~\\
-CAN defines a protocol that nodes on a CAN bus should adhere to.
-A detailed description
-
-\mikkel{We should tell why we need this kind of protocol.}
-\martin{I changed this so that it doesn't mention CANopen, but instead talks about interpreting the base CAN protocol}
-The protocol in this case is the high level protocol running on top of the CAN protocol.
-The design of this protocol will be described in more detail in section~\ref{sub:CAN_protocol}. 
-Each CAN message comes with some overhead, that among other things can say something about what data the message contains.
-This part of the software will interpret this overhead and determine how to handle the data.\\
-
-CANopen is a comprehensive protocol that is already available.
-It is a widely used protocol, that utilises the CAN protocol, described in section~\ref{sub:CanMessageFrame}.
-Because the SevCon gen4, the motor controller used on the go-kart, utilizes CANopen in its communication, it is a reasonable option to employ in this network.
-CANopen is, however, quite extensive and implements many features which are not needed in the monitoring system being developed.
-For this reason it has been decided to design a custom protocol, a decision which is outlined in greater detail on page~\pageref{sub:CANopen}
-\mikkel{pageref is ugly :(}
-\thomas{Are the requirements of the protocol actually outlined at this point?}
-\thomas{At this point it needs to be clear that we want some scalability in the system, enabling us to add up to n (yes n, not 16), nodes. We may need to move figure \ref{fig:analysisnodes} to some other place.}
-As is shown on figure \ref{fig:analysisnodes}, it should be possible to add up to $n$ nodes.
-This requirement should be considered in determining the design of the protocol.
+The CAN standard, apart from a variety of hardware requirements, also defines a protocol that nodes on a CAN bus should adhere to.
+Part of this protocol is a well defined message frame.
+A detailed description of this frame can be seen in section \ref{sub:CanMessageFrame}.\\
+It should be possible to toggle the data collection of individual nodes.
+This means that it is necessary to have a protocol that allows addressing each node on the bus individually.
+The message frame of the CAN protocol does include a messageid, however this id holds no information about the sender of the message.
+In CAN a table of all message id's and their meaning is used to decode messages.
+This table is called an object dictionary.
+Achieving the desired functionality will require an adaption of the protocol. 
+\\~\\
+One such adaption already exists in the form of CANopen.
+CANopen is a widely used standard that builds upon CAN.
+\cite{CANopen_introduction} shows that CAN accounts for the physical and data-link layers in the OSI model while CANopen accounts for the network to application layer.
+It is already used in the communication with the sevcon gen4 and as such, using this protocol would mean that the sevcon could be connected directly on the bus.
+CANopen is quite extensive, implementing many features that are not necessary in this application.
+The many features also adds to the complexity of learning how to use the system.
+It also adds a significant amount of overhead for each message, taking up bandwidth which could have otherwise been used for data. 
+\\~\\
+Another option is to create a custom protocol, using CAN as the physical and data-link layers.
+Designing a custom protocol means that the overhead can be reduced to the bare minimum.
+This would allow for a smaller, simpler protocol.
+As described in section \ref{sec:data_collection}, the protocol should support up to 16 nodes and allow for addition of new nodes.
+Since it is required to toggle the data production from a node, it should also be possible to address every node individually.
 
 \begin{figure}
 	\centering
