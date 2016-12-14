@@ -132,8 +132,12 @@ It is shown in figure \ref{fig:state_machine}.
 \caption{State machine.....}
 \label{fig:state_machine}
 \end{figure}
+When the variable \texttt{run} is equal to 1, the node should output sensor data.
+\texttt{run} is being updated by the thread that handles incoming commands.
+It will then go the clear state and clear all variables and wait for data. 
+When data is present it will move through the states create time packet, get data and send data. 
+If at any point \texttt{run} is set to 0 the state machine will go to the stop state.
 
-\mikkel{A little more text here when the figures are ready.}
 
 \subsubsection*{Implementing a new Sensor node}
 When developing a new node with another sensor the generic classes CAN\_link, Protocol and Node should be used. 
