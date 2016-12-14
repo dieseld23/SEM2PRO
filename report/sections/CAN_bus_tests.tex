@@ -1,6 +1,7 @@
 %!TEX root = ../main.tex
 
 \subsection{CAN Bus Tests}
+\label{sub:CAN_Bus_Tests}
 With the CAN controller available on the PS of the Zybo, the CAN bus will be tested to determine the transmission abilities of the network.
 The transceivers are able to work at up to 8 Mb/s, while the CAN controllers on the Zybo only guarantee functionality up to 1 Mb/s. 
 As the final implementation should be done in PL, there is nothing preventing the controller working at 8 Mb/s -- the FPGA can easily produce and interpret signals up to or beyond 8 Mb/s.\\

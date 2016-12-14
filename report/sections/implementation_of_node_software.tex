@@ -4,8 +4,8 @@ The designed network generally have two types of nodes, a generic sensor node an
 This section will seek to design and implement software that adheres to the requirements listed earlier.
 A node can be any kind of microcontroller, but this section will only address the case where a Zybo board is used. 
 
-
 \subsection{Sensor Node}
+\label{sec:sensor_node}
 The requirements state that it should be simple to add new sensor nodes to the system. 
 To realize this the node software should be designed to be modular.
 It should be easily identified what software and what interface a developer of a new sensor node must adhere to.
@@ -108,6 +108,7 @@ If it receives data\_packets where there are more than eight data bytes it needs
 The additional data\_packets must have the same node id and message types, but the start of frame, sof, bit should be set accordingly.
 The class also needs to append number of data bytes, n\_data\_bytes, to each data\_packet.
 On data\_packets coming from the CAN network the class needs to use the last two bits of the messagetype to decode which command is sent to the node.
+\martin{This may or may not be adressed to the node, so it should be handled in node.}
 
 ~\\ \par \textbf{CAN\_link class} ~ \\
 The CAN\_link class has the responsibility of transferring and receiving data to and from the CAN program.
@@ -141,52 +142,3 @@ The interface to the generic Node class is a call to its function \texttt{put\_d
 \subsection{Wifi Node}
 \mikkel{We should design something or at least make some block diagrams of what needs to happen with data here.}
 
-
-\catalin{Explain the code in more detail}
-\mikkel{This should not be here}
-\subsection{CAN Controller Software}
-\subsubsection{Implementation in code}~\\
-As mentioned in section \ref{sub:Basic_SourceCode}, the code was based on the xcanps polled example available by Xilinx documentation.
-The important functionalities that needed to be provided by the final software version included:
-
-\begin{itemize}
-\item receiving and sending of frames
-\item the creation of the message id
-\item the decoding of the message id parts, such as the node id, the message type etc. \catalin{what else?}
-\item handling button interrupts
-\item controlling the LEDs
-\item subscriptions lookup
-\end{itemize}
-\catalin{What other functionalities? And, 1st letters capitals or not?}
-The figure \ref{fig:SeqDiagram_SendFrame} shows the procedure of sending a frame to the CAN network containing data, which makes use of the protocol function createMsgID().
-After returning the message id, the id and the data are put into the TxFrame to be sent once the FIFO has space.
-The actual sending is done with a call to the XCanPs function XCanPs\_Send().
-\\
-Similarly, the procedure of receiving a frame is shown in the figure \ref{fig:SeqDiagram_RecvFrame}.
-The node once it calls the RecvFrame() function, it waits in a loop until it receives a frame. Then, it checks the subscriptions in order to forward the packet for further processing or to ignore it.
-
-
-This was achieved by implementing a set of functions and an array variable of subscriptions for each node.
-
-\begin{figure}[h!]
-	\centering
-	\includegraphics[width = 1.1\linewidth]{graphics/SeqDiagram_SendFrame.pdf}
-	\caption{The sequence diagram of the process of sending a frame.}
-	\label{fig:SeqDiagram_SendFrame}
-\end{figure}
-
-\begin{figure}[h!]
-	\centering
-	\includegraphics[width = 1.1\linewidth]{graphics/SeqDiagram_RecvFrame.pdf}
-	\caption{The sequence diagram of the process of receiving a frame.}
-	\label{fig:SeqDiagram_RecvFrame}
-\end{figure}
-
-
-
-\begin{figure}[h!]
-	\centering
-	\includegraphics[width = 1.1\linewidth]{graphics/StateDiagram_CanStackTestCode.pdf}
-	\caption{Behavioral diagram of the basic source code.}
-	\label{fig:CAN_Testing_StateDiagr_Code}
-\end{figure}
