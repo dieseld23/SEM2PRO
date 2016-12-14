@@ -43,7 +43,7 @@ For clarity, \texttt{sudo} is left out from all calls throughout this section.
 >>ip link set wlan0 up
 >>iw wlan0 ibss join go-kart 2412
 >>ip addr add wlan0 196.178.10.10
-\end{lstlisting}}
+\end{lstlisting}
 It is verified working using the ping command from both the Zybo board and to the PC and vice versa.
 
 Upon setting up the ad-hoc network, a socket connection is created between the Zybo board and the PC using socat
@@ -63,8 +63,8 @@ As the name implies, the latter is designed to be compatible with the PMOD inter
 It converts TCP/IP to SPI and vice versa.
 However, since the zybo boards are already running a linux distribution, it was decided to attempt connecting through the usb/wifi dongle.
 This decision marked the beginning of a long journey, the highlights of which are discussed below.
-\martin{Too colloquial? I mean, I like it, so it must be too colloquial.} 
 \\~\\
+\martin{Too colloquial? I mean, I like it, so it must be too colloquial.} 
 The first step was to ensure that the correct drivers are present on the system.
 The usb/wifi dongle is a TP-LINK TL-WN722N.
 This device uses the Atheros AR9271 chipset and is on the list of supported devices for the ath9k\_htc driver (available on xillinux) on wireless.wiki.kernel.org.
