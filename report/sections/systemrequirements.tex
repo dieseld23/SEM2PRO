@@ -2,41 +2,27 @@
 \section{System Requirements} % (fold)
 \label{sec:system_requirements}
 
-\martin{The big system picture should be on its own page}
+\martin{Make the first table part of the second table}
 
-\begin{figure}[!h]
-\centering
-\includegraphics[angle=90,width=\textwidth]{graphics/analysis_complex.eps}
-\caption{The big system........}
-\label{fig:complete_system}
-\end{figure}
-
-
-
-
-
-
-
-
-
-\begin{tabular}{ |p{3cm}| }
-\hline
-\multicolumn{1}{|c|}{\textbf{Interfaces}}\\
-\hline
-USB \\
-5V 3A PSU \\
-Wifi \\
-CAN \\
-CANOpen \\
-SD-card \\
-\hline
-\end{tabular}
-
-
-\begin{table}[]
+\begin{table}[h]
 \centering
 \caption{System requirements}
 \label{tab:requirements}
+
+\begin{tabular}{ |p{3cm}| }
+	\hline
+	\multicolumn{1}{|c|}{\textbf{Interfaces}}\\
+	\hline
+	\centering
+	USB \\
+	5V 3A PSU \\
+	Wifi \\
+	CAN \\
+	CANOpen \\
+	SD-card \\
+\end{tabular}
+
+
 \begin{tabular}{ |p{0.3cm}|p{8.5cm}|p{1cm}| }
 \hline
 \multicolumn{3}{|c|}{\textbf{Functional}}\\
@@ -78,8 +64,15 @@ SD-card \\
 
 \hline
 \end{tabular}
-
 \end{table}
+
+\newpage
+\begin{figure}[!h]
+	\centering
+	\includegraphics[angle=90,width=\textwidth]{graphics/analysis_complex.eps}
+	\caption{The big system........}
+	\label{fig:complete_system}
+\end{figure}
 
 % \subsection{Actors}
 % The only actor on the system is an engineer.

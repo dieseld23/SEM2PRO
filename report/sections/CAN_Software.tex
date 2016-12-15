@@ -27,11 +27,13 @@ Using this method, the communication among the various nodes could be easily con
 The use of this architecture was incorporated in the protocol functionality, along with a set of functions in the source code and an array variable of subscriptions for each node.
 
 \subsubsection{Main Loop}
-Since the whole system that was intended to be designed for this project could not be put together, an approach to simulate the network in various ways was needed.
-Specifically, sending messages arbitrary was achieved by implementing button interrupts and the case where multiple nodes would send messages simultaneously by GPIO port interrupts.
-For details on how the different tests were done the reader may refer to section \ref{sub:CAN_Bus_Tests}.
-Due to conflicts between the interrupt controllers and handlers, only one of the two simulation cases could be active during runtime.
-Depending on the value of a macro definition in the source code the desired devices (buttons or GPIO) would be initialized.
+Since the whole system, that was intended to be designed for this project, could not be put together, an approach to simulate the network in various ways was needed.
+Specifically, sending arbitrary messages was achieved by implementing button interrupts
+%\martin{I removed some text, that doesn't fit with the validation part}
+%and the case where multiple nodes would send messages simultaneously by GPIO port interrupts.
+%For details on how the different tests were done the reader may refer to section \ref{sub:CAN_Bus_Tests}.
+%Due to conflicts between the interrupt controllers and handlers, only one of the two simulation cases could be active during runtime.
+%Depending on the value of a macro definition in the source code the desired devices (buttons or GPIO) would be initialized.
 
 \paragraph{Button Interrupts Runtime}~\\
 As seen in behavioral diagram in figure \ref{fig:StateDiagram_CANSoft_BtnsIntr}, the program waits for button pushes or for receiving data in the FIFO in the main loop.
@@ -44,6 +46,7 @@ In the former case, a message is sent to the network containing the value of the
 \end{figure}
 
 \paragraph{GPIO Interrupts Runtime}~\\
+\martin{Do we use this? I didn't use interrupts for my code}
 The software's behavior is similar in this case, as well as it can be seen in figure \ref{fig:StateDiagram_CANSoft_GPIOIntr}.
 The difference is that instead of button values, dummy data may be inserted into the TxFrame according to the simulation needs and the receiving data is only presented in the SDK terminal.
 \begin{figure}[h!]
@@ -54,6 +57,8 @@ The difference is that instead of button values, dummy data may be inserted into
 \end{figure}
 
 \subsubsection{Sending and Receiving Frames}
+\martin{We probably should document something about the xcanps examples used in the verification}
+\martin{Describe createMsgID()?}
 The figure \ref{fig:SeqDiagram_SendFrame} shows the procedure of sending a frame to the CAN network containing data, which makes use of the protocol function createMsgID().
 After returning the message id, the id and the data are put into the TxFrame to be sent once the FIFO has space.
 The actual sending is done with a call to the XCanPs function XCanPs\_Send().
