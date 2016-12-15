@@ -1,9 +1,23 @@
 %!TEX root = ../main.tex
 
 \section{Local Storage}
-Somewhere this should be answered!
+In addition to transmitting data to a stationary computer, the raw data should be stored on the go kart.
+This data should then be possible to download through wifi upon request.
+This will ensure, that no data is lost if the go kart gets out of range of the WiFi.
+Because of this, it makes most sense to use the WiFi node for storing the log files.\\
 
-How should local data storage be realised?
+Each Zybo has an SD card, which has Linux on it, and 3,7 GB of un-partitioned space. 
+Linux does come with an easy way to handle files, which would ease the task of logging data at fixed intervals, or to read the log back as fast as possible.
+At this point, it is not clear how much data will be on the bus, which means that it is not clear whether this is enough.
+However, as there is no need to store data on the kart for more than one drive session, it is possible to calculate the maximum writing speed in order to not run out of space.\\
+
+Assuming that the Go Kart has battery for at most half an hour, the data rate can be calculated as follows:
+
+\begin{equation}
+	\frac{3.7\mathrm{GB}}{30\si{\minute}} = \frac{1.77 \cdot 10^{7}}{1800 \si{\second}} \approx 16.8 \mathrm{Mb/s}
+\end{equation}
+
+With a ceiling of data rate this high, it's highly unlikely that the go kart runs out of space before it runs out of battery.
 
 \section{Software on Stationary Computer}
 The stationary computer needs to receive data through wifi and decode the received messages using the protocol that is to be developed.
