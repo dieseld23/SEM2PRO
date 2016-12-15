@@ -28,7 +28,7 @@
 
 /*****************************    Defines    *******************************/
 #define DECIMALS 				10000000
-#define LAT_LONG_MESSAGE_TYPE 	0
+#define LAT_LONG_MESSAGE_TYPE 	9
 
 
 /*****************************   Variables   *******************************/
