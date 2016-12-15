@@ -1,6 +1,6 @@
 %!TEX root = ../main.tex
 
-\section{Embedded Platform}
+\section{Embedded Platform}\label{sec:EP}
 As described in section \ref{sec:data_collection}, a CAN network will be created to support the nodes on the go-kart.
 Each node is some type of embedded platform (EP), possibly connected to a sensor or other data producing unit.
 From the perspective of the network the only requirement for the EP is that it has a CAN controller.
@@ -8,25 +8,28 @@ In principle the network could consist of 16 different EP's.
 \subsection{Nodes}
 In section \ref{sec:hardware_for_par}, it was chosen to use an IMU and a GPS, both using a USB interface.
 Additionally, one node has to transfer data wirelessly from the go-kart to a stationary monitoring system.
-It was chosen to use wifi as the wireless protocol.
-Both USB and wifi are implemented in most linux operating systems.
-Thus choosing an EP supporting such an operating system will greatly simplify the code that needs to be written for those sensor nodes.
-The authors attend a course on software development in linux, as such, this is a natural choice.
+It was chosen to use wifi as the wireless protocol, and this will be handled on a separate node.
+As the wifi node provides the link to the laptop, it is natural to make this the master node.
+\martin{I declared the wifi node as the master. Is this premature? Or too late?}
+Both USB and wifi are implemented in most Linux operating systems.
+Thus choosing an EP supporting such an operating system will greatly simplify the code that needs to be written for all nodes.
+The authors attend a course on software development in Linux, as such, this is a natural choice.
 \\
 As a part of the aforementioned course, the authors have access to the Zybo.
 This platform fits the requirements set for a node and being accessible, this is the EP chosen for the project.
 
 \subsection{Zynq Board (Zybo)}
 The Zybo has a Xilinx Zynq Z-7010 chip, which has a processing system (PS) part and a programmable logic (PL) part.
-The PS consists of a dual-core ARM Cortex-A9 processor and I/O peripherals, including CAN and USB.
+The PS consists of a dual-core ARM Cortex-A9 processor and I/O peripherals, including two CAN controllers and USB.
 The PL consists of a Xilinx 7-series Field programmable gate array. 
+\martin{Maybe just call it FPGA since there are so many other abbriviations?}
 The PL and PS are connected through a bus called AXI.
 The Zybo itself is made as a development platform with several buttons, switches, LEDs, connections for USB, Ethernet, HDMI and several PMOD connectors.
 \thomas{Look for zybo board, replace with zybo}
 \subsubsection{Linux on the Zybo}
 Several Linux distribution are configured to run on the Zybo. 
 The authors have experience with the Xillinux \footnote{http://xillybus.com/xillinux} distribution, therefore this will be used.
-Xillinux is based upon the digilent linux distribution which is built on the Xilinx distribution which is based upon Ubuntu 12.04.
+Xillinux is based upon the digilent Linux distribution which is built on the Xilinx distribution which is based upon Ubuntu 12.04.
 In the Xillinux architecture there is a DMA-based bus between the PL and PS called Xillybus.
 Xillybus is implemented as an IP core in PL and a corresponding Xillybus driver in the Xillinux kernel.
 In PL the IP core is interfaced through standard FIFO buffers.
@@ -39,7 +42,7 @@ The Sevcon has a 5V output capable of supplying up to $\si{100 \milli \ampere}$,
 It is therefore necessary to use a DC-DC converter to supply the nodes.
 Some tests along with datasheet lookups are used to determine the power requirements for the system.\\
 
-By measurement, it was found that one Zybo draws a maximum of $\si{475 \milli \ampere}$ while running linux.
+By measurement, it was found that one Zybo draws a maximum of $\si{475 \milli \ampere}$ while running Linux.
 The CAN transceivers consume up to 40 mA\cite{3.3V_CAN}. 
 The GPS module consumes up to 40 mA, the IMU consumes up to 56 mA. 
 Generally it is assumed that the sensors do not consume more than 75 mA per node, which brings the total current consumption up to 600 mA.
@@ -47,26 +50,23 @@ For 16 nodes, this brings the total current up to 9.6 A.\\
 
 The source for this DC-DC converter will be the batteries on the go-kart. 
 These vary depending on charge from 57.6 down to 40 V, so the DC-DC converter would need to be operable in this entire range.
-One example could be Mean Well SD-50C-5, which lives up to these requirements.
+
 
 \begin{table}[H]
 	\centering
-	\begin{tabular}{r|l|l}
-		Parameter & Requirement & SD-50C-5 \\
+	\begin{tabular}{r|l}
+		Parameter & Requirement  \\
 		\hline
-		Input voltage & 40-57.6 & 36-72 \\
-		Output voltage & 5 & 5 \\
-		Output Current & 9.6 & 10
+		Input voltage & 40-57.6\\
+		Output voltage & 5 \\
+		Output Current & 9.6
 	\end{tabular}
 \end{table}
 
-\thomas{Martin: change psu requirement to something slightly safer!}
 
 \subsection{Conclusion}
 A node is not hardware specific. 
 It can be run on any type of embedded platform, so long as it is cabable of communication over CAN.
 Throughout this project the nodes will be run on the Zybo platform.
-This will ease the development as linux includes support for both USB and wifi.
-It was found that a fully populated system will draw at least 10\si{\ampere} and an example power supply was suggested.
-
-\thomas{Actually, this is the analysis. There shouldn't be a suggestion of a psu, rather the requirements should be found so that we can investigate which psu to use in the implementation.} 
+This will ease the development as Linux includes support for both USB and wifi.
+It was found that a fully populated system will draw at upwards of 10\si{\ampere}.
