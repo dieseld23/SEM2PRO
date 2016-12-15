@@ -11,3 +11,4 @@ Todo's for the greater proofing weekend
 Agree on how we mention the Zybo - is it Zybo or Zybo board?
 Agree on how we write WiFi
 Agree on what the generic node is called. Is it just a sensor node, or is it also an actuator or other? Is it a slave or a bitch?
+Agree on how to spell go kart.
