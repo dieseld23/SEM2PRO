@@ -1,10 +1,14 @@
 %!TEX root = ../main.tex
 \mikkel{An introductiontion needs to be here!}
 The on-vehicle network generally have two types of nodes, a generic sensor node and the wifi node.
-\martin{Maybe omit the sensor part, and just call it a generic node, as it can be an actuator. The two types of nodes are the wifi (master) and all other (slaves)}
 This section will seek to design and implement software that adheres to the requirements listed earlier.
-A node can be any kind of microcontroller, but this section will only address the case where a Zybo board is used. 
-\martin{At this point we have long ago defined that it's Zybo, so that is really the case everywhere.}
+A
+All nodes in the system needs to:
+\begin{itemize}
+\item Get data from CAN network.
+\item Send data using a CAN controller.
+\end{itemize}
+As described earlier these responsibilities are implemented in the bare-metal CAN program described in section \ref{sec:methods_to_implement_can} therefore these responsibilities will be omitted from the coming sections .
 
 \subsection{Sensor Node}
 \label{sec:sensor_node}
@@ -14,8 +18,6 @@ It should be easily identified what software and what interface a developer of a
 
 An example of a node can be seen in figure \ref{fig:gps_node}.
 
-\mikkel{Where to put this text?}
-
 %The coming sections will explain the design of the node software that will provide the mentioned functionality using the design requirement.
 
 \begin{figure}[!h]
@@ -24,43 +26,38 @@ An example of a node can be seen in figure \ref{fig:gps_node}.
 \caption{GPS node implemented on Zybo board.}
 \label{fig:gps_node}
 \end{figure}
-\mikkel{Maybe change this figure to reflect the real system???}
 
 This specific node has a GPS attached to it connected through a USB interface, but in general it could be any kind of data producing unit connected through any kind of interface.
-\mikkel{How do we do this referencing nicely?}
-From the requirements, table \ref{tab:requirements}, it is found that the sensor node software needs to fulfill requirements 1,2,6,10,11,12,20 and 21.
 From the analysis section is it clear that a sensor node has the following responsibilities:
 
 \begin{itemize}
 \item Get data from associated sensor.
 \item Pack data according to the specified protocol.
 \item Construct CAN package
-\item Send data using a CAN controller.
-\item Get data from CAN network.
 \item React to commands sent to it.
 \end{itemize}
-
-As described earlier the responsibility of sending and receiving data using a CAN controller is done in the earlier described bare-metal code.
-This section will focus on the designing and implementing code that provide the rest of the listed functionalities.
 
 Analyzing on the procedure when data goes from a sensor to the CAN program resulted in the block diagram of figure \ref{fig:filter_1}.
 
 \begin{figure}[!h]
     \centering
-    \begin{subfigure}[b]{0.33\textwidth}
-        \includegraphics[width=\textwidth]{graphics/FlowChart_Node_Packing}
-        \caption{Ingoing data....}
+    \begin{subfigure}{0.45\textwidth}
+    \centering
+        \includegraphics[width=0.60\textwidth]{graphics/FlowChart_Node_Packing}
+        \caption{Outgoing data. Data going from a sensor and to the CAN program.}
         \label{fig:filter_1}
     \end{subfigure}
     ~
-    \begin{subfigure}[b]{0.33\textwidth}
-        \includegraphics[width=\textwidth]{graphics/FlowChart_Node_Unpacking}
-        \caption{Two minu.}
+    \begin{subfigure}{0.45\textwidth}
+    \centering
+        \includegraphics[width=0.60\textwidth]{graphics/FlowChart_Node_Unpacking}
+        \caption{Ingoing data. Data going from the CAN program to the node.}
         \label{fig:filter_2}
     \end{subfigure}
-        \caption{Outgoing data.}
+        \caption{Block diagram showing handling of outgoing and ingoing data. The boxes are colored according to which class implements the functionality. Yellow is the GPS class, orange is the Packer\_GPS class, blues is the node class, green is the protocol class and blue is the CAN\_link class.}
            \label{fig:filter_fulll}
 \end{figure}
+
 To design modular software it needs to be analyzed which blocks are the same for all nodes and which are sensor specific.
 The sensor specific tasks are found to be extracting data from sensor and to pack data according to the protocol.
 The remaining tasks are the same for all sensor nodes in the system. 
@@ -70,12 +67,16 @@ All tasks are found to be generic for all sensor nodes.
 \subsubsection*{Class diagram}
 Based on the previous analysis a class diagram was developed and can be seen in figure \ref{fig:node_class_diagram}.
 Classes to the right of the dashed vertical is sensor specific and should be developed for each specific sensor.
+Shown is the classes for a GPS sensor node. 
+\mikkel{Fix this so that it matches the figure}
+In a generic sensor node the GPS class would be a sensor class and the Packer\_GPS class would be a Packer\_Sensor.
+For the rest of this section the example with a GPS sensor node will be used.
 Classes to the left are agnostic to all data they receive going from the sensor and to the CAN network.
 They are generic classes and should be reused when developing new nodes.
 
 \begin{figure}[!h]
 \centering
-\missingfigure[figwidth=1\textwidth]{Class diagram}
+\includegraphics[width=1\textwidth]{graphics/ClassDiagram_NodeSimple}
 \caption{Class diagram showing node software.}
 \label{fig:node_class_diagram}
 \end{figure}
@@ -84,19 +85,17 @@ A struct containing all fields of a data packet in boolean data types is defined
 
 \begin{lstlisting}[caption=Struct for data packet.,label=code:data_packet]
 struct data_packet {
-  std::bitset<1> sof;
+  std::bitset<1> nw_msg;
   std::bitset<4> node_id;
-  std::bitset<4> n_data_bytes;
+  std::bitset<4> dlc;
   std::bitset<6> messagetype;
-  std::vector<bool> data;
+  std::vector<bool> data; 
 (*@\makebox[\linewidth][c]{$\smash{\vdots}$}@*)
 };
 \end{lstlisting}
 It will be passed between the classes and they will each add their own information. 
 
 The classes and their tasks from Code~\ref{code:data_packet} will be explained here.
-
-\mikkel{Put color explanation here?}
 
 ~\\ \par \textbf{GPS class} ~ \\
 The GPS class needs to extract data from a connected GPS unit and update its own variables with that data.
@@ -122,8 +121,6 @@ The additional \texttt{data\_packets} must have the same node id and message typ
 The class also needs to append number of data bytes, \texttt{n\_data\_bytes}, to each \texttt{data\_packet}.
 On \texttt{data\_packets} coming from the CAN network the class needs to use the last two bits of the messagetype to decode which command is sent to the node.
 \martin{This is provided, that the CAN controller software filters the messages appropriately.}
-\martin{SOF is always 0, in multi frame it needs to set the first bit of the message ID to zero. I'm not gonna change it right now, because it seems to be a consistent mistake.}
-\martin{n\_data\_bytes is generally called the DLC field in the CAN frame. Maybe we should keep this naming?}
 
 ~\\ \par \textbf{CAN\_link class} ~ \\
 The CAN\_link class has the responsibility of transferring and receiving data to and from the CAN program.
@@ -150,7 +147,7 @@ When the variable \texttt{run} is equal to 1, the node should output sensor data
 It will then go the clear state and clear all variables and wait for data. 
 When data is present it will move through the states create time packet, get data and send data. 
 If at any point \texttt{run} is set to 0 the state machine will go to the stop state.
-\martin{Would we run the risk of filling the buffer if the node is paused for a while? When transmission is then resumed, will it start by the oldest values in the queue?}
+In the stop state the input queue of \texttt{data\_packet} will be cleared.
 
 \subsubsection*{Implementing a new Sensor node}
 When developing a new node with another sensor the generic classes CAN\_link, Protocol and Node should be used. 

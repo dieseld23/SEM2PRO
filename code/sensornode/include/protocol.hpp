@@ -34,8 +34,8 @@
 
 /*****************************    Defines    *******************************/
 #define EIGHT_BYTES		64
-#define SOF_TRUE		1
-#define SOF_FALSE		0
+#define NW_MSG_TRUE		1
+#define NW_MSG_FALSE	0
 #define SYNC_COMMAND	0
 #define START_COMMAND	1
 #define STOP_COMMAND	2
