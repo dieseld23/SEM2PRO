@@ -1,37 +1,72 @@
 %!TEX root = ../main.tex
 
 \section{Embedded Platform}
-As described in section \ref{sec:data_collection} there should be a CAN network of nodes on the go-kart.
-Each node is a sensor or other data producing unit along with a micro-controller.
-From the perspective of the network the only requirement for the micro-controller is that it has a CAN controller.
-In principle the network could consist of 16 different micro-controllers.
-\thomas{Explain different versions of CAN setup}
-\subsection{Sensor Nodes}
-As described in section \ref{sec:hardware_for_par}, it was chosen to use an IMU and a GPS with a USB interface. 
-As specified in the use cases one of the nodes needs to transfer data wirelessly from the go-kart to the stationary computer. 
-Both USB interface and wireless data transfer drivers are implemented in operating systems like Linux, Mac OS X and Windows.
-Thus choosing a micro-controller supporting such an operating system will greatly simply the code that needs to be written for those sensor nodes.
-Developing software for Linux is a part of a course that the group is attending therefore Linux will be used as the operating system.
+As described in section \ref{sec:data_collection}, a CAN network will be created to support the nodes on the go-kart.
+Each node is some type of embedded platform (EP), possibly connected to a sensor or other data producing unit.
+From the perspective of the network the only requirement for the EP is that it has a CAN controller.
+In principle the network could consist of 16 different EP's.
+\subsection{Nodes}
+In section \ref{sec:hardware_for_par}, it was chosen to use an IMU and a GPS, both using a USB interface.
+Additionally, one node has to transfer data wirelessly from the go-kart to a stationary monitoring system.
+It was chosen to use wifi as the wireless protocol.
+Both USB and wifi are implemented in most linux operating systems.
+Thus choosing an EP supporting such an operating system will greatly simplify the code that needs to be written for those sensor nodes.
+The authors attend a course on software development in linux, as such, this is a natural choice.
 \\
-The \ac{zybo} will be used for the sensor nodes as it has a built-in CAN controller, it has the ability to run Linux and the group has access to it.
+As a part of the aforementioned course, the authors have access to the Zybo.
+This platform fits the requirements set for a node and being accessible, this is the EP chosen for the project.
 
-\subsection{Zybo Board}
-The Zybo board has a Xilinx Zynq Z-7010 chip, which has a processing system (PS) part and a programmable logic (PL) part.
-The PS consists among other of a dual-core ARM Cortex-A9 processor and I/O peripherals including CAN and USB.
+\subsection{Zynq Board (Zybo)}
+The Zybo has a Xilinx Zynq Z-7010 chip, which has a processing system (PS) part and a programmable logic (PL) part.
+The PS consists of a dual-core ARM Cortex-A9 processor and I/O peripherals, including CAN and USB.
 The PL consists of a Xilinx 7-series Field programmable gate array. 
 The PL and PS are connected through a bus called AXI.
-The Zybo board itself is a developing platform consisting, among other, of several buttons, switches, LEDs and connections for USB, Ethernet, HDMI and several PMOD connectors.
-
-
+The Zybo itself is made as a development platform with several buttons, switches, LEDs, connections for USB, Ethernet, HDMI and several PMOD connectors.
+\thomas{Look for zybo board, replace with zybo}
 \subsubsection{Linux on the Zybo}
 Several Linux distribution are configured to run on the Zybo. 
-The group has experience with a the Xillinux \footnote{http://xillybus.com/xillinux} distribution, therefore this will be used.
-Xillinux is based upon the Xilinx distribution which is based upon Ubuntu 12.04.
-In the Xillinux architecture there is a bus between the PL and PS named Xillybus.
+The authors have experience with the Xillinux \footnote{http://xillybus.com/xillinux} distribution, therefore this will be used.
+Xillinux is based upon the digilent linux distribution which is built on the Xilinx distribution which is based upon Ubuntu 12.04.
+In the Xillinux architecture there is a DMA-based bus between the PL and PS called Xillybus.
 Xillybus is implemented as an IP core in PL and a corresponding Xillybus driver in the Xillinux kernel.
-In PL the IP core is interfaced through standard FIFO buffers and the Xillybus is reached in userspace through \textit{"/dev/xillybus\_"}.
+In PL the IP core is interfaced through standard FIFO buffers.
+In PS the Xillybus is reached in userspace through \textit{"/dev/xillybus\_<bus-name>"}.
 \mikkel{Should there be a figure showing PS and PL on the ZYBO?}
 
+\subsection{Power Requirements}\label{sec:power_requirements}
+The Zybos need to be supplied with 5 V, which subsequently powers the sensors, the CAN busses and any other peripherals present on the go-kart.
+The Sevcon has a 5V output capable of supplying up to $\si{100 \milli \ampere}$, which is insufficient.
+It is therefore necessary to use a DC-DC converter to supply the nodes.
+Some tests along with datasheet lookups are used to determine the power requirements for the system.\\
+
+By measurement, it was found that one Zybo draws a maximum of $\si{475 \milli \ampere}$ while running linux.
+The CAN transceivers consume up to 40 mA\cite{3.3V_CAN}. 
+The GPS module consumes up to 40 mA, the IMU consumes up to 56 mA. 
+Generally it is assumed that the sensors do not consume more than 75 mA per node, which brings the total current consumption up to 600 mA.
+For 16 nodes, this brings the total current up to 9.6 A.\\
+
+The source for this DC-DC converter will be the batteries on the go-kart. 
+These vary depending on charge from 57.6 down to 40 V, so the DC-DC converter would need to be operable in this entire range.
+One example could be Mean Well SD-50C-5, which lives up to these requirements.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{r|l|l}
+		Parameter & Requirement & SD-50C-5 \\
+		\hline
+		Input voltage & 40-57.6 & 36-72 \\
+		Output voltage & 5 & 5 \\
+		Output Current & 9.6 & 10
+	\end{tabular}
+\end{table}
+
+\thomas{Martin: change psu requirement to something slightly safer!}
+
 \subsection{Conclusion}
-Nodes on the network need not to be a specific micro-controller, they just need to able to use CAN.
-The Zybo board running Xillinux will be used for IMU, GPS and wireless network node to ease development as Linux includes both USB and network drivers. 
+A node is not hardware specific. 
+It can be run on any type of embedded platform, so long as it is cabable of communication over CAN.
+Throughout this project the nodes will be run on the Zybo platform.
+This will ease the development as linux includes support for both USB and wifi.
+It was found that a fully populated system will draw at least 10\si{\ampere} and an example power supply was suggested.
+
+\thomas{Actually, this is the analysis. There shouldn't be a suggestion of a psu, rather the requirements should be found so that we can investigate which psu to use in the implementation.} 
