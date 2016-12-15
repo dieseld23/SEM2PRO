@@ -44,39 +44,39 @@ Protocol::Protocol(void){
 void Protocol::loop_out(void){
 	data_packet data_packet_inst, temp_packet;
 	std::vector<data_packet> data_to_send;
-	int sof = SOF_TRUE;
+	int nw_msg = NW_MSG_TRUE;
 	while(1){
-		if(data_in_buffer_out_test()){											// If there is data in buffer
+		if(data_in_buffer_out_test()){												// If there is data in buffer
 			data_packet_inst = get_data_from_buffer_out();							// Fetch data
 			if(data_packet_inst.data.size() > EIGHT_BYTES){							// If data is more than 8 bytes
-				sof = SOF_TRUE;
+				nw_msg = NW_MSG_TRUE;
 				while(!data_packet_inst.data.empty()){								// while not empty
-					temp_packet.data.clear();									// Clear temp_packet data
+					temp_packet.data.clear();										// Clear temp_packet data
 					for(int i = 0; i<64; i++){
 						if(data_packet_inst.data.empty()){
 							break;
 						}
 						temp_packet.data.push_back(data_packet_inst.data.front());	// Copy first item of data_packet to temp_packet
-						data_packet_inst.data.erase(data_packet_inst.data.begin());		// Erase first item of data_packet
+						data_packet_inst.data.erase(data_packet_inst.data.begin());	// Erase first item of data_packet
 					}
-					temp_packet.sof = sof;										// Copy sof
+					temp_packet.nw_msg = nw_msg;									// Copy sof
 					temp_packet.node_id = data_packet_inst.node_id;					// Copy node id
-					std::bitset<4> n_data_bytes_t ( temp_packet.data.size()/8 );// Calculate size
-					temp_packet.n_data_bytes = n_data_bytes_t;					// Insert size
+					std::bitset<4> n_data_bytes_t ( temp_packet.data.size()/8 );	// Calculate size
+					temp_packet.dlc = n_data_bytes_t;								// Insert size
 					temp_packet.messagetype = data_packet_inst.messagetype;			// Copy messagetype
-					sof = SOF_FALSE;											// set sof to FALSE
-  					data_to_send.insert(data_to_send.begin(),temp_packet);		// Put packet in data_to_send
+					nw_msg = NW_MSG_FALSE;											// set sof to FALSE
+  					data_to_send.insert(data_to_send.begin(),temp_packet);			// Put packet in data_to_send
   				}
   			}else{
   				append_n_of_data_bytes(&data_packet_inst);
-  				data_packet_inst.sof = SOF_TRUE;
+  				data_packet_inst.nw_msg = NW_MSG_TRUE;
   				data_to_send.insert(data_to_send.begin(),data_packet_inst);
   			}
 
-																				// All data to send is in data_to_send
-			temp_packet = data_to_send.back();									// Get item
-			data_to_send.pop_back();											// Delete item
-			can_link->send_to_can(temp_packet);									// Send to CAN
+																					// All data to send is in data_to_send
+			temp_packet = data_to_send.back();										// Get item
+			data_to_send.pop_back();												// Delete item
+			can_link->send_to_can(temp_packet);										// Send to CAN
 		}
 	}
 }
@@ -133,7 +133,7 @@ int Protocol::data_in_buffer_out_test(void){
 void Protocol::append_n_of_data_bytes(data_packet* packed_data_in){
 	int n_bytes = packed_data_in->data.size()/8;
 	std::bitset<4> bitset(n_bytes);
-	packed_data_in->n_data_bytes = bitset;
+	packed_data_in->dlc = bitset;
 }
 
 /*****************************************************************************

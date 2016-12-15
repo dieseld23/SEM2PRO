@@ -58,8 +58,8 @@ void CAN_link::loop_out(void){
 	while(1){
 		if(data_in_buffer_test()){
 			data_packet = get_data_from_buffer();
-			data_packet.print();
-			//data_packet.print_bool_packet();
+			//data_packet.print();
+			data_packet.print_bool_packet();
 			std::cout << std::endl;
 		}
 	}
