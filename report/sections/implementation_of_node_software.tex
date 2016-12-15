@@ -1,8 +1,10 @@
 %!TEX root = ../main.tex
 \mikkel{An introductiontion needs to be here!}
-The designed network generally have two types of nodes, a generic sensor node and the wifi node.
+The on-vehicle network generally have two types of nodes, a generic sensor node and the wifi node.
+\martin{Maybe omit the sensor part, and just call it a generic node, as it can be an actuator. The two types of nodes are the wifi (master) and all other (slaves)}
 This section will seek to design and implement software that adheres to the requirements listed earlier.
 A node can be any kind of microcontroller, but this section will only address the case where a Zybo board is used. 
+\martin{At this point we have long ago defined that it's Zybo, so that is really the case everywhere.}
 
 \subsection{Sensor Node}
 \label{sec:sensor_node}
@@ -38,17 +40,17 @@ From the analysis section is it clear that a sensor node has the following respo
 \item React to commands sent to it.
 \end{itemize}
 
-As described earlier the responsibility of sending data using a CAN controller and receiving data from the CAN network is done in the earlier described bare-metal code.
+As described earlier the responsibility of sending and receiving data using a CAN controller is done in the earlier described bare-metal code.
 This section will focus on the designing and implementing code that provide the rest of the listed functionalities.
 
-Analyzing on the procedure when data goes from a sensor to the CAN program resulted in the block diagram of figure \ref{fig:block_gps}.
+Analyzing on the procedure when data goes from a sensor to the CAN program resulted in the block diagram of figure \ref{fig:filter_1}.
 
 \begin{figure}[!h]
     \centering
     \begin{subfigure}[b]{0.33\textwidth}
         \includegraphics[width=\textwidth]{graphics/FlowChart_Node_Packing}
         \caption{Ingoing data....}
-        \label{fig:filter_full}
+        \label{fig:filter_1}
     \end{subfigure}
     ~
     \begin{subfigure}[b]{0.33\textwidth}
@@ -62,12 +64,12 @@ Analyzing on the procedure when data goes from a sensor to the CAN program resul
 To design modular software it needs to be analyzed which blocks are the same for all nodes and which are sensor specific.
 The sensor specific tasks are found to be extracting data from sensor and to pack data according to the protocol.
 The remaining tasks are the same for all sensor nodes in the system. 
-The procedure when data is going from the CAN program to the node is shown in figure \ref{fig:block_gps}.
+The procedure when data is going from the CAN program to the node is shown in figure \ref{fig:filter_2}.
 All tasks are found to be generic for all sensor nodes.
 
 \subsubsection*{Class diagram}
 Based on the previous analysis a class diagram was developed and can be seen in figure \ref{fig:node_class_diagram}.
-Classes to the right of the dashed horizontal is sensor specific and should be developed for each specific sensor.
+Classes to the right of the dashed vertical is sensor specific and should be developed for each specific sensor.
 Classes to the left are agnostic to all data they receive going from the sensor and to the CAN network.
 They are generic classes and should be reused when developing new nodes.
 
@@ -92,7 +94,7 @@ struct data_packet {
 \end{lstlisting}
 It will be passed between the classes and they will each add their own information. 
 
-The classes and their tasks from figure \ref{code:data_packet} will be explained here.
+The classes and their tasks from Code~\ref{code:data_packet} will be explained here.
 
 \mikkel{Put color explanation here?}
 
@@ -108,9 +110,9 @@ Data in the form of a vector of booleans are then put into the \texttt{data\_pac
 The reason for making a separate class for the packer and not putting the functionality into the GPS class is that if the specification of the protocol or message types change, only this class needs to be modified.
 
 ~\\ \par \textbf{Node class} ~ \\
-The Node class gets \texttt{data\_packets} from the Packer class it then needs to append its node id to it.
+The Node class gets \texttt{data\_packets} from the Packer class and will then prepend its node ID to it.
 It needs to create a timestamp \texttt{data\_packet} each time data is to be sent.
-In order to create the time message the class needs to keep track of milliseconds since last received synchronize message.
+In order to create the time message the class needs to keep track of milliseconds since receiving the synchronize message.
 The class receives start, stop or synchronize events from the protocol class and reacts to those accordingly.
 
 ~\\ \par \textbf{Protocol class} ~ \\
@@ -119,7 +121,9 @@ If it receives \texttt{data\_packets} where there are more than eight data bytes
 The additional \texttt{data\_packets} must have the same node id and message types, but the start of frame, sof, bit should be set accordingly.
 The class also needs to append number of data bytes, \texttt{n\_data\_bytes}, to each \texttt{data\_packet}.
 On \texttt{data\_packets} coming from the CAN network the class needs to use the last two bits of the messagetype to decode which command is sent to the node.
-\martin{This may or may not be adressed to the node, so it should be handled in node.}
+\martin{This is provided, that the CAN controller software filters the messages appropriately.}
+\martin{SOF is always 0, in multi frame it needs to set the first bit of the message ID to zero. I'm not gonna change it right now, because it seems to be a consistent mistake.}
+\martin{n\_data\_bytes is generally called the DLC field in the CAN frame. Maybe we should keep this naming?}
 
 ~\\ \par \textbf{CAN\_link class} ~ \\
 The CAN\_link class has the responsibility of transferring and receiving data to and from the CAN program.
@@ -146,7 +150,7 @@ When the variable \texttt{run} is equal to 1, the node should output sensor data
 It will then go the clear state and clear all variables and wait for data. 
 When data is present it will move through the states create time packet, get data and send data. 
 If at any point \texttt{run} is set to 0 the state machine will go to the stop state.
-
+\martin{Would we run the risk of filling the buffer if the node is paused for a while? When transmission is then resumed, will it start by the oldest values in the queue?}
 
 \subsubsection*{Implementing a new Sensor node}
 When developing a new node with another sensor the generic classes CAN\_link, Protocol and Node should be used. 

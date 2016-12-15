@@ -1,12 +1,13 @@
 %!TEX root = ../main.tex
-The system deviced throughout this report seeks to ease the task of collecting data from the go-kart.
+\martin{Given this introductory wording of this section, maybe it goes before the on-vehicle network?}
+The system designed throughout this report seeks to ease the task of collecting data from the go-kart.
 This is done by creating a network on the go-kart which allows the user to more easily add additional sensors.
 In addition to providing a flexible platform for adding sensors, it will collect the data produced by the sensors on the network.
 A goal with the project is to be able to monitor relevant data live through some interface.
 To properly monitor data collected during driving it is necessary to maintain a live feed from the go-kart to the observer.
 \\~\\
 As mentioned above, there are two major functions to the system; recording of data and monitoring of data.
-The recording is done on the go-kart using embedded hardware, specifically the Zybo platform is used to interface to the sensors.
+The recording is done on the go-kart using embedded hardware; specifically, the Zybo platform is used to interface to the sensors.
 The monitoring is done using a PC.
 Monitoring is less time critical than the recording as it is simply meant for human readability.
 For this reason, and to ease the workload, it has been decided to use a wifi connection between the go-kart and the PC.
@@ -61,8 +62,9 @@ Two methods were immediately available for use: A usb wifi dongle and a PMOD wif
 As the name implies, the latter is designed to be compatible with the PMOD interfaces on the zybo board (and a range of similar boards offered by Digilent Inc.).
 It converts TCP/IP to SPI and vice versa.
 However, since the zybo boards are already running a linux distribution, it was decided to attempt connecting through the usb/wifi dongle.
-This decision marked the beginning of a long journey, the highlights of which are discussed below. 
+This decision marked the beginning of a long journey, the highlights of which are discussed below.
 \\~\\
+\martin{Too colloquial? I mean, I like it, so it must be too colloquial.} 
 The first step was to ensure that the correct drivers are present on the system.
 The usb/wifi dongle is a TP-LINK TL-WN722N.
 This device uses the Atheros AR9271 chipset and is on the list of supported devices for the ath9k\_htc driver (available on xillinux) on wireless.wiki.kernel.org.
@@ -146,7 +148,7 @@ In order to create an ad-hoc network it is necessary to change the mode of the i
 >>iw wlp2s0b1 set type ibss
 \end{lstlisting}
 Notice that the interface naming on this system is following the new "predictable network interface names"-scheme.
-This scheme names the interfaces based on various factors such as MAC-address of the hardware, for more details see \cite{interfacenaming}.
+This scheme names the interfaces based on various factors such as MAC-address of the hardware; for more details see \cite{interfacenaming}.
 The interface needs an address assigned to it in order to communicate on the network.
 \begin{lstlisting}[language=bash]
 >>ip addr add 192.168.10.9 dev wlp2s0b1
@@ -212,8 +214,8 @@ Although \cite{beej} was used as a reference in setting up the connection, it pr
 
 \paragraph*{Boost}is a widely used C++ library.
 As the authors had prior knowledge with this library it became the next choice.
-asio is part of Boost and contains all of the tools necessary to set up a TCP/IP connection.
-Boost provides a multitude of different examples and tutorials on how to use asio, specifically the chat server from \cite{boostchat} was modified and formed the basis for the program used in setting up the connection\footnote{The code can be found on the associated github repository at \path{/code/socket/} along with instructions on compiling.}.
+ASIO is part of Boost and contains all of the tools necessary to set up a TCP/IP connection.
+Boost provides a multitude of different examples and tutorials on how to use ASIO, specifically the chat server from \cite{boostchat} was modified and formed the basis for the program used in setting up the connection\footnote{The code can be found on the associated github repository at \path{/code/socket/} along with instructions on compiling.}.
 \thomas{Put server/client code on github:/code/socket/}
 This approach was not without problems, however.
 As mentioned previously, Xillinux is based on an older version of ubuntu, as such, the version of cmake and Boost available on the platform is insufficient.
@@ -247,7 +249,7 @@ Connecting to port 2048 on localhost can be done from terminal two:
 
 The message written in terminal one will appear in terminal two and vice versa.
 Using this functionality, the wifi node can be connected to a PC using pipes.
-Piping is commonly used on linux systems to connect the io of programs.
+Piping is commonly used on Linux systems to connect the io of programs.
 The linux philosophy is that one program should do one thing and do it well.
 If more functionality is needed, multiple single-purpose programs are interconnected using pipes.
 
@@ -256,7 +258,7 @@ If more functionality is needed, multiple single-purpose programs are interconne
 Throughout this section a connection was made between a PC and the ZB.
 It was chosen to use a usb/wifi-dongle to carry the signal on the ZB.
 The TP-LINK TL-WN722N, a general consumer dongle, was chosen for two reasons: The chipset of the dongle is supported by the available drivers and it is capable of creating ad-hoc networks.
-Using the \texttt{iproute2} package an ad-hoc network was set up from the the ZB and connected to from a PC.
+Using the \texttt{iproute2} package, an ad-hoc network was set up from the the ZB and connected to from a PC.
 A small script was created to automatically set up the ad-hoc network upon booting the system.
 Three different approaches were attempted in actually creating a connection across the wifi network, C, Boost and finally socat.
 Clearly, analysis should have been done before deciding on a method prior to starting the implementation of the socket connection.

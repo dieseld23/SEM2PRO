@@ -36,13 +36,19 @@ Specifically, sending arbitrary messages was achieved by implementing button int
 %Depending on the value of a macro definition in the source code the desired devices (buttons or GPIO) would be initialized.
 
 \paragraph{Button Interrupts Runtime}~\\
-As seen in behavioral diagram in figure \ref{fig:StateDiagram_CANSoft_BtnsIntr}, the program waits for button pushes or for receiving data in the FIFO in the main loop.
+As seen in behavioral diagram in figure \ref{fig:FlowChart_CANSoft_BtnsIntr}, the program waits for button pushes or for receiving data in the FIFO in the main loop.
 In the former case, a message is sent to the network containing the value of the pushed buttons, while in the latter case, the data is decoded and the appropriate value is written to the LEDs as output.
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width = 1\linewidth]{graphics/StateDiagram_CANSoft_BtnsIntr.pdf}
+	\includegraphics[width = 1\linewidth]{graphics/FlowChart_CANSoft_BtnsIntr.pdf}
 	\caption{Behavioral diagram with button interrupts.}
-	\label{fig:StateDiagram_CANSoft_BtnsIntr}
+	\label{fig:FlowChart_CANSoft_BtnsIntr}
+\end{figure}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width = 1\linewidth]{graphics/FlowChart_CANSoft_RecvData.pdf}
+	\caption{Behavioral diagram with button interrupts.}
+	\label{fig:FlowChart_CANSoft_RecvData}
 \end{figure}
 
 \paragraph{GPIO Interrupts Runtime}~\\
@@ -51,9 +57,9 @@ The software's behavior is similar in this case, as well as it can be seen in fi
 The difference is that instead of button values, dummy data may be inserted into the TxFrame according to the simulation needs and the receiving data is only presented in the SDK terminal.
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width = 0.85\linewidth]{graphics/StateDiagram_CANSoft_GPIOIntr.pdf}
+	\includegraphics[width = 1\linewidth]{graphics/FlowChart_CANSoft_GPIOIntr.pdf}
 	\caption{Behavioral diagram with GPIO interrupts.}
-	\label{fig:StateDiagram_CANSoft_GPIOIntr}
+	\label{fig:FlowChart_CANSoft_GPIOIntr}
 \end{figure}
 
 \subsubsection{Sending and Receiving Frames}
