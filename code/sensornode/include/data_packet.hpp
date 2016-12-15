@@ -24,9 +24,9 @@
 #include <bitset>   
 
 struct data_packet {
-  std::bitset<1> sof;
+  std::bitset<1> nw_msg;
   std::bitset<4> node_id;
-  std::bitset<4> n_data_bytes;
+  std::bitset<4> dlc;               //Number of data bytes
   std::bitset<6> messagetype;
   std::vector<bool> data;
 
@@ -38,9 +38,9 @@ struct data_packet {
 *   Function : Prints the packet in bools
 ******************************************************************************/
 void print_bool_packet(void){
-  std::cout << sof;
+  std::cout << nw_msg;
   std::cout <<node_id;
-  std::cout<<n_data_bytes;
+  std::cout<<dlc;
   std::cout<<messagetype;
   print_vector_bool(this->data);
 }
@@ -59,11 +59,11 @@ void print_vector_bool(std::vector<bool> vector){
 /*****************************************************************************
 *   Input    : 
 *   Output   : 
-*   Function : prints sof
+*   Function : new message
 ******************************************************************************/
 void print_sof(void){
   std::cout<< "Start of frame: ";
-  std::cout << sof << '\n';
+  std::cout << nw_msg << '\n';
 }
 
 
@@ -86,7 +86,7 @@ void print_node_id(void){
 ******************************************************************************/
 void print_n_data_bytes(void){
   std::cout<< "Number of data bytes: ";
-  std::cout<<n_data_bytes << '\n';
+  std::cout<<dlc << '\n';
 }
 
 
