@@ -47,20 +47,23 @@ Analyzing on the procedure when data goes from a sensor to the CAN program resul
 
 \begin{figure}[!h]
     \centering
-    \begin{subfigure}[b]{0.29\textwidth}
-        \includegraphics[width=\textwidth]{graphics/FlowChart_Node_Packing}
-        \caption{Ingoing data....}
+    \begin{subfigure}{0.45\textwidth}
+    \centering
+        \includegraphics[width=0.60\textwidth]{graphics/FlowChart_Node_Packing}
+        \caption{Outgoing data. Data going from a sensor and to the CAN program.}
         \label{fig:filter_1}
     \end{subfigure}
     ~
-    \begin{subfigure}[b]{0.30\textwidth}
-        \includegraphics[width=\textwidth]{graphics/FlowChart_Node_Unpacking}
-        \caption{Two minu.}
+    \begin{subfigure}{0.45\textwidth}
+    \centering
+        \includegraphics[width=0.60\textwidth]{graphics/FlowChart_Node_Unpacking}
+        \caption{Ingoing data. Data going from the CAN program to the node.}
         \label{fig:filter_2}
     \end{subfigure}
-        \caption{Outgoing data.}
+        \caption{Block diagram showing handling of outgoing and ingoing data.}
            \label{fig:filter_fulll}
 \end{figure}
+
 To design modular software it needs to be analyzed which blocks are the same for all nodes and which are sensor specific.
 The sensor specific tasks are found to be extracting data from sensor and to pack data according to the protocol.
 The remaining tasks are the same for all sensor nodes in the system. 
