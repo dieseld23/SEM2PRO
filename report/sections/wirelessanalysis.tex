@@ -1,49 +1,64 @@
 %!TEX root = ../main.tex
 
 \section{Wireless transmission}
-The wireless transmission between the go-kart computer and the stationary computer could be a number of different technologies.
-This section seeks to find an appropriate one.
+Communication between the go-kart and the monitoring station is required to happen wirelessly.
+This section aims to determine what requirements exist for the wireless connection. 
+Upon determining the requirements, a suitable technology will be found.
 
 \subsection{Range}
 The range of the transmission is determined by the length of the test track. 
-Normally the SDU kart is tested on parking lots with a maximum lenght of 50m and width of 20m.
-There are almost no obstacles for the transmission on such a parking lot. 
+Normally the SDU kart is tested on one of the parking lots at SDU.
+This "track" is 50\si{\metre} long and 20\si{\metre} wide.
+There are no appreciable obstacles for the transmission on the parking lot. 
 This test track sets a minimum requirement that the wireless setup should be able to transmit data at 55m with no obstacles.
 \\
-At some point it would be interesting to test the go-kart on a real go-kart track. 
-The nearest go-kart track is \textit{Odense gokart Hal}, which is also thought to be an average indoor go-kart track.
+Actual go-kart tracks are usually larger than the parking lot in question though. 
+The nearest go-kart track is \textit{Odense gokart Hal}, which is also thought to be an average size indoor go-kart track.
 The track is about 70m long and 40m in width with no obstacles other than the barriers. 
-If the wireless transmitter and receiver are placed above the barriers then the barriers will not be an obstruction on the transmission. 
-This track sets a minimum requirement of 80m transmission. 
+If the wireless transmitter and receiver are placed above the barriers then the barriers will not be an obstruction to the transmission. 
+This track sets a minimum requirement of at least 80m transmission.
 
-\subsection{Speed}
-The CANbus has a bandwidth of up to 1Mbit/s meaning that the wireless needs to be as fast or faster.
+\subsection{Bandwidth}
+The CANbus has a bandwidth of up to 1Mbit/s.
+The wireless technology therefore has to at least match this figure reliably.
 %Data is only used for human inspection and therefore a sample frequency of 100Hz would be sufficient.
 %This gives a minimum requirement for the speed of the transmission to be ZZ Mbit/s. 
 
 \subsection{Compatibility}
-It should be possibly to change the stationary computer and therefore the chosen wireless transmission technology should be compatible with standard computers running linux.
-The chosen hardware should be compatible with standard linux computers and the Zybo board. 
-Both have USB ports and Ethernet ports as a standard, therefore the chosen hardware should one of those.
+It should be possibly to change the monitoring station, therefore the chosen wireless transmission technology should be compatible with a standard linux computers.
+The technology should be compatible with both standard linux computers and the zybo board.
+Both have USB ports and Ethernet ports as standard, therefore the chosen hardware should have one of those.
 
 \subsection{Technologies}
-Bluetooth is a technology that is compatible with standard computers running linux. 
+Bluetooth fits the compatibility requirements. 
 Bluetooth 5.0 has a maximum speed of 50Mbit/s, which is sufficient.
-The range of typical class 2 Bluetooth device is 10m \footnote{https://en.wikipedia.org/wiki/Bluetooth}.
+The range of typical class 2 Bluetooth device is, however, only 10m \footnote{https://en.wikipedia.org/wiki/Bluetooth}.
 This range is definitely not enough for this application.
 \\
-\\  
 WiFi is also compatible with standard computers running linux and typical WiFi units has speeds that is a lot higher than the required. 
 WiFi can be operating in the 2.4GHz band and in the 5GHz band. 
 2.4GHz units has the highest range. 
 The 802.11n protocol generally has the best range compared to the other 802.11 protocols \footnote{https://en.wikipedia.org/wiki/IEEE\_802.11\#802.11n}.
-\\
-A local network between computers without connection to existing networks such as the internet is referred to as an ad-hoc network. 
-It is a required that the found hardware is capable of doing an ad-hoc network.
+Depending on the antenna, wifi has sufficient range and bandwidth.
+\thomas{decide on wifi, Wifi, WiFi. Uniformity is life!}
+\thomas{Make proper cite and to the table, not the uninteresting paragraph on 802.1n}
+As the connection should be able to function in areas which do not necessarily provide internet access, it is required that the hardware chosen should support the creation of an ad-hoc network.\\~\\
+The authors have access to two different types of hardware which fits these requirements:
+\begin{itemize}
+	\item \textbf{PMOD WiFi:} Digilent Inc. has a wifi module designed specifically for use with the PMOD interface on the Zybo.
+	Communication with this module is done in the PL of the Zynq chip, using the SPI protocol.
+	According to the marketing material \cite{pmodwifi}, it can support 1-2 Mbit/s at 400m, which is more than sufficient for this system.
+	\item \textbf{USB WiFi-Dongle:} The TP-LINK TL-WN722N is a WiFi dongle with a USB interface. One requirement states that any hardware should be compatible with linux.
+	The TL-WN722N uses the Atheros AR9271 chipset, which is on the list of supported devices for the ath9k\_htc driver \cite{ath9k}.
+	It adheres to the 802.11n protocol and is also capable of supporting an ad-hoc network.
 
+\end{itemize}
+Of these two options, the latter is chosen.
+Since the nodes are already running linux, doing the VHDL implementation necessary to support the PMOD module, adds unnecessary complexity to the system.
+While the Xillybus does simplify this issue greatly, having the wifi on linux natively means that all programming can be done in C/C++.
+This will most likely decrease development time.
 \subsection{Conclusion} 
-
-\begin{table}[]
+\begin{table}[H]
 \centering
 \caption{Minimum requirements for wireless transmission.}
 \label{tab:req_wifi}
@@ -56,4 +71,7 @@ USB or Ethernet              \\ \hline
 ad-hoc network compatability \\ \hline
 \end{tabular}
 \end{table}
-Based on the requirements in table \ref{tab:req_wifi} it was chosen to us the TP-LINK TL-WN722N, as it uses the 2.4GHz band, the 802.11n protocol, is compatible with linux, has an external antenna and uses USB. 
+This section produced the requirements shown in \ref{tab:req_wifi}.
+It was chosen to use the TP-LINK TL-WN722N.
+This is a WiFi dongle which uses a USB interface and can support ad-hoc networks.
+As it adheres to the 802.11n protocol, it will have sufficient bandwidth.
