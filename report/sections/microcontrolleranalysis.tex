@@ -1,14 +1,14 @@
 %!TEX root = ../main.tex
 
 \section{Embedded Platform}
-As described in section \ref{sec:data_collection} there should be a CAN network of nodes on the go-kart.
-Each node is a sensor or other data producing unit along with a micro-controller.
-From the perspective of the network the only requirement for the micro-controller is that it has a CAN controller.
-In principle the network could consist of 16 different micro-controllers.
-\thomas{Explain different versions of CAN setup}
-\subsection{Sensor Nodes}
-As described in section \ref{sec:hardware_for_par}, it was chosen to use an IMU and a GPS with a USB interface. 
-As specified in the use cases one of the nodes needs to transfer data wirelessly from the go-kart to the stationary computer. 
+As described in section \ref{sec:data_collection}, a CAN network will be created to support the nodes on the go-kart.
+Each node is some type of embedded platform (EP), possibly connected to a sensor or other data producing unit.
+From the perspective of the network the only requirement for the EP is that it has a CAN controller.
+In principle the network could consist of 16 different EP's.
+\subsection{Nodes}
+In section \ref{sec:hardware_for_par}, it was chosen to use an IMU and a GPS, both using a USB interface.
+Additionally, one node has to transfer data wirelessly from the go-kart to a stationary monitoring system.
+It was chosen to use wifi as the wireless protocol 
 Both USB interface and wireless data transfer drivers are implemented in operating systems like Linux, Mac OS X and Windows.
 Thus choosing a micro-controller supporting such an operating system will greatly simply the code that needs to be written for those sensor nodes.
 Developing software for Linux is a part of a course that the group is attending therefore Linux will be used as the operating system.
