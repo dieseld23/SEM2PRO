@@ -40,8 +40,8 @@ struct data_packet {
 void print_bool_packet(void){
   std::cout << nw_msg;
   std::cout <<node_id;
-  std::cout<<dlc;
   std::cout<<messagetype;
+  std::cout<<dlc;
   print_vector_bool(this->data);
 }
 

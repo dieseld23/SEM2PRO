@@ -68,6 +68,7 @@ All tasks are found to be generic for all sensor nodes.
 Based on the previous analysis a class diagram was developed and can be seen in figure \ref{fig:node_class_diagram}.
 Classes to the right of the dashed vertical is sensor specific and should be developed for each specific sensor.
 Shown is the classes for a GPS sensor node. 
+\mikkel{Fix this so that it matches the figure}
 In a generic sensor node the GPS class would be a sensor class and the Packer\_GPS class would be a Packer\_Sensor.
 For the rest of this section the example with a GPS sensor node will be used.
 Classes to the left are agnostic to all data they receive going from the sensor and to the CAN network.
@@ -75,7 +76,7 @@ They are generic classes and should be reused when developing new nodes.
 
 \begin{figure}[!h]
 \centering
-\missingfigure[figwidth=1\textwidth]{Class diagram}
+\includegraphics[width=1\textwidth]{graphics/ClassDiagram_NodeSimple}
 \caption{Class diagram showing node software.}
 \label{fig:node_class_diagram}
 \end{figure}
@@ -88,7 +89,7 @@ struct data_packet {
   std::bitset<4> node_id;
   std::bitset<4> dlc;
   std::bitset<6> messagetype;
-  std::vector<bool> data;
+  std::vector<bool> data; 
 (*@\makebox[\linewidth][c]{$\smash{\vdots}$}@*)
 };
 \end{lstlisting}
