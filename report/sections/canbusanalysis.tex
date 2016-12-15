@@ -26,8 +26,8 @@ It is a differential voltage bus.
 This means that the value on the bus is determined by the voltage difference between the two wires, rather than the absolute voltage of either wire.
 The bus has to be made with twisted pair wires with a characteristic impedance of $\si{120 \ohm}$ and terminated at each end with $\si{120 \ohm}$ resistors.
 This increases the EMC of the bus, as inductive noise present on one wire is likely also present on the other, and the noise will then cancel itself out.
-\mikkel{Twisting the wires means that it is not allowed to break the wire? :)}
-That means, that if the bus is broken at any point, no communication will be received, even if the receiving node still has a galvanic connection to the transmitting node.
+
+Because it's a differential bus, if the bus is broken at any point, no communication will be received, even if the receiving node still has a galvanic connection to the transmitting node.
 Alternatively, it is possible to terminate each node, but this greatly reduces transmission speed.\\
 
 \paragraph*{The CAN Transceiver (XCVR)}~\\
