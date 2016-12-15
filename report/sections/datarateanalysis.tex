@@ -1,7 +1,7 @@
 %!TEX root = ../main.tex
 
-\section{Data Rate}
-Which architecture is most suitable for the system is largely dependent on the amount of data that it has to support.
+\section{Data Rate}\label{sec:data_rate}
+Determining which architecture is most suitable for the system depends heavily on the amount of data that it has to support.
 This section will explore the amount of data that can be expected from a data producer connected to the system.
 \\~\\
 Many of these parameters pose different requirements in terms of the desired sample rate as well as the size of each sample.
@@ -11,10 +11,10 @@ In order to provide a safe estimate, the expected data rate is calculated using 
 That is, the type of sensor which set the highest requirements in terms of sampling frequency as well as data size.
 Again, it is not possible to foresee every application that may be developed in the future.
 Despite of this the IMU chosen for this project, see section~\ref{sec:imu}, is considered as the worst-case.
-It is is a 10-axis sensor that provides data at a rate up to 300\si{\hertz} at 32 bit floating point precision.
+It is is a 9-axis sensor that provides data at a rate up to 400 Hz at 32 bit floating point precision.
 This would result in a data rate of:
 
-$$300\cdot32\cdot10=96\,\text{Kb/s}$$
+$$400\cdot32\cdot9=115.2\,\text{Kb/s}$$
 
 As previously mentioned, this is the assumed worst case for the system.
 As such there may be only a few data producers providing data at this rate.
@@ -22,7 +22,7 @@ Most other producers will provide only limited data in relation to the IMU, eith
 A GPS generally provides an update only at a few \si{\hertz}. 
 An encoder, while it may have a reasonably high sampling rate, it is most likely not close to 32 bit resolution.
 \\~\\
-Assuming five sensors running at the assumed worst-case rate and ten running at half that rate, the resulting data rate will be 960 Kb/s or approximately 1 Mb/s.
+Assuming five sensors running at the assumed worst-case rate and ten running at half that rate, the resulting data rate will be 1.15 Mb/s.
 
 % \subsection{Data Logging}
 % \todo[inline]{Mikkel: Should maybe change name?}

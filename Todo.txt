@@ -1,0 +1,13 @@
+Document the desicions taken in designing the hl protocol
+
+Get an estimate on how much bandwidth of the bus is in use.
+Explicitly write that one node has to continue with the same message ID
+guide to implement new nodes
+
+
+
+
+Todo's for the greater proofing weekend
+Agree on how we mention the Zybo - is it Zybo or Zybo board?
+Agree on how we write WiFi
+Agree on what the generic node is called. Is it just a sensor node, or is it also an actuator or other? Is it a slave or a bitch?
