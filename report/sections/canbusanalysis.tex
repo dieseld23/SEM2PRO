@@ -1,6 +1,6 @@
 %!TEX root = ../main.tex
 
-\subsection{Controller Area Network (CAN)}\label{sec:CAN-bus}
+\subsection{Controller Area Network (CAN)}\label{sec:canbusanalysis}
 The CAN protocol was originally developed in the 1980's by Bosch.
 It is a multi-master network, where each node connects to a common bus.
 All nodes are able to broadcast data to all other nodes.
@@ -72,6 +72,8 @@ Designing a custom protocol means that the overhead can be reduced to the bare m
 This would allow for a smaller, simpler protocol.
 As described in section \ref{sec:data_collection}, the protocol should support up to 16 nodes and allow for addition of new nodes.
 Since it is required to toggle the data production from a node, it should also be possible to address every node individually.
+
+\thomas{figure \ref{fig:analysisnodes} is now an orphan :'( It may not be necessary anywhere.}
 
 \begin{figure}
 	\centering

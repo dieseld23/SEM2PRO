@@ -6,12 +6,13 @@ Somewhere this should be answered!
 How should local data storage be realised?
 
 \section{Software on Stationary Computer}
-The stationary computer needs to receive data through wifi and decode the received messages using protocol that are to be developed. 
-It also has the responsibility of processing data and presenting it to the user in a UI.
-The software also needs to have the ability to let the user start and stop specific sensor nodes and send this command to the on-vehicle network. 
-The software should run on a Linux OS as an OS eases the task of configuring a wifi network and linux is open-source and is generally used by engineering students.
+The stationary computer needs to receive data through wifi and decode the received messages using the protocol that is to be developed.
+A user should be able to access the data through an API.
+This API should act as the front-end of the underlying network.
+As a proof of concept, a simple UI should be implemented to show how data can be presented to the user.
+The software also needs the ability to let the user send a command to the on-vehicle network to start and stop specific nodes.
+As with the previous parts of the system, this program should be compatible with linux.
 The described software is outlined in figure \ref{fig:setup_ui}.
-
 
 \begin{figure}[h]
 	\centering
@@ -20,20 +21,15 @@ The described software is outlined in figure \ref{fig:setup_ui}.
 	\label{fig:setup_ui}
 \end{figure}
 
-\subsection{Session}
-The software needs to set up a session between the stationary computer and the on-vehicle computer.
-\mikkel{Maybe you could add a bit Thomas?}
-
 \subsection{Protocol}
-When data is received it needs to be decoded using the developed protocol to recognized what sensor data have been transmitted.
-
+As described in section \ref{sec:canbusanalysis}, a custom protocol will be developed to complement CAN.
+Any data received through the WiFi will be encoded using this protocol.
+It is the responibility of this software to decode the software in order to present it to the user in a readable format.
+In order to maintain the modularity of the system, the decoding should be done in such a way that future developers can easily add new nodes, and with them, new decoding for data types.
 
 \subsection{Application}
-The application could be used to process data in various ways, but it is not the focus of this project.
-The application needs to make data available for the UI.
-The interface between the application and the UI should be a generic API to ease the development of different UIs. 
-
-\subsection{UI}
-As previously stated there needs to be a UI on the stationary computer to let the user monitor the go-kart parameters and start/stop sensors. 
-This UI needs to present data in a graphical interface to let the user easily understand the data. 
-To develop a sophisticated graphical user interface is not the focus of this project and will therefore be omitted, but a simple UI should be implemented to give the system the desired functionality shown in the use cases.
+The system is intended to function as a monitoring system of go-kart data.
+Presentation of the data is not the focus of the project and as such only a rudimentary UI is developed to show the functionality.
+The software should however be designed in such a way that a developer can easily create a custom (G)UI for the system, which fits the needs of that particular project.
+In order to create the most seamless interface for this functionality the software should implement an API which acts as a front-end for the underlying network.
+The API-approach has the added benefit of allowing the user to use the incoming data in any way that may suit their project.
