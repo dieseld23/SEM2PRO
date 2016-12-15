@@ -30,7 +30,7 @@
 *   Function : Constructs the Packer_GPS with predefined messagetype
 ******************************************************************************/
 Packer_GPS::Packer_GPS(void){
-	std::bitset<6> messagetype_1(1);		//LAT & LONG messagetype - "000001"
+	std::bitset<6> messagetype_1(9);		//LAT & LONG messagetype - "001001"
 	messagetypes.push_back(messagetype_1);
 }
 
@@ -94,7 +94,7 @@ void Packer_GPS::send_data_to_node(void){
 
 	for(int i = 0; i<messagetypes.size(); i++){
 		packed_data_inst.messagetype = messagetypes[i];
-		if(i==LAT_LONG_MESSAGE_TYPE){										// We know to pack LAT & LONG
+		if(packed_data_inst.messagetype.to_ulong() == LAT_LONG_MESSAGE_TYPE){										// We know to pack LAT & LONG
 			packed_data_inst.data = get_lat_long_message();
 		}
 		node->put_data_packet(packed_data_inst);	

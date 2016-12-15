@@ -223,7 +223,7 @@ int Node::data_in_buffer_test(void){
 ******************************************************************************/
 data_packet Node::construct_time_packet(long int ms){
 
-	std::bitset<6> messagetype(0);								// messagetype 000000
+	std::bitset<6> messagetype(1);								// messagetype 000001
 	std::bitset<32> time_data_bitset(ms);
 	std::vector<bool> time_data = bitset32_to_vector(time_data_bitset);
 
