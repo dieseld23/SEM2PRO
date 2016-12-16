@@ -1,5 +1,4 @@
 %!TEX root = ../main.tex
-\mikkel{An introductiontion needs to be here!}
 The on-vehicle network generally has two types of nodes, a generic sensor node and the wifi node.
 This section will seek to design and implement software that adheres to the requirements listed in the table of requirements.
 In general all nodes in the system needs to:
@@ -12,7 +11,6 @@ As described earlier these responsibilities are implemented in the bare-metal CA
 \subsection{Sensor Node}
 \label{sec:sensor_node}
 The requirements state that it should be simple to add new sensor nodes to the system. 
-\mikkel{Implementation in code... Time constraints... GPS only...}
 To realize this the node software should be designed to be modular.
 It should be easily identified what software and what interface a developer of a new sensor node must adhere to.
 
@@ -81,7 +79,7 @@ They are generic classes and should be reused when developing new nodes.
 \end{figure}
 
 \martin{How does GPS\_Packer read latitude and longitude if they are private within the GPS namespace?}
-
+\mikkel{@Martin, because GPS has public get function that is now shown in class diagram.}
 A struct containing all fields of a data packet in boolean data types is defined in listing \ref{code:data_packet}.  
 
 \begin{lstlisting}[caption=Struct for data packet.,label=code:data_packet]
@@ -151,20 +149,6 @@ It will then go the clear state and clear all variables and wait for data.
 When data is present it will move through the states create time packet, get data and send data. 
 If at any point \texttt{run} is set to 0 the state machine will go to the stop state.
 In the stop state the input queue of \texttt{data\_packet} will be cleared.
-
-\subsubsection*{Implementing a new Sensor node}
-When developing a new node with another sensor the generic classes CAN\_link, Protocol and Node should be used. 
-New classes should be developed to extract data from sensor, pack data according to protocol and put the data in a data\_packet.
-It is advantageous to implement this functionality into Packer\_Sensor and Sensor classes to keep a similar software design through the nodes.
-The interface to the generic Node class is a call to its function \texttt{put\_data\_packet(data\_packet)}.
-\martin{Maybe this needs to be moved to section~\ref{sec:node_implementation_guide}.}
-\mikkel{I think it should stay :)}
-
-
-
-
-
-
 
 
 

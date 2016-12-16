@@ -3,12 +3,19 @@
 \label{app:addnode}
 In adding a new node to the system there are two steps that need to done:
 \begin{itemize}
-	\item Prepare the node software.
+	\item Prepare the sensor node software.
 	\item Add appropriate functions to the API.
 \end{itemize}
+\mikkel{Update OD also?}
 This appendix will explain those steps to enable a user to add their custom nodes to the network.
-\subsection{Preparing node software}\label{sec:node_implementation_guide}
-\thomas{Here goes you, Mikkel!}
+
+\subsection{Preparing sensor node software}\label{sec:node_implementation_guide}
+The general node software is described in section \ref{sec:sensor_node} and the class diagram in figure \ref{fig:node_class_diagram}.
+When developing a new node with another sensor the generic classes CAN\_link, Protocol and Node should be used. 
+New classes should be developed to extract data from sensor, pack data according to protocol and put the data in a data\_packet.
+It is advantageous to implement this functionality into a Packer\_Sensor and a Sensor class to keep a similar software design through the nodes.
+The interface to the generic Node class is a call to its function \texttt{put\_data\_packet(data\_packet)}.
+\mikkel{Enough here?}
 
 \subsection{Creating the API}
 The front end is comprised of a list of functions which enable the user to access the data collected on the network.
