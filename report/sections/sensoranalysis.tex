@@ -152,6 +152,8 @@ The accelerometer: 16 bits,  $\pm 16 \si{\meter \per \second \squared}$
 \end{table}
 
 In addition to the IMU sensors, the VN-100 also records air pressure, which is of no concern to us.
+\mikkel{If it is of no concern then it should not be in the report? :)}
+\mikkel{Add something about the built-in Kalmann filter?}
 Apart from the raw data listed above, the VN-100 can calculate other parameters, such as quaternions, yaw, pitch, roll, absolute heading and altitude.
 I can also make the accelerometer data zero base, meaning when the go kart is standing still, 0g will be printed from the IMU, rather than the 1g caused by the gravitational pull of earth. \\
 

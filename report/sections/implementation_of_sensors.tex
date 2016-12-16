@@ -5,14 +5,22 @@ This section will describe the implementation of the sensors selected during the
 \martin{We need to write something about implementation of the other sensors. We also need to use the same order throughout the report}
 
 \subsection{Interfacing with the IMU}\label{sec:interface_IMU}
+The used IMU is a VectorNav vn-100 IMU.
+The physical interface to the IMU is a usb cable and when connected to Linux it shows up in \texttt{/dev/}.
+VectorNav provides an extensive C an C++ library for both Windows and Linux use \cite{vectornav}. 
 
 
+\begin{lstlisting}[caption=IMU CODE......,label=code:rmc]
+errorCode = vn100_getYawPitchRoll(&vn100, &ypr);
+printf("%+#7.2f %+#7.2f %+#7.2f\n", ypr.yaw, ypr.pitch, ypr.roll);
+\end{lstlisting}
+\mikkel{Does it make any sense to include some example code from the internet?!}
+\mikkel{More text here? We are not using the IMU for anything.}
 
 \subsection{Interfacing with the GPS}\label{sec:interface_GPS}
 \mikkel{Is it enough about this?}
 The used GPS is a u-blox NEO-6P GPS module.
-The physical interface to the GPS is a usb cable and when connected to Linux it shows up in \texttt{/dev/}.
-The output adheres to the NMEA standard and is made of 8 different NMEA sentences.
+The physical interface to the GPS is a usb cable and the output adheres to the NMEA standard and is made of 8 different NMEA sentences.
 The RMC sentence contains all essential information, that being position, velocity and time.
 Therefore the implemented GPS class, that has the responsibility of interfacing the GPS, only needs to decode RMC sentences.
 An example of a RMC sentence is shown in code snippet \ref{code:rmc}.
