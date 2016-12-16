@@ -136,11 +136,11 @@ Any number of functions can be added to this class depending on the needs of the
 The general structure of a function can be seen in code \ref{code:frontendfunction}.
 
 \begin{lstlisting}[caption=Function template for accesing data in fifo,label=code:frontendfunction]
-coordinate_t frontend::get_<PARAM>()
+<PARAMETER_TYPE> frontend::get_<PARAMETER>()
 {
 	std::vector<data_t> v;
 
-	while(!fifo_o->get(<MESSAGEID>, v));
+	while(!fifo_o->get(<MESSAGE_ID>, v));
 
 	if (!v.empty())
 	{
@@ -150,6 +150,6 @@ coordinate_t frontend::get_<PARAM>()
 		/*Decipher d*/
 	}
 
-	return <PARAM>;
+	return <PARAMETER_TYPE>;
 }
 \end{lstlisting}
