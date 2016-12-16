@@ -8,9 +8,9 @@ fi
 
 #choose the wifi device
 
-systemctl stop connman.service
-ip link set wlp2s0b1 down
-iw wlp2s0b1 set type ibss
-ip addr add 196.178.10.9/24 dev wlp2s0b1
-ip link set wlp2s0b1 up
-iw wlp2s0b1 ibss join go-kart 2412
+systemctl stop networkmanager.service
+ip link set wlp3s0 down
+iw wlp3s0 set type ibss
+ip addr add 196.178.10.9/24 dev wlp3s0
+ip link set wlp3s0 up
+iw wlp3s0 ibss join go-kart 2412

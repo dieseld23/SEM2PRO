@@ -13,7 +13,7 @@ void ui::running()
 	{
 		coordinate_t c = backend_o->get_coordinate();
 		//clr_scrn();
-		std::cout << std::setprecision(7) << c.lat_polarity << " " << c.latitude << " " << c.long_polarity << " " << c.longitude << std::endl;
+		std::cout << std::setprecision(9) << c.lat_polarity << " " << c.latitude << " " << c.long_polarity << " " << c.longitude << std::endl;
 		std::this_thread::sleep_for(std::chrono::milliseconds(500));
 	}
 }
