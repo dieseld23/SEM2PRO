@@ -13,8 +13,9 @@ The data needs to be collected from all of the nodes, then logged and transmitte
 The type of network depends greatly on the number of nodes that it has to support.
 A project on SDU, Formula Student \cite{formulastudent}, has a similar platform for which a network has been developed.
 \martin{One of the advantages of multi platform (and one that FS uses) is the ability to put the node close to the sensors/acutators}
-On that platform seven nodes are connected on the network.
+That project, which is to develop a race car, has a network of seven physical nodes, distributed around the car, which each handle data producers and consumers in that area.
 The parameters found in section \ref{sec:parameters} can be measured using five different types of sensors.
+\martin{which five types? Can all the bullet point in section~\ref{sec:parameters} be measured with just five types?}
 This project does, however, aim to give users the ability to add their own nodes.
 For this reason the limit of supported nodes is set to 16.
 It is worth noting that the structure of each node is irrelevant, so long as it adheres to the networks communication standards.
@@ -37,36 +38,27 @@ The communication between the various nodes and the wifi node does not require a
 Furthermore, in the case that one node fails, the network as a whole should still be operative.
 Since it is a multi-node network and it may require more nodes in the future, scalability is also required.
 
-\subsubsection{Different Topologies}~\\
-\todo[inline]{Thomas: This section needs to be cleaned of any statements such as "this is the simplest and cheapest...". They are broad conclusions that we have no merrits on saying}
-\catalin{I understand for "cheapest", but simplest stands. Bus topology is the simplest. It is networks theory.}
-\martin{I agree that "simplest" is not necessarily true. Obviously the easies would be star, as we can add a network switch. So I changed the part about bus and ring.}
+\subsubsection{Network Topologies}~\\
+Networks can be described by different patterns, or topologies, some of which might have several technologies.
+Some of these topologies, that are practical to implement, are listed bellow.
 \begin{itemize}
 \item \textbf{Bus:}
 On this network, all nodes communicate through a common bus. 
 This means that one node communicate to all other nodes at the same time, and that only one node can transmit at the same time.
-Because of this, it's easy to add another node to the bus, as one would just tap into the bus anywhere.
-However, this bus with multiple taps sets limitations on the data rate, especially over greater distances of several tens of meters.
-Also, the whole bus might break down if the connection is severed anywhere, even if there is still a wired connection between two nodes.
 \item \textbf{Ring:} All the nodes in this type of network form a ring, where each node is connected to its two neighbours.
-One node sends its data to its neighbour. The neighbour then appends its data, and sends data from both nodes on through the network. 
 Messages travel along the ring, and eventually ending up at the wifi node.
-This gives added security -- if one node or one connection breaks, the messages can travel the other way. 
-Compared to the bus, a ring network can usually handle data rates orders of magnitude higher than the bus by communicating through ethernet cables. 
-It is scaleable in the same way as the bus, as one can just insert another node between two nodes.
-\item \textbf{Mesh:} In this type, each node has direct connections to each other node present in the network.
-That provides speed and reliability in case of node failures, but requires more hardware and processing power to manage the connections.
-It is very robust but scalability is certainly not one of its features, as the number of connections escalate by the number of nodes.
+%\item \textbf{Mesh:} In this type, each node has direct connections to each other node present in the network.
+%That provides speed and reliability in case of node failures, but requires more hardware and processing power to manage the connections.
+%It is very robust but scalability is certainly not one of its features, as the number of connections escalate by the number of nodes.
 \item \textbf{Star:} The star topology is a centralized type of networking.
 All nodes are connected to a central hub, handling all the communication between them.
-It is fast, easy to implement and offers great reliability in case of node failures.
-\martin{How does this offer reliability? IF connection to a node is severed, the node is gone.}
+It offers high bandwidth and is easy to implement.
 The major disadvantage is that if the hub fails, the entire network fails.
 It can be scalable to a certain point, since the hub can be upgraded to handle more connections.
-\item \textbf{Tree:} The last type, the tree is an extension of the bus and the star topologies combined.
-It can be easily scalable, but that adds extra difficulty in its maintenance.
-It also requires a lot of connections and in case the top (root) node fails, then all the network is down as well.
-\item \textbf{Hybrid:} The last type is the hybrid one, where depending on the needs and purpose of the network, two or more topologies can be combined to achieve the best balance between their advantages and disadvantages.
+%\item \textbf{Tree:} The last type, the tree is an extension of the bus and the star topologies combined.
+%It can be easily scalable, but that adds extra difficulty in its maintenance.
+%It also requires a lot of connections and in case the top (root) node fails, then all the network is down as well.
+%\item \textbf{Hybrid:} The last type is the hybrid one, where depending on the needs and purpose of the network, two or more topologies can be combined to achieve the best balance between their advantages and disadvantages.
 \end{itemize}
 \martin{This list should really only be Bus, Ring and Star, because the others aren't really realistic to implement}
 
@@ -90,21 +82,23 @@ After discussing the different topologies, it is necessary to look at what techn
 \thomas{We have 2 pages discussing the abstract of topologies but only 1/4 page discussing pros and cons of the different actual technologies?}
 \subsubsection{Selecting Technologies}
 Different networking technologies exist in use today, such as Ethernet, among others CAN and Powerlink.\\
-Powerlink is the network topology used by Formula Student; it is a ring type network, using ethernet between neighbouring nodes.
+Powerlink is the network topology used by Formula Student; it is a ring type network, using Ethernet between neighbouring nodes.
 Messages are transmitted as a pulse train from one node to its neighbour, who then appends its data to the end of this train. 
 Message trains are sent out at fixed time intervals.
 However, message trains need to be fully recieved by one node before it can be transmitted with data appended, and because of this it can be an issue synchronizing the nodes.
-There can be very little overhead, and with the ethernet cables and ports setting the limits, the bandwidth is very large -- 100 MB/s on Formula Student.
-However, this does require all nodes to have two network ports with direct access to an FPGA, and that is rare to find on a evaluation board.\\
+There can be very little overhead, and with the Ethernet cables and ports setting the limits, the bandwidth is very large -- 100 MB/s on Formula Student.
+However, this does require all nodes to have two Ethernet ports with direct access to an FPGA, and that is rare to find on a evaluation board.\\
 
 CAN is widely used bus topology in the automotive industry with data rates up to 1Mbit/s for small networks lengths.
+This is slightly less than the requirement calculated in section~\ref{sec:data_rate}, however that number was based on the highest possible sample rate of the IMU, along with the inefficient data type, which is 32 bit float.
+Because CAN is a bus topology, it's easy to add another node to the bus, as one would just tap into the bus anywhere.
+It is because of this tapping into the bus, that it is not suitable for higher data rates, and if the bus breaks at any one point, communication is lost on the entire bus.
 Unlike Powerlink, this runs without a dedicated master, meaning that there is one less thing that can go wrong.
 Compared to Powerlink, it is not nearly as fast though, and does not have the redundancy of a ring network.
 Due to the use of buffers, the CAN bus is not a real time bus, but synchronization is easier.\\
 
-\martin{I adapted this. But one thing though, openPowerlink is not implemented on FPGA, which powerlink it self really should be.}
-Powerlink can be implemented using openPowerlink at a software level and utilizing an external module to handle the hardware part of the network.
-This will allow evaluation boards with less than two ethernet ports, can work in the ring network. 
+The open source poject openPowerlink offers FPGA implementation of Powerlink, and external modules can be utilized to handle the hardware part of the network.
+This will allow evaluation boards with less than two Ethernet ports, can work in the ring network. 
 CAN also requires one external piece of hardware, but does not necessarily require an FPGA to run. 
 According to the data rate calculations in section~\ref{sec:data_rate}, the CAN network has bandwidth enough to handle the requirements of this project. 
 Because it is easier to implement CAN, and to add nodes to it, it has been decided to use a CAN network.

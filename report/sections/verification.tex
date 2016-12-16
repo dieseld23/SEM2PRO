@@ -1,8 +1,21 @@
 %!TEX root = ../main.tex
 
 \thomas{We need to find a good naming convention for these sections - having "tests" in the headline doesn't quite sound right..}
-Throughout this section tests will be designed in order to verify that the various subsystems live up to the requirements set in section \ref{requirementspecification}.
-A test will be designed for each individual requirement, 
+Throughout this section tests will be designed and carried out in order to verify that the various subsystems live up to the requirements set in section \ref{sec:system_requirements}.\\
+
+%\subsubsection{Utilizing Service Virtualization for the Proof of Concept}
+\label{sub:Utilizing_Svr_Virtualization}
+\catalin{More details here after a group discussion and opinions.}
+\martin{I moved this here, at it really is a desription of how we test the system from several angles}
+In order to show that the system can be fully functional despite the unsuccessful attempt to implement it, a different approach than the actual implementation is needed.
+One way of doing that is to apply a method called service virtualization where one part of the system can be simulated to prove that the rest of the system is fully functional, given the presence of the missing simulated part.
+\\
+In this case, the system that was designed for this project can be divided into two parts or subsystems.
+The first one is the physical CAN network to this point is only functional in bare\-metal code, which is described in section~\ref{sub:CAN_Bus_Tests}.
+The second part would be considered the subsystem present on Linux which included the protocol designed to be used with the CAN bus and the application which extracted the data from the sensors.
+This is described in section~\ref{sec:node_software}
+The connection between the two subsystems is the service virtualization and could be replaced either by a software buffer.
+
 \input{sections/CAN_bus_tests}
 \input{sections/wifi_verification}
 \input{sections/node_software_verification}
