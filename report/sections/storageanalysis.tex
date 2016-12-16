@@ -11,7 +11,7 @@ Linux does come with an easy way to handle files, which would ease the task of l
 At this point, it is not clear how much data will be on the bus, which means that it is not clear whether this is enough.
 However, as there is no need to store data on the kart for more than one drive session, it is possible to calculate the maximum writing speed in order to not run out of space.\\
 
-Assuming that the Go Kart has battery for at most half an hour, the data rate can be calculated as follows:
+Assuming that the Go Kart has battery for half an hour, the data rate can be calculated as follows:
 
 \begin{equation}
 	\frac{3\mathrm{GB}}{30\si{\minute}} = \frac{2.58 \cdot 10^{10} \mathrm{bit}}{1800 \si{\second}} \approx 13.7 \mathrm{Mb/s}
@@ -22,7 +22,7 @@ With a ceiling of data rate this high, it's highly unlikely that the go kart run
 \section{Software on Stationary Computer}
 The stationary computer needs to receive data through wifi and decode the received messages using the protocol that is to be developed.
 A user should be able to access the data through an API.
-This API should act as the front-end of the underlying network.
+This API should act as the front end of the underlying network.
 As a proof of concept, a simple UI should be implemented to show how data can be presented to the user.
 The software also needs the ability to let the user send a command to the on-vehicle network to start and stop specific nodes.
 As with the previous parts of the system, this program should be compatible with linux.
@@ -45,5 +45,5 @@ In order to maintain the modularity of the system, the decoding should be done i
 The system is intended to function as a monitoring system of go-kart data.
 Presentation of the data is not the focus of the project and as such only a rudimentary UI is developed to show the functionality.
 The software should however be designed in such a way that a developer can easily create a custom (G)UI for the system, which fits the needs of that particular project.
-In order to create the most seamless interface for this functionality the software should implement an API which acts as a front-end for the underlying network.
+In order to create the most seamless interface for this functionality the software should implement an API which acts as a front end for the underlying network.
 The API-approach has the added benefit of allowing the user to use the incoming data in any way that may suit their project.

@@ -64,18 +64,19 @@ Part of this protocol is a well defined message frame.
 A detailed description of this frame can be seen in section \ref{sub:CanMessageFrame}.\\
 It should be possible to toggle the data collection of individual nodes.
 This means that it is necessary to have a protocol that allows addressing each node on the bus individually.
-The message frame of the CAN protocol does include a messageid, however this id holds no information about the sender of the message.
-In CAN a table of all message id's and their meaning is used to decode messages.
+The message frame of the CAN protocol does include a message ID, however this id holds no information about the sender of the message.
+In CAN a table of all message ID's and their meaning is used to decode messages.
 This table is called an object dictionary.
-Achieving the desired functionality will require an adaption of the protocol. 
+Achieving the desired functionality will require an adaptation of the protocol. 
 \\~\\
 One such adaption already exists in the form of CANopen.
 CANopen is a widely used standard that builds upon CAN.
 \cite{CANopen_introduction} shows that CAN accounts for the physical and data-link layers in the OSI model while CANopen accounts for the network to application layer.
-It is already used in the communication with the sevcon gen4 and as such, using this protocol would mean that the sevcon could be connected directly on the bus.
-CANopen is quite extensive, implementing many features that are not necessary in this application.
+It is already used in the communication with the Sevcon Gen4 and as such, using this protocol would mean that the Sevcon could be connected directly on the bus.
+CANopen is quite extensive, implementing many features that are not necessarily beneficial in this application.
 The many features also adds to the complexity of learning how to use the system.
 It also adds a significant amount of overhead for each message, taking up bandwidth which could have otherwise been used for data. 
+All of this is explored in depth in section~\ref{sub:CAN_protocol}.
 \\~\\
 Another option is to create a custom protocol, using CAN as the physical and data-link layers.
 Designing a custom protocol means that the overhead can be reduced to the bare minimum.
