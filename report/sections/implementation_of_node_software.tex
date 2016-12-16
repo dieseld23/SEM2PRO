@@ -213,7 +213,7 @@ As it can be seen the WiFi node will only send frames to the CAN network when it
 \begin{figure}[!h]
 \centering
 \includegraphics[width=0.5\textwidth]{graphics/FlowChart_NodeWiFiCmd}
-\caption{Claxxx}
+\caption{B}
 \label{fig:FlowChart_NodeWiFiCmd}
 \end{figure}
 
@@ -230,4 +230,25 @@ As it can be seen the WiFi node will only send frames to the CAN network when it
 \includegraphics[width=1\textwidth]{graphics/StateDiagram_ConcatMsgProcess}
 \caption{cccc}
 \label{fig:StateDiagram_ConcatMsgProcess}
+\end{figure}
+
+
+
+\begin{figure}[!h]
+    \centering
+    \begin{subfigure}{0.42\textwidth}
+    \centering
+        \includegraphics[width=1\textwidth]{graphics/FlowChart_NodeWiFiCmd}
+        \caption{Outgoing data. Data going from a sensor and to the CAN program.}
+        \label{fig:filter_1}
+    \end{subfigure}
+    ~
+    \begin{subfigure}{0.52\textwidth}
+    \centering
+        \includegraphics[width=1\textwidth]{graphics/FlowChart_CANFrameProcess}
+        \caption{Ingoing data. Data going from the CAN program to the node.}
+        \label{fig:filter_2}
+    \end{subfigure}
+        \caption{Block diagram showing handling of outgoing and ingoing data. The boxes are colored according to which class implements the functionality. Yellow is the GPS class, orange is the Packer\_GPS class, blues is the node class, green is the protocol class and blue is the CAN\_link class.}
+           \label{fig:filter_fulll}
 \end{figure}
