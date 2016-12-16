@@ -69,14 +69,14 @@ All tasks are found to be generic for all sensor nodes.
 Based on the previous analysis a class diagram was developed and can be seen in figure \ref{fig:node_class_diagram}.
 The classes main responsibilities are shown in figure \ref{fig:flow_flow}.
 Classes GPS and GPS\_Packer is sensor specific and should be developed for each specific sensor.
-In a generic sensor node the GPS class would be a sensor class and the Packer\_GPS class would be a Packer\_Sensor.
+In a generic sensor node the GPS class would be a sensor class and the Packer\_GPS class would be a Packer\_Sensor. 
 Classes to the left are agnostic to all data they receive going from the sensor and to the CAN network.
 They are generic classes and should be reused when developing new nodes.
 
 \begin{figure}[!h]
 \centering
 \includegraphics[width=1\textwidth]{graphics/ClassDiagram_NodeSimple}
-\caption{Class diagram showing node software.}
+\caption{Class diagram showing sensor node software.}
 \label{fig:node_class_diagram}
 \end{figure}
 
@@ -180,7 +180,7 @@ The WiFi node can be seen in figure \ref{fig:wifi_node}.
 \begin{figure}[!h]
 \centering
 \includegraphics[width=0.4\textwidth]{graphics/wifi_node}
-\caption{Figure should be made correctly.}
+\caption{WiFi node implemented on Zybo board.}
 \label{fig:wifi_node}
 \end{figure}
 
@@ -255,7 +255,7 @@ The classes main responsibilities are shown in figure \ref{fig:wifi_flow}.
 \begin{figure}[!h]
 \centering
 \includegraphics[width=0.6\textwidth]{graphics/ClassDiagram_NodeWiFi}
-\caption{Class diagram .}
+\caption{Class diagram showing sensor node software.}
 \label{fig:StateDiagram_ConcatMsgProcess}
 \end{figure}
 

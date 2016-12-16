@@ -3,5 +3,21 @@
 This section will describe the implementation of the sensors selected during the analysis.
 \input{sections/interfacing_with_sevcon}
 \martin{We need to write something about implementation of the other sensors. We also need to use the same order throughout the report}
+
 \subsection{Interfacing with the IMU}\label{sec:interface_IMU}
+
+
+
 \subsection{Interfacing with the GPS}\label{sec:interface_GPS}
+The used GPS is a u-blox NEO-6P GPS module.
+The physical interface to the GPS is a usb cable and when connected to Linux it shows up in \texttt{/dev/}.
+The output adheres to the NMEA standard and is made of 8 different NMEA sentences.
+The RMC sentence contains all essential information, that being position, velocity and time.
+Therefore the implemented GPS class, that has the responsibility of interfacing the GPS, only needs to decode RMC sentences.
+
+\subsubsection{Service virtualization}
+The GPS only produces interesting data when it receives data from a number of satellites. 
+This means that the GPS antenna needs to be outside, which is not very practical when developing software.
+Therefore the output from the GPS with the antenna outside was piped into a file.
+This file was then read by a program with a fixed time interval thus making a service virtualization of the GPS.
+This service virtualization was used when developing software for the GPS.
