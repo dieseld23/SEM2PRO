@@ -6,20 +6,25 @@ With the CAN controller available on the PS of the Zybo, the CAN bus will be tes
 The transceivers are able to work at up to 8 Mb/s, while the CAN controllers on the Zybo only guarantee functionality up to 1 Mb/s. 
 As the final implementation should be done in PL, there is nothing preventing the controller working at 8 Mb/s -- the FPGA can easily produce and interpret signals up to or beyond 8 Mb/s.\\
 
-The purpose of these test is to show that the transceivers work, and that the bus does indeed transmit the correct message. 
+The purpose of these tests is to show that the transceivers work, and that the bus does indeed transmit the correct message. 
 It is also relevant to test whether the CAN protocol acts according descriptions made in section~\ref{sub:CanMessageFrame}, in which case the protocol designed in section~\ref{sub:CAN_protocol} can be implemented.
 Performance parameters, such as bandwidth, are not immediately measurable, as they depend heavily on the controller.
 The tests performed will be: 
-\mikkel{Should these paragraph be made into something else? maybe list?}
-\paragraph{Basic communication:} Proving the ability for basic communication between nodes
 
-\paragraph{Latency tests:} The time it takes to send one large frame
- 
-\paragraph{Bandwidth:} How much raw data can be transmitted per unit time
+\mikkel{Should these paragraph be made into something else? maybe list? Catalin:Are you satisfied now!?}
+\begin{itemize}
+\item Verifying the functionality of the CAN Stack
+\item Proving the ability of basic communication between nodes
+\item Measuring the latency of sending one large frame
+\item Measuring the available bandwidth for transmitting raw data per unit time
+\item Verifying that message ids with higher priority than other ids are indeed given priority.
+\end{itemize}
 
-\paragraph{Priority when multiple node sending:} Ensuring, that higher message ID make way for the lower ones 
+%\paragraph{Latency tests:} The time it takes to send one large frame 
+%\paragraph{Bandwidth:} How much raw data can be transmitted per unit time
+%\paragraph{Priority when multiple node sending:} Ensuring, that higher message ID make way for the lower ones 
 
-\subsection{Basic Communication Using the CAN Stack}
+\subsection{Testing the CAN Stack and the Basic Communication}
 \label{sub:TestingCANStack_BareMetal}
 After the design and printing of the stack board, testing it was the next step.
 The test included using one the CAN controllers within the Zynq chip with the purpose of showing that a basic CAN network between two Zybo boards could be implemented using the stack.
@@ -69,7 +74,7 @@ The CAN frame is displayed and interpreted on figure~\ref{fig:CAN_test1_message}
 The data portion of the frame is bitwise big endian, but bytewise little endian. 
 The message to be sent was codes as two 32 bit unsigned integers: 0xA1A2A3A4 and 0xA5A6A7A8.
 The controller then swapped the bytes around, causing the data to become little endian.
-This is a convention implemented by the CAN controller, and as the same endianness is applied when sending and receiving the frame, it doesnt matter -- the CAN bus does not care about the order bits in the data portion. 
+This is a convention implemented by the CAN controller, and as the same endianness is applied when sending and receiving the frame, it doesn't matter -- the CAN bus does not care about the order bits in the data portion. 
 The message was received correctly.\\
 
 The CRC was calculated automatically by the controller.
