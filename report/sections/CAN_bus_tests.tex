@@ -8,30 +8,16 @@ As the final implementation might be done in PL, there is nothing preventing the
 
 The tests are performed using the block diagram from figure~\ref{fig:CAN_Testing_Architecture}, on page~\pageref{fig:CAN_Testing_Architecture} as the FPGA part, though not all parts of this block diagram is used for each part.
 Software will be developed for bare metal purpose, and because of this, not all tests will be performed using interrupts, as the Zybo has no other task that it can be interrupted from.
-
+\martin{@Catalin, I would like to keep the names short and descriptive}
 The tests performed will be: 
 \begin{itemize}
-	\item \textbf{Basic communication}: Proving the ability for basic communication between nodes
-	\item \textbf{Latency tests}: The time it takes to send one large frame
-	\item \textbf{Bandwidth}: How much raw data can be transmitted per unit time
+	\item \textbf{Basic communication}: Proving the ability for basic communication between nodes, while confirming, that the CAN stack works.
+	\item \textbf{Latency tests}: Measuring the time it takes to send one large frame
+	\item \textbf{Bandwidth}: Determining how much raw data can be transmitted per unit time
 	\item \textbf{Priority when multiple node sending}: Ensuring, that higher message ID make way for the lower ones 
 \end{itemize}
 
-\
-\mikkel{Should these paragraph be made into something else? maybe list? Catalin:Are you satisfied now!?}
-\begin{itemize}
-\item Verifying the functionality of the CAN Stack
-\item Proving the ability of basic communication between nodes
-\item Measuring the latency of sending one large frame
-\item Measuring the available bandwidth for transmitting raw data per unit time
-\item Verifying that message ids with higher priority than other ids are indeed given priority.
-\end{itemize}
-
-%\paragraph{Latency tests:} The time it takes to send one large frame 
-%\paragraph{Bandwidth:} How much raw data can be transmitted per unit time
-%\paragraph{Priority when multiple node sending:} Ensuring, that higher message ID make way for the lower ones 
-
-\subsection{Testing the CAN Stack and the Basic Communication}
+\subsection{Basic Communication}
 \label{sub:TestingCANStack_BareMetal}
 After the design and printing of the stack board, testing it was the next step.
 The test included using one the CAN controllers within the Zynq chip with the purpose of showing that a basic CAN network between two Zybo boards could be implemented using the stack.
@@ -145,18 +131,6 @@ At the time $95.3\si{\micro\second}$, Zybo B (blue line on figure~\ref{fig:CAN_t
 It will then cancel this attempt to transmit, and wait until the current frame has been transmitted before it will try again.
 Also note the Zybo B writing the acknowledge bit at the time $171 \si{\micro\second}$.
 Because of this, it is not strictly necessary to use a receiving Zybo, because the other node will confirm the CRC of the message.\\
-
-\subsubsection{Utilizing Service Virtualization for the Proof of Concept}
-\label{sub:Utilizing_Svr_Virtualization}
-\catalin{More details here after a group discussion and opinions.}
-In order to show that the system can be fully functional despite the unsuccessful attempt to implement it, a different approach than the actual implementation is needed.
-One way of doing that is to apply a method called service virtualization where one part of the system can be simulated to prove that the rest of the system is fully functional, given the presence of the missing simulated part.
-\\
-In this case, the system that was designed for this project can be divided into two parts or subsystems.
-The first one is the physical CAN network to this point is only functional in bare\-metal code, which is described in section~\ref{sub:CAN_Bus_Tests}.
-The second part would be considered the subsystem present on Linux which included the protocol designed to be used with the CAN bus and the application which extracted the data from the sensors.
-This is described in section~\ref{sec:node_software}
-The connection between the two subsystems is the service virtualization and could be replaced either by a software buffer.
 
 \subsection{Conclusion}\label{sub:CAN_test_conclusion}
 It has been proven that the CAN hardware does work, and it is possible to transmit a message from one Zybo to another, without error.
