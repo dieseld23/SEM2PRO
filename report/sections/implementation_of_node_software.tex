@@ -34,8 +34,8 @@ Because of time constraints the designed software has only been implemented in c
 \begin{itemize}
 \item Get data from associated sensor.
 \item Pack data according to the specified protocol.
-\item Construct CAN package
-\item React to commands sent to it.
+\item Construct and send CAN package.
+\item React to the commands it receives.
 \end{itemize}
 
 Analyzing on the procedure when data goes from a sensor to the CAN program resulted in the block diagram of figure \ref{fig:filter_1}.
@@ -69,16 +69,18 @@ All tasks are found to be generic for all sensor nodes.
 Based on the previous analysis a class diagram was developed and can be seen in figure \ref{fig:node_class_diagram}.
 The classes main responsibilities are shown in figure \ref{fig:flow_flow}.
 Classes GPS and GPS\_Packer is sensor specific and should be developed for each specific sensor.
-In a generic sensor node the GPS class would be a sensor class and the Packer\_GPS class would be a Packer\_Sensor.
+In a generic sensor node the GPS class would be a sensor class and the Packer\_GPS class would be a Packer\_Sensor. 
 Classes to the left are agnostic to all data they receive going from the sensor and to the CAN network.
 They are generic classes and should be reused when developing new nodes.
 
 \begin{figure}[!h]
 \centering
 \includegraphics[width=1\textwidth]{graphics/ClassDiagram_NodeSimple}
-\caption{Class diagram showing node software.}
+\caption{Class diagram showing sensor node software.}
 \label{fig:node_class_diagram}
 \end{figure}
+
+\martin{How does GPS\_Packer read latitude and longitude if they are private within the GPS namespace?}
 
 A struct containing all fields of a data packet in boolean data types is defined in listing \ref{code:data_packet}.  
 
@@ -106,9 +108,10 @@ It is hard-coded with the message types that the sensor is allowed to send onto 
 It has the responsibility to pack data according to the developed protocol.
 Data in the form of a vector of booleans are then put into the \texttt{data\_packet} struct and passed to the node class.
 The reason for making a separate class for the packer and not putting the functionality into the GPS class is that if the specification of the protocol or message types change, only this class needs to be modified.
+Similarly, if the GPS module is replaced, the Packer\_GPS class does not need to be altered.
 
 ~\\ \par \textbf{Node class} ~ \\
-The Node class gets \texttt{data\_packets} from the Packer class and will then prepend its node ID to it.
+The Node class gets \texttt{data\_packets} from the Packer class and will then prepend its node ID to the message type.
 It needs to create a timestamp \texttt{data\_packet} each time data is to be sent.
 In order to create the time message the class needs to keep track of milliseconds since receiving the synchronize message.
 The class receives start, stop or synchronize events from the protocol class and reacts to those accordingly.
@@ -116,10 +119,10 @@ The class receives start, stop or synchronize events from the protocol class and
 ~\\ \par \textbf{Protocol class} ~ \\
 The protocol class receives \texttt{data\_packets} from the node class. 
 If it receives \texttt{data\_packets} where there are more than eight data bytes it needs to create additional \texttt{data\_packets} and distribute data to them. 
-The additional \texttt{data\_packets} must have the same node id and message types, but the start of frame, sof, bit should be set accordingly.
-The class also needs to append number of data bytes, \texttt{n\_data\_bytes}, to each \texttt{data\_packet}.
-On \texttt{data\_packets} coming from the CAN network the class needs to use the last two bits of the messagetype to decode which command is sent to the node.
-\martin{This is provided, that the CAN controller software filters the messages appropriately.}
+The additional \texttt{data\_packets} must have the same node id and message types, but the new message, nw\_msg, bit should be set to zero..
+The class also needs to calculate number of data bytes, \texttt{dl}, to each \texttt{data\_packet}.
+On \texttt{data\_packets} coming from the CAN network the class needs to pass the message ID through to the Node Class.
+\martin{I changed the above line. The Node ID can determine if the message is adressed to it, and what to do with the commands it might receive..}
 
 ~\\ \par \textbf{CAN\_link class} ~ \\
 The CAN\_link class has the responsibility of transferring and receiving data to and from the CAN program.
@@ -138,9 +141,10 @@ It is shown in figure \ref{fig:state_machine}.
 \begin{figure}[!h]
 \centering
 \includegraphics[width=1\textwidth]{graphics/StateDiagram_Node.pdf}
-\caption{State machine.....}
+\caption{State machine..... }
 \label{fig:state_machine}
 \end{figure}
+\martin{In figure~\ref{fig:state_machine}, the "boolean" value run, should be the same as the boolean value "running" on figure~\ref{fig:node_class_diagram}.}
 When the variable \texttt{run} is equal to 1, the node should output sensor data.
 \texttt{run} is being updated by the thread that handles incoming commands.
 It will then go the clear state and clear all variables and wait for data. 
@@ -153,6 +157,7 @@ When developing a new node with another sensor the generic classes CAN\_link, Pr
 New classes should be developed to extract data from sensor, pack data according to protocol and put the data in a data\_packet.
 It is advantageous to implement this functionality into Packer\_Sensor and Sensor classes to keep a similar software design through the nodes.
 The interface to the generic Node class is a call to its function \texttt{put\_data\_packet(data\_packet)}.
+\martin{Maybe this needs to be moved to section~\ref{sec:node_implementation_guide}.}
 
 
 
@@ -180,7 +185,7 @@ The WiFi node can be seen in figure \ref{fig:wifi_node}.
 \begin{figure}[!h]
 \centering
 \includegraphics[width=0.4\textwidth]{graphics/wifi_node}
-\caption{Figure should be made correctly.}
+\caption{WiFi node implemented on Zybo board.}
 \label{fig:wifi_node}
 \end{figure}
 
@@ -255,7 +260,7 @@ The classes main responsibilities are shown in figure \ref{fig:wifi_flow}.
 \begin{figure}[!h]
 \centering
 \includegraphics[width=0.6\textwidth]{graphics/ClassDiagram_NodeWiFi}
-\caption{Class diagram .}
+\caption{Class diagram showing sensor node software.}
 \label{fig:StateDiagram_ConcatMsgProcess}
 \end{figure}
 
