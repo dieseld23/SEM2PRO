@@ -53,7 +53,7 @@ Analyzing on the procedure when data goes from a sensor to the CAN program resul
         \caption{Ingoing data. Data going from the CAN program to the node.}
         \label{fig:filter_2}
     \end{subfigure}
-        \caption{Block diagram showing handling of outgoing and ingoing data. The boxes are colored according to which class implements the functionality. Yellow is the GPS class, orange is the Packer\_GPS class, blues is the node class, green is the protocol class and blue is the CAN\_link class.}
+        \caption{Block diagram showing handling of outgoing and ingoing data. The boxes are colored according to which class implements the functionality. Yellow is the GPS class, orange is the Packer\_GPS class, purple is the node class, green is the protocol class and blue is the CAN\_link class.}
            \label{fig:filter_fulll}
 \end{figure}
 
@@ -210,18 +210,25 @@ If it receives a \texttt{send\_log} command from the stationary computer it shou
 
 In normal operation mode it should handle all incoming data from the WiFi connection as shown in figure \ref{fig:FlowChart_NodeWiFiCmd}.
 As it can be seen the WiFi node will only send frames to the CAN network when it receives commands to do so from the stationary computer.
-\begin{figure}[!h]
-\centering
-\includegraphics[width=0.5\textwidth]{graphics/FlowChart_NodeWiFiCmd}
-\caption{B}
-\label{fig:FlowChart_NodeWiFiCmd}
-\end{figure}
+
 
 \begin{figure}[!h]
-\centering
-\includegraphics[width=0.6\textwidth]{graphics/FlowChart_CANFrameProcess}
-\caption{Cxxx}
-\label{fig:FlowChart_CANFrameProcess}
+    \centering
+    \begin{subfigure}[b]{0.42\textwidth}
+    \centering
+        \includegraphics[width=1\textwidth]{graphics/FlowChart_NodeWiFiCmd}
+        \caption{Outgoing data. Data going from a sensor and to the CAN program.}
+        \label{fig:FlowChart_NodeWiFiCmd}
+    \end{subfigure}
+    ~
+    \begin{subfigure}[b]{0.52\textwidth}
+    \centering
+        \includegraphics[width=1\textwidth]{graphics/FlowChart_CANFrameProcess}
+        \caption{Ingoing data. Data going from the CAN program to the node.}
+        \label{fig:FlowChart_CANFrameProcess}
+    \end{subfigure}
+        \caption{Block diagram showing handling of outgoing and ingoing data. The boxes are colored according to which class implements the functionality. Blue is the GPS class, orange is the Packer\_GPS class, blues is the node class, green is the protocol class and blue is the }
+           \label{fig:wifi_flow}
 \end{figure}
 
 
@@ -234,21 +241,3 @@ As it can be seen the WiFi node will only send frames to the CAN network when it
 
 
 
-\begin{figure}[!h]
-    \centering
-    \begin{subfigure}{0.42\textwidth}
-    \centering
-        \includegraphics[width=1\textwidth]{graphics/FlowChart_NodeWiFiCmd}
-        \caption{Outgoing data. Data going from a sensor and to the CAN program.}
-        \label{fig:filter_1}
-    \end{subfigure}
-    ~
-    \begin{subfigure}{0.52\textwidth}
-    \centering
-        \includegraphics[width=1\textwidth]{graphics/FlowChart_CANFrameProcess}
-        \caption{Ingoing data. Data going from the CAN program to the node.}
-        \label{fig:filter_2}
-    \end{subfigure}
-        \caption{Block diagram showing handling of outgoing and ingoing data. The boxes are colored according to which class implements the functionality. Yellow is the GPS class, orange is the Packer\_GPS class, blues is the node class, green is the protocol class and blue is the CAN\_link class.}
-           \label{fig:filter_fulll}
-\end{figure}
