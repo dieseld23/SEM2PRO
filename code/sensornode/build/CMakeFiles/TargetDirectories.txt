@@ -1,3 +1,0 @@
-/home/mikkeljaedicke/Documents/SEM2PRO/code/sensornode/build/CMakeFiles/edit_cache.dir
-/home/mikkeljaedicke/Documents/SEM2PRO/code/sensornode/build/CMakeFiles/rebuild_cache.dir
-/home/mikkeljaedicke/Documents/SEM2PRO/code/sensornode/build/CMakeFiles/sensornode.dir
