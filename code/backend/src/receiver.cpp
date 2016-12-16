@@ -11,6 +11,9 @@ void receiver::recv()
 	while(1)
 	{
 		std::cin >> msg;
-		while(!intprt_o->put(msg));
+		if(!msg.empty())
+		{	
+			while(!intprt_o->put(msg));
+		}
 	}
 }
