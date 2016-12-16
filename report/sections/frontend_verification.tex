@@ -1,0 +1,39 @@
+%!TEX root = ../main.tex
+
+\section{Frontend}
+This section describes the test done to verify the functionality of the frontend.
+A user should be able to monitor data created on the network.
+Figure \ref{fig:frontendsetup} depicts an overview of the setup used in the verification.
+An amount of GPS data is recorded and is presented to the GPS node using service virtualisation as shown in section \ref{sec:servicevirtualisation}.
+A few of the recorded datapoints can be seen in figure \ref{fig:gpsdata}.
+\thomas{Reference to note on service virtualisation} 
+\thomas{section on why can connection failed}
+The two parts, CAN-bus and WiFi node were not finished, see sections \ref{sec:somecansection} and \ref{sec:somewifinodesection} respectively, as such it was necessary to create service virtualisation for this link.
+A small utility was written to serve this purpose.
+This utility reads the messages sent by the GPS node, extracts the timestamp and inserts it into the data frame in place of the DLC nibble and then outputs it to stdio.
+The message is then on the form seen in figure \ref{msg:backendmsg}, the form expected by the frontend.
+
+\begin{figure}
+	\missingfigure{overview of frontend setup}
+	%\includegraphics[width=\linewidth]{graphics/frontendsetup}
+	\caption{The setup used to verify the functionality of the frontend.}
+	\label{fig:frontendsetup}
+\end{figure}
+
+In order to most accurately reproduce the actual function of the system, the test was done using a wireless connection between a Zybo and a PC.
+The connection was established using the method described in section \ref{sec:wifi}.
+On the PC, the frontend was started, taking its input from a socat listener
+\begin{lstlisting}
+>> ./frontend | socat - tcp-listen:2049
+\end{lstlisting}
+Then, on the Zybo, the GPS and 'WiFi' nodes were started, piping their output to socat:
+\begin{lstlisting}
+>> ./sensornode | ./verification | socat - tcp:196.178.10.10:2049
+\end{lstlisting}
+Here, the first and last data points from the data set.
+\begin{lstlisting}
+>> N 55.36734 E 10.43185
+>> N 55.36707 E 10.43109
+\end{lstlisting}
+This corresponds with the data created on the GPS node.
+\thomas{Perhaps refer to the section on converting gps coords in gps node}

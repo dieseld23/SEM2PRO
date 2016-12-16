@@ -4,27 +4,20 @@
 \label{sub:CAN_Bus_Tests}
 With the CAN controller available on the PS of the Zybo, the CAN bus will be tested to determine the transmission abilities of the network.
 The transceivers are able to work at up to 8 Mb/s, while the CAN controllers on the Zybo only guarantee functionality up to 1 Mb/s. 
-As the final implementation should be done in PL, there is nothing preventing the controller working at 8 Mb/s -- the FPGA can easily produce and interpret signals up to or beyond 8 Mb/s.\\
+As the final implementation might be done in PL, there is nothing preventing the controller working at 8 Mb/s -- the FPGA can easily produce and interpret signals up to or beyond 8 Mb/s.\\
 
-The purpose of these tests is to show that the transceivers work, and that the bus does indeed transmit the correct message. 
-It is also relevant to test whether the CAN protocol acts according descriptions made in section~\ref{sub:CanMessageFrame}, in which case the protocol designed in section~\ref{sub:CAN_protocol} can be implemented.
-Performance parameters, such as bandwidth, are not immediately measurable, as they depend heavily on the controller.
+The tests are performed using the block diagram from figure~\ref{fig:CAN_Testing_Architecture}, on page~\pageref{fig:CAN_Testing_Architecture} as the FPGA part, though not all parts of this block diagram is used for each part.
+Software will be developed for bare metal purpose, and because of this, not all tests will be performed using interrupts, as the Zybo has no other task that it can be interrupted from.
+\martin{@Catalin, I would like to keep the names short and descriptive}
 The tests performed will be: 
-
-\mikkel{Should these paragraph be made into something else? maybe list? Catalin:Are you satisfied now!?}
 \begin{itemize}
-\item Verifying the functionality of the CAN Stack
-\item Proving the ability of basic communication between nodes
-\item Measuring the latency of sending one large frame
-\item Measuring the available bandwidth for transmitting raw data per unit time
-\item Verifying that message ids with higher priority than other ids are indeed given priority.
+	\item \textbf{Basic communication}: Proving the ability for basic communication between nodes, while confirming, that the CAN stack works.
+	\item \textbf{Latency tests}: Measuring the time it takes to send one large frame
+	\item \textbf{Bandwidth}: Determining how much raw data can be transmitted per unit time
+	\item \textbf{Priority when multiple node sending}: Ensuring, that higher message ID make way for the lower ones 
 \end{itemize}
 
-%\paragraph{Latency tests:} The time it takes to send one large frame 
-%\paragraph{Bandwidth:} How much raw data can be transmitted per unit time
-%\paragraph{Priority when multiple node sending:} Ensuring, that higher message ID make way for the lower ones 
-
-\subsection{Testing the CAN Stack and the Basic Communication}
+\subsection{Basic Communication}
 \label{sub:TestingCANStack_BareMetal}
 After the design and printing of the stack board, testing it was the next step.
 The test included using one the CAN controllers within the Zynq chip with the purpose of showing that a basic CAN network between two Zybo boards could be implemented using the stack.
@@ -106,20 +99,24 @@ As each frame contains 8 bytes of data, the data rate becomes:
 
 That means, that the effective transfer rate is 577 kB/s, or 4.61 Mb/s with 8 Mb/s controllers. 
 With the controllers built into the PS of the Zybo, this effective rate comes down to 720 kb/s.
+
 \catalin{Explain how the test was done in terms of software. Also explain why GPIO interrupts were not suitable or used.}
 \subsection{Message Priority}\label{sub:CAN_message priority}
-
-Two Zybos will be needed for this test, both transmitting.
-The two transmitting Zybos will prepare a CAN frame with the same data content, but different message IDs.
-Zybo A will send message ID 0b10100100000.
-Zybo B will send massage ID 0b10101000000.
+This test is based on the CAN polled example, where two Zybos will transmit data.
+The two transmitting Zybos will prepare a CAN frame with the same data content, but different message IDs.\\
+Zybo A will send message ID 0b10100100000.\\
+Zybo B will send massage ID 0b10101000000.\\
 I.e. only the fifth and sixth bits have been swapped, meaning that Zybo A will have the higher priority.
-Using a DC voltage source, the same GPIO port of each Zybo will be set high simultaneously.
-When this happens both Zybos will send their frame.
+Both of these Zybos will prepare their respective Tx frame, and continuously poll the PMOD port.
+The PMOD connection must be configured to have pull down, to ensure that unconnected pins are set low.
+Using a DC voltage source, this GPIO port of each Zybo will be set high simultaneously.\\
+
+When the PMOD returns a non-zero value, each Zybo will call the XCanPs\_Send function twice.
+This will fill two frames with 8 bytes of data into the Tx Fifo of each Zybo. 
 Because of the asynchrous nature of the CAN protocol, it is still somewhat random which message gets transmitted first, so the frame will be sent twice. 
 This means, that after the first frame is sent from either one of the Zybos, both zybos will start transmitting at the same time. 
 In this case one Zybo must stop transmitting when it realizes that it has the lower priority.
-This is shown on figure~\ref{fig:CAN_test3_2TX}
+This is shown on figure~\ref{fig:CAN_test3_2TX}.\\
 
 \begin{figure}[h]
 	\centering
@@ -135,18 +132,6 @@ It will then cancel this attempt to transmit, and wait until the current frame h
 Also note the Zybo B writing the acknowledge bit at the time $171 \si{\micro\second}$.
 Because of this, it is not strictly necessary to use a receiving Zybo, because the other node will confirm the CRC of the message.\\
 
-\subsection{Utilizing Service Virtualization for the Proof of Concept}
-\label{sub:Utilizing_Svr_Virtualization}
-\catalin{More details here after a group discussion and opinions.}
-In order to show that the system can be fully functional despite the unsuccessful attempt to implement it, a different approach than the actual implementation is needed.
-One way of doing that is to apply a method called service virtualization where one part of the system can be simulated to prove that the rest of the system is fully functional, given the presence of the missing simulated part.
-\\
-In this case, the system that was designed for this project can be divided into two parts or subsystems.
-The first one is the physical CAN network to this point is only functional in bare\-metal code, which is described in section~\ref{sub:CAN_Bus_Tests}.
-The second part would be considered the subsystem present on Linux which included the protocol designed to be used with the CAN bus and the application which extracted the data from the sensors.
-This is described in section~\ref{sec:node_software}
-The connection between the two subsystems is the service virtualization and could be replaced either by a software buffer.
-
 \subsection{Conclusion}\label{sub:CAN_test_conclusion}
 It has been proven that the CAN hardware does work, and it is possible to transmit a message from one Zybo to another, without error.
 The substantial overhead does limit the potential bandwidth a great deal, and furthermore the controller on the PS of the Zybo can only work up to 1.25 MB/s. 
@@ -155,7 +140,7 @@ Additionally it was possible to measure the time it takes to construct a CAN fra
 \begin{table}[h!]
 	\centering
 	\begin{tabular}{r | c | c}
-		\textbf{Parameter} & \textbf{PS CAN controller} & \textbf{8 Mb/s CAN controller} \\
+		\textbf{Parameter} & \textbf{xcanps controller} & \textbf{8 Mb/s CAN controller} \\
 		\hline
 		\textbf{Frame time} & $87.5 \si{\micro\second}$ & $13.7\si{\micro\second}$ \\
 		\textbf{Build time} & $4.43 \si{\micro\second}$ & - \\
