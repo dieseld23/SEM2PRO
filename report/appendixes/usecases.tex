@@ -8,8 +8,8 @@
 \label{tab:use_monitor}
 \begin{tabular}{| r | p{7 cm} |}
 \hline
-\textbf{Use case:}                        & Monitor live data from go-kart                  \\ 
-\textbf{Actors:}                          & Engineer                                        \\
+\textbf{Use case:}                        & Monitor live data                  \\ 
+\textbf{Actors:}                          & User                                        \\
 \textbf{Purpose:}                         & Monitor live data from go-kart while driving    \\
 \textbf{Overview:}                        & The engineer starts the system. The system will begin collecting data on the go-kart and transfer them to a stationary computer. The computer will present data to the engineer on a UI. \\
 \textbf{Type:}                            & Essential                                       \\
@@ -30,8 +30,8 @@
 \label{tab:use_log}
 \begin{tabular}{| r | p{7 cm} |}
 \hline
-\textbf{Use case:}                        & Log go-kart data            			        \\ 
-\textbf{Actors:}                          & Engineer                                        \\
+\textbf{Use case:}                        & Log data            			        \\ 
+\textbf{Actors:}                          & User                                        \\
 \textbf{Purpose:}                         & Log go-kart data                 				\\
 \textbf{Overview:}                        & After startup the system will log the collected data locally on the go-kart  \\
 \textbf{Type:}                            & Essential                                       \\
@@ -54,7 +54,7 @@
 \begin{tabular}{| r | p{7 cm} |}
 \hline
 \textbf{Use case:}                        & Read logged data  			                    \\ 
-\textbf{Actors:}                          & Engineer                                        \\
+\textbf{Actors:}                          & User                                        \\
 \textbf{Purpose:}                         & To read data that is logged locally on the go-kart               \\
 \textbf{Overview:}                        & The engineer will ask the system for the logged data. The system will transfer the logged data to a stationary computer \\
 \textbf{Type:}                            & Essential                                       \\
@@ -74,8 +74,8 @@
 \label{tab:use_start_stop}
 \begin{tabular}{| r | p{7 cm} |}
 \hline
-\textbf{Use case:}                        & Start and stop data collection  			                    \\ 
-\textbf{Actors:}                          & Engineer                                        \\
+\textbf{Use case:}                        & Toggle data collection  			                    \\ 
+\textbf{Actors:}                          & User                                        \\
 \textbf{Purpose:}                         & To start and stop data collection from specified sensors              \\
 \textbf{Overview:}                        & The engineer will ask the system to start or stop collecting data from a specific sensor. The system will then start or stop the system respectively. \\
 \textbf{Type:}                            & Important                                       \\
@@ -83,9 +83,50 @@
 \textbf{Postconditions:}                  & Data collecting is started or stopped for specific sensor.                                                                                      \\
 \textbf{Special requirements:}            & -                                               \\ \hline 
 \multicolumn{1}{|c|}{\textbf{Actor action}} & \multicolumn{1}{c|}{\textbf{System response}}\\
-\multicolumn{1}{|p{5 cm} |}{1. Ask system to start or stop data collecting for specific sensor.}       & \begin{tabular}[c]{@{}p{7cm}@{}}2. System starts or stops data collecting for specific sensor\end{tabular}                              	                \\ \hline
+\multicolumn{1}{|p{5 cm} |}{1. Ask system to start or stop data collecting for specific sensor.}       & 2. System starts or stops data collecting for specific  \\ \hline
 \multicolumn{2}{|c|}{\textbf{Alternative flow of events}}                                   \\
 \multicolumn{2}{|p{12 cm}|}{-}              \\ \hline                                                                                                                                   
 \end{tabular}
 \end{table}
-\mikkel{Add developer usecase narratives}
+
+\begin{table}[H]
+	\centering
+	\caption{Usecase narrative for add/modify data producers.}
+	\label{tab:use_add_remove}
+	\begin{tabular}{| r | p{7 cm} |}
+		\hline
+		\textbf{Use case:}                        & Add/modify data producers  			                    \\ 
+		\textbf{Actors:}                          & Developer                                        \\
+		\textbf{Purpose:}                         & To add new nodes to the network, or modify the existing ones              \\
+		\textbf{Overview:}                        & Developer adds a node to the network without having to modify existing nodes.  \\
+		\textbf{Type:}                            & Essential                                       \\
+		\textbf{Preconditions:}                   & System is not running               \\
+		\textbf{Postconditions:}                  & A node is modified or added, and the system can be operated the same as before.                  \\
+		\textbf{Special requirements:}            & -                                               \\ \hline 
+		\multicolumn{1}{|c|}{\textbf{Actor action}} & \multicolumn{1}{c|}{\textbf{System response}}\\
+		\multicolumn{1}{|p{5 cm} |}{\begin{tabular}[c]{@{}p{5cm}@{}}1. A new node is added by the developer.\\ 2. System is booted. \end{tabular}}       & 3. System starts normally.             	                \\ \hline
+		\multicolumn{2}{|c|}{\textbf{Alternative flow of events}}                                   \\
+		\multicolumn{2}{|p{12 cm}|}{-}              \\ \hline                                                                                                                                   
+	\end{tabular}
+\end{table}
+
+\begin{table}[H]
+	\centering
+	\caption{Usecase narrative for add custom GUI.}
+	\label{tab:use_custom_gui}
+	\begin{tabular}{| r | p{7 cm} |}
+		\hline
+		\textbf{Use case:}                        & Add custom GUI  			                    \\ 
+		\textbf{Actors:}                          & Developer                                        \\
+		\textbf{Purpose:}                         & Add a User Interface, to neatly display data from go kart              \\
+		\textbf{Overview:}                        & An engineer develops a program to read relevant data from the front end program on the laptop, and presents it graphically \\
+		\textbf{Type:}                            & Important                                       \\
+		\textbf{Preconditions:}                   & System is not running               \\
+		\textbf{Postconditions:}                  & System runs as usual, but with a new beautiful GUI        \\
+		\textbf{Special requirements:}            & -                                               \\ \hline 
+		\multicolumn{1}{|c|}{\textbf{Actor action}} & \multicolumn{1}{c|}{\textbf{System response}}\\
+		\multicolumn{1}{|p{5 cm} |}{1. Develop a GUI for the system.}       & 2. System runs as susual, but with new beautiful GUI                               	                \\ \hline
+		\multicolumn{2}{|c|}{\textbf{Alternative flow of events}}                                   \\
+		\multicolumn{2}{|p{12 cm}|}{-}              \\ \hline                                                                                                                                   
+	\end{tabular}
+\end{table}
