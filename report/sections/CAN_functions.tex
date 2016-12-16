@@ -46,7 +46,6 @@ Future work could allow for the setting and getting of parameters, and possibly 
 Another specific command is the synchronization command. 
 When the system starts all nodes will go start polling their Rx Fifo for this sync command at very high update rate. 
 When this command is received, all nodes will start their millisecond timer, and start their main program of transmitting data.
-\martin{Does the wifi node attatch the s32 int timestamp, or does it attatch some unix standard?}
 
 \paragraph*{Multiframe Messages}
 Due to the limited data length of a CAN frame, it is likely necessary to support multiple frames per message. 
