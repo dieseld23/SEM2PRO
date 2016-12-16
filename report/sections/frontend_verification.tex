@@ -28,5 +28,12 @@ On the PC, the frontend was started, taking its input from a socat listener
 \end{lstlisting}
 Then, on the Zybo, the GPS and 'WiFi' nodes were started, piping their output to socat:
 \begin{lstlisting}
->> ./sensornode | ./verification | socat - tcp:2049
+>> ./sensornode | ./verification | socat - tcp:196.178.10.10:2049
 \end{lstlisting}
+Here, the first and last data points from the data set.
+\begin{lstlisting}
+>> N 55.36734 E 10.43185
+>> N 55.36707 E 10.43109
+\end{lstlisting}
+This corresponds with the data created on the GPS node.
+\thomas{Perhaps refer to the section on converting gps coords in gps node}
