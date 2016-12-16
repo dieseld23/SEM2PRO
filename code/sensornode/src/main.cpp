@@ -12,17 +12,10 @@
 
 //NOTES:
 // install on zybo libpthread-stubs0-dev 
-// invest in thread priority
-// DATA IN BUFFER TEST AND SUCH FUNCTIONALITY SHOULD BE PUT IN BUFFER CLASS
-// Destructors
-
-
-using namespace std;
-int not_used;
 
 int main()
 {
-	cout.precision(50); 
+	std::cout.precision(50); 
 	CAN_link can_link;					// New CAN_link
 	Node gps_node(14);					// New GPS node
 	Protocol protocol;					// New protocol

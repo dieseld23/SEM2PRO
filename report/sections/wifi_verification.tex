@@ -1,3 +1,16 @@
 %!TEX root = ../main.tex
 \section{Wifi}
-This section should have some content!
+A WiFi connection is required between the go-kart and a computer.
+This connection is required to have a range of at least 80\si{\metre}.
+Verifying that this is possible is done throughout this section.
+
+\subsection{Method}
+A Zybo with the TP-LINK TL-WN722N connected is placed with 80\si{\metre}, unobstructed, distance to a laptop.
+The ad-hoc network is initiated using the method described in section \ref{sec:wifi}.
+\texttt{ping} is used to verify that the connection is made.\\
+A small program was written to verify a stable connection.
+This program increments a counter every milliseconds and sends the value via WiFi PC to the Zybo.
+Allowing this program to run for 10 seconds should yield 10000 data points on the receiving end.
+This was repeated for 80\si{\metre} and 110\si{\metre}.
+In both cases the complete dataset was received.
+It was decided to not continue the test since the requirement is met at this point.
