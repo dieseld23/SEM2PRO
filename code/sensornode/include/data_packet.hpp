@@ -21,7 +21,8 @@
 #pragma once
 #include <iostream>
 #include <vector>
-#include <bitset>   
+#include <bitset>  
+#include <sstream> 
 
 struct data_packet {
   std::bitset<1> nw_msg;
@@ -46,6 +47,19 @@ void print_bool_packet(void){
 }
 
 /*****************************************************************************
+*   Input    : 
+*   Output   : 
+*   Function : Prints the packet in bools
+******************************************************************************/
+void print_bool_packet_string(void){
+ std::stringstream ss;
+
+ ss << nw_msg.to_string()<<node_id.to_string()<<messagetype.to_string()<<dlc.to_string()<<test(this->data);
+ std::cout <<ss.str();
+//<< print_vector_bool(this->data);
+}
+
+/*****************************************************************************
 *   Input    : vector<bool>
 *   Output   : 
 *   Function : Prints a vector of bools
@@ -55,6 +69,20 @@ void print_vector_bool(std::vector<bool> vector){
     std::cout << i;
   }
 }
+
+ std::string  test(std::vector<bool> vector){
+   std::string ss = "";
+  for (auto i : vector) {
+    if (i == true){
+      ss += '1';
+    }else{
+      ss += '0'; 
+    }
+  }
+  return ss;
+}
+
+
 
 /*****************************************************************************
 *   Input    : 
