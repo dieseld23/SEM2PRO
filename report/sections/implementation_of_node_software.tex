@@ -2,7 +2,6 @@
 \mikkel{An introductiontion needs to be here!}
 The on-vehicle network generally have two types of nodes, a generic sensor node and the wifi node.
 This section will seek to design and implement software that adheres to the requirements listed earlier.
-A
 All nodes in the system needs to:
 \begin{itemize}
 \item Get data from CAN network.
@@ -28,7 +27,7 @@ An example of a node can be seen in figure \ref{fig:gps_node}.
 \end{figure}
 
 This specific node has a GPS attached to it connected through a USB interface, but in general it could be any kind of data producing unit connected through any kind of interface.
-From the analysis section is it clear that a sensor node has the following responsibilities:
+From the analysis section it is clear that a sensor node has the following responsibilities:
 
 \begin{itemize}
 \item Get data from associated sensor.
@@ -100,6 +99,7 @@ The classes and their tasks from Code~\ref{code:data_packet} will be explained h
 ~\\ \par \textbf{GPS class} ~ \\
 The GPS class needs to extract data from a connected GPS unit and update its own variables with that data.
 The specific GPS unit used in this project has a USB interface and uses the NMEA protocol to format data.
+\mikkel{We are cheating... Explain!}
 
 ~\\ \par \textbf{Packer\_GPS class} ~ \\
 The Packer\_GPS class is also sensor specific and is the link between the sensor and the data agnostic node.
@@ -155,20 +155,65 @@ New classes should be developed to extract data from sensor, pack data according
 It is advantageous to implement this functionality into Packer\_Sensor and Sensor classes to keep a similar software design through the nodes.
 The interface to the generic Node class is a call to its function \texttt{put\_data\_packet(data\_packet)}.
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 \subsection{Wifi Node}
-\mikkel{We should design something or at least make some block diagrams of what needs to happen with data here.}
+The node with a WiFi connection to the stationary computer is a special node in the system.
+There should be only one and it should collect all CAN messages, log them and transfer then using WiFi.
+The WiFi node can be seen in figure \ref{fig:wifi_node}.
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=0.4\textwidth]{graphics/wifi_node}
+\caption{Figure should be made correctly.}
+\label{fig:wifi_node}
+\end{figure}
+
+From the analysis it is clear that the WiFi node has the following responsibilities:
+
+\begin{itemize}
+\item Log all data to SD card.
+\item Transmit and receive data through WiFi.
+\item Pack data according to protocol
+\item Send log file through WiFi.
+\item Timestamp management
+\item Merge multi frame packets
+\end{itemize}
+\mikkel{Is multi frame packets what we mean?}
+
+It is found that the responsibilities can be grouped into normal operation mode and sending log file mode.
+This should be implemented as a state machine as shown in figure \ref{fig:StateDiagram_NodeWiFiStates}.
+In normal operation mode the WiFi node should handle data coming from the CAN network and the data coming from the WiFi connection.
+If it receives a \texttt{send\_log} command from the stationary computer it should go into the sending log mode and stay there until the log file has been sent.
 
 \begin{figure}[!h]
 \centering
 \includegraphics[width=0.5\textwidth]{graphics/StateDiagram_NodeWiFiStates}
-\caption{Clasxxx}
+\caption{State machine in WiFi node software.}
 \label{fig:StateDiagram_NodeWiFiStates}
 \end{figure}
 
+In normal operation mode it should handle all incoming data from the WiFi connection as shown in figure \ref{fig:FlowChart_NodeWiFiCmd}.
+As it can be seen the WiFi node will only send frames to the CAN network when it receives commands to do so from the stationary computer.
 \begin{figure}[!h]
 \centering
 \includegraphics[width=0.5\textwidth]{graphics/FlowChart_NodeWiFiCmd}
-\caption{Claxxx}
+\caption{B}
 \label{fig:FlowChart_NodeWiFiCmd}
 \end{figure}
 
@@ -185,4 +230,25 @@ The interface to the generic Node class is a call to its function \texttt{put\_d
 \includegraphics[width=1\textwidth]{graphics/StateDiagram_ConcatMsgProcess}
 \caption{cccc}
 \label{fig:StateDiagram_ConcatMsgProcess}
+\end{figure}
+
+
+
+\begin{figure}[!h]
+    \centering
+    \begin{subfigure}{0.42\textwidth}
+    \centering
+        \includegraphics[width=1\textwidth]{graphics/FlowChart_NodeWiFiCmd}
+        \caption{Outgoing data. Data going from a sensor and to the CAN program.}
+        \label{fig:filter_1}
+    \end{subfigure}
+    ~
+    \begin{subfigure}{0.52\textwidth}
+    \centering
+        \includegraphics[width=1\textwidth]{graphics/FlowChart_CANFrameProcess}
+        \caption{Ingoing data. Data going from the CAN program to the node.}
+        \label{fig:filter_2}
+    \end{subfigure}
+        \caption{Block diagram showing handling of outgoing and ingoing data. The boxes are colored according to which class implements the functionality. Yellow is the GPS class, orange is the Packer\_GPS class, blues is the node class, green is the protocol class and blue is the CAN\_link class.}
+           \label{fig:filter_fulll}
 \end{figure}
