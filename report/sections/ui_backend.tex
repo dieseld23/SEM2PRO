@@ -15,7 +15,7 @@ Additionally each message will be associated with a four byte timestamp.
 This timestamp is given as the time in milliseconds since startup and is associated with message type <type>. \thomas{insert correct message type}
 \thomas{We need to agree on a way to write nodeid,msgid,msgtype throughout the report}
 
-\subsection{Backend Architecture}
+\subsection{Front End Architecture}
 An overview of the functionality can be seen in figure \ref{fig:backendconcept}.
 As can be seen, this architecture provides the link between the receiving program (socat) and a potential \acs{gui}.
 Upon receiving a message from the go-kart, socat will pipe the raw message to the interpreter.
@@ -50,7 +50,7 @@ It is unlikely that this choice will pose any issues in terms of performance sin
 	\caption[Backend class diagram.]{Classdiagram of the backend.}
 	\label{fig:backendclass}
 \end{figure}
-\thomas{Changes to figure \ref{fig:backendclass}: all class names with small letters, backend should be called frontend}
+\thomas{Changes to figure \ref{fig:backendclass}: all class names with small letters, backend should be called front end}
 From \ref{fig:backendconcept}, a class diagram has been created.
 This can be seen on figure \ref{fig:backendclass}.
 The functionality is implemented in four classes, each of which will be explained in more detail below.
@@ -136,11 +136,11 @@ Any number of functions can be added to this class depending on the needs of the
 The general structure of a function can be seen in code \ref{code:frontendfunction}.
 
 \begin{lstlisting}[caption=Function template for accesing data in fifo,label=code:frontendfunction]
-coordinate_t frontend::get_<PARAM>()
+<PARAMETER_TYPE> frontend::get_<PARAMETER>()
 {
 	std::vector<data_t> v;
 
-	while(!fifo_o->get(<MESSAGEID>, v));
+	while(!fifo_o->get(<MESSAGE_ID>, v));
 
 	if (!v.empty())
 	{
@@ -150,6 +150,6 @@ coordinate_t frontend::get_<PARAM>()
 		/*Decipher d*/
 	}
 
-	return <PARAM>;
+	return <PARAMETER_TYPE>;
 }
 \end{lstlisting}

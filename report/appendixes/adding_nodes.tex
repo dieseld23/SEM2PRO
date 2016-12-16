@@ -1,0 +1,59 @@
+%!TEX root = ../main.tex
+\section{Adding a New Node to the System}
+\label{app:addnode}
+In adding a new node to the system there are two steps that need to done:
+\begin{itemize}
+	\item Prepare the node software.
+	\item Add appropriate functions to the API.
+\end{itemize}
+This appendix will explain those steps to enable a user to add their custom nodes to the network.
+\subsection{Preparing node software}
+\thomas{Here goes you, Mikkel!}
+
+\subsection{Creating the API}
+The front end is comprised of a list of functions which enable the user to access the data collected on the network.
+The data, up until the front end is not in human readable format.
+Each function in the API reads the appropriate data and converts it to a more useful format.
+A template of an API function is given in code \ref{code:apitemplate}.
+
+\begin{lstlisting}[caption=Function template for accesing data,label=code:apitemplate]
+#define <MESSAGE_ID> "11110001001"
+
+<PARAMETER_TYPE> backend::get_<PARAMETER>()
+{
+	std::vector<data_t> v;
+
+	while(!fifo_o->get(<MESSAGE_ID>, v));
+
+	if (!v.empty())
+	{
+		double t = std::stoi(v.back().millis);
+		std::string d = v.back().data;
+
+		/*Decipher d*/		
+	}
+
+	return <PARAMETER_TYPE>;
+}
+\end{lstlisting}
+
+The definition of the message id of the message being decoded should be placed in \texttt{backend.hpp}.
+The return type of functions is optional.
+The \texttt{get\_coordinate()} function implemented, for example, returns a struct containing the relevant data.
+All data is kept in a vector with 0-1024 elements where the last element of the vector is always the newest.
+At line 5 a container for this vector, \texttt{v} is instantiated.
+The while loop will continue to run until \texttt{v} is populated.
+This will not happen until the \texttt{get} function succesfully locks the mutex.
+Each entry in \texttt{v} is a struct as seen in code \ref{code:data_t}
+
+\begin{lstlisting}[caption=Struct used to store each datapoint,label=code:data_t]
+struct data_t
+{
+	std::string millis;
+	std::string data;
+};
+\end{lstlisting}
+
+In this struct, \texttt{millis} is the number of milliseconds since startup in binary.
+\texttt{data} is the binary form of the associated data given by \texttt{MESSAGE_ID}.
+Once \texttt{v} is populated the data can be accessed as shown in lines 11 and 12.
