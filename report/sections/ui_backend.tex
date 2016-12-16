@@ -12,7 +12,7 @@ In section \ref{sub:CAN_protocol} a description of the node and message identifi
 The NodeID and MSGtype identifiers are decided by the implementer and together they provide a unique, 11 bit identifier, the Message ID, for the type of data in the message.
 Since the Message ID is capable of uniquely identifying the data, it will be used in storing the data.
 Additionally each message will be associated with a four byte timestamp.
-This timestamp is given as the time in milliseconds since startup and is associated with message type <type>. \thomas{insert correct message type}
+This timestamp is given as the time in milliseconds since startup and is associated with message type 1.
 \thomas{We need to agree on a way to write nodeid,msgid,msgtype throughout the report}
 
 \subsection{Front End Architecture}
@@ -21,7 +21,6 @@ As can be seen, this architecture provides the link between the receiving progra
 Upon receiving a message from the go-kart, socat will pipe the raw message to the interpreter.
 The interpreter will proceed to extract the message id, the timestamp and the data.
 These are then put into a fifo buffer which will contain the latest 1024 data points for a given message id.
-\thomas{Why 1024? An arbitrary number that needs some sort of explanation..}
 One of the requirements of this system is that it should be easily expandable.
 A consequence of this is that adding a new node on the system should require as few changes to the code as possible.
 Making this backend agnostic with respect to the type of data means that no changes are required when adding different nodes with different data types.
@@ -66,9 +65,11 @@ Since these threads are run simultaneously it is necessary to use a mutex to avo
 Whenever a message is put in the buffer, it is split into its three components, a 10 bit message id, a 4 byte timestamp and a string of data of arbitrary length.
 On figure \ref{fig:backendmsg} is a depiction of the messagetype.
 \begin{figure}[H]
-	\missingfigure{Backend Message (msgid/timestamp/data)}
-	%\includegraphics[width=\linewidth]{graphics/backend_message}
-	\caption[Wifi Message.]{Depiction of the message sent over wifi.}
+	%\missingfigure{Backend Message (msgid/timestamp/data)}
+	\includegraphics[width=\linewidth]{graphics/backend_message}
+	\caption[Front end message.]{Depiction of the message sent over wifi. The message id is an the same 11 bit identifier used in the CAN network.
+	The timestamp is a 4 byte value containing the number of milliseconds since startup.
+	The data field can be of arbitrary length.}
 	\label{fig:backendmsg}
 \end{figure}
 

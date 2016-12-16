@@ -4,12 +4,9 @@
 \label{sec:parameters}
 In developing new hardware or evaluating current hardware, it is necessary to be able to monitor associated parameters.
 This section will investigate what parameters need to be logged in order to provide a useful and complete logging of the behavior of the go-kart.
-The parameters in question fall into three categories; Translational parameters, electrical parameters and mechanical parameters.
-\martin{What is translational parameters? Sounds like the opposite of rotational parameters, which in turn are both mechanical}
-\catalin{I wouldn't put translational under the mech category.
-I suggest translational->position and orientation or positioning or navigation.}
+The parameters in question fall into three categories; physical parameters, electrical parameters and mechanical parameters.
 Clearly, developers may, in addition to the aforementioned categories, also have programmatic information, such as debug information from a motor controller.
-This section will deal only with the physical parameters.
+This section will deal only with parameters the describe the state of the go-kart.
 The three categories are dealt with in turn in the remainder of this section.
 \subsection{Physical Parameters}
 This category comprises all information about the motion of the go-kart.
@@ -37,11 +34,11 @@ In order to limit the scope of the project only the GPS and the IMU will be impl
 This category comprises all information about the electrical aspects of the go-kart.
 \begin{itemize}
 	\item \textbf{Motor Currents:} Providing a means of monitoring the currents flowing through the motor allows the user to calculate the torque exerted by the motor as well as the current power draw of the motor.
-	Knowing the currents could also prove an invaluable debugging tool when developing a new inverter for the go-kart.\catalin{Can you say that "knowing sth" is a tool?}
+	Knowing the currents could also prove to be an invaluable debugging tool when developing a new inverter for the go-kart.\catalin{Can you say that "knowing sth" is a tool?}
 	\item \textbf{Throttle Position:} The throttle on the go-kart is connected to a potentiometer.
 	Measuring the voltage output of this potentiometer provides a simple way of monitoring the position of the throttle.
 	\item \textbf{Desired Currents:} Based on the current throttle position a set of desired currents are calculated.
-	Monitoring these allows spotting any discrepancies between the desired and the actual currents.\catalin{Maybe it should be more clear what are Desired currents. Desired currents of the motor?}
+	Monitoring these allows spotting any discrepancies between the desired and the actual currents.
 	\item \textbf{Voltage from Inverter:} Duty cycle is proportional to the voltage applied to the motor, and can be used to calculate the power going into the motor.
 	\item \textbf{Battery Voltage:} As the go-kart is electrical, naturally, it has a battery.
 	Monitoring the current battery status could give the user an indication of how much driving time is left, or how long until the batteries are recharged afterwards.
@@ -56,20 +53,23 @@ This category comprises all information about the mechanical aspects of the go-k
 \begin{itemize}
 	\item \textbf{Steering Wheel Angle:} Monitoring the angle of the steering wheel allows analysing the performance of the driver.
 	In addition, with an actuator, it opens up for the possibility of remote control of the go-kart.
-	Similarly to monitoring the velocity, the steering wheel angle can be monitored by adding an encoder to the steering column.\catalin{Steering column or axle?}
+	Similarly to monitoring the velocity, the steering wheel angle can be monitored by adding an encoder to the steering column.
 	\item \textbf{Braking Pedal Position:} The braking system on the go-kart is similar to that of an ordinary car.
 	The braking disc is mounted on the driving axle and the braking calibers are connected to the brake pedal by a series of oil-filled hoses.
-	Monitoring its actuation allows analysing the performance of the driver and as mentioned above, may potentially allow for mechanical control of the go-kart.\catalin{Mechanical or remote? Or Remote mechanical?}
+	Monitoring its actuation allows analysing the performance of the driver and as mentioned above, may potentially allow for mechanical control of the go-kart.
+	\catalin{Mechanical or remote? Or Remote mechanical?}
 	\item \textbf{Temperature:} Certain parts of the go-kart directly impact driving performance with changing temperature.
-	Additionally, overheating the motor, the batteries or tires may cause expensive or dangerous failures.\catalin{Tires is with "i", not "y".}
+	Additionally, overheating the motor, the batteries or tyres may cause expensive or dangerous failures.\catalin{Tires is with "i", not "y". Tyre is the british spelling}
 \end{itemize}
-As both monitoring of the steering wheel angle and the braking pedal position would require mechanical changes to the go-kart, they are beyond the scope of this project and as such will not be implemented.\catalin{as such they will...? or as such will..?}
-The temperature of the motor and its controller is provided by the sevcon gen4.
+As both monitoring of the steering wheel angle and the braking pedal position would require mechanical changes to the go-kart, they are beyond the scope of this project and as such will not be implemented.\catalin{as such they will...? or as such will..? }
+\thomas{you can easily leave out that word. If you can save a few words without loosing the meaning, do it.}
+The Sevcon gen4 provides the temperature of the motor and its internal motor control circuitry.
 All other temperatures would require installation of thermometers on the vehicle.
-\catalin{the sevcon gen4 IS the controller. "The temperature of the motor and its controller..."}
 
 \subsection{Conclusion}
 \catalin{Why exactly physical does not include mechanical as well?}
+\thomas{what..? Mechanical means.. well.. Something mechanical.. The physical parameters means all of the parameters that describe the physical state of the go kart as it exists in the world.}
+
 As mentioned in the beginning of the section, the parameters discussed throughout this section are limited to those that explain the physical aspects of the go-kart.
 A future project may include the introduction of a data producer which does not directly gather data from a sensor, but generates a filtered output of other sensory equipment.
 It is not possible to account for every parameter that a future developer may wish to add.
