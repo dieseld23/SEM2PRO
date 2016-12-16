@@ -123,7 +123,7 @@ The additional \texttt{data\_packets} must have the same node id and message typ
 The class also needs to calculate number of data bytes, \texttt{dl}, to each \texttt{data\_packet}.
 On \texttt{data\_packets} coming from the CAN network the class needs to pass the message ID through to the Node Class.
 \martin{I changed the above line. The Node ID can determine if the message is adressed to it, and what to do with the commands it might receive..}
-
+\mikkel{I don't think it should be changed :(}
 ~\\ \par \textbf{CAN\_link class} ~ \\
 The CAN\_link class has the responsibility of transferring and receiving data to and from the CAN program.
 As this interface has not yet been implemented this class makes use of the standard input and output. 
@@ -141,7 +141,7 @@ It is shown in figure \ref{fig:state_machine}.
 \begin{figure}[!h]
 \centering
 \includegraphics[width=1\textwidth]{graphics/StateDiagram_Node.pdf}
-\caption{State machine..... }
+\caption{State machine implementing the node class functionality. }
 \label{fig:state_machine}
 \end{figure}
 \martin{In figure~\ref{fig:state_machine}, the "boolean" value run, should be the same as the boolean value "running" on figure~\ref{fig:node_class_diagram}.}
@@ -158,7 +158,7 @@ New classes should be developed to extract data from sensor, pack data according
 It is advantageous to implement this functionality into Packer\_Sensor and Sensor classes to keep a similar software design through the nodes.
 The interface to the generic Node class is a call to its function \texttt{put\_data\_packet(data\_packet)}.
 \martin{Maybe this needs to be moved to section~\ref{sec:node_implementation_guide}.}
-
+\mikkel{I think it should stay :)}
 
 
 
@@ -249,9 +249,10 @@ A state machine handling merging of frames can be seen in figure \ref{fig:StateD
 \end{figure}
 
 The mentioned input buffer is the buffer where the CAN program puts its received frames. 
-\mikkel{Change to merged frame buffer???}
 When the frames are correctly merged they will be put in the merged frame buffer.
-All frames in this buffer should be handled according to the flow depicted in figure \ref{fig:FlowChart_CANFrameProcess}.
+The frames in this buffer then needs to be timestamped correctly, logged and sent throug WiFi.
+This flow is depicted in figure \ref{fig:FlowChart_CANFrameProcess}.
+
 
 \subsubsection*{Class diagram}
 Based on the previous analysis a class diagram was developed and can be seen in figure \ref{fig:node_class_diagram}.

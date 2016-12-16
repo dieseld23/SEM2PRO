@@ -126,7 +126,6 @@ void print_n_data_bytes(void){
 void print_messagetype(void){
   std::cout<< "Messagetype: ";
   std::cout<<messagetype << '\n';
-  std::cout << '\n';
 }
 
 
