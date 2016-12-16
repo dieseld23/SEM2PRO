@@ -5,7 +5,6 @@
 
 interpreter::interpreter(fifo *fifo) : fifo_o(fifo)
 {
-	//recv_t = std::thread(&interpreter::recv, this, &this->s_buff);
 	intr_t = std::thread(&interpreter::intprt, this, &this->s_buff);
 }
 
@@ -15,7 +14,9 @@ bool interpreter::put(std::string msg)
 	{
 		s_buff.strings.push_back(msg);
 		s_buff.mutex.unlock();
+		return true;
 	}
+	return false;
 }
 
 void interpreter::intprt(buffer *s_buff)
@@ -29,6 +30,7 @@ void interpreter::intprt(buffer *s_buff)
 		{
 			msg = s_buff->strings.back();
 			s_buff->strings.pop_back();
+			//std::cout << s_buff->strings.size() << std::endl;
 		}
 		s_buff->mutex.unlock();
 
