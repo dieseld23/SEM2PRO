@@ -10,7 +10,7 @@ In section \ref{sec:hardware_for_par}, it was chosen to use an IMU and a GPS, bo
 Additionally, one node has to transfer data wirelessly from the go-kart to a stationary monitoring system.
 It was chosen to use wifi as the wireless protocol, and this will be handled on a separate node.
 As the wifi node provides the link to the laptop, it is natural to make this the master node.
-\martin{I declared the wifi node as the master. Is this premature? Or too late?}
+\martin{I declared the wifi node as the master. Is this premature? Or too late? FYI, section~\ref{sec:wireless_analysis} determines that it is in fact WiFi}
 Both USB and wifi are implemented in most Linux operating systems.
 Thus choosing an EP supporting such an operating system will greatly simplify the code that needs to be written for all nodes.
 The authors attend a course on software development in Linux, as such, this is a natural choice.
