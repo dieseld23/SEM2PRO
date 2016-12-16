@@ -3,7 +3,7 @@
 #include <iostream>
 #include <mutex>
 
-#define GPS_ID "10110011001"
+#define GPS_ID "11110001001"
 #define LAT_NORTH	0
 #define LAT_SOUTH	1
 #define LONG_EAST	0

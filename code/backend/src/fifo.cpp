@@ -39,8 +39,9 @@ bool fifo::get(std::string msgid, std::vector<data_t> &v)
 		if(buffer[msgid].second)
 		{
 			v = buffer[msgid].first;
+
 			sem_clr(msgid);
-			mutex.unlock();	
+			mutex.unlock();
 			return true;
 		}
 		mutex.unlock();
