@@ -1,40 +1,44 @@
 %!TEX root = ../main.tex
 \subsection{Methods to implement CAN on Linux}\label{sec:methods_to_implement_can}
-\catalin{IMPORTANT: In case we get the actual network running, don't forget to change the text accordingly (implementation not successful etc.)}
 
-The next step after testing the stack board and showing the basic functionality of the CAN network was to implement it using Linux running on the Zybo board.
-\martin{It should be mentioned either here or before why it is necessary to implement on Linux as opposed to bare metal.}
-This step required enabling the CAN drivers that reside in the Xillinux kernel and gaining access to the CAN devices.
-\martin{The can controllers do not have anything to do with xilinux. Does Xilinux provide drivers for the can controllers on the zynq?}
+\martin{The can controllers do not have anything to do with xilinux. Does Xilinux provide drivers for the can controllers on the zynq? CAN controllers vs CAN drivers Issue - Some things rephrased.}
+After testing the stack board and showing the basic functionality of the CAN network as described in section \ref{sub:TestingCANStack_BareMetal}, the next step was to implement it using Linux running on the Zybo board.\\
+Using Linux was necessary because the available sensors, GPS and IMU, as well as the WiFi dongle required an USB interface and the WiFi node needed various networking tools only present on a Linux operating system.
+The process of establishing a wireless communication is explained in section \ref{sec:wifi}.
+An operating system was also required for logging purposes, specifically to log data into files.
 This section describes the necessary procedures that were followed in order to gain control over the CAN network from Linux.
-\\
+The different approaches that were explored, described in the next section, include:
+\begin{itemize}
+\item utilizing the XCanPs
+\item utilizing the AXI CAN IP Core
+\item implementing asymmetric multiprocessing.
+\end{itemize}
+~\\
 At this point the reader should be informed that although the CAN controllers could be used on the Processing System using bare-metal code, the implementation of CAN on the Programmable Logic and the access to it from Linux was not successful.
-\martin{Access to xcanps from Linux, design our own can controller on FPGA, asynchronous mode.}
 After a lot of effort to create a physically functional network and researching on how to implement it, the conclusion that the available documentation is lacking was reached.
 Alternatively, other means to prove the concept of the project were taken into account, as described in section \ref{sub:Utilizing_Svr_Virtualization}.
 
-\subsubsection{Enabling the CAN Drivers}
+\subsubsection{Enabling the CAN Controller Drivers}
 
 This was the first idea on how to utilize the CAN network using Linux.
-In order to enable the drivers on the Zynq7 Processing System, the Linux CAN driver guide \cite{Xilinx_wiki_Linux_CAN_driver} was followed.
+In order to gain access to the CAN controllers on the Zynq7 Processing System, the Linux CAN driver guide \cite{Xilinx_wiki_Linux_CAN_driver} was followed in order to enable the necessary drivers.
 The Kconfig file under the path \ref{code:can_kconfig_pathfile} needed to be configured.
 The entry at line 128 was changed as seen in the code snippet \ref{code:can_kconfig_contents_line128}.
 Originally, lines 130 and 131 were as seen in the snippet \ref{code:can_kconfig_original_line130}.
-\martin{I think the original code snippet is irrelevant.}
 
 \begin{lstlisting}[caption={CAN Kconfig pathfile.},numbers=none,label=code:can_kconfig_pathfile]
 /usr/src/kernels/3.12.0-xillinux-1.3/drivers/net/can
 \end{lstlisting}
 
-\martin{Careful about the line length in the code}
 \begin{lstlisting}[firstnumber=128,caption={Kconfig file contents from line 128.},label={code:can_kconfig_contents_line128}]
 config CAN_XILINXCAN
 	tristate "Xilinx(*@ @*)CAN"
-	depends on NET [=y] && CAN_DEV [=y] && CAN [=y] && (ARCH_ZYNQ || MICROBLAZE [=y])
+	depends on NET [=y] && CAN_DEV [=y] && CAN [=y] && (ARCH_ZYNQ ||
+		MICROBLAZE [=y])
 	default y
 	---help---
-	  Xilinx CAN driver. This driver supports both soft AXI CAN IP and
-	  Zynq CANPS IP.
+	  Xilinx CAN driver. This driver supports both soft AXI CAN IP
+	  and Zynq CANPS IP.
 \end{lstlisting}
 
 \begin{lstlisting}[firstnumber=130,caption={Original content of lines 130 and 131.},label={code:can_kconfig_original_line130}]
@@ -76,29 +80,25 @@ axi_can_0: axi-can@40000000 {
 \mikkel{Maybe you can provide some thoughts about the problem. Maybe also some words about the patching Xilinx-Digilent etc.}
 As was previously mentioned, the implementation was unsuccessful. At the time, the research done on this topic did not lead to successfully enabling the drivers.
 
-\subsubsection{Utilizing the AXI CAN core}
+\subsubsection{Utilizing the AXI CAN IP Core}
 
-Another way to implement a CAN network was to use the AXI CAN core that is available in the Vivado Suite, instead of utilizing the CAN controllers on the Zynq.
+Another way to implement a CAN network was to use the AXI CAN core that is available in the Vivado Suite, instead of utilizing the CAN controllers on the Zynq chip.
 Unfortunately due to a license restriction from Xilinx, the core can only be used for simulation purposes and not actual hardware implementations.
 This information became available after the process of generating the bistream file in the form of an error, thus not allowing for further use of the core.
-The architecture can be seen in figure \ref{fig:CAN_Arch_with_AXI_CAN}.
-The core accepts a clock frequency from \SI{8}{\mega\hertz} to \SI{24}{\mega\hertz}, which in the block diagram is provided by the FCLK\_CLK1.
-\martin{Is the clock input relevant? As I see it, it would be more relevant to know if it can operate at 8 MHz to the transceivers.}
+%The architecture can be seen in figure \ref{fig:CAN_Arch_with_AXI_CAN}.
 
-\begin{figure}[h!]
-	\centering
-	\includegraphics[width = 1.2\linewidth]{graphics/Zybo_Arch_with_AXI_CAN.png}
-	\caption{Block diagram featuring the architecture in Vivado with the AXI CAN core.}
-	\label{fig:CAN_Arch_with_AXI_CAN}
-\end{figure}
+%\begin{figure}[h!]
+%	\centering
+%	\includegraphics[width = 1.2\linewidth]{graphics/Zybo_Arch_with_AXI_CAN.png}
+%	\caption{Block diagram featuring the architecture in Vivado with the AXI CAN core.}
+%	\label{fig:CAN_Arch_with_AXI_CAN}
+%\end{figure}
 
 \subsubsection{Utilizing Asymmetric Multiprocessing}
 
-Apart from using the AXI CAN core and the CAN drivers, the Zynq-7000 AP SoC provides the possibility of implementing a mechanism called asymmetric multiprocessing since there are two processors which share common memory as well as peripherals.\\
-\martin{CAN controllers instead of CAN drivers?}
-
+Apart from using the AXI CAN core and the CAN drivers, the Zynq-7000 AP SoC provides the possibility of implementing a mechanism called asymmetric multiprocessing since there are two processors which share common memory as well as peripherals.
 The idea of this is to run Linux OS on one processor, while on the other one a bare-metal system, which both of them can communicate with each other.
-This was a proposed solution for the problem of accessing the CAN devices from Linux which was the most promising of the implementation methods discussed in this report, but due to lack of time, it was researched only at a theoretical level.
+This was a proposed solution for the problem of accessing the CAN controllers from Linux which was the most promising of the implementation methods discussed in this report, but due to lack of time, it was researched only at a theoretical level.
 \\
 A brief implementation description will be given in this section, but for more details about the instructions and applications, the reader may refer to the Xilinx document \cite{Xilinx_AMP}.
 
@@ -117,11 +117,9 @@ The first one is RWMEM which is a utility providing the ability to read and writ
 The second one is the Soft UART, which constantly monitors the memory in order to receive data from the application running on the second processor, the bare-metal code.
 \\
 The next step is to create the Linux kernel and device tree, as well as the u-boot.
-\martin{So we need to build a new kernel anyway, which was also the brick wall we hit when trying to access the CAN controllers straight from Linux?}
 Acquiring the root file system is also a requirement.
 One important note here is the modification of the device tree includes instructions for the Linux to only use one CPU and to not access certain amount of memory, which is reserved for the bare-metal application.
-For instructions for the creation of the kernel, u-boot and acquiring the root file system, the reader may refer to the Xilinx Wiki \cite{Xilinx_wiki}.\\
-\martin{I don't think we should refer to the whole xilinx wiki. Specific articles or nothing}
+For instructions for the creation of the kernel, u-boot and acquiring the root file system, the reader may refer to the Xilinx Wiki Multi-OS support \cite{Xilinx_wiki_amp}.\\
 
 Lastly, after all the above steps, the last one is to follow the appropriate procedures to copy the necessary files to an SD card. The files, including the applications, are:
 \begin{itemize}
@@ -134,35 +132,11 @@ Lastly, after all the above steps, the last one is to follow the appropriate pro
 \end{itemize}
 
 The application for the CPU1 is included in the BOOT.BIN file.
-\martin{How big a task would it then be to change the baremetal code?}
 
 \subsubsection{Using can-utils for virtual nodes}
 
 During the development of this project, the can-utils tool was also used.
-It is a testing tool that can be executed on Linux and can be applied on real as well as virtual CAN devices.
+It is a software tool that can be run on Linux and can be applied on real as well as virtual CAN devices.
 Initially it was used to create a virtual network with two nodes locally on a computer to gain a better understanding of how CAN networks function and how they can be configured.
 It was also intended to be used to test the actual network, but since the network was not implemented, further use of the tool was not necessary.
-\martin{What exactly can be simulated by can-utils?}
-\catalin{Rerun some virtual tests with can-utils to get code snippets}
-
-\subsubsection{Utilizing Service Virtualization for the Proof of Concept}
-\label{sub:Utilizing_Svr_Virtualization}
-
-In order to show that the system can be fully functional despite the unsuccessful attempt to implement it, a different approach than the actual implementation is needed.
-One way of doing that is to apply a method called service virtualization where one part of the system can be simulated to prove that the rest of the system is fully functional, given the presence of the missing simulated part.
-\\
-In this case, the system that was designed for this project can be divided into two parts or subsystems.
-The first one is the physical CAN network to this point is only functional in bare\-metal code, which is described in section~\ref{sub:CAN_Bus_Tests}.
-The second part would be considered the subsystem present on Linux which included the protocol designed to be used with the CAN bus and the application which extracted the data from the sensors.
-This is described in section~\ref{sec:node_software}
-The connection between the two subsystems is the service virtualization and could be replaced either by a software buffer.
-
-
-
-%\catalin{Some more words about how are we going to produce the data and how are we going to pass the data to the application etc.}
-%
-%The main idea was to run three tests separately, which combined together would prove that the system is fully functional given the fact that there would be access to the CAN controller and physical network from Linux. In other words, a virtualized connection or link between the Linux OS running on the Zybo board and the CAN devices on the Programmable Logic level \catalin{can controllers or devices or sth else?} was simulated.
-%
-%\catalin{more to add and modify when Thomas makes an awesome illustration for this.}
-%
-%\catalin{How many tests in total for this proof of concept?}
+For more information on this tool, the reader may refer to the git repository \cite{CAN-Utils}.

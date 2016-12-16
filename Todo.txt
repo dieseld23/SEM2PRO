@@ -1,5 +1,3 @@
-Document the desicions taken in designing the hl protocol
-
 Get an estimate on how much bandwidth of the bus is in use.
 Explicitly write that one node has to continue with the same message ID
 guide to implement new nodes
