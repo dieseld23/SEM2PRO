@@ -1,8 +1,12 @@
 %!TEX root = ../main.tex
-\section{Introduction}
- node can be any kind of microcontroller, but this section will only address the case where a Zybo board is used. 
-\mikkel{Something about this.}
+Throughout the analysis a number of decisions were made regarding the hardware and technologies to be used in the realisation of the system.
+These are outlined in section \ref{sec:analysisconclusion}.
+It was found that it is necessary to implement two different networks, one for collecting the data on the go-kart and one for transmitting the data to a monitoring station, assumed to be a standard PC throughout the remainder of the report.
+These two networks will be referred to as the on-vehicle and off-vehicle networks, respectively.
+The implementation of these, along with the remainder of the system, is described in this part.
+Should a user or developer wish to implement their own node, a guide exists in appendix \ref{app:addnode}, outlining the steps necessary to implement a node.
 
+\thomas{I am not sure about this introduction, it seems very strange..}
 \section{On-Vehicle Network}
 \input{sections/CANbus}
 \input{sections/Can_protocol}

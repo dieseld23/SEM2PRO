@@ -5,17 +5,16 @@
 As described in previous sections, the system will have to support the use of several data producers.
 In addition to this, it should also be possible to easily add additional data producers at a later time.
 It is possible to implement the support of many producers on a single platform, however, eventually the platform would likely run out of I/O for additional support.
-The single-platform approach would also likely not meet the requirements of the computational requirements set by the increasing amount of equipment.
-\martin{requirements of the requirements, yo dawg}
+The single-platform approach would also likely not meet the computational requirements set by the increasing amount of equipment.
 This implies that a multi-platform system is the correct approach for this system.
 Each platform, or node, would then implement the functionality of one or more data producers.\\
 The data needs to be collected from all of the nodes, then logged and transmitted wirelessly to the monitoring station.
 The type of network depends greatly on the number of nodes that it has to support.
 A project on SDU, Formula Student \cite{formulastudent}, has a similar platform for which a network has been developed.
-\martin{One of the advantages of multi platform (and one that FS uses) is the ability to put the node close to the sensors/acutators}
 That project, which is to develop a race car, has a network of seven physical nodes, distributed around the car, which each handle data producers and consumers in that area.
+The physical distribution of the nodes means that the responsibility of a given group of sensors can be given to a node based on their placement on the car.
 The parameters found in section \ref{sec:parameters} can be measured using five different types of sensors.
-\martin{which five types? Can all the bullet point in section~\ref{sec:parameters} be measured with just five types?}
+\martin{which five types? Can all the bullet point in section~\ref{sec:parameters} be measured with just five types? gps, imu, encoder, sevcon, thermometer. 5 types, not literally 5.}
 This project does, however, aim to give users the ability to add their own nodes.
 For this reason the limit of supported nodes is set to 16.
 It is worth noting that the structure of each node is irrelevant, so long as it adheres to the networks communication standards.
@@ -26,12 +25,12 @@ This means that a node can potentially comprise several (different) sensors or p
 There are various network topologies that can be used to setup the required node network for this project.
 These include the ring, bus, mesh, star and tree network topology. 
 Before choosing a topology, a brief description of the purpose and functionality of the network as well as an overview of their advantages and disadvantages are needed. 
-\mikkel{Maybe it should be boiled down}b
+\mikkel{Maybe it should be boiled down}
 \subsubsection{Purpose of the Network}
 The purpose of this network is to accommodate multiple nodes, such as sensors, sub-networks and in general data-producers.
 These nodes need to be able to transfer their data and receive commands from the master node.
 \martin{at this point, has it been established what the WIFI node is? I can't find it if it has. Ok, now I changed it to master node, and will determine the master node to be the wifi node in section~\ref{sec:EP}.}
-The reasons for this is, that the use cases specify that sensor data should be transferred wirelessly and it needs to be possibly to start and stop specific nodes.
+The reasons for this is, that the use cases specify that sensor data should be transferred wirelessly and it needs to be possible to start and stop specific nodes.
 \\
 \martin{That line bothers me. It's kinda explaining the reason to include something with use case, which should be inferred}
 The communication between the various nodes and the wifi node does not require a central hub.
@@ -47,20 +46,12 @@ On this network, all nodes communicate through a common bus.
 This means that one node communicate to all other nodes at the same time, and that only one node can transmit at the same time.
 \item \textbf{Ring:} All the nodes in this type of network form a ring, where each node is connected to its two neighbours.
 Messages travel along the ring, and eventually ending up at the wifi node.
-%\item \textbf{Mesh:} In this type, each node has direct connections to each other node present in the network.
-%That provides speed and reliability in case of node failures, but requires more hardware and processing power to manage the connections.
-%It is very robust but scalability is certainly not one of its features, as the number of connections escalate by the number of nodes.
 \item \textbf{Star:} The star topology is a centralized type of networking.
 All nodes are connected to a central hub, handling all the communication between them.
 It offers high bandwidth and is easy to implement.
 The major disadvantage is that if the hub fails, the entire network fails.
 It can be scalable to a certain point, since the hub can be upgraded to handle more connections.
-%\item \textbf{Tree:} The last type, the tree is an extension of the bus and the star topologies combined.
-%It can be easily scalable, but that adds extra difficulty in its maintenance.
-%It also requires a lot of connections and in case the top (root) node fails, then all the network is down as well.
-%\item \textbf{Hybrid:} The last type is the hybrid one, where depending on the needs and purpose of the network, two or more topologies can be combined to achieve the best balance between their advantages and disadvantages.
 \end{itemize}
-\martin{This list should really only be Bus, Ring and Star, because the others aren't really realistic to implement}
 
 \subsubsection{Suitable Topology}
 \martin{Like i todo'ed above, we should only concern ourselves with bus, ring and star, and at this point we should come to the conclusion that star does not work, and that ring and bus is really a toss up.}
@@ -77,9 +68,10 @@ Hence, a topology that balances the decrease in performance against the network'
 The approach that fits the requirements is implementing a bus network, where each node may be a subnetwork of a different type depending on the needs, making it into a hybrid network having a bus topology as its basis.
 This type provides a good balance of reliability, scalability, hardware requirements and communication speed in comparison to the others.
 \subsection{Networking technology}
-After discussing the different topologies, it is necessary to look at what technologies are readily available, and then decide which one fits the needs best.
-\thomas{I think we need to discuss the topology/technology sections. In my view, it matters very little what topologies we like - what matters is what technologies are available, if that is of ring/bus/whatever topology then fine, we can discuss that.}
-\thomas{We have 2 pages discussing the abstract of topologies but only 1/4 page discussing pros and cons of the different actual technologies?}
+In the previous section it was found that the bus and ring topologies in particular lend themselves well to the implementation of this system.
+A number of different technologies exist using these topologies. 
+This section explores a few of the ones that are considered for this project to find the one best suited.
+
 \subsubsection{Selecting Technologies}
 Different networking technologies exist in use today, such as Ethernet, among others CAN and Powerlink.\\
 Powerlink is the network topology used by Formula Student; it is a ring type network, using Ethernet between neighbouring nodes.

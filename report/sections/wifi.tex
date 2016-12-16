@@ -1,39 +1,9 @@
 %!TEX root = ../main.tex
-\martin{Given this introductory wording of this section, maybe it goes before the on-vehicle network?}
-The system designed throughout this report seeks to ease the task of collecting data from the go-kart.
-This is done by creating a network on the go-kart which allows the user to more easily add additional sensors.
-In addition to providing a flexible platform for adding sensors, it will collect the data produced by the sensors on the network.
-A goal with the project is to be able to monitor relevant data live through some interface.
-To properly monitor data collected during driving it is necessary to maintain a live feed from the go-kart to the observer.
-\\~\\
-As mentioned above, there are two major functions to the system; recording of data and monitoring of data.
-The recording is done on the go-kart using embedded hardware; specifically, the Zybo platform is used to interface to the sensors.
-The monitoring is done using a PC.
-Monitoring is less time critical than the recording as it is simply meant for human readability.
-For this reason, and to ease the workload, it has been decided to use a wifi connection between the go-kart and the PC.
-Wifi, or even TCP/IP over ethernet is not viable on the go-kart between the Zybo boards due to the potentially long lag in that protocol.
-A different network type will have to be devised for the embedded portion of the system.
-This splits the network up into two parts, one that links the PC to the go-kart and one that links each component on the go-kart.
-See figure \ref{fig:basic_network}.
-
-\begin{figure}
-	\includegraphics[width=.75\linewidth]{graphics/basic_network}
-	\caption{A line of text}
-	\label{fig:basic_network}
-\end{figure}
-\martin{I'm not sure this figure adds much understanding to the report}
-
-These will be referred to as the off-kart network and the on-kart network, respectively, throughout the remainder of the report.
-The following sections will explore the creation of both of these networks in turn.
-
-\thomas{The above section was meant as an introduction to both the on-vehicle and off-vehicle sections, now it is an orphan...}
-
-As mentioned above, the off-kart network is done using wifi.
+The off-kart network is done using wifi.
 It was chosen to use this method as all modern laptops are equipped with the capability of connecting to such a network.
 Hereafter the challenge lies in establishing an ad-hoc network between a zybo board and a PC.
 This network is created using a USB-Wifi dongle on the Zybo board. 
 The following script is run to bring down the device, change the network type to ad-hoc, bring up the device, create the ad-hoc network and, finally, assign an IP-address to the device.
-\martin{bring down and bring up?}
 Note: some commands require super user access.
 For clarity, \texttt{sudo} is left out from all calls throughout this section.
 \begin{lstlisting}[language=bash]
@@ -56,29 +26,22 @@ Messages can be passed through this connection by piping data to it.
 
 Following is a description of the steps taken to reach the approach explained above.
 \subsection{Setting Up the Ad-Hoc Network}~\\
-Below is a thorough description of the challenges encountered while setting up this device as well as a brief explanation of the choice of device.
+Since the Zybo is already running a Linux distribution which provides all of the necessary drivers, it was decided to use a WiFi dongle to create the ad-hoc network on the Zybo.
+The highlights of the consequences of this choice are discussed below.
 \\~\\
-Two methods were immediately available for use: A usb wifi dongle and a PMOD wifi interface.
-As the name implies, the latter is designed to be compatible with the PMOD interfaces on the zybo board (and a range of similar boards offered by Digilent Inc.).
-It converts TCP/IP to SPI and vice versa.
-However, since the zybo boards are already running a linux distribution, it was decided to attempt connecting through the usb/wifi dongle.
-This decision marked the beginning of a long journey, the highlights of which are discussed below.
-\\~\\
-\thomas{consider removing part about pmod, already accounted for in the analysis}
-\martin{Too colloquial? I mean, I like it, so it must be too colloquial.} 
 The first step was to ensure that the correct drivers are present on the system.
-The usb/wifi dongle is a TP-LINK TL-WN722N.
-This device uses the Atheros AR9271 chipset and is on the list of supported devices for the ath9k\_htc driver (available on xillinux) on wireless.wiki.kernel.org.
+The USB/WiFi dongle is a TP-LINK TL-WN722N.
+This device uses the Atheros AR9271 chipset and is on the list of supported devices for the ath9k\_htc driver (available on Xillinux) on \cite{ath9k}.
 It is also capable of supporting ad-hoc networks, a crucial feature in setting up this network.
-Running \texttt{dmesg} prints the kernel log, revealing, amongst other things, what drivers are loaded.
+Running \texttt{dmesg} prints the kernel log revealing, amongst other things, what drivers are loaded.
 \begin{lstlisting}[language=bash]
->>dmesg | grep ath
+>> dmesg | grep ath
 [10.329564] usb 1-1: ath9k_htc: Firmware htc_9271.fw requested
 [10.332438] usbcore: registered new interface driver ath9k_htc
 \end{lstlisting}
 Additionally:
 \begin{lstlisting}[language=bash]
->>lsusb | grep Ath
+>> lsusb | grep Ath
 Bus 001 Device 002: ID 0cf3:9271 Atheros Communications, 
 	Inc. AR9271 802.11n
 \end{lstlisting}
@@ -86,7 +49,7 @@ Bus 001 Device 002: ID 0cf3:9271 Atheros Communications,
 As per these commands the operating system (OS) has correctly detected and loaded the driver.
 The \texttt{iproute2} package contains the utilities used to manipulate TCP/IP connections.
 \begin{lstlisting}[language=bash]
->>ip link show
+>> ip link show
 1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue 
 	state UNKNOWN mode DEFAULT group default 
    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
@@ -101,8 +64,8 @@ The \texttt{iproute2} package contains the utilities used to manipulate TCP/IP c
 The device has been given the identifier \texttt{wlan0}.
 It can be brought up by:
 \begin{lstlisting}[language=bash]
-ip link set wlan0 up
->>ip link show wlan0
+>> ip link set wlan0 up
+>> ip link show wlan0
 3: wlan0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc 
 	mq state DOWN mode DEFAULT group default qlen 1000
    link/ether ec:08:6b:1b:41:b3 brd ff:ff:ff:ff:ff:ff
@@ -115,7 +78,7 @@ However, the \texttt{NO-CARRIER} flag is also set.
 This flag indicates a fault on the physical layer, i.e. a disconnected network cable or similar.
 Running a scan on the device shows that it is able to correctly detect nearby networks:
 \begin{lstlisting}[language=bash]
->>iw dev wlp2s0b1 scan | grep SSID
+>> iw dev wlp2s0b1 scan | grep SSID
 SSID: SDU-WEBLOGIN
 SSID: eduroam
 SSID: SDU-GUEST
@@ -129,7 +92,7 @@ The PC is running Arch Linux, a distribution using rolling release.
 This means that, generally, the software will always be at the latest stable release.
 The Xillinux distribution running on the Zybo board is based on the Ubuntu 12.04 release, the long term support version from 2012, see \cite{xillinux}.
 As such, much of the software is outdated.
-The \texttt{iproute2} package as well as \texttt{network-manager} was updated to the latest version.
+The \texttt{iproute2} package as well as the \texttt{network-manager} were updated to the latest version.
 Other than provide some experience with building and searching for dependencies, it did little to alleviate the issues.
 \\~\\
 It was decided to continue attempting to set up the ad-hoc network on the PC, expecting that this process may provide some insight into the issues on the Zybo board, and how to fix them.
@@ -140,29 +103,29 @@ It automatically detects hardware and manages connections in the area.
 The automatic setup means that it will often overwrite any changes made by the user.
 For this reason the network manager is disabled:
 \begin{lstlisting}[language=bash]
->>systemctl connman.service stop
+>> systemctl connman.service stop
 \end{lstlisting}
 \texttt{connman} is the network manager used on the system.
 In order to create an ad-hoc network it is necessary to change the mode of the interface to IBSS (Independent Basic Service Set):
 \begin{lstlisting}[language=bash]
->>ip link set wlp2s0b1 down
->>iw wlp2s0b1 set type ibss
+>> ip link set wlp2s0b1 down
+>> iw wlp2s0b1 set type ibss
 \end{lstlisting}
 Notice that the interface naming on this system is following the new "predictable network interface names"-scheme.
 This scheme names the interfaces based on various factors such as MAC-address of the hardware; for more details see \cite{interfacenaming}.
 The interface needs an address assigned to it in order to communicate on the network.
 \begin{lstlisting}[language=bash]
->>ip addr add 192.168.10.9 dev wlp2s0b1
->>ip link set wlp2s0b1 up
+>> ip addr add 192.168.10.9 dev wlp2s0b1
+>> ip link set wlp2s0b1 up
 \end{lstlisting}
 Finally, after having brought up the device, the ad-hoc network can be created:
 \begin{lstlisting}[language=bash]
->>iw wlp2s0b1 ibss join go-kart 2412
+>> iw wlp2s0b1 ibss join go-kart 2412
 \end{lstlisting}
 This commands creates an ibss (ad-hoc) network called go-kart on frequency 2.412 \si{\giga\hertz}.
 Repeating these steps on a different system, assigning a different address to it, makes it possible to ping between the systems: 
 \begin{lstlisting}[language=bash]
->>ping 192.168.10.11
+>> ping 192.168.10.11
 PING 192.168.10.11 (192.168.10.11) 56(84) bytes of data.
 64 bytes from 192.168.10.11: icmp_seq=1 ttl=64 time=0.592 ms
 64 bytes from 192.168.10.11: icmp_seq=2 ttl=64 time=0.638 ms
@@ -172,11 +135,11 @@ This allowed the Zybo board to correctly create the network.
 Trying to ping the board on its assigned IP-adress, however, yielded a \texttt{no route to host} message.
 Looking into the routing tables reveals a discrepancy:
 \begin{lstlisting}[language=bash]
->>ip route show
+>> ip route show
 default via 192.168.10.1 dev eth0 metric 100 
 169.254.0.0/16 dev eth0 scope link metric 1000 
-192.168.10.0/24 dev eth0 proto 
-	kernel scope link src 192.168.10.10 
+192.168.10.0/24 dev eth0 proto kernel scope link src 192.168.10.10 
+192.168.10.0/24 dev wlan0 proto kernel scope link src 192.168.10.10
 \end{lstlisting}
 \thomas{Get the correct table, wifi is missing}
 As can be seen, messages on eth0 and wlan0 are both routed to the same address space, 192.168.10.0/24.
@@ -185,12 +148,12 @@ Changing the address space to something different corrected the problem.
 In this case 196.178.10.0/24 was chosen.
 Finally, a short bash script is written to quickly set up the network:
 \begin{lstlisting}[language=bash]
->>service network-manager stop
->>ip link set wlan0 down
->>iw wlan0 set type ibss
->>ip link set wlan0 up
->>iw wlan0 ibss join go-kart 2412
->>ip addr add wlan0 196.178.10.9
+>> service network-manager stop
+>> ip link set wlan0 down
+>> iw wlan0 set type ibss
+>> ip link set wlan0 up
+>> iw wlan0 ibss join go-kart 2412
+>> ip addr add wlan0 196.178.10.10
 \end{lstlisting}
 Since the system will not necessarily have an interface when it is mounted on the go-kart, it will have to automatically run this script on startup.
 On Xillinux, this can be achived by placing the script in \path{/etc/init.d/<script_name>}.
@@ -229,7 +192,7 @@ As opposed to the two prior solutions, socat is implemented and verified by the 
 In addition, this utility provides exactly the utility needed, as opposed to boost, which is a collection of libraries spanning everything from mathematical algorithms, complex data structures, sockets and numerous other fields.\\
 Generally, socat can be called using
 \begin{lstlisting}[language=bash]
->>socat [options] <address> <address>
+>> socat [options] <address> <address>
 \end{lstlisting}
 An address is specified by a keyword and can be of a range of different types.
 Of interest in this project is \texttt{TCP} and \texttt{STDIO}.
@@ -238,14 +201,14 @@ The \texttt{TCP} address requires two arguments, the ip address and the port.
 A simple message passing service can be set up in two terminals by first setting up a tcp listener in terminal one:
 
 \begin{lstlisting}[language=bash]
->>socat - tcp-listen:2048
+>> socat - tcp-listen:2048
 \end{lstlisting}
 
 This command will redirect all incoming data from stdio to port 2048 and conversely, all incoming data from port 2048 is redirected to stdio. 
 Connecting to port 2048 on localhost can be done from terminal two:
 
 \begin{lstlisting}[language=bash]
->>socat - tcp:localhost:2048
+>> socat - tcp:localhost:2048
 \end{lstlisting}
 
 The message written in terminal one will appear in terminal two and vice versa.

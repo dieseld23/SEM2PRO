@@ -1,23 +1,27 @@
 %!TEX root = ../main.tex
 
 \section{Local Storage}
-In addition to transmitting data to a stationary computer, the raw data should be stored on the go kart.
-This data should then be possible to download through wifi upon request.
-This will ensure, that no data is lost if the go kart gets out of range of the WiFi.
-Because of this, it makes most sense to use the WiFi node for storing the log files.\\
+In addition to transmitting data to a stationary computer, the raw data should be stored on the go-kart.
+It should be possible to download this data through WiFi upon request.
+This will ensure, that no data is lost if the go-kart gets out of range of the WiFi.
+The storage will be done on the WiFi node as transmitting a potentially large log over the CAN bus could potentially be inefficient.
 
-Each Zybo has an SD card, which has Linux on it, and more than 3 GB of un-partitioned space. 
-Linux does come with an easy way to handle files, which would ease the task of logging data at fixed intervals, or to read the log back as fast as possible.
+Each Zybo has an SD card which holds the operating system.
+These particular SD cards have more than 3 GB of un-partitioned space which can be used for log storage. 
+Linux allows for an easy way to handle files, which would ease the task of logging data at fixed intervals, or to read the log back as simply as possible.
+\thomas{"As fast as possible" is most likely wrong. A purpose made hardware implementation would probably be faster. Changed to "As simply as possible"}
 At this point, it is not clear how much data will be on the bus, which means that it is not clear whether this is enough.
-However, as there is no need to store data on the kart for more than one drive session, it is possible to calculate the maximum writing speed in order to not run out of space.\\
+The assumption is made that data will be stored only for one drive station.
+That is, upon starting a new drive, the old log is deleted.
+This assumption enables calculating the maximum writing speed possible while not running out of space.\\
 
-Assuming that the Go Kart has battery for half an hour, the data rate can be calculated as follows:
+Assuming that the go-kart has battery for half an hour driving sessions, the data rate can be calculated as follows:
 
 \begin{equation}
 	\frac{3\mathrm{GB}}{30\si{\minute}} = \frac{2.58 \cdot 10^{10} \mathrm{bit}}{1800 \si{\second}} \approx 13.7 \mathrm{Mb/s}
 \end{equation}
 
-With a ceiling of data rate this high, it's highly unlikely that the go kart runs out of space before it runs out of battery.
+With a data rate this high, it is unlikely that the go kart runs out of storage space before it runs out of battery.
 
 \section{Software on Stationary Computer}
 The stationary computer needs to receive data through wifi and decode the received messages using the protocol that is to be developed.
