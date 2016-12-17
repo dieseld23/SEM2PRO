@@ -15,7 +15,34 @@ When developing a new node with another sensor the generic classes CAN\_link, Pr
 New classes should be developed to extract data from sensor, pack data according to protocol and put the data in a data\_packet.
 It is advantageous to implement this functionality into a Packer\_Sensor and a Sensor class to keep a similar software design through the nodes.
 The interface to the generic Node class is a call to its function \texttt{put\_data\_packet(data\_packet)}.
-\mikkel{Enough here?}
+
+\subsubsection*{Sensor class}
+A Sensor class should be implemented to interface the sensor. 
+This class will be very sensor specific and not generic. 
+It should update its own variable with all relevant from the sensor.
+This functionality should be implemented in a loop function that runs in a thread and calls a function in the Sensor\_Packer class when data is updated.
+
+
+\subsubsection*{Sensor\_Packer class}
+The Sensor\_Packer class should also be implemented.
+It is sensor specific, because it needs to pack sensor data according to the specific sensors messagetypes.
+A Sensor\_Packer class should inherit from the base Packer class shown in code snippet \ref{code:packer}.
+In the constructor of the Sensor\_Packer all messagetypes for the sensor should be put in \texttt{messagetypes}.
+
+\begin{lstlisting}[caption=Packer class.,label=code:packer]
+class Packer {
+protected: 
+	std::vector<std::bitset<6> > messagetypes;
+public:
+	Node* node;
+	void set_node(Node* node_in);
+};
+\end{lstlisting}
+
+The class needs to pack data into the \texttt{data\_packet} shown in code snippet \ref{code:data_packet}.
+It is responsible to populate the variables \texttt{messagetype} and \texttt{data}.
+To do that all data that is to be sent needs to be converted into \texttt{vector<bool>}.
+When \texttt{data\_packet} is populated correctly it needs to be passed to the generic Node class using its member function \texttt{put\_data\_packet(data\_packet)}.
 
 \subsection{Creating the API}
 The front end is comprised of a list of functions which enable the user to access the data collected on the network.
