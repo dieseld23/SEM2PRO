@@ -119,9 +119,8 @@ The protocol class receives \texttt{data\_packets} from the node class.
 If it receives \texttt{data\_packets} where there are more than eight data bytes it needs to create additional \texttt{data\_packets} and distribute data to them. 
 The additional \texttt{data\_packets} must have the same node id and message types, but the new message, nw\_msg, bit should be set to zero..
 The class also needs to calculate number of data bytes, \texttt{dl}, to each \texttt{data\_packet}.
-On \texttt{data\_packets} coming from the CAN network the class needs to pass the message ID through to the Node Class.
-\martin{I changed the above line. The Node ID can determine if the message is adressed to it, and what to do with the commands it might receive..}
-\mikkel{I don't think it should be changed :(}
+On \texttt{data\_packets} coming from the CAN network the class needs to use the last two bits of the messagetype to decode which command is sent to the node.
+
 ~\\ \par \textbf{CAN\_link class} ~ \\
 The CAN\_link class has the responsibility of transferring and receiving data to and from the CAN program.
 As this interface has not yet been implemented this class makes use of the standard input and output. 
@@ -160,9 +159,9 @@ In the stop state the input queue of \texttt{data\_packet} will be cleared.
 
 
 
-\subsection{Wifi Node}
+\subsection{WiFi Node}
 The node with a WiFi connection to the stationary computer is a special node in the system.
-There should be only one and it should collect all CAN messages, log them and transfer then using WiFi.
+There should be only one and it should collect all CAN messages, log them and transfer them using WiFi.
 Because of time constraints the software designed in this has not been implemented in code.
 The WiFi node can be seen in figure \ref{fig:wifi_node}.
 
@@ -178,12 +177,13 @@ From the analysis it is clear that the WiFi node has the following responsibilit
 \begin{itemize}
 \item Log all data to SD card.
 \item Transmit and receive data through WiFi.
-\item Pack data according to protocol
-\item Send log file through WiFi.
-\item Timestamp management
-\item Merge multi frame packets
+\item Pack data according to protocol.
+\item Send log file through WiFi upon request.
+\item Timestamp management.
+\item Merge multi frame packets.
 \end{itemize}
 \mikkel{Is multi frame packets what we mean?}
+\martin{Yes, I think we mean that. But is timestamp managing a task for the WiFi node?}
 
 It is found that the responsibilities can be grouped into normal operation mode and sending log file mode.
 This should be implemented as a state machine as shown in figure \ref{fig:StateDiagram_NodeWiFiStates}.
