@@ -113,9 +113,9 @@ Similarly, if the GPS module is replaced, the Packer\_GPS class does not need to
 
 ~\\ \par \textbf{Node class} ~ \\
 The Node class receives \texttt{data\_packets} from \texttt{Packer\_GPS}.
-Upon receiving a packet, it will prepend its node ID to the message type.
-It needs to add a timestamp to the packet before sending it.
-In order to create the timestamp the class holds a timer which increments each millisecond.
+Upon receiving a packet, it will set its node ID in \texttt{data\_packet}.
+Before sending a message, the associated time packet has to be sent.
+In order to create the time packet the class holds a timer which increments each millisecond.
 The timer is reset upon receiving a synchronize message.
 The class receives start, stop or synchronize events from the protocol class and reacts to those accordingly.
 
@@ -128,41 +128,32 @@ The class also needs to count the number of bytes in the data field, \texttt{dlc
 On \texttt{data\_packets} coming from the CAN network the last two bits of the messagetype is used to indicate the type of command sent to the node.
 
 ~\\ \par \textbf{CAN\_link class} ~ \\
-The CAN\_link class has the responsibility of transferring and receiving data to and from the CAN program.
-As this interface has not yet been implemented this class makes use of the standard input and output. 
-Meaning that data from the sensor will be printed in the shell and data to the node should be written to the shell. 
-
+The \texttt{CAN\_link} class has the responsibility of transferring and receiving data to and from the CAN program.
+As this interface has not yet been implemented this class makes use of stdio. 
+That is, data from the sensor will be printed in the shell and data to the node is written to the shell. 
+\thomas{shell=terminal?}
 \subsubsection*{Passing data between classes}
 Communication between classes is realised by using the producer-consumer pattern.
 As the name implies one class produces data and puts this in a queue where another class consumes by taking data out of the queue.
 To get the producer and consumer functions to run in parallel they are run in separate threads.
-All queues are protected by a mutex to make the software thread-safe.
+All queues are protected by mutex to make the software thread-safe.
 
 \subsubsection*{Node class functionality}
-The functionalities of the Node class on outgoing data is implemented using a state machine.
+The functionalities of \texttt{Node} on outgoing data is implemented using a state machine.
 It is shown in figure \ref{fig:state_machine}.
 \begin{figure}[!h]
 \centering
 \includegraphics[width=1\textwidth]{graphics/StateDiagram_Node.pdf}
-\caption{State machine implementing the node class functionality. }
+\caption{State machine implementing the functionality of \texttt{Node}. }
 \label{fig:state_machine}
 \end{figure}
 \martin{In figure~\ref{fig:state_machine}, the "boolean" value run, should be the same as the boolean value "running" on figure~\ref{fig:node_class_diagram}.}
 When the variable \texttt{run} is equal to 1, the node should output sensor data.
 \texttt{run} is being updated by the thread that handles incoming commands.
 It will then go the clear state and clear all variables and wait for data. 
-When data is present it will move through the states create time packet, get data and send data. 
+When data is present it will move through the states, create the time packet, get data and send data. 
 If at any point \texttt{run} is set to 0 the state machine will go to the stop state.
 In the stop state the input queue of \texttt{data\_packet} will be cleared.
-
-
-
-
-
-
-
-
-
 
 
 \subsection{WiFi Node}
