@@ -33,8 +33,8 @@ Originally, lines 130 and 131 were as seen in the snippet \ref{code:can_kconfig_
 \begin{lstlisting}[firstnumber=128,caption={Kconfig file contents from line 128.},label={code:can_kconfig_contents_line128}]
 config CAN_XILINXCAN
 	tristate "Xilinx(*@ @*)CAN"
-	depends on NET [=y] && CAN_DEV [=y] && CAN [=y] && (ARCH_ZYNQ ||
-		MICROBLAZE [=y])
+	depends on NET [=y] && CAN_DEV [=y] && CAN [=y] && 
+        (ARCH_ZYNQ || MICROBLAZE [=y])
 	default y
 	---help---
 	  Xilinx CAN driver. This driver supports both soft AXI CAN IP
@@ -45,6 +45,8 @@ config CAN_XILINXCAN
 	depends on CAN && (ARCH_ZYNQ || MICROBLAZE)
 	default n
 \end{lstlisting}
+
+\thomas{}
 
 The next step of the process was the modification of the device tree settings file, requiring an entry for the CAN PS to be inserted.
 The necessary file was located under the boot folder named as seen in \ref{code:dts_file_zybo}.

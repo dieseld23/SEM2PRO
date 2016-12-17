@@ -12,7 +12,8 @@ VectorNav provides an extensive C an C++ library for both Windows and Linux use 
 
 \begin{lstlisting}[caption=IMU CODE......,label=code:rmc]
 errorCode = vn100_getYawPitchRoll(&vn100, &ypr);
-printf("%+#7.2f %+#7.2f %+#7.2f\n", ypr.yaw, ypr.pitch, ypr.roll);
+printf("%+#7.2f %+#7.2f %+#7.2f\n", ypr.yaw, ypr.pitch, 
+	ypr.roll);
 \end{lstlisting}
 \mikkel{Does it make any sense to include some example code from the internet?!}
 \mikkel{More text here? We are not using the IMU for anything.}
@@ -26,10 +27,11 @@ Therefore the implemented GPS class, that has the responsibility of interfacing 
 An example of a RMC sentence is shown in code snippet \ref{code:rmc}.
 The extracted information that the time is 09:11:23:00, the module is active, latitude is 55 degrees 22.03929 minutes North, longitude is 10 degrees 25.91037 minutes East, the speed is 0.348 knots over ground, the date is 7. of November 2016 and checksum is 7C.
 For the sake of simplicity all coordinates are converted to degress with decimals after being read. 
-
 \begin{lstlisting}[caption=RMC sentence.,label=code:rmc]
-$GPRMC,091123.00,A,5522.03929,N,01025.91037,E,0.348,,071116,,,A*7C
+$GPRMC,091123.00,A,5522.03929,N,01025.91037,E,0.348,,071116,,,
+	A*7C
 \end{lstlisting}
+
 \mikkel{code line should be prettified !}
 
 \subsubsection{Service virtualization}

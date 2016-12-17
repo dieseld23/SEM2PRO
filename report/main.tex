@@ -1,5 +1,6 @@
 \documentclass[a4paper,10pt]{article}
 \usepackage[utf8]{inputenc}
+\usepackage{courier}
 \setcounter{tocdepth}{2} %Only show sections and subsections in toc.
 
 \usepackage{longtable} %used for acro
@@ -65,14 +66,14 @@ tabsize=3,
 frame=l,
 language=c++,
 escapeinside={(*@}{@*)},
-basicstyle=\small,
+basicstyle=\small\ttfamily,,
 numbers=left,
 numberstyle=\tiny\color{gray},
 keywordstyle=\color{blue},
 commentstyle=\color{green}\ttfamily,
 stringstyle=\color{gray},
-upquote=true
-  %texcl=true 
+upquote=true,
+breaklines = true
   }
 \renewcommand{\lstlistingname}{Code} %Let listings have code instead of figure
 
