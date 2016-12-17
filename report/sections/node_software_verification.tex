@@ -12,14 +12,14 @@ The GPS node software then processed the data and output it to standard output a
 \begin{figure}[h]
 	\centering
 	\includegraphics[width = 0.6\linewidth]{graphics/sensor_gps_veri}
-	\caption{Fix this figure???}
+	\caption{A line of text}
 	\label{fig:sensor_gps_veri}
 \end{figure}
 
 When running the software is run it outputs only a string of booleans. 
 This is not very readable by humans, so to show the functionality the program was set to print in a humanly understandable way.
 A segment of the output from this can be seen in code snippet \ref{code:output_node}.
-The first frame should be a timestamp frame. 
+The first frame should be a timestamp frame. accordingly
 It can be seen that the the first frame has node ID 14, 4 data bytes, messagetype 1 and data 2374, meaning that it is from the GPS node with a timestamp of 2374 milliseconds.
 The next frame should then be a data frame containing latitude and longitude information.
 It can be seen that it has node ID 14, 8 data bytes and messagetype 9, which is a latitude longitude message.
