@@ -82,8 +82,6 @@ They are generic classes and should be reused when developing new nodes.
 \label{fig:node_class_diagram}
 \end{figure}
 
-\martin{How does GPS\_Packer read latitude and longitude if they are private within the GPS namespace?}
-\mikkel{@Martin, because GPS has public get function that is now shown in class diagram.}
 A struct containing all fields of a data packet in boolean data types is defined in listing \ref{code:data_packet}.  
 
 \begin{lstlisting}[caption=Struct for data packet.,label=code:data_packet]
@@ -122,13 +120,13 @@ The timer is reset upon receiving a synchronize message.
 The class receives start, stop or synchronize events from the protocol class and reacts to those accordingly.
 
 ~\\ \par \textbf{Protocol class} ~ \\
+
 The protocol class receives \texttt{data\_packets} from \texttt{Node}. 
-If it receives \texttt{data\_packets} with more than eight bytes in the data field, it will split the packet into multiple \texttt{data\_packets}.
+If it receives \texttt{data\_} \texttt{packets} with more than eight bytes in the data field, it will split the packet into multiple \texttt{data\_packets}.
 The additional \texttt{data\_packets} must have the same node id and message type, but the new message, \texttt{nw\_msg}, bit should be cleared on all but the first message.
 The class also needs to count the number of bytes in the data field, \texttt{dlc}, for each \texttt{data\_packet}.
-On \texttt{data\_packets} coming from the CAN network the class needs to pass the message ID through to the Node Class.
-\martin{I changed the above line. The Node ID can determine if the message is adressed to it, and what to do with the commands it might receive..}
-\mikkel{I don't think it should be changed :(}
+On \texttt{data\_packets} coming from the CAN network the last two bits of the messagetype is used to indicate the type of command sent to the node.
+
 ~\\ \par \textbf{CAN\_link class} ~ \\
 The CAN\_link class has the responsibility of transferring and receiving data to and from the CAN program.
 As this interface has not yet been implemented this class makes use of the standard input and output. 
@@ -167,9 +165,9 @@ In the stop state the input queue of \texttt{data\_packet} will be cleared.
 
 
 
-\subsection{Wifi Node}
+\subsection{WiFi Node}
 The node with a WiFi connection to the stationary computer is a special node in the system.
-There should be only one and it should collect all CAN messages, log them and transfer then using WiFi.
+There should be only one and it should collect all CAN messages, log them and transfer them using WiFi.
 Because of time constraints the software designed in this has not been implemented in code.
 The WiFi node can be seen in figure \ref{fig:wifi_node}.
 
@@ -185,12 +183,13 @@ From the analysis it is clear that the WiFi node has the following responsibilit
 \begin{itemize}
 \item Log all data to SD card.
 \item Transmit and receive data through WiFi.
-\item Pack data according to protocol
-\item Send log file through WiFi.
-\item Timestamp management
-\item Merge multi frame packets
+\item Pack data according to protocol.
+\item Send log file through WiFi upon request.
+\item Timestamp management.
+\item Merge multi frame packets.
 \end{itemize}
 \mikkel{Is multi frame packets what we mean?}
+\martin{Yes, I think we mean that.}
 
 It is found that the responsibilities can be grouped into normal operation mode and sending log file mode.
 This should be implemented as a state machine as shown in figure \ref{fig:StateDiagram_NodeWiFiStates}.
@@ -227,9 +226,9 @@ As it can be seen the WiFi node will only send frames to the CAN network when it
 \end{figure}
 
 In normal operation mode the WiFi node needs to receive CAN frames from the CAN program. 
-Some frames contain data that is split into more frames.
+Some frames contain data that is split into multiple frames.
 In order to log and timestamp data correctly these frames needs to be merged together.
-The \texttt{new\_msg} field in the messageid will be \texttt{0} if a received frame needs to be merged with the previously received frame.
+The \texttt{nw\_msg} field in the messageid will be \texttt{0} if a received frame needs to be merged with the previously received frame.
 A state machine handling merging of frames can be seen in figure \ref{fig:StateDiagram_ConcatMsgProcess}.
 
 \begin{figure}[!h]
@@ -246,14 +245,15 @@ This flow is depicted in figure \ref{fig:FlowChart_CANFrameProcess}.
 
 
 \subsubsection*{Class diagram}
-Based on the previous analysis a class diagram was developed and can be seen in figure \ref{fig:node_class_diagram}.
+Based on the previous analysis a class diagram was developed and can be seen in figure \ref{fig:StateDiagram_NodeWiFi}.
+\martin{Changed the above reference from \ref{fig:node_class_diagram} to \ref{fig:StateDiagram_NodeWiFi}}
 The classes main responsibilities are shown in figure \ref{fig:wifi_flow}.
 
 \begin{figure}[!h]
 \centering
 \includegraphics[width=0.6\textwidth]{graphics/ClassDiagram_NodeWiFi}
 \caption{Class diagram showing sensor node software.}
-\label{fig:StateDiagram_ConcatMsgProcess}
+\label{fig:StateDiagram_NodeWiFi}
 \end{figure}
 
 \mikkel{Should these class descriptions be omitted?}
@@ -265,10 +265,10 @@ The State\_Machine also sets if it should transmit the data it gets from the Tim
 \subsubsection*{State\_Machine class}
 The State\_Machine class implements the state machine of figure \ref{fig:StateDiagram_NodeWiFiStates}.
 When sending log mode it needs to get a log file from the logger class and give it to the WiFi class.
-When i normal mode it needs to extract commands and node ids from the received WiFi data and give it to the Protocol class.
+When i normal mode it needs to extract commands and node IDs from the received WiFi data and give it to the Protocol class.
 
 \subsubsection*{Protocol class}
-The Protocol class needs to get frames from the full frame buffer and extract node id and messagetype. 
+The Protocol class needs to get frames from the full frame buffer and extract node ID and message type. 
 It also needs to pack CAN frames with received commands and node id from the State\_Machine class.
 
 \subsubsection*{CAN\_link class}

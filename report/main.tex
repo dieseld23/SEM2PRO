@@ -26,7 +26,6 @@
 \usepackage[font={footnotesize}]{caption}
 \usepackage[font={footnotesize}]{subcaption}
 
-
 \newcommand{\mikkel}[1]{\todo[inline,linecolor=green!100,backgroundcolor=red!70, bordercolor=green, author = Mikkel]{#1}}
 \newcommand{\martin}[1]{\todo[inline,color=blue!30, author = Martin]{#1}}
 \newcommand{\thomas}[1]{\todo[inline,color=black!30, author = Thomas]{#1}}
@@ -62,19 +61,20 @@
 \usepackage{todonotes}
 \usepackage{listings}
 \lstset{
-  tabsize=3,
-  frame=l,
-  language=c++,
-  escapeinside={(*@}{@*)},
-  basicstyle=\small\ttfamily,
-  numbers=left,
-  numberstyle=\tiny\color{gray},
-  keywordstyle=\color{blue},
-  commentstyle=\color{green}\ttfamily,
-  stringstyle=\color{gray},
-  upquote=true
-  %texcl=true 
-}
+backgroundcolor = \color{black!5},
+tabsize=3,
+frame=l,
+language=c++,
+escapeinside={(*@}{@*)},
+basicstyle=\small\ttfamily,,
+numbers=left,
+numberstyle=\tiny\color{gray},
+keywordstyle=\color{blue},
+commentstyle=\color{green}\ttfamily,
+stringstyle=\color{gray},
+upquote=true,
+breaklines = true
+  }
 \renewcommand{\lstlistingname}{Code} %Let listings have code instead of figure
 
 \usepackage{multirow}
@@ -91,19 +91,19 @@
 
 %Make counter of listings specific to sections
 \AtBeginDocument{%
-  \counterwithin*{lstlisting}{section}
+\counterwithin*{lstlisting}{section}
   \renewcommand{\thelstlisting}{%
-    \ifnum\value{subsection}=0
+  \ifnum\value{subsection}=0
       \thesection.\arabic{lstlisting}%
-    \else
+      \else
       \ifnum\value{subsubsection}=0
         \thesection.\arabic{lstlisting}%
-      \else
+        \else
         \thesection.\arabic{lstlisting}%
-      \fi
-    \fi
+        \fi
+        \fi
   }%
-}
+  }
 
 %\usepackage[inner=2cm,outer=4cm]{geometry}
 

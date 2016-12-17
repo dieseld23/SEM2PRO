@@ -6,6 +6,7 @@ This network is created using a USB-Wifi dongle on the Zybo board.
 The following script is run to bring down the device, change the network type to ad-hoc, bring up the device, create the ad-hoc network and, finally, assign an IP-address to the device.
 Note: some commands require super user access.
 For clarity, \texttt{sudo} is left out from all calls throughout this section.
+
 \begin{lstlisting}[language=bash]
 >>service network-manager stop
 >>ip link set wlan0 down
