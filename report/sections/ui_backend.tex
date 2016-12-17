@@ -3,24 +3,27 @@
 The requirements state that it should be simple to add additional sensors to the system.
 Adding a sensor includes creating a way of easily accessing and showing the data on the observing system.
 This section will explain the design of the backend that will provide this functionality.
+\martin{Is any of this backend?}
 
 \subsection{Data Format}
-Depending on the author of the data (which node produced the data) the data may be inherently different.
+Depending on where the data comes from it may be inherently different. 
 The interpretation of data is therefore not uniform across the entire system.
 For this reason, it is necessary to create a system that is agnostic with respect to the type and amount of data being handled.
 In section \ref{sub:CAN_protocol} a description of the node and message identification system is given.
-The NodeID and MSGtype identifiers are decided by the implementer and together they provide a unique, 11 bit identifier, the Message ID, for the type of data in the message.
-Since the Message ID is capable of uniquely identifying the data, it will be used in storing the data.
+The node ID and message type identifiers are decided by the implementer and together they provide a unique, 11 bit identifier, the message ID, for the type of data in the message.
+Since the message ID is capable of uniquely identifying the data, it will be used in storing the data.
 Additionally each message will be associated with a four byte timestamp.
-This timestamp is given as the time in milliseconds since startup and is associated with message type 1.
+This timestamp is given as the time in milliseconds since synchronization and is associated with message type 1.
 \thomas{We need to agree on a way to write nodeid,msgid,msgtype throughout the report}
+\martin{For the most part there has been written node ID, message ID and message type. Abbreviate message?}
 
 \subsection{Front End Architecture}
 An overview of the functionality can be seen in figure \ref{fig:backendconcept}.
 As can be seen, this architecture provides the link between the receiving program (socat) and a potential \acs{gui}.
 Upon receiving a message from the go-kart, socat will pipe the raw message to the interpreter.
-The interpreter will proceed to extract the message id, the timestamp and the data.
-These are then put into a fifo buffer which will contain the latest 1024 data points for a given message id.
+The interpreter will proceed to extract the message ID, the timestamp and the data.
+These are then put into a fifo buffer which will contain the latest 1024 data points for a given message ID.
+\martin{does that mean that there are upwards of 1000 independent fifos? Looking at figure~\ref{fig:backendconcept}, it seems like is a three part FIFO, where messages get mixed between each other}
 One of the requirements of this system is that it should be easily expandable.
 A consequence of this is that adding a new node on the system should require as few changes to the code as possible.
 Making this backend agnostic with respect to the type of data means that no changes are required when adding different nodes with different data types.
@@ -28,7 +31,7 @@ However, full agnosticity throughout the entire backend would mean that the GUI 
 Instead, it was decided to let the backend consist of a number of functions, written specifically for each node.
 The GPS node, for instance, may have a \texttt{get\_latitude()} function.
 In this manner, a simple API can be created which provides the GUI with access to the parameters that needs to be shown.
-The complete code can be found on the associated github repository in \path{code\backend\}.
+The complete code can be found on the associated github repository in \path{code/backend/}.
 As a note, throughout this section it is assumed that the messages are of string type.
 Clearly, this is hugely inefficient as these are string representations of binary numbers.
 In testing the software this approach simplified the process greatly and was due to time pressure.
