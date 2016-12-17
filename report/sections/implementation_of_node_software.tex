@@ -181,7 +181,7 @@ From the analysis it is clear that the WiFi node has the following responsibilit
 \item Merge multi frame packets.
 \end{itemize}
 \mikkel{Is multi frame packets what we mean?}
-\martin{Yes, I think we mean that. But is timestamp managing a task for the WiFi node?}
+\martin{Yes, I think we mean that.}
 
 It is found that the responsibilities can be grouped into normal operation mode and sending log file mode.
 This should be implemented as a state machine as shown in figure \ref{fig:StateDiagram_NodeWiFiStates}.
@@ -218,9 +218,9 @@ As it can be seen the WiFi node will only send frames to the CAN network when it
 \end{figure}
 
 In normal operation mode the WiFi node needs to receive CAN frames from the CAN program. 
-Some frames contain data that is split into more frames.
+Some frames contain data that is split into multiple frames.
 In order to log and timestamp data correctly these frames needs to be merged together.
-The \texttt{new\_msg} field in the messageid will be \texttt{0} if a received frame needs to be merged with the previously received frame.
+The \texttt{nw\_msg} field in the messageid will be \texttt{0} if a received frame needs to be merged with the previously received frame.
 A state machine handling merging of frames can be seen in figure \ref{fig:StateDiagram_ConcatMsgProcess}.
 
 \begin{figure}[!h]
@@ -237,14 +237,15 @@ This flow is depicted in figure \ref{fig:FlowChart_CANFrameProcess}.
 
 
 \subsubsection*{Class diagram}
-Based on the previous analysis a class diagram was developed and can be seen in figure \ref{fig:node_class_diagram}.
+Based on the previous analysis a class diagram was developed and can be seen in figure \ref{fig:StateDiagram_NodeWiFi}.
+\martin{Changed the above reference from \ref{fig:node_class_diagram} to \ref{fig:StateDiagram_NodeWiFi}}
 The classes main responsibilities are shown in figure \ref{fig:wifi_flow}.
 
 \begin{figure}[!h]
 \centering
 \includegraphics[width=0.6\textwidth]{graphics/ClassDiagram_NodeWiFi}
 \caption{Class diagram showing sensor node software.}
-\label{fig:StateDiagram_ConcatMsgProcess}
+\label{fig:StateDiagram_NodeWiFi}
 \end{figure}
 
 \mikkel{Should these class descriptions be omitted?}
@@ -256,10 +257,10 @@ The State\_Machine also sets if it should transmit the data it gets from the Tim
 \subsubsection*{State\_Machine class}
 The State\_Machine class implements the state machine of figure \ref{fig:StateDiagram_NodeWiFiStates}.
 When sending log mode it needs to get a log file from the logger class and give it to the WiFi class.
-When i normal mode it needs to extract commands and node ids from the received WiFi data and give it to the Protocol class.
+When i normal mode it needs to extract commands and node IDs from the received WiFi data and give it to the Protocol class.
 
 \subsubsection*{Protocol class}
-The Protocol class needs to get frames from the full frame buffer and extract node id and messagetype. 
+The Protocol class needs to get frames from the full frame buffer and extract node ID and message type. 
 It also needs to pack CAN frames with received commands and node id from the State\_Machine class.
 
 \subsubsection*{CAN\_link class}
