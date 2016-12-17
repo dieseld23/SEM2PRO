@@ -6,7 +6,7 @@ In general all nodes in the system needs to:
 \item Get data from CAN network.
 \item Send data using a CAN controller.
 \end{itemize}
-As described earlier these responsibilities are implemented in the bare-metal CAN program described in section \ref{sec:methods_to_implement_can} therefore these responsibilities will be omitted from the coming sections .
+As described earlier, these responsibilities are implemented in the bare-metal CAN program described in section \ref{sec:methods_to_implement_can} therefore these responsibilities will be omitted from the coming sections .
 
 \subsection{Sensor Node}
 \label{sec:sensor_node}
@@ -21,54 +21,57 @@ An example of a node can be seen in figure \ref{fig:gps_node}.
 \begin{figure}[!h]
 \centering
 \includegraphics[width=0.5\textwidth]{graphics/analysis_gps.eps}
-\caption{GPS node implemented on Zybo board.}
+\caption{GPS node implemented on the Zybo.}
 \label{fig:gps_node}
 \end{figure}
 
 This specific node has a GPS attached to it connected through a USB interface, but in general it could be any kind of data producing unit connected through any kind of interface.
-Because of time constraints the designed software has only been implemented in code to work on a GPS sensor node.
-\\From the analysis section it is clear that a sensor node has the following responsibilities:
+Due to time constraints, only the GPS sensor software was adapted to function with the designed node software.\\
+From the analysis section it is found that a sensor node has the following responsibilities:
 
 \begin{itemize}
 \item Get data from associated sensor.
 \item Pack data according to the specified protocol.
 \item Construct and send CAN package.
-\item React to the commands it receives.
+\item Receive and execute incoming commands.
 \end{itemize}
 
-Analyzing on the procedure when data goes from a sensor to the CAN program resulted in the block diagram of figure \ref{fig:filter_1}.
+The three first points describe a flow which is presented in more detail on the flow diagram on figure \ref{fig:filter_1}.
 
 \begin{figure}[!h]
 \centering
 \begin{subfigure}{0.45\textwidth}
 \centering
 \includegraphics[width=0.60\textwidth]{graphics/FlowChart_Node_Packing}
-\caption{Outgoing data. Data going from a sensor and to the CAN program.}
+\caption{Outgoing data. Data from a sensor, to the CAN program.}
 \label{fig:filter_1}
 \end{subfigure}
 ~
 \begin{subfigure}{0.45\textwidth}
 \centering
 \includegraphics[width=0.60\textwidth]{graphics/FlowChart_Node_Unpacking}
-\caption{Ingoing data. Data going from the CAN program to the node.}
+\caption{Incoming data. Data from the CAN program, to the node.}
 \label{fig:filter_2}
 \end{subfigure}
-\caption{Block diagram showing handling of outgoing and ingoing data. The boxes are colored according to which class implements the functionality. Yellow is the GPS class, orange is the Packer\_GPS class, purple is the node class, green is the protocol class and blue is the CAN\_link class.}
+\caption{Block diagram showing handling of outgoing and incoming data. The boxes are colored according to which class implements the functionality. 
+Yellow is the GPS class, orange is the Packer\_GPS class, purple is the node class, green is the protocol class and blue is the CAN\_link class.}
 \label{fig:flow_flow}
 \end{figure}
 
-To design modular software it needs to be analyzed which blocks are the same for all nodes and which are sensor specific.
-The sensor specific tasks are found to be extracting data from sensor and to pack data according to the protocol.
-The remaining tasks are the same for all sensor nodes in the system. 
+It is required to design the software with modularity in mind.
+For this, it is necessary to determine which blocks are common for all nodes and which are application specific.
+The application specific tasks, in this case, are found to be extracting data from sensor and to pack data according to the protocol.
+In principle the task of packing data according to protocol is generic, but the method for packing data depends on data types and messagetypes for the specific application.
+The remaining tasks are common for all sensor nodes in the system. 
 The procedure when data is going from the CAN program to the node is shown in figure \ref{fig:filter_2}.
-All tasks are found to be generic for all sensor nodes.
+In this case, all tasks are found to be common for all sensor nodes.
 
 \subsubsection*{Class diagram}
-Based on the previous analysis a class diagram was developed and can be seen in figure \ref{fig:node_class_diagram}.
-The classes main responsibilities are shown in figure \ref{fig:flow_flow}.
-Classes GPS and GPS\_Packer is sensor specific and should be developed for each specific sensor.
-In a generic sensor node the GPS class would be a sensor class and the Packer\_GPS class would be a Packer\_Sensor. 
-Classes to the left are agnostic to all data they receive going from the sensor and to the CAN network.
+Based on the previous analysis, a class diagram was developed and can be seen in figure \ref{fig:node_class_diagram}.
+The main responsibilities of the classes are shown in figure \ref{fig:flow_flow}.
+The classes \texttt{GPS} and \texttt{GPS\_Packer} are application specific and should be developed for each specific application.
+In a generic sensor node \texttt{GPS} would be a \texttt{<sensor>} class and \texttt{Packer\_GPS}  would be a \texttt{Packer\_<sensor>}. 
+The classes \texttt{CAN\_Link}, \texttt{Protocol} and \texttt{Node} are agnostic with respect to the type of data they receive from the sensor and to the CAN network.
 They are generic classes and should be reused when developing new nodes.
 
 \begin{figure}[!h]
@@ -92,69 +95,64 @@ struct data_packet {
 \end{lstlisting}
 It will be passed between the classes and they will each add their own information. 
 
-The classes and their tasks will be explained here.
+The classes and their responsibilities will be explained here in more detail.
 
 ~\\ \par \textbf{GPS class} ~ \\
-The GPS class needs to extract data from a connected GPS unit and update its own variables with that data.
+The \texttt{GPS} class needs to extract data from a connected GPS unit and update its own variables with that data.
 The specific GPS unit used in this project has a USB interface and uses the NMEA protocol to format data.
 
 ~\\ \par \textbf{Packer\_GPS class} ~ \\
-The Packer\_GPS class is also sensor specific and is the link between the sensor and the data agnostic node.
+The \texttt{Packer\_GPS} class is also sensor specific and is the link between the sensor and the data agnostic node.
 It is hard-coded with the message types that the sensor is allowed to send onto the network.
-It has the responsibility to pack data according to the developed protocol.
-Data in the form of a vector of booleans are then put into the \texttt{data\_packet} struct and passed to the node class.
+It has the responsibility of packing data according to the developed protocol.
+The data field in the \texttt{data\_packet} struct is populated with the GPS data in binary form.
+Once packed, the struct is passed to the node class.
 The reason for making a separate class for the packer and not putting the functionality into the GPS class is that if the specification of the protocol or message types change, only this class needs to be modified.
 Similarly, if the GPS module is replaced, the Packer\_GPS class does not need to be altered.
 
 ~\\ \par \textbf{Node class} ~ \\
-The Node class gets \texttt{data\_packets} from the Packer class and will then prepend its node ID to the message type.
-It needs to create a timestamp \texttt{data\_packet} each time data is to be sent.
-In order to create the time message the class needs to keep track of milliseconds since receiving the synchronize message.
+The Node class receives \texttt{data\_packets} from \texttt{Packer\_GPS}.
+Upon receiving a packet, it will set its node ID in \texttt{data\_packet}.
+Before sending a message, the associated time packet has to be sent.
+In order to create the time packet the class holds a timer which increments each millisecond.
+The timer is reset upon receiving a synchronize message.
 The class receives start, stop or synchronize events from the protocol class and reacts to those accordingly.
 
 ~\\ \par \textbf{Protocol class} ~ \\
-The protocol class receives \texttt{data\_packets} from the node class. 
-If it receives \texttt{data\_packets} where there are more than eight data bytes it needs to create additional \texttt{data\_packets} and distribute data to them. 
-The additional \texttt{data\_packets} must have the same node id and message types, but the new message, nw\_msg, bit should be set to zero..
-The class also needs to calculate number of data bytes, \texttt{dl}, to each \texttt{data\_packet}.
-On \texttt{data\_packets} coming from the CAN network the class needs to use the last two bits of the messagetype to decode which command is sent to the node.
+
+The protocol class receives \texttt{data\_packets} from \texttt{Node}. 
+If it receives \texttt{data\_} \texttt{packets} with more than eight bytes in the data field, it will split the packet into multiple \texttt{data\_packets}.
+The additional \texttt{data\_packets} must have the same node id and message type, but the new message, \texttt{nw\_msg}, bit should be cleared on all but the first message.
+The class also needs to count the number of bytes in the data field, \texttt{dlc}, for each \texttt{data\_packet}.
+On \texttt{data\_packets} coming from the CAN network the last two bits of the messagetype is used to indicate the type of command sent to the node.
 
 ~\\ \par \textbf{CAN\_link class} ~ \\
-The CAN\_link class has the responsibility of transferring and receiving data to and from the CAN program.
-As this interface has not yet been implemented this class makes use of the standard input and output. 
-Meaning that data from the sensor will be printed in the shell and data to the node should be written to the shell. 
-
+The \texttt{CAN\_link} class has the responsibility of transferring and receiving data to and from the CAN program.
+As this interface has not yet been implemented this class makes use of stdio. 
+That is, data from the sensor will be printed in the shell and data to the node is written to the shell. 
+\thomas{shell=terminal?}
 \subsubsection*{Passing data between classes}
 Communication between classes is realised by using the producer-consumer pattern.
 As the name implies one class produces data and puts this in a queue where another class consumes by taking data out of the queue.
 To get the producer and consumer functions to run in parallel they are run in separate threads.
-All queues are protected by a mutex to make the software thread-safe.
+All queues are protected by mutex to make the software thread-safe.
 
 \subsubsection*{Node class functionality}
-The functionalities of the Node class on outgoing data is implemented using a state machine.
+The functionalities of \texttt{Node} on outgoing data is implemented using a state machine.
 It is shown in figure \ref{fig:state_machine}.
 \begin{figure}[!h]
 \centering
 \includegraphics[width=1\textwidth]{graphics/StateDiagram_Node.pdf}
-\caption{State machine implementing the node class functionality. }
+\caption{State machine implementing the functionality of \texttt{Node}. }
 \label{fig:state_machine}
 \end{figure}
 \martin{In figure~\ref{fig:state_machine}, the "boolean" value run, should be the same as the boolean value "running" on figure~\ref{fig:node_class_diagram}.}
 When the variable \texttt{run} is equal to 1, the node should output sensor data.
 \texttt{run} is being updated by the thread that handles incoming commands.
 It will then go the clear state and clear all variables and wait for data. 
-When data is present it will move through the states create time packet, get data and send data. 
+When data is present it will move through the states, create the time packet, get data and send data. 
 If at any point \texttt{run} is set to 0 the state machine will go to the stop state.
 In the stop state the input queue of \texttt{data\_packet} will be cleared.
-
-
-
-
-
-
-
-
-
 
 
 \subsection{WiFi Node}
@@ -238,7 +236,6 @@ This flow is depicted in figure \ref{fig:FlowChart_CANFrameProcess}.
 
 \subsubsection*{Class diagram}
 Based on the previous analysis a class diagram was developed and can be seen in figure \ref{fig:StateDiagram_NodeWiFi}.
-\martin{Changed the above reference from \ref{fig:node_class_diagram} to \ref{fig:StateDiagram_NodeWiFi}}
 The classes main responsibilities are shown in figure \ref{fig:wifi_flow}.
 
 \begin{figure}[!h]
