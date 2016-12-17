@@ -138,8 +138,10 @@ Looking into the routing tables reveals a discrepancy:
 >> ip route show
 default via 192.168.10.1 dev eth0 metric 100 
 169.254.0.0/16 dev eth0 scope link metric 1000 
-192.168.10.0/24 dev eth0 proto kernel scope link src 192.168.10.10 
-192.168.10.0/24 dev wlan0 proto kernel scope link src 192.168.10.10
+192.168.10.0/24 dev eth0 proto kernel scope link 
+	src 192.168.10.10 
+192.168.10.0/24 dev wlan0 proto kernel scope link 
+	src 192.168.10.10
 \end{lstlisting}
 \thomas{Get the correct table, wifi is missing}
 As can be seen, messages on eth0 and wlan0 are both routed to the same address space, 192.168.10.0/24.
