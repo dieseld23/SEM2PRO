@@ -1,8 +1,9 @@
 %!TEX root = ../main.tex
-\section{System Requirements} % (fold)
+\subsection{System Requirements} % (fold)
 \label{sec:system_requirements}
 
 \martin{Make the first table part of the second table}
+\martin{prettify the tables}
 
 \begin{table}[h]
 \centering
@@ -15,7 +16,7 @@
 	\hline
 	\centering
 	USB \\
-	5V 3A PSU \\
+	5 V DC \\
 	Wifi \\
 	CAN \\
 	CANOpen \\
@@ -29,9 +30,9 @@
 \hline
 1 & Read data from sensors/data producers 				& page x \\
 2 & Timestamps all data 								& page x \\
-3 & Transmit data wireless between Zybo board and pc 	& page x \\
+3 & Transmit data wireless between Zybo board and monitoring station	& page x \\
 4 & Log data to SD card 								& page x \\
-5 & Transfer logs to pc 								& page x \\
+5 & Transfer logs to monitoring station 								& page x \\
 6 & Start/stop transmission from nodes 					& page x \\
 7 & Present data to user								& page x \\
 8 & Provide an API for data access						& page x \\
@@ -52,9 +53,9 @@
 \multicolumn{3}{|c|}{\textbf{Quality of Service}}\\
 \hline	
 16 & Can support 16 nodes							 	& page 1 \\
-17 & Has wireless range of 80 m						 	& page 1 \\
+17 & Has wireless range of > 80 m						 	& page 1 \\
 18 & CAN network has 1 Mb/s data bandwidth			 	& page 1 \\
-19 & Timestamps with a precision of x ms 			 	& page 1 \\
+19 & Timestamps with a precision of 1 ms 			 	& page 1 \\
 
 \hline
 \multicolumn{3}{|c|}{\textbf{Design}}\\

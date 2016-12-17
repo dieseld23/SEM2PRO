@@ -1,21 +1,21 @@
 %!TEX root = ../main.tex
 
 \section{Local Storage}
-In addition to transmitting data to a stationary computer, the raw data should be stored on the go-kart.
-It should be possible to download this data through WiFi upon request.
+In addition to transmitting data to a stationary computer, the data should be stored on the go-kart.
+It should be possible to transmit this data through WiFi upon request.
 This will ensure, that no data is lost if the go-kart gets out of range of the WiFi.
-The storage will be done on the WiFi node as transmitting a potentially large log over the CAN bus could potentially be inefficient.
+The storage will be done on the WiFi node as transmitting a potentially large log over the CAN bus could potentially be inefficient.\\
 
 Each Zybo has an SD card which holds the operating system.
 These particular SD cards have more than 3 GB of un-partitioned space which can be used for log storage. 
-Linux allows for an easy way to handle files, which would ease the task of logging data at fixed intervals, or to read the log back as simply as possible.
-\thomas{"As fast as possible" is most likely wrong. A purpose made hardware implementation would probably be faster. Changed to "As simply as possible"}
+Linux allows for an easy way to handle files, which would ease the task of logging data at fixed intervals, or to read the log back.
 At this point, it is not clear how much data will be on the bus, which means that it is not clear whether this is enough.
-The assumption is made that data will be stored only for one drive station.
+The assumption is made that data will be stored only for one drive session.
 That is, upon starting a new drive, the old log is deleted.
 This assumption enables calculating the maximum writing speed possible while not running out of space.\\
 
-Assuming that the go-kart has battery for half an hour driving sessions, the data rate can be calculated as follows:
+From experience, it is known, that the go-kart has battery for half an hour driving sessions.
+From this knowledge, the data rate can be calculated as follows:
 
 \begin{equation}
 	\frac{3\mathrm{GB}}{30\si{\minute}} = \frac{2.58 \cdot 10^{10} \mathrm{bit}}{1800 \si{\second}} \approx 13.7 \mathrm{Mb/s}
