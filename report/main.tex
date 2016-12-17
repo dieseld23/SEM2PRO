@@ -60,19 +60,20 @@
 \usepackage{todonotes}
 \usepackage{listings}
 \lstset{
-  tabsize=3,
-  frame=l,
-  language=c++,
-  escapeinside={(*@}{@*)},
-  basicstyle=\small,
-  numbers=left,
-  numberstyle=\tiny\color{gray},
-  keywordstyle=\color{blue},
-  commentstyle=\color{green}\ttfamily,
-  stringstyle=\color{gray},
-  upquote=true
+backgroundcolor = \color{black!5},
+tabsize=3,
+frame=l,
+language=c++,
+escapeinside={(*@}{@*)},
+basicstyle=\small,
+numbers=left,
+numberstyle=\tiny\color{gray},
+keywordstyle=\color{blue},
+commentstyle=\color{green}\ttfamily,
+stringstyle=\color{gray},
+upquote=true
   %texcl=true 
-}
+  }
 \renewcommand{\lstlistingname}{Code} %Let listings have code instead of figure
 
 \usepackage{multirow}
@@ -89,19 +90,19 @@
 
 %Make counter of listings specific to sections
 \AtBeginDocument{%
-  \counterwithin*{lstlisting}{section}
+\counterwithin*{lstlisting}{section}
   \renewcommand{\thelstlisting}{%
-    \ifnum\value{subsection}=0
+  \ifnum\value{subsection}=0
       \thesection.\arabic{lstlisting}%
-    \else
+      \else
       \ifnum\value{subsubsection}=0
         \thesection.\arabic{lstlisting}%
-      \else
+        \else
         \thesection.\arabic{lstlisting}%
-      \fi
-    \fi
+        \fi
+        \fi
   }%
-}
+  }
 
 %\usepackage[inner=2cm,outer=4cm]{geometry}
 

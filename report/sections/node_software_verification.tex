@@ -26,7 +26,8 @@ It can be seen that it has node ID 14, 8 data bytes and messagetype 9, which is 
 To extract the latitude and longitude from the data field a unpacking algorithm is needed.
 Using that it is found that latitude is 55.3673346 degrees North and longitude is 10.4318456 degrees East.
 
-\begin{lstlisting}[caption=Struct for data packet.,label=code:output_node]
+%\begin{lstlisting}[caption=Struct for data packet.,label=code:output_node]
+\begin{lstlisting}[language=bash]
 (*@\makebox[\linewidth][c]{$\smash{\vdots}$}@*)
 Start of frame: 1
 Node id: 1110
@@ -43,7 +44,18 @@ Data: 0010000100000000011000101000001000000110001101111100010111111000
 Full frame: 1111000100110000010000100000000011000101000001000000110001101111100010111111000
 (*@\makebox[\linewidth][c]{$\smash{\vdots}$}@*)
 \end{lstlisting}
+
 \mikkel{Do something with the long lines.}
+\begin{lstlisting}[language=bash]
+>>service network-manager stop
+>>ip link set wlan0 down
+>>iw wlan0 set type ibss
+>>ip link set wlan0 up
+>>iw wlan0 ibss join go-kart 2412
+>>ip addr add wlan0 196.178.10.10
+\end{lstlisting}
+
+
 
 It should be possible to send a sync command to the node by giving it the message ID \texttt{10001111000}.
 When typing this into the shell it can be seen that the nodes timestamp is reset.
