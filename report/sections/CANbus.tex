@@ -26,7 +26,7 @@ The transceivers have been mounted on boards, that plug directly into the Zybo's
 The board has been designed to use the MIO ports, available in the PMOD JF. 
 This is necessary to utilize the built-in CAN controllers.
 Although the schematic contains two transceivers and two termination resistors, most of these devices are not mounted. 
-Four boards will be made, all containing CAN0, C0 and the ZYBO connector. 
+Four boards will be made, all containing CAN0, C0 and the Zybo connector. 
 One board will also include the resistor R0 - this is the bottom-most board.
 Another board will include R0, R1, CAN1, C1 and the SEVCON connector.
 Ths is placed on top, to allow the SEVCON connector's screws to be accessible. 
@@ -65,26 +65,26 @@ The frame of the message is described here.
 \begin{itemize}
 	\item SOF: \textbf{S}tart \textbf{O}f \textbf{F}rame: One dominant bit to start a frame.
 	\item Message ID: 11 bit message identifier provides information about what the message contains. Subscribers will recognize a message by this ID.
-	\item RTR: \textbf{R}emote \textbf{T}ransmission \textbf{R}equest: set to 1 if a transmission is requested from another node. Because is a publisher-subscriber network, this will always be 0.
-	\item IDE: \textbf{ID E}xtended: Set to 1 if extended ID is in use. This adds 18 more bits of message identifiers immediately after this bit. At the moment, this is not needed, and should always be 0.
-	\item r0: Bit reserved for future use, alway set to zero
+	\item RTR: \textbf{R}emote \textbf{T}ransmission \textbf{R}equest: set to \texttt{1} if a transmission is requested from another node. Because is a publisher-subscriber network, this will always be \texttt{0}.
+	\item IDE: \textbf{ID E}xtended: Set to \texttt{1} if extended ID is in use. This adds 18 more bits of message identifiers immediately after this bit. At the moment, this is not needed, and should always be 0.
+	\item r0: Bit reserved for future use, alway set to zero.
 	\item DLC: \textbf{D}ata \textbf{L}ength \textbf{C}ode: how many bytes, of data, the frame contains. Ranging from 0-8.
 	\item Data: Raw data. 
-	\item CRC Checksum: \textbf{C}yclic \textbf{R}edundancy \textbf{C}heck: 15 bit checksum based on what was written in the Data portion. The last bit is a delimiter, and is always 1.
-	\item ACK: \textbf{ACK}nowledge: The transmitting node will set the first bit of ACK to be recessive (1). Each receiving node will calculate CRC based on the data, and compare it to the CRC checksum. If no error is detected, it will set the bit to dominant (0). On a multi-node network, if one node confirms the data, the transmitting node cannot know if any other node did not receive the data. However, because of the nature of a differential voltage bus it is nearly impossible that two nodes would not receive the same signal, so long as the bus is correctly impedance matched, and distances do not exceed the specification. The last bit of ACK is a delimiter, and always 1
+	\item CRC Checksum: \textbf{C}yclic \textbf{R}edundancy \textbf{C}heck: 15 bit checksum based on what was written in the Data portion. The last bit is a delimiter, and is always \texttt{1}.
+	\item ACK: \textbf{ACK}nowledge: The transmitting node will set the first bit of ACK to be recessive (\texttt{1}). Each receiving node will calculate CRC based on the data, and compare it to the CRC checksum. If no error is detected, it will set the bit to dominant (\texttt{0}). On a multi-node network, if one node confirms the data, the transmitting node cannot know if any other node did not receive the data. However, because of the nature of a differential voltage bus it is nearly impossible that two nodes would not receive the same signal, so long as the bus is correctly impedance matched, and distances do not exceed the specification. The last bit of ACK is a delimiter, and always \texttt{1}.
 	\item EOF: \textbf{E}nd \textbf{O}f \textbf{F}rame: Pattern signifies the end of a frame, the pattern is 7 recessive bits.
 	\item IFS: \textbf{I}nter\textbf{F}rame \textbf{S}pace: an arbitrary length of recessive bits, at least three bits long. After this point, a new frame may start by setting a zero.
 \end{itemize}
 
 Because \texttt{0} dominates \texttt{1}, it is possible to prioritize messages.
 Lower message IDs are given higher priority.
-If two nodes start writing a message at the same time, the first node to write a \texttt{1} when the other node writes 0 will realize that another node has right of way, and will stop transmitting and wait for the current frame to end.
+If two nodes start writing a message at the same time, the first node to write a \texttt{1} when the other node writes \texttt{0} will realize that another node has right of way, and will stop transmitting and wait for the current frame to end.
 Once the this bus is available, the node will attmept to send the message again.
 It might then be blocked again by another node, and there is a risk, that it will never send.
 It is the developer's responsibility to ensure that this does not happen.\\
 
 Another automatic feature of CAN is bit stuffing.
-If either 0 or 1 is written to the controller 5 consecutive times, a bit of the opposite polarity stuffed into the stream. 
+If either \texttt{0} or \texttt{1} is written to the controller 5 consecutive times, a bit of the opposite polarity stuffed into the stream. 
 This is done to ensure that receiving nodes remain synchronized with the transmitting node, as there is no clock signal.
 That means, that a frame can be extended by upwards of 20 \% if the data requires it.
 This is however not done to the EOF and IFS parts.

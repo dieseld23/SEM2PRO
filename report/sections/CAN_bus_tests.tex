@@ -100,32 +100,27 @@ This is a convention implemented by the CAN controller, and as the same endianne
 The message was received correctly.\\
 
 The CRC is calculated automatically by the controller.
-Unfortunately it ends on five consecutive \texttt{1}'s, meaning that a 0 must be stuffed in-between the delimiter, causing the frame to be one bit longer.\\
+Unfortunately it ends on five consecutive \texttt{1}'s, meaning that a \texttt{0} must be stuffed in before the delimiter, causing the frame to be one bit longer.\\
 
 Additionally this controller uses 5 bits for the IFS part of the frame, rather than the mandatory minimum of 3 bits. 
 
 \subsection{Bandwidth}\label{sub:CAN_bandwidth}
 This will be calculated, as the faster controllers are not available.
-Bandwidth is considering the amount of net data being transmitted per unit time, when excluding the overhead.
+ unit time, when excluding the overhead.
 Bandwidth will be calculated for 8 byte frames, and bit stuffing will be omitted.\\
-
-The maximum operating data rate for the transceivers is 8 Mb/s.
+                                                         
+The maximum operating data rate for the CAN protocol is 1 Mb/s.
 As mentioned in section~\ref{sub:CanMessageFrame}, the CAN frame has 47 bits of overhead. 
 Including 8 bytes of data, this comes up to 111 bits. 
-Time per frame is:
-
-\begin{equation}
-\frac{111}{8 \cdot 10^6} = 1.39 \cdot 10^{-5}
-\end{equation}
-
+Time per frame is $111\si{\micro \second}$.
 As each frame contains 8 bytes of data, the data rate becomes:
 
 \begin{equation}
-\frac{8}{1.39 \cdot 10^-5}= 5.77 \cdot 10^5
+\frac{8}{111 10^-6}= 72072
 \end{equation}
 
-That means, that the effective transfer rate is 577 kB/s, or 4.61 Mb/s with 8 Mb/s controllers. 
-With the controllers built into the PS of the Zybo, this effective rate comes down to 720 Kb/s.
+That means, that the effective transfer rate is 70.4 kB/s, or 563 kb/s
+This is significantly less than stated in the requirements.
 \martin{Rewrite, so that we don't mention 8 Mb/s here, move that to the future work. Maybe also mention here, that it give up to 4.6 Mb/s}
 
 \subsection{Message Priority}\label{sub:CAN_message priority}

@@ -17,11 +17,11 @@ The bus offers 1 Mbit/s at up 40 \si{\metre} of length.
 \end{figure}
 
 Some hardware is necessary in order to properly realise a CAN network.
-The structure of each node can be seen on figure~\ref{fig:canbus_setup}.
+The structure of each node can be seen in figure~\ref{fig:canbus_setup}.
 The following paragraphs explain the physical parts of this structure as well as the requirements of the protocol.
 
 \subsubsection*{The CAN Bus}
-The bus is shown on figure~\ref{fig:analysisnodes}.
+The bus is shown in figure~\ref{fig:analysisnodes}.
 It is a differential voltage bus.
 This means that the value on the bus is determined by the voltage difference between the two wires, rather than the absolute voltage of either wire.
 The bus has to be made with twisted pair wires with a characteristic impedance of $\si{120 \ohm}$ and terminated at each end with $\si{120 \ohm}$ resistors.
@@ -50,10 +50,10 @@ The transceivers translate the Tx signal from the CAN controller to the differen
 That means, that while a node is sending, Tx and Rx are the same.
 
 \subsubsection*{The CAN Controller}
-This element can be standalone hardware, but it is in many cases built into the micro-controller.
+This element can be standalone hardware, but it is in many cases built into the micro controller.
 If the CAN controller notices that the Rx it receives is not the same as the Tx it sends out, it will know that it is being dominated.
 Due to the tight timing demands, this cannot be implemented in software.
-The major advantage of having the controller built into the micro-controller is that it would otherwise require additional communication, like UART or SPI, for the communication between the microprocessor and controller.
+The major advantage of having the controller built into the micro controller is that it would otherwise require additional communication, like UART or SPI, for the communication between the microprocessor and controller.
 A CAN controller (both standalone and built-in) has an input and output FIFO, meaning that the CAN bus communication can operate asynchronously.
 This does, however, mean that it can not be used as a real time network.
 Asynchronous operation is necessary as there is only one bus and it is possible that nodes will attempt to transmit messages simultaneously.
@@ -65,7 +65,7 @@ A detailed description of this frame can be seen in section \ref{sub:CanMessageF
 
 It should be possible to toggle the data collection of individual nodes.
 This means that it is necessary to have a protocol that allows addressing each node on the bus individually.
-The message frame of the CAN protocol does include a message ID, however this id holds no information about the sender of the message.
+The message frame of the CAN protocol does include a message ID, however this ID holds no information about the sender of the message.
 In CAN a table of all message ID's and their meaning is used to decode messages.
 Achieving the desired functionality will require an adaptation of the protocol. \\
 

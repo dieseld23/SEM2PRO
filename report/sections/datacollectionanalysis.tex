@@ -49,12 +49,13 @@ It can be scalable to a certain point, since the hub can be upgraded to handle m
 \end{itemize}
 
 \subsubsection*{Suitable Topology}
+
 \todo[inline]{rewrote, and shrunk a lot. Martin}
 A star network requires extra hardware in the form of a hub, which has a limited number of ports. 
 This either has to be large enough to a predefined maximum number of nodes, or it will have to be replaced to accommodate a more nodes.
 This takes away scalability and modularity.\\
 
-Both the bus and ring topology fulfil the requirements suitably in terms of scalability and hardware requirements.
+Both the bus and ring topology fulfill the requirements suitably in terms of scalability and hardware requirements.
 Technologies of both types will be explored in order to determine which suits the project better.
 
 \subsection{Networking technology}
@@ -73,7 +74,7 @@ However, this does require all nodes to have two Ethernet ports with direct acce
 
 CAN is a bus topology widely used in the automotive industry with data rates up to 1Mbit/s for small network lengths.
 This is slightly less than the requirement calculated in section~\ref{sec:data_rate}, however that number was based on the highest possible sample rate of the IMU, along with the inefficient data type, which is 32 bit float.
-Because CAN is a bus topology, it's easy to add another node to the bus, as one would just tap into the bus anywhere.
+Because CAN is a bus topology, it is easy to add another node to the bus, as one would just tap into the bus anywhere.
 It is because of this tapping into the bus, that it is not suitable for higher data rates, and if the bus breaks at any one point, communication is lost on the entire bus.
 Unlike Powerlink, this runs without a dedicated master.
 It is not nearly as fast as Powerlink, and does not have the redundancy of a ring network.

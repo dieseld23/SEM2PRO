@@ -4,25 +4,10 @@ Reading guide for GIT
 
 Todo's for the greater proofing weekend
 search and replace:
-Zybo instead of ZB or Zybo board
-WiFi
 ??
-go-kart
-USB all caps.
-"micro controller" in two words without hyphen
-"In figure" rather than "on figure"
-"ID" in all caps
-"IO" in all caps
-Linux
-Ubuntu
-built-in with hyphen
-remove appostrophe from words like it's, can't and such
-message ID, node ID, message type.
-"Framework" should be removed
-zero one to 1 0
-texttt 0 og 1
-GoCAN instead of HL protocol, high level protocol
 
+"Framework" should be removed	----> NOT FOUND
+zero one to 1 0 	----> THIS WAS NOT found anywhere as "zero one"
+texttt 0 og 1 		----> HOPE WAS DONE CORRECTLY
 
-References to Code snippets as "code ##"
 All reference to functions should be in texttt

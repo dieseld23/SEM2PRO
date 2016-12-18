@@ -8,8 +8,8 @@ In principle the network could consist of 16 different embedded platform's.
 \subsection{Nodes}
 In section \ref{sec:hardware_for_par}, it was chosen to use an IMU and a GPS, both using a USB interface.
 Additionally, one node has to transfer data wirelessly from the go-kart to a stationary monitoring system.
-In section~\ref{sec:wifi}, Wifi is chosen as the wireless protocol, and this will be handled on a separate node.
-Both USB and WiFI are implemented in Linux.
+In section~\ref{sec:wifi}, WiFi is chosen as the wireless protocol, and this will be handled on a separate node.
+Both USB and WiFi are implemented in Linux.
 Thus choosing an embedded platform supporting such an operating system will greatly simplify the code that needs to be written for all nodes.
 The authors attend a course on embedded software design in Linux, as such, this is a natural choice.\\
 
@@ -70,7 +70,7 @@ These vary depending on charge from 57.6 down to 40 V, so the DC-DC converter wo
 
 \subsection{Conclusion}
 A node is not hardware specific.
-It can be run on any type of embedded platform, so long as it is cabable of communication over CAN.
+It can be run on any type of embedded platform, so long as it is capable of communication over CAN.
 Throughout this project the nodes will be run on the Zybo platform.
-This will ease the development as Linux includes support for both USB and wifi.
+This will ease the development as Linux includes support for both USB and WiFi.
 An analysis of the power draw of a fully populated network revealed that a supply of upwards of 10\si{\ampere} is required.

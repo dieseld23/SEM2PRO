@@ -32,12 +32,12 @@ The complete code can be found on the associated github repository in \path{code
 As a note, throughout this section it is assumed that the messages are of string type.
 Clearly, this is hugely inefficient as these are string representations of binary numbers.
 In testing the software this approach simplified the process greatly and was due to time pressure.
-It is unlikely that this choice will pose any issues in terms of performance since this code will be running on a PC, a platform that is several orders of magnitude faster than the ZB.
+It is unlikely that this choice will pose any issues in terms of performance since this code will be running on a PC, a platform that is several orders of magnitude faster than the Zybo.
 
 \begin{figure}
 	\includegraphics[width=\linewidth]{graphics/backend_concept}
 	\caption[Overview of the front end functionality.]{Overview of the front end functionality. 
-	Messages are received over wifi from the go-kart. 
+	Messages are received over WiFi from the go-kart. 
 	An interpreter reads the message to determine the message ID (MSGID). A fifo of data and timestamps is associated with each message ID. 
 	All information is made available to a GUI through the front end.}
 	\label{fig:backendconcept}
@@ -50,7 +50,7 @@ It is unlikely that this choice will pose any issues in terms of performance sin
 	\label{fig:backendclass}
 \end{figure}
 From figure~\ref{fig:backendconcept}, a class diagram has been created.
-This can be seen on figure \ref{fig:backendclass}.
+This can be seen in figure \ref{fig:backendclass}.
 The functionality is implemented in four classes, each of which will be explained in more detail below.
 
 \subsubsection*{\texttt{receiver} class}
@@ -63,11 +63,11 @@ As mentioned, this class holds a message buffer, it is shown in code \ref{code:m
 The buffer can be accessed from the receiver thread indirectly by a call to \texttt{put()} and the interpreter thread continously checks if data is present in the buffer.
 Since these threads are run simultaneously it is necessary to use a mutex to avoid race conditions.
 Whenever a message is put in the buffer, it is split into its three components, a 10 bit message id, a 4 byte timestamp and a string of data of arbitrary length.
-On figure \ref{fig:backendmsg} is a depiction of the messagetype.
+In figure \ref{fig:backendmsg} is a depiction of the message type.
 \begin{figure}[H]
 	%\missingfigure{Backend Message (msgid/timestamp/data)}
 	\includegraphics[width=\linewidth]{graphics/backend_message}
-	\caption[Front end message.]{Depiction of the message sent over wifi. The message id is the same 11 bit identifier used in the CAN network.
+	\caption[Front end message.]{Depiction of the message sent over WiFi. The message ID is the same 11 bit identifier used in the CAN network.
 	The timestamp is a 4 byte value containing the number of milliseconds since synchronization.
 	The data field can be of arbitrary length.}
 	\label{fig:backendmsg}
@@ -83,13 +83,13 @@ struct buffer
 \end{lstlisting}
 \subsubsection*{\texttt{fifo} class}
 This class implements a hashmap and functions to insert and extract data from the map.
-Each messageid has a flag associated with it to signal whenever new data is available.
-The hashmap uses the message id as the key and the data is \texttt{std::pair<std::vector<data\_t>, bool>}.
-That is, each message id is associated with a list of \texttt{data\_t} and a \texttt{bool} used as a flag.
+Each message ID has a flag associated with it to signal whenever new data is available.
+The hashmap uses the message ID as the key and the data is \texttt{std::pair<std::vector<data\_t>, bool>}.
+That is, each message ID is associated with a list of \texttt{data\_t} and a \texttt{bool} used as a flag.
 As with the buffer in the interpreter class, the fifo will be accessed from two threads running simultaneously and as such, mutexing is necessary.
 Mutexing is done on the \texttt{put()} and \texttt{get()} functions directly.
 The \texttt{put()} function is shown in code \ref{code:fifoput}.
-It takes a message id and a data frame as arguments.
+It takes a message ID and a data frame as arguments.
 The \texttt{data\_t} type is a struct containing a timestamp and a string of data.
 Initially it will attempt to lock the mutex, if it fails, the function returns false and the caller will have to try again until successful.
 When the mutex is locked, it searches through the hashmap for the message id.
@@ -128,7 +128,7 @@ bool fifo::put(std::string msgid, data_t data)
 \end{lstlisting}
 
 \texttt{get()} works similarly by first locking the mutex and then checking for the existence of the message id.
-If the message id is present, the flag is cleared, the data list is copied to the address given in the function call and true is returned to indicate success.
+If the message ID is present, the flag is cleared, the data list is copied to the address given in the function call and true is returned to indicate success.
 
 \subsubsection*{\texttt{frontend} class}
 As mentioned previously, the backend is a collection of functions which interpret and present the data collected in the fifo for use in a potential GUI.
