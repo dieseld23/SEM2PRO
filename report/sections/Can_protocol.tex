@@ -1,7 +1,7 @@
 %!TEX root = ../main.tex
 
 \subsection{Go-Kart CAN protocol (GoCAN)}\label{sub:CAN_protocol}
-Due to the requirements of the on-kart network, it was decided to formulate a new protocol specifically for this project.
+Due to the requirements of the on-vehicle network, it was decided to formulate a new protocol specifically for this project.
 While CANopen could be used, it is a vast protocol with many features that are of no use in this system.
 An elaboration of the choice to make a custom protocol over using CANopen is done in this section.
 Additionally, the design of the go-kart CAN protocol, or GoCAN for short, is also presented.
@@ -10,13 +10,13 @@ The requirements of GoCAN are listed below.
 \begin{itemize}
 	\item Simple and easy to learn.
 	\item Support for 16 nodes.
-	\item One node must be able to receive/transmit data to/from multiple inputs/outputs
+	\item One node must be able to receive/transmit data to/from multiple inputs/outputs.
 	\item Publisher-subscriber architecture.
-	\item Variable data length - beyond 8 bytes per message
+	\item Variable data length - beyond 8 bytes per message.
 	\item Expandable -- must be able to add more nodes without affecting the existing ones.
-	\item Commands: Start/stop broadcasting 
-	\item Commands can be send to specific or all nodes
-	\item Timestamp data
+	\item Commands: Start/stop broadcasting.
+	\item Commands can be send to specific or all nodes.
+	\item Timestamp data.
 \end{itemize}
 
 \thomas{This is changed!}
@@ -97,7 +97,7 @@ As mentioned, there are two types of nodes:
 	\item \textbf{The WiFi node:} Acts as the link between the user on the monitoring station and the network.
 	It transfers data to the monitoring station and distributes commands on the network.
 	\item \textbf{Sensor nodes:} Any sensor or data producing unit will be associated with a node.
-	A sensor node will produce data and act according to received commands
+	A sensor node will produce data and act according to received commands.
 \end{itemize}
 
 The four node IDs currently in use:

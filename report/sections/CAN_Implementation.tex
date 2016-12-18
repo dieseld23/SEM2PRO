@@ -7,6 +7,7 @@ According to Xilinx documentation, this can be done by following their Linux CAN
 %The steps for this were to modify certain files related to the kernel configurations and the device tree settings.
 
 \subsubsection*{Enabling the CAN Controller Drivers}
+\thomas{spelling mistake -withe}
 To access the CAN controller the appropriate drivers needs to be enabled in the Kernel.
 Specifically, the Kconfig file withe the path shown in code \ref{code:can_kconfig_pathfile} needed to be configured.
 The entry at line 128 was changed as seen in code \ref{code:can_kconfig_contents_line128}.
@@ -64,6 +65,7 @@ axi_can_0: axi-can@40000000 {
 It was expected that the changes took effect after rebooting the system, which was not the case.
 
 \subsubsection*{Conclusion}
+\thomas{I think unsuccesful}
 After the changes, the CAN devices were still not visible in Linux and thus, accessing the CAN controllers was successful.
 
 Research was done by the authors in why this could not be accomplished.
