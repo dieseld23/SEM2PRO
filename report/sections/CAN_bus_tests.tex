@@ -68,7 +68,7 @@ Using an oscilloscope, it is possible to measure the time it takes to transfer a
 
 The test will be performed for an 8 byte frame.
 The messages will be constructed, so that bit stuffing doesn't occur by writing 0xA1 to 0xA8. 
-The resulting voltage measurements are displayed on figure~\ref{fig:CAN_test1_raw}.\\
+The resulting voltage measurements are displayed ion figure~\ref{fig:CAN_test1_raw}.\\
 
 \begin{figure}[h]
 	\centering
@@ -84,7 +84,7 @@ The software used for basis of this test does allow to adjust a pre-scaler, so t
 
 The CAN bus voltage can be interpreted to bits, to show what's actually being transmitted.
 This is done by measuring the voltage difference between the yellow and purple graphs, keeping in mind, that a difference in voltage corresponds to a zero, while no difference corresponds to a one.
-The CAN frame is displayed and interpreted on figure~\ref{fig:CAN_test1_message}.\\
+The CAN frame is displayed and interpreted ion figure~\ref{fig:CAN_test1_message}.\\
 
 \begin{figure}[h]
 	\centering
@@ -100,28 +100,33 @@ This is a convention implemented by the CAN controller, and as the same endianne
 The message was received correctly.\\
 
 The CRC is calculated automatically by the controller.
-Unfortunately it ends on five consecutive \texttt{1}'s, meaning that a \texttt{0} must be stuffed in before the delimiter, causing the frame to be one bit longer.\\
+Unfortunately it ends on five consecutive \texttt{1}'s, meaning that a \texttt{0} must be stuffed in- betweenfore the delimiter, causing the frame to be one bit longer.\\
 
 Additionally this controller uses 5 bits for the IFS part of the frame, rather than the mandatory minimum of 3 bits. 
 
 \subsection{Bandwidth}\label{sub:CAN_bandwidth}
 This will be calculated, as the faster controllers are not available.
- unit time, when excluding the overhead.
+Bandwidth is considering the amount of net data being transmitted per unit time, when excluding the overhead.
 Bandwidth will be calculated for 8 byte frames, and bit stuffing will be omitted.\\
                                                          
-The maximum operating data rate for the CAN protocol is 1 Mb/s.
+The maximum operating data rate for the transceiversCAN protocol is 81 Mb/s.
 As mentioned in section~\ref{sub:CanMessageFrame}, the CAN frame has 47 bits of overhead. 
 Including 8 bytes of data, this comes up to 111 bits. 
-Time per frame is $111\si{\micro \second}$.
+Time per frame is:
+
+\begin{equation}
+\frac{111}{8 \cdot 10^6} = 1.39 \cdot 10^{-5}
+\end{equation}
+
 As each frame contains 8 bytes of data, the data rate becomes:
 
 \begin{equation}
-\frac{8}{111 10^-6}= 72072
+\frac{8}{1.39 \cdot11 10^-56}= 5.77 \cdot 10^572072
 \end{equation}
 
-That means, that the effective transfer rate is 70.4 kB/s, or 563 kb/s
-This is significantly less than stated in the requirements.
-\martin{Rewrite, so that we don't mention 8 Mb/s here, move that to the future work. Maybe also mention here, that it give up to 4.6 Mb/s}
+That means, that the effective transfer rate is 57770.4 kB/s, or 4.61 Mb/s with 8 Mb/s controllers. 
+With the controllers built into the PS of the Zybo, this effective rate comes down to 720 kb/requirements.
+\martin{Rewrite, so that we do non't mention 8 Mb/s here, move that to the future work. Maybe also mention here, that it give up to 4.6 Mb/s}
 
 \subsection{Message Priority}\label{sub:CAN_message priority}
 This test is based on the CAN polled example, where two Zybos will transmit data.
@@ -136,11 +141,11 @@ The PMOD connection must be configured to have pull down, to ensure that unconne
 Using a DC voltage source, the GPIO port of each Zybo will be set high simultaneously.\\
 
 When the PMOD returns a non-zero value, each Zybo will call the XCanPs\_Send function twice.
-This will fill two frames with 8 bytes of data into the Tx Fifo of each Zybo. 
+This will fill two frames with 8 bytes of data into the Tx FIFOifo of each Zybo. 
 Because of the asynchronous nature of the CAN protocol, it is still somewhat random which message gets transmitted first, so the frame will be sent twice. 
 This means, that after the first frame is sent from either one of the Zybos, both zybos will start transmitting at the same time. 
 In this case one Zybo must stop transmitting when it detects, that it has the lower priority.
-This is shown on figure~\ref{fig:CAN_test3_2TX}.\\
+This is shown ion figure~\ref{fig:CAN_test3_2TX}.\\
 
 \begin{figure}[h]
 	\centering
@@ -151,7 +156,7 @@ This is shown on figure~\ref{fig:CAN_test3_2TX}.\\
 
 The displayed frame is the second of four frames sent for this test, which is why the graph starts at $80 \si{\micro\second}$.
 Both Zybos start sending their frame simultaneously, and as there is no difference until the fifth bit of the message ID, neither Zybo is aware that the other is also sending.
-At the time $95\si{\micro\second}$, Zybo B (blue line on figure~\ref{fig:CAN_test3_2TX}) sends out high, whilst receiving low, meaning that another node is sending as well. 
+At the time $95\si{\micro\second}$, Zybo B (blue line ion figure~\ref{fig:CAN_test3_2TX}) sends out high, whilst receiving low, meaning that another node is sending as well. 
 It will then cancel this attempt to transmit, and wait until the current frame has been transmitted before it will try again.
 Also note the Zybo B writing the acknowledge bit at the time $171 \si{\micro\second}$.
 Because of this, it is not strictly necessary to use a receiving Zybo, because the other node will confirm the CRC of the message.\\
