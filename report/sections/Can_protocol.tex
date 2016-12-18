@@ -33,11 +33,10 @@ The way CANopen supports this, is by using the first four bytes of the data port
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=0.9\linewidth]{graphics/CANopen_SDO_data}
+	\includegraphics[width=0.9\linewidth]{graphics/CANopen_SDO_data_crop}
 	\caption{"The data section of the CAN frame is split into three parts: one byte for the specifier, three bytes for the node index and subindex, and four bytes for the actual data in the transfer."\cite{CANopen_introduction}}
 	\label{fig:CANopen_SDO_data}
 \end{figure}
-\thomas{de-jesusify}
 
 \martin{Clarify facts}
 This of course means that the overhead from one message increases from 47 bits to 59 bits, or 184 \% of the maximum data size.

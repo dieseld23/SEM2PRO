@@ -35,8 +35,20 @@ It is found that a sensor node has the following responsibilities:
 \item Receive and execute incoming commands.
 \end{itemize}
 
-A CAN packet can be seen in code \ref{code:data_packet}.
-The three first points describe a flow which is presented in more detail on the flow diagram in figure \ref{fig:filter_1}.
+A CAN packet is defined as the \texttt{struct} in code \ref{code:data_packet}.
+\mikkel{Code has been moved here as agreed!}
+\begin{lstlisting}[caption=Struct for data packet.,label=code:data_packet]
+struct data_packet {
+  std::bitset<1> nw_msg;
+  std::bitset<4> node_id;
+  std::bitset<4> dlc;
+  std::bitset<6> messagetype;
+  std::vector<bool> data; 
+  (*@\makebox[\linewidth][c]{$\smash{\vdots}$}@*)
+};
+\end{lstlisting}
+
+The three first responsibilities listed describe a flow which is presented in more detail on the flow diagram on figure \ref{fig:filter_1}.
 
 \begin{figure}[!h]
 \centering
@@ -81,6 +93,7 @@ They are generic classes and should be reused when developing new nodes.
 \label{fig:node_class_diagram}
 \end{figure}
 
+<<<<<<< HEAD
 A struct containing all fields of a data packet in boolean data types is defined in listing \ref{code:data_packet}.  
 
 \begin{lstlisting}[caption=Struct for data packet.,label=code:data_packet]
@@ -96,6 +109,8 @@ struct data_packet {
 \mikkel{Move the data packet to the bullet points}
 It will be passed between the classes and they will each add their own information. 
 
+=======
+>>>>>>> 7741463298a09466258ce8a0f06cdd0fa2ca664b
 The classes and their responsibilities will be explained here in more detail.
 
 \subsubsection*{GPS class}
@@ -146,8 +161,12 @@ It is shown in figure \ref{fig:state_machine}.
 \caption{State machine implementing the functionality of \texttt{Node}. }
 \label{fig:state_machine}
 \end{figure}
+<<<<<<< HEAD
 \martin{In figure~\ref{fig:state_machine}, the "boolean" value run, should be the same as the boolean value "running" in figure~\ref{fig:node_class_diagram}.}
 When the variable \texttt{run} is equal to \texttt{1}, the node should output sensor data.
+=======
+When the variable \texttt{run} is equal to 1, the node should output sensor data.
+>>>>>>> 7741463298a09466258ce8a0f06cdd0fa2ca664b
 \texttt{run} is being updated by the thread that handles incoming commands.
 It will go to the clear state and clear all variables and wait for data. 
 When data is present it will move through the states, create the time packet, get data and send data. 
@@ -243,7 +262,6 @@ The classes main responsibilities are shown in figure \ref{fig:wifi_flow}.
 \label{fig:StateDiagram_NodeWiFi}
 \end{figure}
 
-\mikkel{Should these class descriptions be omitted?}
 \subsubsection*{WiFi class}
 The \texttt{WiFi} class needs to receive and transmit data through the connected WiFi dongle.
 It receives data from the Timestamper class in normal mode and data from State\_Machine in sending log mode.
@@ -272,3 +290,34 @@ It needs to keep the latest received timestamp for each node in the network.
 When it receives data from a node it should append the latest received timestamp from that node.  
 
 \thomas{texttttt the above sections}
+
+\subsection{Timestamping}
+\mikkel{Brandnew section! Should be read!}
+The reason for timestamping at the nodes is that CAN is not a real-time network, thus timestamping when the frames are received would be of no use as the latency of the frames are unknown.
+The accuracy of a timestamp given at the node depends on the system on which it is runs. 
+Implementing the timekeeping on bare-metal code with access to hardware timers is ideal as it allows for a very high accuracy.
+\\~\\
+In the node software designed in this section the timekeeping is done by running the \texttt{counter} shown in code \ref{code:counter} in a separate thread.
+The thread will increment \texttt{ms} every 1ms.
+The problem with this method is that the thread is running in Linux userspace and rely on being scheduled to the processor. 
+As it is a userspace program it will have lower priority than OS specific processed.
+Even if the specific thread is given a higher priority the scheduler will still handle it in a non-deterministic way.
+
+\begin{lstlisting}[caption=Declaration of counter function.,label=code:counter]
+void Node::counter(void){
+	long int temp_ms;
+	while(1){
+		std::this_thread::sleep_for(std::chrono::milliseconds(1));
+		temp_ms = get_ms();
+		temp_ms++;
+		set_ms(temp_ms);
+	}
+}
+\end{lstlisting}
+
+\subsubsection*{Real Time Linux}
+Using the \texttt{CONFIG\_PREEMPT\_RT} patch set on a Linux kernel significantly increases the real-time performance \cite{real_time_linux}.
+The latency after applying the patch varies between systems, but generally with a worst case of a few hundred microseconds \cite{real_time_linux1}.
+The patches were successfully used on a Ubuntu kernel.
+To be able to use the kernel on the Zybo it was needed to patch the kernel further with Digilent and Xillinux patched.
+As those patches does not fit with the \texttt{CONFIG\_PREEMPT\_RT} patch set it was deemed unfeasible to continue as the authors have no knowledge in writing patches. 

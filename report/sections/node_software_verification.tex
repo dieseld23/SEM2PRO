@@ -12,10 +12,9 @@ The GPS node software then processed the data and output it to standard output a
 \begin{figure}[h]
 	\centering
 	\includegraphics[width = 0.6\linewidth]{graphics/sensor_gps_veri}
-	\caption{A line of text}
+	\caption{Testing the node software. The node software receives data from a list of GPS data and inputs from \texttt{std::cin}. It outputs to \texttt{std::cout}.}
 	\label{fig:sensor_gps_veri}
 \end{figure}
-\mikkel{A line of text?}
 
 When running the software is run it outputs only a string of booleans. 
 This is not very readable by humans, so to show the functionality the program was set to print in a humanly understandable way.
@@ -27,9 +26,7 @@ It can be seen that it has node ID 14, 8 data bytes and message type 9, which is
 To extract the latitude and longitude from the data field an unpacking algorithm is needed.
 Using that it is found that latitude is 55.3673346 degrees North and longitude is 10.4318456 degrees East.
 
-\mikkel{caption for listing}
-%\begin{lstlisting}[caption=Struct for data packet.,label=code:output_node]
-\begin{lstlisting}[language=bash]
+\begin{lstlisting}[caption=Struct for data packet.,label=code:output_node]
 (*@\makebox[\linewidth][c]{$\smash{\vdots}$}@*)
 Start of frame: 1
 Node id: 1110
@@ -37,7 +34,6 @@ Number of data bytes: 0100
 Message type: 000001
 Data: 00000000000000000000100101000110
 Full frame: 11110000001010000000000000000000000100101000110
-
 
 Start of frame: 1
 Node id: 1110

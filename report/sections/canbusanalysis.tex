@@ -42,9 +42,11 @@ As CAN uses differential voltages, it is not possible to implement directly in m
 Typically a micro controller has digital ports putting out either $ 0 \si{\volt}$, or a fixed voltage level defined as high.
 That is, depending on the voltage level, the signal is perceived as either high or low.
 As mentioned above, the absolute voltage of either wire of the CAN bus does not matter, but difference in voltage does. 
-As there are multiple nodes on the same bus, it is also important for one node to be able to dominate, and the other nodes to know that there is a dominant node.
-The transceivers translate a voltage signal from the CAN controller (Tx) to the differential CAN signal, and simultaneously translates the bus signal to a voltage signal to the CAN controller (Rx).
-\martin{make the above sentence clearer, that it is voltage. Also make clear what dominant means.}
+As there are multiple nodes on the same bus, it is also important for one node to be able to dominate the others.
+Specifically for CAN, \texttt{0} is dominant, which means if one node tries to transmit \texttt{1} while another node transmits \texttt{0}, the \texttt{0} is transmitted.
+By checking if the bus matches what a node transmits, it can detect if there is another dominant node occupying the bus.\\
+
+The transceivers translate the Tx signal from the CAN controller to the differential bus signal, and simultaneously translates the bus signal to the Rx signal going into the controller.
 That means, that while a node is sending, Tx and Rx are the same.
 
 \subsubsection*{The CAN Controller}
@@ -65,20 +67,23 @@ It should be possible to toggle the data collection of individual nodes.
 This means that it is necessary to have a protocol that allows addressing each node on the bus individually.
 The message frame of the CAN protocol does include a message ID, however this ID holds no information about the sender of the message.
 In CAN a table of all message ID's and their meaning is used to decode messages.
-Achieving the desired functionality will require an adaptation of the protocol. 
-\\~\\
+Achieving the desired functionality will require an adaptation of the protocol. \\
+
 One such adaption already exists in the form of CANopen.
 CANopen is a widely used standard that builds upon CAN.
 \cite{CANopen_introduction} shows that CAN accounts for the physical and data-link layers in the OSI model while CANopen accounts for the network to application layer.
 It is already used in the communication with the Sevcon Gen4 and as such, using this protocol would mean that the Sevcon could be connected directly on the bus.
 CANopen is quite extensive, implementing many features that are not necessarily beneficial in this application.
 The many features also adds to the complexity of learning how to use the system.
-It also adds a significant amount of overhead for each message, taking up bandwidth which could have otherwise been used for data. 
-All of this is explored in depth in section~\ref{sub:CAN_protocol}.
-\\~\\
+It also adds a significant amount of overhead for each message, taking up bandwidth which could have otherwise been used for data.\\
+
 Another option is to create a custom protocol, using CAN as the physical and data-link layers.
 Designing a custom protocol means that the overhead can be reduced to the bare minimum.
 This would allow for a smaller, simpler protocol.
 As described in section \ref{sec:data_collection}, the protocol should support up to 16 nodes and allow for addition of new nodes.
 Since it is required to toggle the data production from a node, it should also be possible to address every node individually.
-\martin{come to the conclusion that we need to design a custom protocol}
+
+Due to the added complexity and overhead of CANopen, it is decided to develop a custom protocol. 
+This is explored in depth in section~\ref{sub:CAN_protocol}.
+In that section, it is also being described why CANopen is a not an ideal fit for this project.
+\todo[inline]{I changed this. Martin.}

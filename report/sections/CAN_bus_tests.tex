@@ -142,7 +142,7 @@ The PMOD connection must be configured to have pull down, to ensure that unconne
 Using a DC voltage source, the GPIO port of each Zybo will be set high simultaneously.\\
 
 When the PMOD returns a non-zero value, each Zybo will call the XCanPs\_Send function twice.
-This will fill two frames with 8 bytes of data into the Tx Fifo of each Zybo. 
+This will fill two frames with 8 bytes of data into the Tx FIFO of each Zybo. 
 Because of the asynchronous nature of the CAN protocol, it is still somewhat random which message gets transmitted first, so the frame will be sent twice. 
 This means, that after the first frame is sent from either one of the Zybos, both zybos will start transmitting at the same time. 
 In this case one Zybo must stop transmitting when it detects, that it has the lower priority.
