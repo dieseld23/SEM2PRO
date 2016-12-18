@@ -1,48 +1,48 @@
 %!TEX root = ../main.tex
 \section{Object Dictionary}\label{app:OD}
-\martin{move caption to landscape}
-\begin{table}[H]
-\centering
-    		\resizebox{0.9\textwidth}{!}{%
-		    \rotatebox{90}{%
-		    \begin{tabular}{@{\makebox[3em][r]{\rownumber\space}}|llllll}
-		    \hline
-		    \textbf{Wifi 0001}   & \textbf{Data Length} & \textbf{Data Types} & \textbf{Fields}             & \textbf{Scaling}   & \textbf{Units}                                    \\
-		    \hline
-		    00                   & 0                    & -                   & Sync                        & -                  & -                                                 \\
-		    01                   & 0                    & -                   & Start                     &      -              &                                                   \\
-		    10 &         0             &          -           & Stop               &      -              &                                                   \\
-		    \hline
-		    \textbf{IMU 0010}    & \textbf{Data Length } & \textbf{Data Types} & \textbf{Fields}             & \textbf{Scaling}   & \textbf{Units}                                    \\
-		    \hline
-		    000001               & 4                    & u32                 & Timestamp                   & 1                  & ms                                                \\
-		    001000               & 8                    & float               & Pressure, Temperature       & 1, 1               & kPa, \si{\degreeCelsius}                                         \\
-		    001001               & 6                    & s16                 & $\mathrm{A_x, A_y, A_z}$                  & 0.00478            & \si{\meter \per \second \squared}               \\
-		    001010               & 6                    & s16                 & $\mathrm{G_x, G_y, G_z}$                  & 0.000266           & rad/s                                             \\
-		    001011               & 6                    & s16                 & $\mathrm{M_x, M_y, M_z}$                  & 0.15               & \si{\micro \tesla}                              \\
-		    001100               & 24                   & s16                 & $\mathrm{A_x, A_y, A_z, G_x}$            & 0.00478,  0.000266 & \si{\meter \per \second \squared}, rad/s        \\
-		    &                      &                     & $\mathrm{G_y, G_z, M_x, M_y}$              & 0.000266, 0.15     & rad/s, \si{\micro \tesla}                       \\
-		    &                      &                     & $\mathrm{M_z}$, Yaw, Pitch, Roll        & 0.15, 1e-4         & \si{\micro \tesla}, \si{\degree}                    \\
-		    \hline
-		    \textbf{Sevcon 0100} & \textbf{Data Length } & \textbf{Data Types} & \textbf{Fields}             & \textbf{Scaling}   & \textbf{Units}                                    \\
-		    \hline
-		    000001               & 4                    & u32                 & Timestamp                   & 1                  & ms                                                \\
-		    001001               & 8                    & s16                 & $\mathrm{I_d,I_q,V_d,V_q}$                & 0.0625             & A,V                                               \\
-		    001100               & 8                    & s16                 & $\mathrm{I_a, I_b, I_c, \Omega_e}$ & 0.0625, 1e-4       & A, rad                                            \\
-		    001101               & 8                    & s16                 & $\mathrm{V_a, V_b, V_c, \Omega_e}$ & 0.0625, 1e-4       & V, rad                                            \\
-		    001010               & 4                    & s16                 & Speed, Torque               & 0.0625             & $\frac{km}{h}$, Nm                              \\
-		    \hline
-		    \textbf{GPS 1110}    & \textbf{Data Length } & \textbf{Data Types} & \textbf{Fields}             & \textbf{Scaling}   & \textbf{Units}                                    \\
-		    \hline
-		    000001               & 4                    & u32                 & Timestamp                   & 1                  & ms                                                \\
-		    001001               & 8                    & u32                 & Lattitude, Longitude        & 1,00E-07           & \si{\degree} \\
-		    001010               & 4                    & s32                 & Altitude                    & 0.1                & m                                                
 
-		    \end{tabular}
-		    }
-		    }
-		    \caption{The data length is given in bytes. Lines 8, 9 and 10 are compensated input directly from the respective sensors, i.e. no data fusion is used. 
-		    In lines with different types of sensor data, the Scaling and Units may refer to more than one data field.
-		    For instance on line 11, 0.00478 and $\si{\meter \per \second \squared}$ refer to $\mathrm{A_x, A_y and A_z}$, while 0.000266 and rad/s refer to $\mathrm{G_x}$.}
-		    \label{tab:OD}
-\end{table}
+	
+\begin{table}[!b]
+	\rotatebox{90}{
+		\begin{minipage}{18cm}
+			\centering
+			\begin{tabular}{@{\makebox[3em][r]{\rownumber\space}}|llllll}
+				\hline
+				\textbf{Wifi 0001}   & \textbf{Data Length} & \textbf{Data Types} & \textbf{Fields}             & \textbf{Scaling}   & \textbf{Units}                                    \\
+				\hline
+				00                   & 0                    & -                   & Sync                        & -                  & -                                                 \\
+				01                   & 0                    & -                   & Start                     &      -              &                                                   \\
+				10 &         0             &          -           & Stop               &      -              &                                                   \\
+				\hline
+				\textbf{IMU 0010}    & \textbf{Data Length } & \textbf{Data Types} & \textbf{Fields}             & \textbf{Scaling}   & \textbf{Units}                                    \\
+				\hline
+				000001               & 4                    & u32                 & Timestamp                   & 1                  & ms                                                \\
+				001000               & 8                    & float               & Pressure, Temperature       & 1, 1               & kPa, \si{\degreeCelsius}                                         \\
+				001001               & 6                    & s16                 & $\mathrm{A_x, A_y, A_z}$                  & 0.00478            & \si{\meter \per \second \squared}               \\
+				001010               & 6                    & s16                 & $\mathrm{G_x, G_y, G_z}$                  & 0.000266           & rad/s                                             \\
+				001011               & 6                    & s16                 & $\mathrm{M_x, M_y, M_z}$                  & 0.15               & \si{\micro \tesla}                              \\
+				001100               & 24                   & s16                 & $\mathrm{A_x, A_y, A_z, G_x}$            & 0.00478,  0.000266 & \si{\meter \per \second \squared}, rad/s        \\
+				&                      &                     & $\mathrm{G_y, G_z, M_x, M_y}$              & 0.000266, 0.15     & rad/s, \si{\micro \tesla}                       \\
+				&                      &                     & $\mathrm{M_z}$, Yaw, Pitch, Roll        & 0.15, 1e-4         & \si{\micro \tesla}, \si{\degree}                    \\
+				\hline
+				\textbf{Sevcon 0100} & \textbf{Data Length } & \textbf{Data Types} & \textbf{Fields}             & \textbf{Scaling}   & \textbf{Units}                                    \\
+				\hline
+				000001               & 4                    & u32                 & Timestamp                   & 1                  & ms                                                \\
+				001001               & 8                    & s16                 & $\mathrm{I_d,I_q,V_d,V_q}$                & 0.0625             & A,V                                               \\
+				001100               & 8                    & s16                 & $\mathrm{I_a, I_b, I_c, \Omega_e}$ & 0.0625, 1e-4       & A, rad                                            \\
+				001101               & 8                    & s16                 & $\mathrm{V_a, V_b, V_c, \Omega_e}$ & 0.0625, 1e-4       & V, rad                                            \\
+				001010               & 4                    & s16                 & Speed, Torque               & 0.0625             & $\frac{km}{h}$, Nm                              \\
+				\hline
+				\textbf{GPS 1110}    & \textbf{Data Length } & \textbf{Data Types} & \textbf{Fields}             & \textbf{Scaling}   & \textbf{Units}                                    \\
+				\hline
+				000001               & 4                    & u32                 & Timestamp                   & 1                  & ms                                                \\
+				001001               & 8                    & u32                 & Lattitude, Longitude        & 1,00E-07           & \si{\degree} \\
+				001010               & 4                    & s32                 & Altitude                    & 0.1                & m                                                
+			\end{tabular}
+			\caption{The data length is given in bytes. Lines 8, 9 and 10 are compensated input directly from the respective sensors, i.e. no data fusion is used. 
+				In lines with different types of sensor data, the Scaling and Units may refer to more than one data field.
+				For instance on line 11, 0.00478 and $\si{\meter \per \second \squared}$ refer to $\mathrm{A_x, A_y and A_z}$, while 0.000266 and rad/s refer to $\mathrm{G_x}$.}
+			\label{tab:OD}
+		\end{minipage}
+	}
+	\end{table}

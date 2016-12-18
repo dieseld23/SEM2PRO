@@ -23,22 +23,23 @@ Some objects of interest listed in table \ref{tab:parameters_of_interest}.
 \martin{motor temperature, remove read, yes}
 \begin{table}[h]
 	\centering
-	\begin{tabular}{| c | c | c | c |}
+	\begin{tabular}{| c | c |}
 		\hline
-		Parameters & Index-subindex & Read/Write & Map to PDO \\ % Excel line
+		Parameters & Index-subindex \\ % Excel line
 		\hline
-		Measured Id & 4600h-7 & Read & Yes \\ %981
-		Measured Iq & 4600h-8 & Read & Yes \\ %982
-		Measured Vd & 4600h-9 & Read & Yes \\ %983
-		Measured Vq & 4600h-10 & Read & Yes \\ %984
-		Target Id & 4600h-5 & Read & Yes \\ %979
-		Target Iq & 4600h-6 & Read & Yes \\ %980
-		Encoder Read-out & 4630h-9 to -12 & Read & Yes \\ %1137
-		Throttle value & 2620h & Read & Yes \\ %330
-		Velocity & 606Ch & Read & Yes \\ %1378
+		Motor Temperature & 4600h-3 \\ % 977
+		Measured Id & 4600h-7  \\ %981
+		Measured Iq & 4600h-8  \\ %982
+		Measured Vd & 4600h-9  \\ %983
+		Measured Vq & 4600h-10 \\ %984
+		Target Id & 4600h-5    \\ %979
+		Target Iq & 4600h-6    \\ %980
+		Encoder Read-out & 4630h-9 to 12 \\ %1137
+		Throttle value & 2620h \\ %330
+		Velocity & 606Ch       \\ %1378
 		\hline	
 	\end{tabular}
-	\caption{List of some of the parameters readable and writeable through CANOpen}
+	\caption{List of some of the parameters readable through CANOpen}
 	\label{tab:parameters_of_interest}
 \end{table}
 
