@@ -23,6 +23,7 @@ The WiFi node will then need to know which to expect, and will not send synchron
 
 \subsection*{Timestamping}
 \mikkel{Brand new subsection!}
+\thomas{accurate timestamp}
 As described in section \ref{sec:time} the time stamping on the sensor nodes is done in userspace in Linux, which does not produce an  accurate timestamps.
 The reason for using Linux on the nodes is mainly that USB and especially WiFi requires complex drivers that are already implemented in Linux.
 As the frames are timestamped when they reach the WiFi node there is no requirement for it to be real-time.
