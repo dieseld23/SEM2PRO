@@ -31,13 +31,13 @@ Both have USB ports and Ethernet ports as standard, therefore the chosen hardwar
 \subsection{Technologies}
 Bluetooth fits the compatibility requirements. 
 Bluetooth 5.0 has a maximum speed of 50Mbit/s, which is sufficient.
-The range of typical class 2 Bluetooth device is, however, only 10m \footnote{https://en.wikipedia.org/wiki/Bluetooth}.
+The range of typical class 2 Bluetooth device is, however, only 10m \cite{bluetooth}.
 This range is definitely not enough for this application.
 \\
 WiFi is also compatible with standard computers running linux and typical WiFi units have speeds that are a lot higher than required. 
 WiFi can be operating in the 2.4GHz band and in the 5GHz band. 
 2.4GHz units have the highest range, and offer higher compatibility. 
-The 802.11n protocol generally has the best range compared to the other 802.11 protocols \footnote{https://en.wikipedia.org/wiki/IEEE\_802.11\#802.11n}.
+The 802.11n protocol generally has the best range compared to the other 802.11 protocols \cite{wiki_wifi}.
 Depending on the antenna, wifi has sufficient range and bandwidth.
 \thomas{Make proper cite and to the table, not the uninteresting paragraph on 802.1n}
 As the connection should be able to function in areas which do not necessarily provide internet access, it is required that the hardware chosen should support the creation of an ad-hoc network.\\~\\
@@ -46,7 +46,7 @@ The authors have access to two different types of hardware which fit these requi
 	\item \textbf{PMOD WiFi:} Digilent Inc. has a wifi module designed specifically for use with the PMOD interface on the Zybo.
 	Communication with this module is done in the PL of the Zynq chip, using the SPI protocol.
 	According to the marketing material \cite{pmodwifi}, it can support 1-2 Mbit/s at 400m, which is more than sufficient for this system.
-	\mikkel{fix cite}
+
 	\item \textbf{USB WiFi-Dongle:} The TP-LINK TL-WN722N is a WiFi dongle with a USB interface. One requirement states that any hardware should be compatible with linux.
 	The TL-WN722N uses the Atheros AR9271 chipset, which is on the list of supported devices for the ath9k\_htc driver \cite{ath9k}.
 	It adheres to the 802.11n protocol and is also capable of supporting an ad-hoc network.
