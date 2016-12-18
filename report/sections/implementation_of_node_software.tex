@@ -283,7 +283,9 @@ When it receives data from a node it should append the latest received timestamp
 
 \subsection{Timestamping}\label{sec:time}
 \mikkel{Brandnew section! Should be read!}
-The reason for timestamping at the nodes is that CAN is not a real-time network, thus timestamping when frames are received would be of no use as the latency of the frames is unknown.
+\martin{Read it and liked it}
+The reason for timestamping at the nodes is that CAN is not a real-time network.
+Therefore timestamping when frames are received would be of no use, as the latency of the frames is unknown.
 The accuracy of a timestamp given at the node depends on the system on which it is runs. 
 Implementing the timekeeping on bare-metal code with access to hardware timers is ideal as it allows for a very high accuracy.
 \\~\\
