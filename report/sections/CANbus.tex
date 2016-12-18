@@ -38,9 +38,10 @@ Ths is placed on top, to allow the SEVCON connector's screws to be accessible.
 	\label{fig:CAN_stack_picture}
 \end{figure}
 
+The wires of the CAN bus can be seen on figure~\ref{fig:CAN_stack_picture} as a white and brown wire going through the copper PCBs.
 Because the bus is so short, it is not practical to make twisted pair.
 However, the short length of the bus allows this without issue.
-The bus itself is also not $120 \si{\ohm}$, but experiments show that it works.
+The wires are also not designed for a specific characteristic impedance.
 
 \subsection{CAN Message Frame}\label{sub:CanMessageFrame}
 Messages sent over CAN is put into a frame. 
