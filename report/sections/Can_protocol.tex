@@ -41,14 +41,9 @@ This of course means that the overhead from one message increases from 47 bits t
 
 \todo[inline]{I clarefied some of the calculations. }
 This protocol is not ideal for this network. 
-<<<<<<< HEAD
-In part because it is request based, but more because of the enormous overhead.
-The IMU would produce 999 bits in order to transmit its 9 axis data without loss of precision, and at 400 Hz, that node alone will take up 40 \% of the bandwidth.
-=======
 In part because it's request based, but more because of the enormous overhead.
 For instance, the IMU produces 4 byte data types for each of its 9 axes. 
 With an overhead of 79 bits, this comes to 999 bits, and at 400 Hz, that node alone will take up 40 \% of the bandwidth.
->>>>>>> 0281d8b76481e929cd85f9e288bbf849f0b88343
 In addition to this, all transmits would need to be requested, so the total bandwidth comes close to 70 \%.
 %Metadata is 47 bits, plus 32 bits from the Data portion. The data it self is a float, so that's 32 bits; 111 in all. A request does not include data, so that's only 79 bits of data. At 400 Hz, that's (111+79)*9*400=684000.
 The SDO is generally used to define or read parameters for that node, that are not bound to change over time.
