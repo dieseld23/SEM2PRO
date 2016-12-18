@@ -45,25 +45,18 @@ Messages travel along the ring.
 \item \textbf{Star:} The star topology is a centralized type of networking.
 All nodes are connected to a central hub, handling all the communication between them.
 It offers high bandwidth and is easy to implement.
-The major disadvantage is that if the hub fails, the entire network fails.
 It can be scalable to a certain point, since the hub can be upgraded to handle more connections.
 \end{itemize}
 
 \subsubsection*{Suitable Topology}
-%\martin{Like i todo'ed above, we should only concern ourselves with bus, ring and star, and at this point we should come to the conclusion that star does not work, and that ring and bus is really a toss up.}
-\martin{rewrite}
-For the system's networking purpose, the mesh type is not suitable, since it adds extra hardware requirements.
-A node may be a simple sensor with a small micro-controller and hence, connecting it to such a network is not feasible.
-%In our system, a small embedded board computer will be the ov-computer which requires to maintain its connection with the network even in case of failures and also possibly the central hub in centralized topologies that such as the star and the tree.
-The star network requires a lot of connections which normally are not present at standard micro-controllers.
-%Thus, these two topologies are not suited, since in case of its failure, the whole network fails.
-Thus, the mesh and star networks are not suited for this system.
-Scalability is also a requirement for the future connection of nodes.
-Although the majority of the types provide a level of scalability, the addition of extra nodes always decrease the overall performance of any network.
-Hence, a topology that balances the decrease in performance against the network's expansion is best suited for the project.\\
-\martin{bus and ring fits best, subnetworks are irrelevant}
-The approach that fits the requirements is implementing a bus network, where each node may be a subnetwork of a different type depending on the needs, making it into a hybrid network having a bus topology as its basis.
-This type provides a good balance of reliability, scalability, hardware requirements and communication speed in comparison to the others.
+\todo[inline]{rewrote, and shrunk a lot. Martin}
+A star network requires extra hardware in the form of a hub, which has a limited number of ports. 
+This either has to be large enough to a predefined maximum number of nodes, or it will have to be replaced to accommodate a more nodes.
+This takes away scalability and modularity.\\
+
+Both the bus and ring topology fulfil the requirements suitably in terms of scalability and hardware requirements.
+Technologies of both types will be explored in order to determine which suits the project better.
+
 \subsection{Networking technology}
 In the previous section it was found that the bus and ring topologies in particular lend themselves well to the implementation of this system.
 A number of different technologies exist, that implement these topologies. 
@@ -89,6 +82,9 @@ Due to the use of buffers, the CAN bus is not a real time bus, but synchronizati
 The open source project openPowerlink offers FPGA implementation of Powerlink, and external modules can be utilized to handle the hardware part of the network.
 This will allow evaluation boards with less than two Ethernet ports to work in the ring network. 
 CAN also requires one external piece of hardware, but does not necessarily require an FPGA to run. 
-According to the data rate calculations in section~\ref{sec:data_rate}, the CAN network has enough bandwidth to handle the requirements of this project. 
-Because it is easier to implement CAN, and to add nodes to it, it has been decided to use a CAN network.
-\martin{easer because less hardware, cheaper, powerlink is propriatary}
+According to the data rate calculations in section~\ref{sec:data_rate}, the CAN network has enough bandwidth to handle the requirements of this project. \\
+
+In comparing CAN and Powerlink, CAN was the better fit for this project.
+CAN requires less hardware to implement, and the hardware it requires is cheaper than that of Powerlink. 
+Furthermore, Powerlink is proprietary, which poses a problem in implementation, that CAN does not.
+\todo[inline]{Rewrote this}

@@ -26,6 +26,8 @@
 \usepackage[font={footnotesize}]{caption}
 \usepackage[font={footnotesize}]{subcaption}
 
+
+
 \newcommand{\mikkel}[1]{\todo[inline,linecolor=green!100,backgroundcolor=red!70, bordercolor=green]{Mikkel: #1}}
 \newcommand{\martin}[1]{\todo[inline,color=blue!30]{Martin: #1}}
 \newcommand{\thomas}[1]{\todo[inline,color=black!30]{Thomas: #1}}
@@ -56,6 +58,11 @@
 \usetikzlibrary{shapes.geometric, arrows}
 \usepackage{standalone}
 \usepackage{circuitikz} 	%Utility to draw circuits in tikz
+\def\checkmark{\tikz\fill[scale=0.4](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;}
+
+\usepackage{pifont}% http://ctan.org/pkg/pifont
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
 
 \usepackage[T1]{fontenc}	% Quotes
 \usepackage{dblfloatfix}	% used to have a headline on a page with a rotated table
@@ -145,6 +152,7 @@ Skarup Jaedicke, Martin Brøchner Andersen, Catalin Ionut Ntemkas‎}
 \input{sections/implementation}
 \newpage
 \part{Verification}
+\label{part:verification}
 \input{sections/verification}
 \newpage
 \part{Conclusion}
