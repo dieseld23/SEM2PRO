@@ -31,6 +31,15 @@ Xillybus is implemented as an IP core in PL and a corresponding Xillybus driver 
 In PL the IP core is interfaced through standard FIFO buffers.
 In PS the Xillybus is reached in userspace through \texttt{/dev/xillybus\_<bus-name>}.
 
+
+
+\subsubsection*{CAN Controller on the Zybo }
+\mikkel{Moved! Changede by Catalin and Mikkel}
+The Zybo provides two different types of CAN Controllers.
+Xilinx provides an AXI Core implementing a CAN controller in PL and it has a built-in CAN Controller in the PS.
+The AXI core CAN Controller is available in the Vivado Suite, but it cannot actually be bitstreamed without obtaining the appropriate license from Xilinx.
+The CAN Controller in PS is readily usable and will therefore be used in this project.
+
 \subsection{Power Requirements}\label{sec:power_requirements}
 The Zybos need to be supplied with 5 V, which subsequently powers the sensors, the CAN bus and any other peripherals present on the go-kart.
 The Sevcon has a 5V output capable of supplying up to $\si{100 \milli \ampere}$, which is insufficient.
