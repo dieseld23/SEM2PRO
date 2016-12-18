@@ -7,7 +7,7 @@ search and replace:
 Zybo instead of ZB or Zybo board
 WiFi
 ??
-go kart
+go-kart
 USB all caps.
 "micro controller" in two words without hyphen
 "In figure" rather than "on figure"
