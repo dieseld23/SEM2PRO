@@ -93,7 +93,6 @@ They are generic classes and should be reused when developing new nodes.
 \label{fig:node_class_diagram}
 \end{figure}
 
-<<<<<<< HEAD
 A struct containing all fields of a data packet in boolean data types is defined in listing \ref{code:data_packet}.  
 
 \begin{lstlisting}[caption=Struct for data packet.,label=code:data_packet]
@@ -109,8 +108,6 @@ struct data_packet {
 \mikkel{Move the data packet to the bullet points}
 It will be passed between the classes and they will each add their own information. 
 
-=======
->>>>>>> 7741463298a09466258ce8a0f06cdd0fa2ca664b
 The classes and their responsibilities will be explained here in more detail.
 
 \subsubsection*{GPS class}
@@ -122,8 +119,8 @@ The \texttt{GPS\_Packer} class is also sensor specific and is the link between t
 It is hard-coded with the message types that the sensor is allowed to send onto the network.
 It has the responsibility of packing data according to the developed protocol.
 The data field in the \texttt{data\_packet} struct is populated with the GPS data and the message type in binary form.
-Once packed, the struct is passed to the node class.
-The reason for making a separate class for the packer and not putting the functionality into the GPS class is that if the specification of the protocol or message types change, only this class needs to be modified.
+Once packed, the struct is passed to the \texttt{Node} class.
+The reason for making a separate class for the packer and not putting the functionality into the \texttt{GPS} class is that if the specification of the protocol or message types change, only this class needs to be modified.
 Similarly, if the GPS module is replaced, the \texttt{GPS\_Packer} class does not need to be altered.
 
 \subsubsection*{Node class}
@@ -136,7 +133,7 @@ The class receives start, stop or synchronize events from the protocol class and
 
 \subsubsection*{Protocol class}
 
-The protocol class receives \texttt{data\_packets} from \texttt{Node}. 
+The \texttt{Protocol} class receives \texttt{data\_packets} from \texttt{Node}. 
 If it receives \texttt{data\_} \texttt{packets} with more than eight bytes in the data field, it will split the packet into multiple \texttt{data\_packets}.
 The additional \texttt{data\_packets} must have the same node ID and message type, but the new message, \texttt{nw\_msg}, bit should be cleared on all but the first message.
 The class also needs to append the number of bytes in the data field, \texttt{dlc}, for each \texttt{data\_packet}.
@@ -161,12 +158,8 @@ It is shown in figure \ref{fig:state_machine}.
 \caption{State machine implementing the functionality of \texttt{Node}. }
 \label{fig:state_machine}
 \end{figure}
-<<<<<<< HEAD
-\martin{In figure~\ref{fig:state_machine}, the "boolean" value run, should be the same as the boolean value "running" in figure~\ref{fig:node_class_diagram}.}
+
 When the variable \texttt{run} is equal to \texttt{1}, the node should output sensor data.
-=======
-When the variable \texttt{run} is equal to 1, the node should output sensor data.
->>>>>>> 7741463298a09466258ce8a0f06cdd0fa2ca664b
 \texttt{run} is being updated by the thread that handles incoming commands.
 It will go to the clear state and clear all variables and wait for data. 
 When data is present it will move through the states, create the time packet, get data and send data. 
@@ -264,32 +257,30 @@ The classes main responsibilities are shown in figure \ref{fig:wifi_flow}.
 
 \subsubsection*{WiFi class}
 The \texttt{WiFi} class needs to receive and transmit data through the connected WiFi dongle.
-It receives data from the Timestamper class in normal mode and data from State\_Machine in sending log mode.
-The State\_Machine also sets if it should transmit the data it gets from the Timestamper class. 
+It receives data from the \texttt{Timestamper} class in normal mode and data from \texttt{State\_Machine} in sending log mode.
+The \texttt{State\_Machine} also sets if it should transmit the data it gets from the \texttt{Timestamper} class. 
 
 \subsubsection*{State\_Machine class}
-The State\_Machine class implements the state machine of figure \ref{fig:StateDiagram_NodeWiFiStates}.
+The \texttt{State\_Machine} class implements the state machine of figure \ref{fig:StateDiagram_NodeWiFiStates}.
 When in sending log mode it needs to get a log file from the \texttt{Logger} class and give it to the WiFi class.
-When in normal mode it needs to extract commands and node IDs from the received WiFi data and give it to the Protocol class.
+When in normal mode it needs to extract commands and node IDs from the received WiFi data and give it to the \texttt{Protocol} class.
 
 \subsubsection*{Protocol class}
 The Protocol class needs to get frames from the full frame buffer and extract node ID and message type. 
-It also needs to pack CAN frames with received commands and node ID from the State\_Machine class.
+It also needs to pack CAN frames with received commands and node ID from the \texttt{State\_Machine} class.
 
 \subsubsection*{CAN\_link class}
-The CAN\_link class has the responsibility of transferring and receiving data to
+The \texttt{CAN\_link} class has the responsibility of transferring and receiving data to
 and from the CAN program.
 
 \subsubsection*{Logger class}
 The Logger class needs to log all received data to a SD-card.
-It also needs to read the logged file and transfer it to the State\_Machine classes, when in sending log mode.
+It also needs to read the logged file and transfer it to the \texttt{State\_Machine} class, when in sending log mode.
 
 \subsubsection*{Timestamper class}
-The Timestamper class needs to do the timestamp management described earlier.
+The \texttt{Timestamper} class needs to do the timestamp management described earlier.
 It needs to keep the latest received timestamp for each node in the network.
 When it receives data from a node it should append the latest received timestamp from that node.  
-
-\thomas{texttttt the above sections}
 
 \subsection{Timestamping}\label{sec:time}
 \mikkel{Brandnew section! Should be read!}
