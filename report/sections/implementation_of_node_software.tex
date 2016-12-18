@@ -35,8 +35,20 @@ It is found that a sensor node has the following responsibilities:
 \item Receive and execute incoming commands.
 \end{itemize}
 
-A CAN packet can be seen in code \ref{code:data_packet}.
-The three first points describe a flow which is presented in more detail on the flow diagram on figure \ref{fig:filter_1}.
+A CAN packet is defined as the \texttt{struct} in code \ref{code:data_packet}.
+\mikkel{Code has been moved here as agreed!}
+\begin{lstlisting}[caption=Struct for data packet.,label=code:data_packet]
+struct data_packet {
+  std::bitset<1> nw_msg;
+  std::bitset<4> node_id;
+  std::bitset<4> dlc;
+  std::bitset<6> messagetype;
+  std::vector<bool> data; 
+  (*@\makebox[\linewidth][c]{$\smash{\vdots}$}@*)
+};
+\end{lstlisting}
+
+The three first responsibilities lisetd describe a flow which is presented in more detail on the flow diagram on figure \ref{fig:filter_1}.
 
 \begin{figure}[!h]
 \centering
@@ -80,21 +92,6 @@ They are generic classes and should be reused when developing new nodes.
 \caption{Class diagram showing sensor node software.}
 \label{fig:node_class_diagram}
 \end{figure}
-
-A struct containing all fields of a data packet in boolean data types is defined in listing \ref{code:data_packet}.  
-
-\begin{lstlisting}[caption=Struct for data packet.,label=code:data_packet]
-struct data_packet {
-  std::bitset<1> nw_msg;
-  std::bitset<4> node_id;
-  std::bitset<4> dlc;
-  std::bitset<6> messagetype;
-  std::vector<bool> data; 
-  (*@\makebox[\linewidth][c]{$\smash{\vdots}$}@*)
-};
-\end{lstlisting}
-\mikkel{Move the data packet to the bullet points}
-It will be passed between the classes and they will each add their own information. 
 
 The classes and their responsibilities will be explained here in more detail.
 
@@ -243,7 +240,6 @@ The classes main responsibilities are shown in figure \ref{fig:wifi_flow}.
 \label{fig:StateDiagram_NodeWiFi}
 \end{figure}
 
-\mikkel{Should these class descriptions be omitted?}
 \subsubsection*{WiFi class}
 The \texttt{WiFi} class needs to receive and transmit data through the connected WiFi dongle.
 It receives data from the Timestamper class in normal mode and data from State\_Machine in sending log mode.
