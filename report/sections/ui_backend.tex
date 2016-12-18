@@ -37,10 +37,10 @@ It is unlikely that this choice will pose any issues in terms of performance sin
 
 \begin{figure}
 	\includegraphics[width=\linewidth]{graphics/backend_concept}
-	\caption[Overview of the backend functionality.]{Overview of the backend functionality. 
+	\caption[Overview of the front end functionality.]{Overview of the front end functionality. 
 	Messages are received over wifi from the go-kart. 
-	An interpreter reads the message to determine the MessageID (MSGID), timestamp (T) and the data. 
-	All information is made available to a \acs{gui} through the backend.}
+	An interpreter reads the message to determine the message ID (MSGID). A fifo of data and timestamps is associated with each message ID. 
+	All information is made available to a GUI through the front end.}
 	\label{fig:backendconcept}
 \end{figure}
 
