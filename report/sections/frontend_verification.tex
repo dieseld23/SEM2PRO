@@ -8,7 +8,7 @@ This section describes the test done to verify that this functionality is implem
 Figure \ref{fig:frontendsetup} depicts an overview of the setup used in the verification.
 An amount of GPS data is recorded and is presented to the GPS node using service virtualisation.\\
 
-The two parts, CAN-bus and WiFi node were not finished, see sections \ref{sec:methods_to_implement_can} and \ref{sec:somewifinodesection} respectively, as such it was necessary to create service virtualisation for this link.
+The two parts, CAN bus and WiFi node were not finished, see sections \ref{sec:methods_to_implement_can} and \ref{sec:somewifinodesection} respectively, as such it was necessary to create service virtualisation for this link.
 A small utility was written to serve this purpose, it virtualises the dotted boxes seen in figure \ref{fig:frontendsetup}.
 This utility reads the messages sent by the GPS node, extracts the timestamp and inserts it into the data frame in place in the DLC nibble and then outputs it to stdio.
 The message is then on the form seen in figure \ref{fig:backendmsg}, the form expected by the front end.
