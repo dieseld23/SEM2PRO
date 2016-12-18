@@ -39,12 +39,11 @@ The modifications can be seen in code \ref{code:dts_changes_zybo} for CAN contro
 \begin{lstlisting}[numbers=none,caption={Device tree settings file and its path.},label={code:dts_file_zybo}]
 /boot/xillinux-1.3-zybo.dts
 \end{lstlisting}
-\catalin{Double quotes are problem here as well. FIX THEM WHENEVER}
 \begin{lstlisting}[caption={Device tree settings changes.},label={code:dts_changes_zybo}]
 zynq_can_0: can@e0008000 {
-        compatible = xlnx,zynq-can-1.0;
+        compatible = "xlnx,zynq-can-1.0";
         clocks = <&clkc 19>, <&clkc 36>;
-        clock-names = can_clk, pclk;
+        clock-names = "can_clk", "pclk";
         reg = <0xe0008000 0x1000>;
         interrupts = <0 28 4>;
         interrupt-parent = <&intc>;
@@ -52,9 +51,9 @@ zynq_can_0: can@e0008000 {
         rx-fifo-depth = <0x40>;
     };
 axi_can_0: axi-can@40000000 {
-        compatible = xlnx,axi-can-1.00.a;
+        compatible = "xlnx,axi-can-1.00.a";
         clocks = <&clkc 0>, <&clkc 1>;
-        clock-names = can_clk,s_axi_aclk;
+        clock-names = "can_clk", "s_axi_aclk";
         reg = <0x40000000 0x10000>;
         interrupt-parent = <&intc>;
         interrupts = <0 59 1>;
