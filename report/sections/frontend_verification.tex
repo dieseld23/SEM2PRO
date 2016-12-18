@@ -1,6 +1,7 @@
 %!TEX root = ../main.tex
 
 \section{Front End}
+\label{sec:frontendverification}
 According to the use cases a user should be able to monitor data created on the network.
 This section describes the test done to verify that this functionality is implemented correctly.
 \subsection{Method}
@@ -31,7 +32,7 @@ Then, on the Zybo, the GPS and WiFi nodes were started, piping their output to s
 \begin{lstlisting}
 >> ./sensornode | ./verification | socat - tcp:196.178.10.10:2049
 \end{lstlisting}
-Here, the first and last data points from the data set.
+Here, the first and last data points from the data set are shown:
 \begin{lstlisting}
 >> N 55.36734 E 10.43185
 >> N 55.36707 E 10.43109
