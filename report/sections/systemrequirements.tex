@@ -2,67 +2,60 @@
 \subsection{System Requirements} % (fold)
 \label{sec:system_requirements}
 
-\martin{Make the first table part of the second table}
-\martin{prettify the tables}
-
-\begin{table}[h]
+\mikkel{Is it beautifull enough for you guys? otherwise go check out this link: http://azup.org/wp-content/uploads/2015/07/attractivewomanatbeach.jpg}
+\begin{table}[H]
 \centering
 \caption{System requirements}
 \label{tab:requirements}
 
-\begin{tabular}{ |p{3cm}| }
-	\hline
-	\multicolumn{1}{|c|}{\textbf{Interfaces}}\\
-	\hline
-	\centering
-	USB \\
-	5 V DC \\
-	Wifi \\
-	CAN \\
-	CANOpen \\
-	SD-card \\
-\end{tabular}
-
-
-\begin{tabular}{ |p{0.3cm}|p{8.5cm}|p{1cm}| }
+\begin{tabular}{ |p{0.3cm}|p{10.5cm}| }
 \hline
-\multicolumn{3}{|c|}{\textbf{Functional}}\\
+\multicolumn{2}{|c|}{\textbf{Functional}}\\
 \hline
-1 & Read data from sensors/data producers 				& page x \\
-2 & Timestamps all data 								& page x \\
-3 & Transmit data wireless between Zybo board and monitoring station	& page x \\
-4 & Log data to SD card 								& page x \\
-5 & Transfer logs to monitoring station 								& page x \\
-6 & Start/stop transmission from nodes 					& page x \\
-7 & Present data to user								& page x \\
-8 & Provide an API for data access						& page x \\
-9 & Must continue to function on node failure			& page x \\
+1 & Read data from sensors/data producers 				\\
+2 & Timestamps all data 								\\
+3 & Transmit data wireless between Zybo board and monitoring station	\\
+4 & Log data to SD card 								\\
+5 & Transfer logs to monitoring station 								\\
+6 & Start/stop transmission from nodes 					\\
+7 & Present data to user								\\
+8 & Provide an API for data access						\\
+9 & Must continue to function on node failure			\\
 
 \hline
-\multicolumn{3}{|c|}{\textbf{Operational}}\\
+\multicolumn{2}{|c|}{\textbf{Operational}}\\
 \hline	
-10 & A developer can add new nodes 						& page 1 \\
-11 & A developer can modify existing nodes 				& page 1 \\
-12 & A user can start/stop data transmission from nodes	& page 1 \\
-13 & A user can request a data log 						& page 1 \\
-14 & A developer can add API for specific sensor 		& page 1 \\
-15 & A developer can add custum (G)UI					& page 1 \\
+10 & A developer can add new nodes 										 \\
+11 & A developer can modify existing nodes 								 \\
+12 & A user can start/stop data transmission from nodes					 \\
+13 & A user can request a data log 										 \\
+14 & A developer can add API for specific sensor 						 \\
+15 & A developer can add custum (G)UI									 \\
 
 
 \hline
-\multicolumn{3}{|c|}{\textbf{Quality of Service}}\\
+\multicolumn{2}{|c|}{\textbf{Quality of Service}}\\
 \hline	
-16 & Can support 16 nodes							 	& page 1 \\
-17 & Has wireless range of > 80 m						 	& page 1 \\
-18 & CAN network has 1 Mb/s data bandwidth			 	& page 1 \\
-19 & Timestamps with a precision of 1 ms 			 	& page 1 \\
+16 & Can support 16 nodes							 					\\
+17 & Has wireless range of > 80 m						 				\\
+18 & CAN network has 1 Mb/s data bandwidth			 					\\
+19 & Timestamps with a precision of 1 ms 			 					\\
 
 \hline
-\multicolumn{3}{|c|}{\textbf{Design}}\\
+\multicolumn{2}{|c|}{\textbf{Design}}\\
 \hline	
-20 & Must allow for integration of new nodes		 					& page 1 \\
-21 & Software must be modular to allow for simple integration of nodes	& page 1 \\
+20 & Must allow for integration of new nodes		 					 \\
+21 & Software must be modular to allow for simple integration of nodes	 \\
 
+\hline
+\multicolumn{2}{|c|}{\textbf{Interfaces}}\\
+\hline	
+22 & USB 		 						\\
+23 & 5 V DC		 						\\
+24 & Wifi	 							\\
+25 & CAN 		 						\\
+26 & CANOpen 		 					\\
+27 & CANOpen 		 					\\
 \hline
 \end{tabular}
 \end{table}
