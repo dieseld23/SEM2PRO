@@ -21,9 +21,10 @@ An added security measure would be to add an "Ready for Sync" message, that all 
 The WiFi node will then need to know which to expect, and will not send synchronize the other nodes until all of them have reported ready.
 
 \subsection*{Timestamping}
-As described in section \ref{sec:time} the time stamping on the sensor nodes is done on userspace in Linux, which does not produce an  accurate timestamps.
-The reason for using Linux on the nodes is mainly that USB and especially WiFi requires drivers that are already implemented in Linux.
-As the frames are timestamped when they reach the WiFi there is no requirement for it to be real-time.
+\mikkel{Brand new subsection!}
+As described in section \ref{sec:time} the time stamping on the sensor nodes is done in userspace in Linux, which does not produce an  accurate timestamps.
+The reason for using Linux on the nodes is mainly that USB and especially WiFi requires complex drivers that are already implemented in Linux.
+As the frames are timestamped when they reach the WiFi node there is no requirement for it to be real-time.
 This leaves a solution to the imprecise time stamping to be to let the WiFi node run Linux and the rest of the nodes to run on bare-metal code.
 It of course requires a USB driver that can run on bare-metal code.
 
