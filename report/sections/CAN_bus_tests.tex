@@ -18,9 +18,60 @@ The tests performed will be:
 
 \subsection{Basic Communication}
 \label{sub:TestingCANStack_BareMetal}
+
+
+With further modifications and the addition of extra functionalities such as reading button input and writing the output to the LEDs, the finalized developed code was suitable to test the communication between two nodes on the CAN network, as described in section \ref{sub:TestingCANStack_BareMetal}.
+
+The basic principle for proving the basic communication was to trigger an interrupt attached to the button presses, which then the SendFrame() function would send the value of the buttons to the network as a message.
+In turn, the RecvFrame() was responsible of reading the message transmitted on the bus and writing the value as output to the LEDs.
+
+\subsubsection*{Main Loop}
+Since the whole system, that was intended to be designed for this project, could not be put together, an approach to simulate the network in various ways was needed.
+Specifically, sending arbitrary messages was achieved by implementing button interrupts
+%\martin{I removed some text, that doesn't fit with the validation part}
+%and the case where multiple nodes would send messages simultaneously by GPIO port interrupts.
+%For details on how the different tests were done the reader may refer to section \ref{sub:CAN_Bus_Tests}.
+%Due to conflicts between the interrupt controllers and handlers, only one of the two simulation cases could be active during runtime.
+%Depending on the value of a macro definition in the source code the desired devices (buttons or GPIO) would be initialized.
+
+\paragraph*{Runtime with Button Interrupts}~\\
+During execution, the program runs continuously in a while loop waiting for receiving data in the FIFO.
+When data arrives, the LEDs are controlled using the values contained in the RxFrame, as seen in figure \ref{fig:FlowChart_CANSoft_RecvData}.
+An interrupt handler is also enabled, which when a button is being pressed, reads the buttons input and send a CAN message containing their value as data. The process of sending a TxFrame is shown in the flow chart in figure \ref{fig:FlowChart_CANSoft_BtnsIntr}.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width = 1\linewidth]{graphics/FlowChart_CANSoft_RecvData.pdf}
+	\caption{Flow chart for the process of receiving data.}
+	\label{fig:FlowChart_CANSoft_RecvData}
+\end{figure}
+
+\thomas{change write to LEDs}
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width = 1\linewidth]{graphics/FlowChart_CANSoft_BtnsIntr.pdf}
+	\caption{Flow chart with button interrupts.}
+	\label{fig:FlowChart_CANSoft_BtnsIntr}
+\end{figure}
+
+\paragraph*{Runtime with GPIO Interrupts}~\\
+The software's behavior is similar in this case, as well as it can be seen in figure \ref{fig:FlowChart_CANSoft_GPIOIntr}.
+The difference is that instead of button values, dummy data may be inserted into the TxFrame according to the simulation needs and the receiving data is only presented in the SDK terminal.
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width = 1\linewidth]{graphics/FlowChart_CANSoft_GPIOIntr.pdf}
+	\caption{Flow chart with GPIO interrupts.}
+	\label{fig:FlowChart_CANSoft_GPIOIntr}
+\end{figure}
+
 \catalin{Restructure so there is a block with a short introduction, the test itself, and a conclusion}
+
+In order to verify that the basic communication of a CAN network works on the developed CAN bus, transceivers and the XCanPs controller a test needed to be conducted.
 This test included using the CAN controllers on the Zynq chip with the purpose of showing that a basic CAN network between two Zybo boards could be implemented using the stack.
-Specifically, the one Zybo was sending the input value of the buttons to the network in order to be received by the second one and turn on the appropriate on-board LEDs as a result.
+The method of the test was to have one Zybo sending the input value of a pressed button to the network.
+The receiving Zybo then 
+ .in order to be received by the second one and turn on the appropriate on-board LEDs as a result.
 After programming the FPGA with the basic architecture designed in Vivado as seen in figure \ref{fig:CAN_Testing_Architecture} and uploading the source code written in Vivado SDK, the test was successful, thus verifying the basic functionality of a CAN network.
 The messages sent from the first node to the second one were received correctly, containing the intended value of the buttons.
 A two-way communication was also verified, since both boards had a SendFrame() and a RecvFrame() function (common source code), thus one controlling the LEDs of the other one.
