@@ -46,7 +46,7 @@ When this command is received, the node will start the millisecond timer.
 
 \subsubsection*{Multiframe Messages}
 Due to the limited data length of a CAN frame, it is likely necessary to support multiple frames per message. 
-Generally it's better to use all 8 bytes of data in one frame, to reduce the relative size of the overhead, and in case a dataset isn't easily split into 8 byte portions, it might be easier to bundle it all together and send as multiple full frames. 
+Generally it is better to use all 8 bytes of data in one frame, to reduce the relative size of the overhead, and in case a dataset isn't easily split into 8 byte portions, it might be easier to bundle it all together and send as multiple full frames. 
 In the message ID of all but the first frame of a multi-frame message the \texttt{new message}, to make it highest priority.
 That way a message will not be interrupted by other messages from other nodes.
 The construction and interpretation of these multiframe messages are described in sections~\ref{sec:sensor_node} and~\ref{sec:frontend}.

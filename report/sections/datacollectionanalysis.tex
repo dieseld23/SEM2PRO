@@ -53,9 +53,9 @@ It can be scalable to a certain point, since the hub can be upgraded to handle m
 %\martin{Like i todo'ed above, we should only concern ourselves with bus, ring and star, and at this point we should come to the conclusion that star does not work, and that ring and bus is really a toss up.}
 \martin{rewrite}
 For the system's networking purpose, the mesh type is not suitable, since it adds extra hardware requirements.
-A node may be a simple sensor with a small micro-controller and hence, connecting it to such a network is not feasible.
+A node may be a simple sensor with a small micro controller and hence, connecting it to such a network is not feasible.
 %In our system, a small embedded board computer will be the ov-computer which requires to maintain its connection with the network even in case of failures and also possibly the central hub in centralized topologies that such as the star and the tree.
-The star network requires a lot of connections which normally are not present at standard micro-controllers.
+The star network requires a lot of connections which normally are not present at standard micro controllers.
 %Thus, these two topologies are not suited, since in case of its failure, the whole network fails.
 Thus, the mesh and star networks are not suited for this system.
 Scalability is also a requirement for the future connection of nodes.
@@ -80,7 +80,7 @@ However, this does require all nodes to have two Ethernet ports with direct acce
 
 CAN is a bus topology widely used in the automotive industry with data rates up to 1Mbit/s for small network lengths.
 This is slightly less than the requirement calculated in section~\ref{sec:data_rate}, however that number was based on the highest possible sample rate of the IMU, along with the inefficient data type, which is 32 bit float.
-Because CAN is a bus topology, it's easy to add another node to the bus, as one would just tap into the bus anywhere.
+Because CAN is a bus topology, it is easy to add another node to the bus, as one would just tap into the bus anywhere.
 It is because of this tapping into the bus, that it is not suitable for higher data rates, and if the bus breaks at any one point, communication is lost on the entire bus.
 Unlike Powerlink, this runs without a dedicated master.
 It is not nearly as fast as Powerlink, and does not have the redundancy of a ring network.

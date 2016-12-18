@@ -24,8 +24,8 @@ The wireless technology therefore has to at least match this figure reliably.
 %Data is only used for human inspection and therefore a sample frequency of 100Hz would be sufficient.
 %This gives a minimum requirement for the speed of the transmission to be ZZ Mbit/s. 
 
-It should be possible to change the monitoring station, therefore the chosen wireless transmission technology should be compatible with standard linux computers.
-The technology should be compatible with both standard linux computers and the zybo board.
+It should be possible to change the monitoring station, therefore the chosen wireless transmission technology should be compatible with standard Linux computers.
+The technology should be compatible with both standard Linux computers and the zybo board.
 Both have USB ports and Ethernet ports as standard, therefore the chosen hardware should have one of those.
 
 \subsection{Technologies}
@@ -34,26 +34,26 @@ Bluetooth 5.0 has a maximum speed of 50Mbit/s, which is sufficient.
 The range of typical class 2 Bluetooth device is, however, only 10m \cite{bluetooth}.
 This range is definitely not enough for this application.
 \\
-WiFi is also compatible with standard computers running linux and typical WiFi units have speeds that are a lot higher than required. 
+WiFi is also compatible with standard computers running Linux and typical WiFi units have speeds that are a lot higher than required. 
 WiFi can be operating in the 2.4GHz band and in the 5GHz band. 
 2.4GHz units have the highest range, and offer higher compatibility. 
 The 802.11n protocol generally has the best range compared to the other 802.11 protocols \cite{wiki_wifi}.
-Depending on the antenna, wifi has sufficient range and bandwidth.
+Depending on the antenna, WiFi has sufficient range and bandwidth.
 As the connection should be able to function in areas which do not necessarily provide internet access, it is required that the hardware chosen should support the creation of an ad-hoc network.\\~\\
 The authors have access to two different types of hardware which fit these requirements:
 \begin{itemize}
-	\item \textbf{PMOD WiFi:} Digilent Inc. has a wifi module designed specifically for use with the PMOD interface on the Zybo.
+	\item \textbf{PMOD WiFi:} Digilent Inc. has a WiFi module designed specifically for use with the PMOD interface on the Zybo.
 	Communication with this module is done in the PL of the Zynq chip, using the SPI protocol.
 	According to the marketing material \cite{pmodwifi}, it can support 1-2 Mbit/s at 400m, which is more than sufficient for this system.
 
-	\item \textbf{USB WiFi-Dongle:} The TP-LINK TL-WN722N is a WiFi dongle with a USB interface. One requirement states that any hardware should be compatible with linux.
+	\item \textbf{USB WiFi-Dongle:} The TP-LINK TL-WN722N is a WiFi dongle with a USB interface. One requirement states that any hardware should be compatible with Linux.
 	The TL-WN722N uses the Atheros AR9271 chipset, which is on the list of supported devices for the ath9k\_htc driver \cite{ath9k}.
 	It adheres to the 802.11n protocol and is also capable of supporting an ad-hoc network.
 
 \end{itemize}
 Of these two options, the latter is chosen.
-Since the nodes are already running linux, doing the VHDL implementation necessary to support the PMOD module, adds unnecessary complexity to the system.
-While the Xillybus does simplify this issue greatly, having the wifi on linux natively means that all programming can be done in C/C++.
+Since the nodes are already running Linux, doing the VHDL implementation necessary to support the PMOD module, adds unnecessary complexity to the system.
+While the Xillybus does simplify this issue greatly, having the WiFi on Linux natively means that all programming can be done in C/C++.
 This will most likely decrease development time.
 \subsection{Conclusion} 
 \begin{table}[H]

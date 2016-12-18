@@ -1,8 +1,8 @@
 %!TEX root = ../main.tex
 \section{Node Software}
 \label{sec:node_software}
-When addressing the node software it is important to remember the distinction between sensor node software and wifi node software.
-The software for the wifi node has not been implemented therefore this section will only address the verification of the functionalities of the sensor node software implemented on a GPS sensor node.
+When addressing the node software it is important to remember the distinction between sensor node software and WiFi node software.
+The software for the WiFi node has not been implemented therefore this section will only address the verification of the functionalities of the sensor node software implemented on a GPS sensor node.
 
 \subsection{GPS Sensor Node}
 The functionality of the developed GPS sensor node software was tested as shown in figure \ref{fig:sensor_gps_veri}.
@@ -21,9 +21,9 @@ When running the software is run it outputs only a string of booleans.
 This is not very readable by humans, so to show the functionality the program was set to print in a humanly understandable way.
 A segment of the output from this can be seen in code \ref{code:output_node}.
 The first frame should be a timestamp frame.
-It can be seen that the the first frame has node ID 14, 4 data bytes, messagetype 1 and data 2374, meaning that it is from the GPS node with a timestamp of 2374 milliseconds.
+It can be seen that the the first frame has node ID 14, 4 data bytes, message type 1 and data 2374, meaning that it is from the GPS node with a timestamp of 2374 milliseconds.
 The next frame should then be a data frame containing latitude and longitude information.
-It can be seen that it has node ID 14, 8 data bytes and messagetype 9, which is a latitude longitude message.
+It can be seen that it has node ID 14, 8 data bytes and message type 9, which is a latitude longitude message.
 To extract the latitude and longitude from the data field an unpacking algorithm is needed.
 Using that it is found that latitude is 55.3673346 degrees North and longitude is 10.4318456 degrees East.
 
@@ -34,7 +34,7 @@ Using that it is found that latitude is 55.3673346 degrees North and longitude i
 Start of frame: 1
 Node id: 1110
 Number of data bytes: 0100
-Messagetype: 000001
+Message type: 000001
 Data: 00000000000000000000100101000110
 Full frame: 11110000001010000000000000000000000100101000110
 
@@ -42,7 +42,7 @@ Full frame: 11110000001010000000000000000000000100101000110
 Start of frame: 1
 Node id: 1110
 Number of data bytes: 1000
-Messagetype: 001001
+Message type: 001001
 Data: 00100001000000000110001010000010000001100011011111000101 11111000
 Full frame: 11110001001100000100001000000000110001010000010000 00110001101111100010111111000
 (*@\makebox[\linewidth][c]{$\smash{\vdots}$}@*)

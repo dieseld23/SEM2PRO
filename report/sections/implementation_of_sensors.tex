@@ -15,7 +15,7 @@ The used GPS is a u-blox NEO-6P GPS module.
 The physical interface to the GPS is a usb cable and the output adheres to the NMEA standard and is made of 8 different NMEA sentences.
 The RMC sentence contains all essential information, that being position, velocity and time.
 Therefore the implemented GPS class, that has the responsibility of interfacing the GPS, only needs to decode RMC sentences.
-An example of a RMC sentence is shown in code snippet \ref{code:rmc}.
+An example of a RMC sentence is shown in code \ref{code:rmc}.
 The extracted information shows that the time is 09:11:23:00, the module is active, latitude is 55 degrees 22.03929 minutes North, longitude is 10 degrees 25.91037 minutes East, the speed is 0.348 knots, the date is  7th of November 2016 and checksum is 7C.
 For the sake of simplicity all coordinates are converted to degrees with decimals. 
 \begin{lstlisting}[caption=RMC sentence.,label=code:rmc]

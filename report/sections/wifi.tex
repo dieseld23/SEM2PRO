@@ -1,8 +1,8 @@
 %!TEX root = ../main.tex
-The off-kart network is done using wifi.
+The off-kart network is done using WiFi.
 It was chosen to use this method as all modern laptops are equipped with the capability of connecting to such a network.
-Hereafter the challenge lies in establishing an ad-hoc network between a zybo board and a PC.
-This network is created using a USB-Wifi dongle on the Zybo board. 
+Hereafter the challenge lies in establishing an ad-hoc network between a Zybo and a PC.
+This network is created using a USB-Wifi dongle on the Zybo. 
 The following script is run to bring down the device, change the network type to ad-hoc, bring up the device, create the ad-hoc network and, finally, assign an IP-address to the device.
 Some commands require super user access.
 For clarity, \texttt{sudo} is left out from all calls throughout this section.
@@ -17,7 +17,7 @@ For clarity, \texttt{sudo} is left out from all calls throughout this section.
 \end{lstlisting}
 It was verified using the ping command from the Zybo to the PC and vice versa.
 
-Upon setting up the ad-hoc network, a socket connection is created between the Zybo board and the PC using socat
+Upon setting up the ad-hoc network, a socket connection is created between the Zybo and the PC using socat
 \begin{lstlisting}[language=bash]
 zybo>>socat - tcp-listen:2048
 pc>>socat - tcp:196.178.10.10
@@ -91,12 +91,12 @@ Clearly, there are differences between the two systems, one or more of which wer
 In order to eliminate these differences the versions of the involved software was brought up to date.
 The PC is running Arch Linux, a distribution using rolling release.
 This means that, generally, the software will always be at the latest stable release.
-The Xillinux distribution running on the Zybo board is based on the Ubuntu 12.04 release, the long term support version from 2012, see \cite{xillinux}.
+The Xillinux distribution running on the Zybo is based on the Ubuntu 12.04 release, the long term support version from 2012, see \cite{xillinux}.
 As such, much of the software is outdated.
 The \texttt{iproute2} package as well as the \texttt{network-manager} were updated to the latest version.
 Other than provide some experience with building and searching for dependencies, it did little to alleviate the issues.
 \\~\\
-It was decided to continue attempting to set up the ad-hoc network on the PC, expecting that this process may provide some insight into the issues on the Zybo board, and how to fix them.
+It was decided to continue attempting to set up the ad-hoc network on the PC, expecting that this process may provide some insight into the issues on the Zybo, and how to fix them.
 Initially the drivers were verified using the same procedure as mentioned previously; for brevity, this is left out.
 From experience, the first step was to disable the network manager.
 A network manager is particularly useful when a user wants to connect to the internet or similar, basic operations.
@@ -129,8 +129,8 @@ PING 192.168.10.11 (192.168.10.11) 56(84) bytes of data.
 64 bytes from 192.168.10.11: icmp_seq=1 ttl=64 time=0.592 ms
 64 bytes from 192.168.10.11: icmp_seq=2 ttl=64 time=0.638 ms
 \end{lstlisting}
-Having this up and running, it was attempted to run the above sequence of commands on the Zybo board.
-This allowed the Zybo board to correctly create the network.
+Having this up and running, it was attempted to run the above sequence of commands on the Zybo.
+This allowed the Zybo to correctly create the network.
 Trying to ping the board on its assigned IP-adress, however, yielded a \texttt{no route to host} message.
 Looking into the routing tables reveals a discrepancy:
 \begin{lstlisting}[language=bash]
@@ -185,7 +185,7 @@ Boost provides a multitude of different examples and tutorials on how to use ASI
 This approach was not without problems, however.
 As mentioned previously, Xillinux is based on an older version of Ubuntu, as such, the version of CMake and Boost available on the platform is insufficient.
 In updating the software, one significant issue emerged; the size of the library.
-Boost takes up 684MB of space, making it infeasible for use on the ZB.
+Boost takes up 684MB of space, making it infeasible for use on the Zybo.
 
 \paragraph*{\underline{So}cket\underline{cat}} is a command line utility that can be used to establish a bi-directional connection between two hosts.
 As opposed to the two prior solutions, socat is implemented and verified by the developers of the utility.
@@ -212,20 +212,20 @@ Connecting to port 2048 on localhost can be done from terminal two:
 \end{lstlisting}
 
 The message written in terminal one will appear in terminal two and vice versa.
-Using this functionality, the wifi node can be connected to a PC using pipes.
-Piping is commonly used on Linux systems to connect the IO of programs.
-The linux philosophy is that one program should do one thing and do it well.
+Using this functionality, the WiFi node can be connected to a PC using pipes.
+Piping is commonly used on Linux systems to connect the I/O of programs.
+The Linux philosophy is that one program should do one thing and do it well.
 If more functionality is needed, multiple single-purpose programs are interconnected using pipes.
 
 \subsection{Conclusion}
 
-Throughout this section a connection was made between a PC and the ZB.
-It was chosen to use a usb/wifi-dongle to carry the signal on the ZB.
+Throughout this section a connection was made between a PC and the Zybo.
+It was chosen to use a USB/WiFi-dongle to carry the signal on the Zybo.
 The TP-LINK TL-WN722N, a general consumer dongle, was chosen for two reasons: The chipset of the dongle is supported by the available drivers and it is capable of creating ad-hoc networks.
-Using the \texttt{iproute2} package, an ad-hoc network was set up from the the ZB and connected to from a PC.
+Using the \texttt{iproute2} package, an ad-hoc network was set up from the the Zybo and connected to from a PC.
 A small script was created to automatically set up the ad-hoc network upon booting the system.
-Three different approaches were attempted in actually creating a connection across the wifi network, C, Boost and finally socat.
+Three different approaches were attempted in actually creating a connection across the WiFi network, C, Boost and finally socat.
 Clearly, analysis should have been done before deciding on a method prior to starting the implementation of the socket connection.
 C was discarded due to complexity and the time constraints of the project.
 While Boost ASIO was made to function on the PC, the size of the library made it infeasible for use on an embedded platform.
-Finally, it was decided to use the linux command line utility socat for creating the connection between the PC and the ZB.
+Finally, it was decided to use the Linux command line utility socat for creating the connection between the PC and the Zybo.
