@@ -7,7 +7,7 @@
 \mikkel{split from linux part.}
 \martin{The can controllers do not have anything to do with xilinux. Does Xilinux provide drivers for the can controllers on the zynq? CAN controllers vs CAN drivers Issue - Some things rephrased.}
 
-This section includes the process that was followed to enable the CAN controller drivers.
+This section includes the process that was followed to enable the CAN controller in Linux.
 The purpose of this was to gain access to the controllers from Linux.
 Using this operating system was necessary for using the required USB interfaces, logging the data into files as well as utilizing the network tools to establish an ad-hoc network.
 The steps for this were to modify certain files related to the kernel configurations and the device tree settings.
@@ -69,11 +69,16 @@ axi_can_0: axi-can@40000000 {
 
 Unfortunately, the above steps did not enable the drivers successfully.
 After the changes, the CAN devices were still not visible in Linux and thus, connection to the CAN network was not feasible.
+Research was done by the authors in why this could not be accomplished.
+It was found that there were some naming inconsistencies between the guide and the Device Tree Settings file present in Linux running on the Zybo. Specifically, all the devices' names in the file are prepended with ps7.
+A new set of changes with this naming convention was done, but with no success.\\
 
-\mikkel{Maybe you can provide some thoughts about the problem.
-Maybe also some words about the patching Xilinx-Digilent etc.}
-As was previously mentioned, the implementation was unsuccessful.
-At the time, the research done on this topic did not lead to successfully enabling the drivers.
+The files mentioned above were modified in the Linux running on the Zybo.
+It was expected the changes to take effect after rebooting the system, which was not the case.
+Another approach to this, was to build a new kernel containing these changes and to entirely build a new Linux system for the Zybo.
+This proved to be unachievable because of the various patches that had been applied to the initial kernel by Diligent Inc. and Xilinx.
+A new updated kernel with those patches could not be built MIKKEL.
+\mikkel{say a few words why could not be built, just the main reason, after ...could not be built ....}
 
 %The architecture can be seen in figure \ref{fig:CAN_Arch_with_AXI_CAN}.
 
