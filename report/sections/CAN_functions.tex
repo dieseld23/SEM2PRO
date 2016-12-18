@@ -1,20 +1,20 @@
 %!TEX root = ../main.tex
-\subsection{Functions of the CAN protocol}\label{sec:CAN_functions}
-Some added functionality is necessary for the High Level protocol, which will increase the usability of the protocol.
-For message further information, refer to the Object Dictionary in table~\ref{tab:OD} on page~\pageref{tab:OD}.
+\subsection{Functions of the GoCAN Protocol}\label{sec:CAN_functions}
+Some additional functionality is required in GoCAN to fulfill the requirements set.
+This functionality is described throughout this section.
 
-\paragraph*{Timestamps}
-As mentioned in section~\ref{sec:CAN-bus} the CAN protocol is not real time, which means all data on the bus must be timestamped. 
-This way, the latency of each data point will be known, and it would be possible to work with data fusion.
+\subsubsection*{Timestamps}
+As mentioned in section~\ref{sec:CAN-bus} the CAN protocol is not real time, therefore all data on the bus must be timestamped before transmission. 
 The resolution of the timestamps has been decided to be 1 ms, as this leaves sufficient accuracy for the sensors analysed in this project.
-This presents several challenges, in terms of what the time reference is and how to convey timestamps with adequate precision without creating too much overhead. 
-For a node running Linux, the Epoch timestamp is available, but this is not available on baremetal code - it is also too coarse, as it only updates every second.
-Instead a counter will be implemented on each node, incrementing an s32 integer every 1 ms.
-This gives 24.8 days before overflowing.\\
+This presents several challenges, in terms of what the time reference is and how to convey timestamps with adequate precision without creating too much overhead.
+With internet access, the Epoch timestamp is available. 
+This is infeasible in bare-metal code.
+Instead a counter will be implemented on each node, incrementing an 32 bit integer every 1 ms.
+This gives 49.6 days before overflowing.\\
 
-Because a standard s32 integer takes 4 bytes, it would introduce a large overhead if the timestamp is sent with every message. 
+Because a standard 32 bit integer takes 4 bytes, it would introduce a large overhead if the timestamp is sent with every message. 
 Instead, each timestamp will determine the time of all subsequent data messages, until a new timestamp is sent. 
-As an example, the pseudo code below describes the transmission of all nine axes of the IMU with the same timestamp.
+As an example, the pseudo code below describes the transmission of all nine axis of the IMU with the same timestamp.
 Additionally, the IMU can transmit pressure and temperature measurements, but as these are slower signals, they would be transmitted at a lower rate.
 
 \begin{lstlisting}
@@ -32,37 +32,31 @@ Wait
 \end{lstlisting}
 
 Lines 2-4 are measurements taken at the timestamp in line 1.
-The WiFi node then saves each of these nine data points with the corresponding timestamp.
-Lines 7-10 refer to the timestamp at line 6.\\
-Because of the Tx Fifo in the CAN controller, it is possible to build and send four or five frames simultaneously, and let the controller send each frame one at a time
+The WiFi node appends the corresponding timestamps to each of these nine data points with the corresponding timestamp.
+Lines 7-10 refer to the timestamp at line 6.
 
-
-\paragraph*{Commands}
-Despite the CAN protocol being designed as a no-master network, it would be beneficial to implement a master, to control the other nodes. 
+\subsubsection*{Commands}
+The WiFi node is capable of issuing commands on the network.
 As described in section~\ref{sub:CAN_protocol}, it is possible to start and stop any specific or all other nodes from the WiFi node.
-Future work could allow for the setting and getting of parameters, and possibly remote controlling the vehicle.
 
-\paragraph*{Synchronization}
+\subsubsection*{Synchronization}
 Another specific command is the synchronization command. 
-When the system starts all nodes will go start polling their Rx Fifo for this sync command at very high update rate. 
-When this command is received, all nodes will start their millisecond timer, and start their main program of transmitting data.
+When the system starts all nodes will start polling their Rx Fifo for this sync command. 
+When this command is received, the node will start the millisecond timer.
 
-\paragraph*{Multiframe Messages}
+\subsubsection*{Multiframe Messages}
 Due to the limited data length of a CAN frame, it is likely necessary to support multiple frames per message. 
 Generally it's better to use all 8 bytes of data in one frame, to reduce the relative size of the overhead, and in case a dataset isn't easily split into 8 byte portions, it might be easier to bundle it all together and send as multiple full frames. 
-To use the IMU as an example again, the sensor used can calculate yaw, pitch and roll, which essentially is the first integration of gyroscope measurements. 
-Because accelerometer, gyroscope and magnetometer already takes three frames, it is possible to include yaw, pitch and roll without starting a fourth frame.
-This is done in a 24 byte frame, as described on lines 11-13 of table~\ref{tab:OD}. 
-The message ID of all but the first frame of a multi frame message will begin with a zero, to make it highest priority.
+In the message ID of all but the first frame of a multi-frame message the \texttt{new message}, to make it highest priority.
 That way a message will not be interrupted by other messages from other nodes.
-The construction and interpretation of these multiframe messages are described in sections~\ref{sec:sensor_node} and~\ref{sub:backend_intepreter}.
+The construction and interpretation of these multiframe messages are described in sections~\ref{sec:sensor_node} and~\ref{sec:frontend}.
 
-\paragraph*{Datatype and Scaling}
-As most sensor data comes from sources of limited resolution, the optimal solution would be to send only the number of bits that is measured. 
+\subsubsection*{Datatype and Scaling}
+As most sensor data comes from sources of limited resolution, the optimal solution would be to send only the number of bits that are measured. 
 In some cases however that is not possible, and a better solution is to round up or down to the nearest byte, and send the data as a fixed point data type.
 Intead of defining a new datatype, an integer of appropriate length will be used instead, and the object dictionary will define the scaling. \\
 
-As an example, the message described on line 17 of table~\ref{tab:OD} contains four data points of 16 bits. 
+As an example, the message described in table~\ref{tab:message17_OD} contains four data points of 2 bytes. 
 This contains the current measurements on the three phases along with the electrical position of the rotor.
 An example is described in table~\ref{tab:message17_OD}.
 

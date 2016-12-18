@@ -17,7 +17,7 @@ This timestamp is given as the time in milliseconds since synchronization and is
 \thomas{We need to agree on a way to write nodeid,msgid,msgtype throughout the report}
 \martin{For the most part there has been written node ID, message ID and message type. Abbreviate message?}
 
-\subsection{Front End Architecture}
+\subsection{Front End Architecture}\label{sec:frontend}
 An overview of the functionality can be seen in figure \ref{fig:backendconcept}.
 As can be seen, this architecture provides the link between the receiving program (socat) and a potential \acs{gui}.
 Upon receiving a message from the go-kart, socat will pipe the raw message to the interpreter.
