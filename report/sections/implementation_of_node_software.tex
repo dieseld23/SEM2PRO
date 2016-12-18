@@ -284,14 +284,14 @@ When it receives data from a node it should append the latest received timestamp
 
 \subsection{Timestamping}\label{sec:time}
 \mikkel{Brandnew section! Should be read!}
-The reason for timestamping at the nodes is that CAN is not a real-time network, thus timestamping when the frames are received would be of no use as the latency of the frames are unknown.
+The reason for timestamping at the nodes is that CAN is not a real-time network, thus timestamping when frames are received would be of no use as the latency of the frames is unknown.
 The accuracy of a timestamp given at the node depends on the system on which it is runs. 
 Implementing the timekeeping on bare-metal code with access to hardware timers is ideal as it allows for a very high accuracy.
 \\~\\
-In the node software designed in this section the timekeeping is done by running the \texttt{counter} shown in code \ref{code:counter} in a separate thread.
+In the node software designed in this section, the timekeeping is done by running the \texttt{counter} shown in code \ref{code:counter} in a separate thread.
 The thread will increment \texttt{ms} every 1ms.
 The problem with this method is that the thread is running in Linux userspace and rely on being scheduled to the processor. 
-As it is a userspace program it will have lower priority than OS specific processed.
+As it is a userspace program it will have lower priority than OS specific processes.
 Even if the specific thread is given a higher priority the scheduler will still handle it in a non-deterministic way.
 
 \begin{lstlisting}[caption=Declaration of counter function.,label=code:counter]
@@ -307,8 +307,8 @@ void Node::counter(void){
 \end{lstlisting}
 
 \subsubsection*{Real Time Linux}
-Using the \texttt{CONFIG\_PREEMPT\_RT} patch set on a Linux kernel significantly increases the real-time performance \cite{real_time_linux}.
+Using the \texttt{CONFIG\_PREEMPT\_RT} patch on a Linux kernel significantly increases the real-time performance \cite{real_time_linux}.
 The latency after applying the patch varies between systems, but generally with a worst case of a few hundred microseconds \cite{real_time_linux1}.
 The patches were successfully used on a Ubuntu kernel.
-To be able to use the kernel on the Zybo it was needed to patch the kernel further with Digilent and Xillinux patched.
-As those patches does not fit with the \texttt{CONFIG\_PREEMPT\_RT} patch set it was deemed unfeasible to continue as the authors have no knowledge in writing patches. 
+To be able to use the kernel on the Zybo it was needed to patch the kernel further with Digilent and Xillinux patches.
+As those patches do not fit with the \texttt{CONFIG\_PREEMPT\_RT} patch set it was deemed infeasible to continue as the authors have no prior experience in writing patches for the linux kernel. 
