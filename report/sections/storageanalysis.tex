@@ -21,15 +21,15 @@ From this knowledge, the data rate can be calculated as follows:
 	\frac{3\mathrm{GB}}{30\si{\minute}} = \frac{2.58 \cdot 10^{10} \mathrm{bit}}{1800 \si{\second}} \approx 13.7 \mathrm{Mb/s}
 \end{equation}
 
-With a data rate this high, it is unlikely that the go kart runs out of storage space before it runs out of battery.
+With a data rate this high, it is unlikely that the go-kart runs out of storage space before it runs out of battery.
 
 \section{Software on Stationary Computer}
-The stationary computer needs to receive data through wifi and decode the received messages using the protocol that is to be developed.
+The stationary computer needs to receive data through WiFi and decode the received messages using the protocol that is to be developed.
 A user should be able to access the data through an API.
 This API should act as the front end of the underlying network.
 As a proof of concept, a simple UI should be implemented to show how data can be presented to the user.
 The software also needs the ability to let the user send a command to the on-vehicle network to start and stop specific nodes.
-As with the previous parts of the system, this program should be compatible with linux.
+As with the previous parts of the system, this program should be compatible with Linux.
 The described software is outlined in figure \ref{fig:setup_ui}.
 
 \begin{figure}[h]

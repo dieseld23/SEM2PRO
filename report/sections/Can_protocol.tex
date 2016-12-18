@@ -41,9 +41,14 @@ This of course means that the overhead from one message increases from 47 bits t
 
 \todo[inline]{I clarefied some of the calculations. }
 This protocol is not ideal for this network. 
+<<<<<<< HEAD
+In part because it is request based, but more because of the enormous overhead.
+The IMU would produce 999 bits in order to transmit its 9 axis data without loss of precision, and at 400 Hz, that node alone will take up 40 \% of the bandwidth.
+=======
 In part because it's request based, but more because of the enormous overhead.
 For instance, the IMU produces 4 byte data types for each of its 9 axes. 
 With an overhead of 79 bits, this comes to 999 bits, and at 400 Hz, that node alone will take up 40 \% of the bandwidth.
+>>>>>>> 0281d8b76481e929cd85f9e288bbf849f0b88343
 In addition to this, all transmits would need to be requested, so the total bandwidth comes close to 70 \%.
 %Metadata is 47 bits, plus 32 bits from the Data portion. The data it self is a float, so that's 32 bits; 111 in all. A request does not include data, so that's only 79 bits of data. At 400 Hz, that's (111+79)*9*400=684000.
 The SDO is generally used to define or read parameters for that node, that are not bound to change over time.
@@ -63,7 +68,7 @@ If then one part is replaced by a different make or model, then it might be nece
 
 For all its nice features, the CANopen protocols do not fit the requirements outlined in the beginning of this section. 
 It includes a lot of complexity, which unnecessary for this project.
-Instead it has been decided to develop a custom High Level Protocol that relies more on the automatic functionality of the CAN protocol.\\
+Instead it has been decided to develop a custom protocol that relies more on the automatic functionality of the CAN protocol.\\
 
 \subsubsection*{The GoCAN Protocol}
 The basic CAN frame is retained for this protocol.
@@ -72,11 +77,11 @@ GoCAN, mostly, is a reinterpretation of the message ID of the frame.
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width = 0.9\linewidth]{graphics/CAN_protocol_general}
-	\caption{Naming convention GoCAN}
+	\caption{Naming convention for the GoCAN protocol.}
 	\label{fig:CAN_protocol_general_pdf}
 \end{figure}
 \thomas{Indicate messageid, remove color in dotted box, split into two cases}
-The message ID is split into three portions, as seen on figure~\ref{fig:CAN_protocol_general_pdf}.
+The message ID is split into three portions, as seen in figure~\ref{fig:CAN_protocol_general_pdf}.
 The first bit is set to 1 if this is a new message.
 If the node needs to send more than 8 bytes in one message, this bit can be set to 0, thus blocking other nodes with higher priority.
 The subsequent four bits indicate the transmitting node ID, which will allow up to 16 nodes. 

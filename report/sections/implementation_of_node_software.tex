@@ -1,5 +1,5 @@
 %!TEX root = ../main.tex
-The on-vehicle network generally has two types of nodes, a generic sensor node and the wifi node.
+The on-vehicle network generally has two types of nodes, a generic sensor node and the WiFi node.
 This section will seek to design and implement software that adheres to the requirements listed in the table of requirements.
 In general all nodes in the system needs to:
 \begin{itemize}
@@ -48,7 +48,7 @@ struct data_packet {
 };
 \end{lstlisting}
 
-The three first responsibilities lisetd describe a flow which is presented in more detail on the flow diagram on figure \ref{fig:filter_1}.
+The three first responsibilities listed describe a flow which is presented in more detail on the flow diagram on figure \ref{fig:filter_1}.
 
 \begin{figure}[!h]
 \centering
@@ -73,7 +73,7 @@ Yellow is the GPS class, orange is the Packer\_GPS class, purple is the node cla
 It is required to design the software with modularity in mind.
 For this, it is necessary to determine which tasks are common for all nodes and which are application specific.
 The application specific tasks, in this case, are found to be extracting data from sensor and to pack data according to GoCAN.
-In principle the task of packing data according to protocol is generic, but the method for packing data depends on data types and messagetypes for the specific application.
+In principle the task of packing data according to protocol is generic, but the method for packing data depends on data types and message types for the specific application.
 The remaining tasks are common for all sensor nodes in the system. 
 The procedure when data is going from the CAN program to the node is shown in figure \ref{fig:filter_2}.
 In this case, all tasks are found to be common for all sensor nodes.
@@ -93,6 +93,24 @@ They are generic classes and should be reused when developing new nodes.
 \label{fig:node_class_diagram}
 \end{figure}
 
+<<<<<<< HEAD
+A struct containing all fields of a data packet in boolean data types is defined in listing \ref{code:data_packet}.  
+
+\begin{lstlisting}[caption=Struct for data packet.,label=code:data_packet]
+struct data_packet {
+  std::bitset<1> nw_msg;
+  std::bitset<4> node_id;
+  std::bitset<4> dlc;
+  std::bitset<6> message type;
+  std::vector<bool> data; 
+  (*@\makebox[\linewidth][c]{$\smash{\vdots}$}@*)
+};
+\end{lstlisting}
+\mikkel{Move the data packet to the bullet points}
+It will be passed between the classes and they will each add their own information. 
+
+=======
+>>>>>>> 7741463298a09466258ce8a0f06cdd0fa2ca664b
 The classes and their responsibilities will be explained here in more detail.
 
 \subsubsection*{GPS class}
@@ -120,9 +138,9 @@ The class receives start, stop or synchronize events from the protocol class and
 
 The protocol class receives \texttt{data\_packets} from \texttt{Node}. 
 If it receives \texttt{data\_} \texttt{packets} with more than eight bytes in the data field, it will split the packet into multiple \texttt{data\_packets}.
-The additional \texttt{data\_packets} must have the same node id and message type, but the new message, \texttt{nw\_msg}, bit should be cleared on all but the first message.
+The additional \texttt{data\_packets} must have the same node ID and message type, but the new message, \texttt{nw\_msg}, bit should be cleared on all but the first message.
 The class also needs to append the number of bytes in the data field, \texttt{dlc}, for each \texttt{data\_packet}.
-On \texttt{data\_packets} coming from the CAN network the last two bits of the messagetype is used to indicate the type of command sent to the node.
+On \texttt{data\_packets} coming from the CAN network the last two bits of the message type is used to indicate the type of command sent to the node.
 
 \subsubsection*{CAN\_link class} ~ \\
 The \texttt{CAN\_link} class has the responsibility of transferring and receiving data to and from the CAN program.
@@ -143,11 +161,16 @@ It is shown in figure \ref{fig:state_machine}.
 \caption{State machine implementing the functionality of \texttt{Node}. }
 \label{fig:state_machine}
 \end{figure}
+<<<<<<< HEAD
+\martin{In figure~\ref{fig:state_machine}, the "boolean" value run, should be the same as the boolean value "running" in figure~\ref{fig:node_class_diagram}.}
+When the variable \texttt{run} is equal to \texttt{1}, the node should output sensor data.
+=======
 When the variable \texttt{run} is equal to 1, the node should output sensor data.
+>>>>>>> 7741463298a09466258ce8a0f06cdd0fa2ca664b
 \texttt{run} is being updated by the thread that handles incoming commands.
 It will go to the clear state and clear all variables and wait for data. 
 When data is present it will move through the states, create the time packet, get data and send data. 
-If at any point \texttt{run} is set to 0 the state machine will go to the stop state.
+If at any point \texttt{run} is set to \texttt{0} the state machine will go to the stop state.
 In the stop state the input queue of \texttt{data\_packet} will be cleared.
 
 
@@ -251,7 +274,7 @@ When in normal mode it needs to extract commands and node IDs from the received 
 
 \subsubsection*{Protocol class}
 The Protocol class needs to get frames from the full frame buffer and extract node ID and message type. 
-It also needs to pack CAN frames with received commands and node id from the State\_Machine class.
+It also needs to pack CAN frames with received commands and node ID from the State\_Machine class.
 
 \subsubsection*{CAN\_link class}
 The CAN\_link class has the responsibility of transferring and receiving data to
