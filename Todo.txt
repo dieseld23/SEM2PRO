@@ -1,13 +1,28 @@
-Get an estimate on how much bandwidth of the bus is in use.
-Explicitly write that one node has to continue with the same message ID
-guide to implement new nodes
-
+Reading guide for GIT
 
 
 
 Todo's for the greater proofing weekend
-Agree on how we mention the Zybo - is it Zybo or Zybo board?
-Agree on how we write WiFi
-Agree on what the generic node is called. Is it just a sensor node, or is it also an actuator or other? Is it a slave or a bitch?
-Agree on how to spell go kart.
-Agree on terminology about send/receive, put/get, transmit/receive, broadcast/subscribe
+search and replace:
+Zybo instead of ZB or Zybo board
+WiFi
+??
+go kart
+USB all caps.
+"micro controller" in two words without hyphen
+"In figure" rather than "on figure"
+"ID" in all caps
+"IO" in all caps
+Linux
+Ubuntu
+built-in with hyphen
+remove appostrophe from words like it's, can't and such
+message ID, node ID, message type.
+"Framework" should be removed
+zero one to 1 0
+texttt 0 og 1
+GoCAN instead of HL protocol, high level protocol
+
+
+References to Code snippets as "code ##"
+All reference to functions should be in texttt

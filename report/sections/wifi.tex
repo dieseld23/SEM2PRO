@@ -4,7 +4,7 @@ It was chosen to use this method as all modern laptops are equipped with the cap
 Hereafter the challenge lies in establishing an ad-hoc network between a zybo board and a PC.
 This network is created using a USB-Wifi dongle on the Zybo board. 
 The following script is run to bring down the device, change the network type to ad-hoc, bring up the device, create the ad-hoc network and, finally, assign an IP-address to the device.
-Note: some commands require super user access.
+Some commands require super user access.
 For clarity, \texttt{sudo} is left out from all calls throughout this section.
 
 \begin{lstlisting}[language=bash]
@@ -15,7 +15,7 @@ For clarity, \texttt{sudo} is left out from all calls throughout this section.
 >>iw wlan0 ibss join go-kart 2412
 >>ip addr add wlan0 196.178.10.10
 \end{lstlisting}
-It is verified working using the ping command from both the Zybo board and to the PC and vice versa.
+It was verified using the ping command from the Zybo to the PC and vice versa.
 
 Upon setting up the ad-hoc network, a socket connection is created between the Zybo board and the PC using socat
 \begin{lstlisting}[language=bash]
@@ -26,9 +26,9 @@ pc>>socat - tcp:196.178.10.10
 Messages can be passed through this connection by piping data to it.
 
 Following is a description of the steps taken to reach the approach explained above.
-\subsection{Setting Up the Ad-Hoc Network}~\\
+\subsection{Setting Up the Ad-Hoc Network}
 Since the Zybo is already running a Linux distribution which provides all of the necessary drivers, it was decided to use a WiFi dongle to create the ad-hoc network on the Zybo.
-The highlights of the consequences of this choice are discussed below.
+The consequences of this choice are discussed below.
 \\~\\
 The first step was to ensure that the correct drivers are present on the system.
 The USB/WiFi dongle is a TP-LINK TL-WN722N.
@@ -40,7 +40,7 @@ Running \texttt{dmesg} prints the kernel log revealing, amongst other things, wh
 [10.329564] usb 1-1: ath9k_htc: Firmware htc_9271.fw requested
 [10.332438] usbcore: registered new interface driver ath9k_htc
 \end{lstlisting}
-Additionally:
+Additionally, the dongle also shows up in the list of USB devices:
 \begin{lstlisting}[language=bash]
 >> lsusb | grep Ath
 Bus 001 Device 002: ID 0cf3:9271 Atheros Communications, 
@@ -97,7 +97,7 @@ The \texttt{iproute2} package as well as the \texttt{network-manager} were updat
 Other than provide some experience with building and searching for dependencies, it did little to alleviate the issues.
 \\~\\
 It was decided to continue attempting to set up the ad-hoc network on the PC, expecting that this process may provide some insight into the issues on the Zybo board, and how to fix them.
-Initially the drivers were verified using the same procedure as mentioned previously, for brevity, this is left out.
+Initially the drivers were verified using the same procedure as mentioned previously; for brevity, this is left out.
 From experience, the first step was to disable the network manager.
 A network manager is particularly useful when a user wants to connect to the internet or similar, basic operations.
 It automatically detects hardware and manages connections in the area.
@@ -112,8 +112,6 @@ In order to create an ad-hoc network it is necessary to change the mode of the i
 >> ip link set wlp2s0b1 down
 >> iw wlp2s0b1 set type ibss
 \end{lstlisting}
-Notice that the interface naming on this system is following the new "predictable network interface names"-scheme.
-This scheme names the interfaces based on various factors such as MAC-address of the hardware; for more details see \cite{interfacenaming}.
 The interface needs an address assigned to it in order to communicate on the network.
 \begin{lstlisting}[language=bash]
 >> ip addr add 192.168.10.9 dev wlp2s0b1
@@ -145,7 +143,6 @@ default via 192.168.10.1 dev eth0 metric 100
 	src 192.168.10.10
 \end{lstlisting}
 As can be seen, messages on eth0 and wlan0 are both routed to the same address space, 192.168.10.0/24.
-Curiously, this did not pose an issue on the PC's.
 Changing the address space to something different corrected the problem.
 In this case 196.178.10.0/24 was chosen.
 Finally, a short bash script is written to quickly set up the network:
@@ -157,10 +154,12 @@ Finally, a short bash script is written to quickly set up the network:
 >> iw wlan0 ibss join go-kart 2412
 >> ip addr add wlan0 196.178.10.10
 \end{lstlisting}
+
+\thomas{add script to git}
 Since the system will not necessarily have an interface when it is mounted on the go-kart, it will have to automatically run this script on startup.
 On Xillinux, this can be achived by placing the script in \path{/etc/init.d/<script_name>}.
 
-\subsection{Making the connection}~\\
+\subsection{Making the connection}
 Having correctly set up the network, the next step is to make a connection between the PC and the Zybo.
 This can be done using a variety of methods.
 For this project, three approaches were considered:
@@ -181,22 +180,21 @@ Although \cite{beej} was used as a reference in setting up the connection, it pr
 \paragraph*{Boost}is a widely used C++ library.
 As the authors had prior knowledge with this library it became the next choice.
 ASIO is part of Boost and contains all of the tools necessary to set up a TCP/IP connection.
-Boost provides a multitude of different examples and tutorials on how to use ASIO, specifically the chat server from \cite{boostchat} was modified and formed the basis for the program used in setting up the connection\footnote{The code can be found on the associated github repository at \path{/code/socket/} along with instructions on compiling.}.
+Boost provides a multitude of different examples and tutorials on how to use ASIO, specifically the chat server from \cite{boostchat} was modified and formed the basis for the program used in setting up the connection.
 \thomas{Put server/client code on github:/code/socket/}
 This approach was not without problems, however.
-As mentioned previously, Xillinux is based on an older version of ubuntu, as such, the version of cmake and Boost available on the platform is insufficient.
+As mentioned previously, Xillinux is based on an older version of Ubuntu, as such, the version of CMake and Boost available on the platform is insufficient.
 In updating the software, one significant issue emerged; the size of the library.
 Boost takes up 684MB of space, making it infeasible for use on the ZB.
-Clearly, using a library the size of Boost for that one purpose, is unreasonable.
 
 \paragraph*{\underline{So}cket\underline{cat}} is a command line utility that can be used to establish a bi-directional connection between two hosts.
-As opposed to the two prior solutions, socat is implemented and verified by the authors of the utility.
-In addition, this utility provides exactly the utility needed, as opposed to boost, which is a collection of libraries spanning everything from mathematical algorithms, complex data structures, sockets and numerous other fields.\\
+As opposed to the two prior solutions, socat is implemented and verified by the developers of the utility.
+In addition, this utility provides exactly the function needed, as opposed to boost, which is a collection of libraries spanning everything from mathematical algorithms, complex data structures, sockets and numerous other fields.\\
 Generally, socat can be called using
 \begin{lstlisting}[language=bash]
 >> socat [options] <address> <address>
 \end{lstlisting}
-An address is specified by a keyword and can be of a range of different types.
+An address is specified by a keyword and can be a range of different types.
 Of interest in this project is \texttt{TCP} and \texttt{STDIO}.
 \texttt{STDIO} can also be represented simply by \texttt{'-'}.
 The \texttt{TCP} address requires two arguments, the ip address and the port.
@@ -215,7 +213,7 @@ Connecting to port 2048 on localhost can be done from terminal two:
 
 The message written in terminal one will appear in terminal two and vice versa.
 Using this functionality, the wifi node can be connected to a PC using pipes.
-Piping is commonly used on Linux systems to connect the io of programs.
+Piping is commonly used on Linux systems to connect the IO of programs.
 The linux philosophy is that one program should do one thing and do it well.
 If more functionality is needed, multiple single-purpose programs are interconnected using pipes.
 

@@ -6,31 +6,21 @@
 %This section assumes that CANOpen has been adequately explained beforehand
 
 \subsection{Interfacing with Sevcon}\label{sub:Sevcon_interfacing}
-The working motor driver currently on the go-kart is in fact compatible with CAN.
-However, as it is a general purpose motor driver, it cannot be programmed to used the high level protocol designed in this project. 
+The Sevcon Gen4, currently on the go-kart, is compatible with CAN.
+However, as it is a general purpose motor driver, it cannot be programmed to use GoCAN. 
 For this reason, and to make the network unaffected by replacement of the motor driver, it has been decided to use a Zybo to interface with the Sevcon.
 
-\subsubsection{Physical Connection}\label{sub:sevcon_physical_connection}~\\
+\subsubsection*{Physical Connection}\label{sub:sevcon_physical_connection}
 Communication with the Sevcon is done through a high speed CAN bus that needs to adhere to ISO11898-2.
 As described in section~\ref{sub:CANphys}, one transceiver board has two transceivers along with a terminal so that one Zybo can connect to the Sevcon using the second CAN controller.
-It is recommended to use twisted pair wires with cross section area ranging from $0.5 \si{\milli \meter \squared}$ to $1.5 \si{\milli \meter \squared}$, and terminating the Zybo end with $120 \si{\ohm}$.
-On the Sevcon, this can be done by shorting pins 2 and 24, to utilize an internal termination resistor.
-There are two CAN interfaces: Pins 13(+) and 24(-) are used for configuration, and pins 16(+) and 27(-) are used to interface with other CAN devices.
-The 35 pin connector is shown below for reference:
 
-\begin{figure}[h]
-	\centering
-	\includegraphics[width = 0.5\linewidth]{graphics/35_pin_dsub}
-	\caption{The 35 pin AMPSeal connector used to interface with the Sevcon}
-	\label{fig:35_pin_dsub}
-\end{figure}
+\subsubsection*{Sevcon Object Dictionary}\label{sub:sevcon_object_dictionary}
+The Sevcon utilizes CAN open, which means all of its parameters are listed in an object dictionary.
+Because the Sevcon is a general purpose AC motor driver, its object dictionary is very large, and holds a lot of objects that are irrelevant for this particular setup, such as motor slip, and speed control parameters. 
+The object directory is documented in a 1400+ line Excel file. 
+Some objects of interest listed in table \ref{tab:parameters_of_interest}.
 
-\subsubsection{Sevcon Object Dictionary}\label{sub:sevcon_object_dictionary}~\\
-The Sevcon utilizes CAN open, which means all it's parameters are listed in an object dictionary.
-Because the Sevcon is a general purpose AC motor driver, its object dictionary is very large, and holds a lot of objects that are completely irrelevant for this particular setup, such as motor slip, and speed control parameters. 
-The object directory is documented in a 1400+ Excel file. 
-Some objects of interest are:
-
+\martin{motor temperature, remove read, yes}
 \begin{table}[h]
 	\centering
 	\begin{tabular}{| c | c | c | c |}
@@ -52,8 +42,8 @@ Some objects of interest are:
 	\label{tab:parameters_of_interest}
 \end{table}
 
-For the most part, these values in 16 bit resolution, which means they can be grouped together four at a time in a PDO.
-The fact that a value can be mapped to PDO means, that it can be transmitted to the Zybo at fixed time intervals or whenever it is updated.
+For the most part, these values have 16 bit resolution, which means they can be grouped together four at a time in a process data object.
+The fact that a value can be mapped to a PDO means, that it can be transmitted to the Zybo at fixed time intervals or whenever it is updated.
 The Encoder Read-out sin/cosine encoder position, so it needs to be converted to mechanical angle. 
 This is done using equation~\ref{eq:cos_sin_to_degree}
 

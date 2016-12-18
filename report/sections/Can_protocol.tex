@@ -1,10 +1,12 @@
 %!TEX root = ../main.tex
 
-\subsection{High Level CAN protocol}\label{sub:CAN_protocol}
-Due to the requirements of the on-kart network, it is decided to formulate a new protocol specifically for this project. The requirements are listed below.
-\martin{Maybe find a better name than High Level CAN protocol?}
-\martin{Make a refference forward to here from the stuff Thomas wrote about canopen}
-\subsubsection{On-kart network requirements:}
+\subsection{Go-Kart CAN protocol (GoCAN)}\label{sub:CAN_protocol}
+Due to the requirements of the on-kart network, it was decided to formulate a new protocol specifically for this project.
+While CANopen could be used, it is a vast protocol with many features that are of no use in this system.
+An elaboration of the choice to make a custom protocol over using CANopen is done in this section.
+Additionally, the design of the go-kart CAN protocol, or GoCAN for short, is also presented.
+The requirements of GoCAN are listed below.
+
 \begin{itemize}
 	\item Simple and easy to learn.
 	\item Support for 16 nodes.
@@ -14,16 +16,19 @@ Due to the requirements of the on-kart network, it is decided to formulate a new
 	\item Expandable -- must be able to add more nodes without affecting the existing ones.
 	\item Commands: Start/stop broadcasting 
 	\item Commands can be send to specific or all nodes
-	\item timestamp data
+	\item Timestamp data
 \end{itemize}
 
+\thomas{This is changed!}
+\subsubsection*{The CANopen Protocol}
 \label{sub:CANopen}
 As mentioned before, CANopen is a high level protocol that runs on top of the CAN protocol.
-It is open source project, that runs on the top 5 layers of the OSI model\cite{CANopen_introduction}, and is governed by the Can in Automation (CiA) group.
+It is open source project, that runs on the top 5 layers of the OSI model\cite{CANopen_introduction}.
 It includes several types of protocols, most interesting are the SDO and PDO. 
-By splitting the 11 bit Message ID into a 4 bit function code, followed by 7 bits of node ID, meaning that a node can communicate 16 different functions to 127 different nodes.\\
+By splitting the 11 bit Message ID into a 4 bit function code, followed by 7 bits of node ID, meaning that a node can communicate 16 different functions to 127 different nodes.
+\\~\\
 The Service Data Object (SDO) can read from or write to any registers on any node. 
-It can handle 127 different nodes with each 65536 different indices, each with 256 sub indices -- in all more than 2 billion addresses with each 4 bytes of data.
+It can handle 127 different nodes with each 65536 different indices, each with 256 sub indices, in total, more than 2 billion addresses with each 4 bytes of data.
 The way CANopen supports this, is by using the first four bytes of the data portion of the frame for metadata, as described in figure~\ref{fig:CANopen_SDO_data}.
 
 \begin{figure}[h]
@@ -32,15 +37,19 @@ The way CANopen supports this, is by using the first four bytes of the data port
 	\caption{"The data section of the CAN frame is split into three parts: one byte for the specifier, three bytes for the node index and subindex, and four bytes for the actual data in the transfer."\cite{CANopen_introduction}}
 	\label{fig:CANopen_SDO_data}
 \end{figure}
+\thomas{de-jesusify}
 
-This of course means that the overhead from one message increases from 47 bits to 59 bits, or 184 \% of the maximum data size.\\
+\martin{Clarify facts}
+This of course means that the overhead from one message increases from 47 bits to 59 bits, or 184 \% of the maximum data size.
+\\~\\
 This protocol is not ideal for this network. 
-In part because it's request based, but more because of the enormous overhead -- the IMU would produce 999 bits in order to transmit its 9 axis data without loss of precision, and at 400 Hz, that node alone will take up 40 \% of the bandwidth.
+In part because it's request based, but more because of the enormous overhead.
+The IMU would produce 999 bits in order to transmit its 9 axis data without loss of precision, and at 400 Hz, that node alone will take up 40 \% of the bandwidth.
 In addition to this, all transmits would need to be requested, so the total bandwidth comes close to 70 \%.
 %Metadata is 47 bits, plus 32 bits from the Data portion. The data it self is a float, so that's 32 bits; 111 in all. A request does not include data, so that's only 79 bits of data. At 400 Hz, that's (111+79)*9*400=684000.
 The SDO is generally used to define or read parameters for that node, that are not bound to change over time.
 It should not be used for broadcasting data.
-
+\\
 The Process Data Object (PDO) is a protocol used to transmit specific indices with a higher throughput. 
 In this protocol, certain indices are mapped to one of 8 PDOs. 
 This way, a node can identify data only by the CAN message ID, without using any of the data portion for overhead.
@@ -48,17 +57,17 @@ It is also possible to group multiple values together, and to transmit without r
 This brings the data from the IMU down to 523 bits to transmit its 9 axis data.\\
 %((32+32)+47)*4+(47+32)
 
-Each device on the CANopen bus has its own Object Dictionary (OD) specifying its addresses. 
-Some of these addresses are reserved, but since the Message ID specifies which node it is, there's no risk of overlapping. 
-However if two nodes need to communicate meaningful data -- i.e. data that the receiving node needs as an input, and not just something it writes into a log file -- they need to know about portions of each other's OD, or at least the PDO.
+Each node on the CANopen bus has its own Object Dictionary (OD) specifying its addresses. 
+Some of these addresses are reserved, but since the Message ID specifies which node it is, there's no risk of overlapping.
 If then one part is replaced by a different make or model, then it might be necessary to reconfigure other nodes, and the system loses modularity.\\
 
 For all its nice features, the CANopen protocols do not fit the requirements outlined in the beginning of this section. 
-On one hand it supports way more nodes than is needed, but does not support enough data producing or data consuming subnodes.
-It also includes a lot of complexity, which is not needed for this project, and that only adds unnecessary compleixity. 
+It includes a lot of complexity, which unnecessary for this project.
 Instead it has been decided to develop a custom High Level Protocol that relies more on the automatic functionality of the CAN protocol.\\
 
-The basic CAN framework is retained for this protocol, and the protocol is really just a naming convention for the message ID. 
+\subsubsection*{The GoCAN Protocol}
+The basic CAN frame is retained for this protocol.
+GoCAN, mostly, is a reinterpretation of the message ID of the frame.
 
 \begin{figure}[h!]
 	\centering
@@ -66,28 +75,31 @@ The basic CAN framework is retained for this protocol, and the protocol is reall
 	\caption{Naming convention for this high level protocol}
 	\label{fig:CAN_protocol_general_pdf}
 \end{figure}
-
-The message ID is split in to three portions, as seen on figure~\ref{fig:CAN_protocol_general_pdf}.
+\thomas{Indicate messageid, remove color in dotted box, split into two cases}
+The message ID is split into three portions, as seen on figure~\ref{fig:CAN_protocol_general_pdf}.
 The first bit is set to 1 if this is a new message.
-If however the node needs to send more than 8 bytes in one package, this bit can be set to 0, thus blocking other nodes with higher priority.
+If the node needs to send more than 8 bytes in one message, this bit can be set to 0, thus blocking other nodes with higher priority.
 The subsequent four bits indicate the transmitting node ID, which will allow up to 16 nodes. 
-The last 6 bits of the message ID would determine the message type.
-This message type then determines 
-This leaves 64 different message types for each node -- it is then the developers to utilize these the best. 
-If more message types are needed, the CAN protocol supports extended identifier, which adds 18 bits of identifiers.
-This however also increases the overhead, and puts unnecessary load on the bus
-Each node will have a list of message IDs (10 bits), that it knows how to handle.
-If a message is not on that list, the node will ignore it.\\
+The last 6 bits of the message ID determine the message type. 
+This leaves 64 different message types for each node.
+It is the responsibility of the developer to utilize these correctly.\\
 
-There are basically two types of nodes: The Wifi node acting as a commander, and all other nodes.
-Generally nodes can either produce data, and/or receive commands.
-The Wifi node neither produces any kind of data nor receives commands, but it does receive data, and send out commands.
-Therefore, there is a special case, for when the Wifi node is sending.
+There are two types of nodes: 
+\begin{itemize}
+	\item \textbf{The Wifi node:} Acts as the link between the user on the monitoring station and the network.
+	It transfers data to the monitoring station and distributes commands on the network.
+	\item \textbf{Sensor nodes:} Any sensor or data producing unit will be associated with a node.
+	A sensor node will produce data and act according to received commands
+\end{itemize}
+
+
 In this case, the subsequent four bits determines the recipient, leaving two bits for command type. 
-For now, command types are only "Start broadcasting" and "Stop broadcasting", but could be extended to for instance "Set parameter" or "Set value", where the data field will indicate which parameter, and what it's set to.
+For now, command types are "Start broadcasting", "Stop broadcasting" and "Synchronize".
+These will be explained in more detail in section \ref{sec:CAN_functions}.
 If the recipient message ID is the WiFi node ID, then the command applies to all nodes.\\
+\thomas{Reference to figure msg id}
 
-The four node IDs are:
+The four node IDs currently in use:
 \begin{table}[h]
 	\begin{tabular}{{l} {l}}
 		Wifi node: & 0b0001 \\
@@ -97,6 +109,7 @@ The four node IDs are:
 	\end{tabular}
 \end{table}
 
-The reason for this naming is, that the Wifi node acts as a commander for the, and it's commands need higher priority.
-The IMU produces short data packages at a high rate, and the GPS node produces longer data packages at a lower rate. 
+The WiFi node is given the lowest node ID since this will result in the highest priority.
+This is necessary when issuing commands.
+The IMU produces short data packages at a high rate, and the GPS node produces data packages at a lower rate. 
 Therefore it is of less concern if the GPS message is delayed due to obstruction from other nodes. 

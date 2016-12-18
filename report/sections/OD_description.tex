@@ -1,13 +1,12 @@
 %!TEX root = ../main.tex
 \subsection{Object Dictionary}\label{sub:OD}
-In order to ensure that all message IDs are unique, an Object Dictionary is declared for this high level protocol.
-The name is inspired from CANopen, but unlike the CANopen Object Dictionary, this refers to the messages being transmitted on the, and not the parameters or variables on the CANopen node.
+In order to ensure that all message IDs are unique, an Object Dictionary is declared for GoCAN.
+The name is inspired from CANopen, but unlike the CANopen Object Dictionary, this refers to the messages being transmitted on the bus, and not the parameters or variables of the node.
 Because of this, some variables appear in several message IDs, as it might be desirable to reconfigure some nodes to send different data, and the node should group data together to reduce the number of frames.\\
 
-At this time, there are four nodes in the Object Dictionary with their node ID in hex: Wifi 0x1, IMU 0x3, Sevcon 0x7 and GPS 0xD.
-The Wifi node is considered the master, and can command the other nodes, and as such it's portion of the OD is a bit different. 
+At this time, there are four nodes in the Object Dictionary with their node IDs: Wifi "0001", IMU "0011", Sevcon "0111" and GPS "1110".
+The Wifi node can issue commands to other nodes, and as such its portion of the OD is different. 
 Common for the other three nodes is that the message type 0x01 is a four byte timestamp.
 Other than that, data messages start from 0x08.\\
 
-Table~\ref{tab:OD} in appendix~\ref{app:OD} on page~\pageref{tab} contains the Object Dictionary in its current form.
-
+Table~\ref{tab:OD} in appendix~\ref{app:OD} on page~\pageref{tab:OD} contains the Object Dictionary in its current form.

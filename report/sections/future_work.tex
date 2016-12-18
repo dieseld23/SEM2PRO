@@ -1,54 +1,82 @@
 %!TEX root = ../main.tex
 
 \section{Future Work}\label{sec:future_work}
-Unfortunately this project did not amount to a finished working product, but given more time, it would be possible to make the can controller work on all nodes, independently of whether it runs Linux of bare-metal code.
+Unfortunately this project did not amount to a finished working product, but given more time, it would be possible to make the CAN controller work on all nodes, independently of whether it runs Linux or bare-metal code.
 In addition to this, there are some features which would be  highly beneficial to include.
 All of this is discussed in this section.
 
-\subsection*{Design CAN controller on FPGA}
-First objective of future work would obviously be to implement the one missing link to make the entire project work.
+\subsection*{Design CAN Controller on FPGA}
+As the final implementation might be done in PL, there is nothing preventing the controller working at 8 Mb/s -- the FPGA can easily produce and interpret signals up to or beyond 8 Mb/s.
+First objective of future work would be to implement the one missing link to make the entire project work.
 This would be implemented on FPGA for two reasons;
-the xcanps controllers built into the Zybo can operate up to 1 Mb/s, but the transceivers can operate up to 8 Mb/s, so better to use the faster option.
+the XCanPs controllers built into the Zybo can operate up to 1 Mb/s, but the transceivers can operate up to 8 Mb/s, so better to use the faster option.
 Another reason is modularity.
 An IP core could be included both on a bare-metal coded Zybo, and one running Linux.
-So instead of working on two different methods for implementing a CAN controller in the PS, one method would work for all Zybos.\\
-It is unlikely that the AXI CAN IP core from Xilinx can be used due to licensing, so two other options exist; either use one from opencores.org or write a custom one.
-The one available on opencores.org is severely lacking in documentation, so it might end up being harder to use than just writing a new IP core.
-Writing a custom IP core would also allow it to be tailored for this project. 
-It should also be able to operate at either 1 or 8 Mb/s, to take into account slower controllers, on nodes that do not have an FPGA.
+So instead of working on two different methods for implementing a CAN controller in the PS, one method would work for all Zybos.
 
 \subsection*{Startup Security}
-\martin{Startup security. All nodes will keep saying ready to sync at a fixed interval (could be 1 second). Whenever all 
-nodes have reported ready, WiFi node will Sync}
 As described in section~\ref{sec:CAN_functions}, the WiFi node sends out a sync signal when the whole network starts up.
 The WiFi node will send this signal after a fixed time, but there is a risk, that not all nodes are ready to receive yet. 
 An added security measure would be to add an "Ready for Sync" message, that all nodes will send out at a fixed interval.
 The WiFi node will then need to know which to expect, and will not send synchronize the other nodes until all of them have reported ready.
 
-\subsection*{Better command structure}
-\martin{more sophisticated commands. sync, command, set and get, using data field to specify which command or which parameter.}
-As described in section~\ref{sub:CAN_protocol}, the WiFi node can only transmit four different message types, because four bits are used to address the command. 
+\subsection*{Extended Command Structure}
+As described in section~\ref{sub:CAN_protocol}, the WiFi node can only transmit 4 different message types, because 4 bits are used to address the command. 
 According to the OD in~\ref{tab:OD}, three of these are already in use; Sync, Start and Stop. 
 This leaves only one more command to transmit.\\
 
-At more prudent approach would be to restructure the commands, and possibly use the data field to convey more information. 
-Four command IDs will be used: Sync, command, set parameter, and get parameter. 
-Sync will be as it is now, but Command would be any commands to control specific nodes, such as start, stop or change mode. 
+A more prudent approach would be to restructure the commands, and possibly use the data field to convey more information. 
+Four command IDs will be used: sync, command, set parameter, and get parameter. 
+Sync will be as it is now, but command would be any commands to control specific nodes, such as start, stop or change mode. 
 The data field would then contain one byte of data, determining which command is being sent.
 The getting and setting of parameters, would require one or two bytes of the data field to determine which node is being manipulated.
 Additionally, changing parameters on a go-kart while it's driving can be dangerous, so it will be important to include safety measures on the target node.
-For instance, changing parameters in the motor controller, could somehow break the loop, causing the driver to lose control.
 
-\subsection*{Internode communication}
-\martin{Implement method to subscribe to specific node ID + message types, i.e. motor controller node would want to know about the position of the wheel and maybe the brake}
-One of the advantages with both a bus and a ring network is, that all nodes can be snooping on all of the communication.
-At this stage though, the nodes do not understand what the other nodes are sending out, but there might be situations where one node would want to get data from another.
-One example could be speed information from the front wheels being used by the motor controller to determine if the wheels are slipping, and reduce the torque accordingly. 
+\subsection*{Internode Communication}
+One of the advantages with both a bus, that all nodes can be snooping on all of the communication.
+At this stage though, the nodes cannot interpret what the other nodes are sending out, but there might be situations where one node would want to get data from another.
+One example could be velocity information from the front wheels being used by the motor controller to determine if the wheels are slipping, and reduce the torque accordingly. 
 To reduce noise, it would be better to put a node closer to the front of the car, than to use long dedicated cables for each sensor in the front of the car, and then transmit the data over the CAN bus.\\
 
 At this point, this is not possible, because one node has no knowledge of other nodes than itself and the WiFi node. 
 This is to make the system more modular.
 Although implementing internode communication would likely make the network more rigid, it would likely be possible to ensure that the front node in the above example could be changed, without having to make changes to the motor controller node.
 
-\subsection{Multiple sensors per node}
-\martin{Redesign sensor node software, so that one node can have multiple sensors of different types}
+\subsection*{Utilizing Asymmetric Multiprocessing}
+
+Apart from using the AXI CAN core and the CAN drivers, the Zynq-7000 AP SoC provides the possibility of implementing a mechanism called asymmetric multiprocessing since there are two processors which share common memory as well as peripherals.
+The idea of this is to run Linux OS on one processor, while on the other one a bare-metal system, which both of them can communicate with each other.
+This was a proposed solution for the problem of accessing the CAN controllers from Linux which was the most promising of the implementation methods discussed in this report, but due to lack of time, it was researched only at a theoretical level.
+\\
+A brief implementation description will be given in this section, but for more details about the instructions and applications, the reader may refer to the Xilinx document \cite{Xilinx_AMP}.
+
+\subsubsection*{Short Implementation Description}~\\
+In order to achieve asymmetric multiprocessing on the Zybo board, certain steps are required to be taken, but also a few precautions as well.
+An important one is to configure the two processors appropriately in order to use the shared memory without conflicts.
+A second one is to setup the CPU0 as the master, because that is the processor assigned for the Linux OS.
+It is also the one that will start CPU1 by writing a value to a specific address in memory.
+\\
+Linux also needs to be configured as symmetric multiprocessing with a maximum number of one CPUs.
+It is a good approach because it will ensure that Linux configures the interrupt control distributor (ICD) and the snoop control unit (SCU) appropriately for multi-CPU environment, but only running on one of the two CPUs.
+\\
+Applications for the bare-metal and the Linux part are needed as well. Specifically, the former makes use of the fist stage boot loader (FSBL) as well as a custom application that will run on the CPU1 after it will be loaded by the FSBL into the memory.
+The latter, the Linux OS, uses two applications as well.
+The first one is RWMEM which is a utility providing the ability to read and write to various memory locations.
+The second one is the Soft UART, which constantly monitors the memory in order to receive data from the application running on the second processor, the bare-metal code.
+\\
+The next step is to create the Linux kernel and device tree, as well as the u-boot.
+Acquiring the root file system is also a requirement.
+One important note here is the modification of the device tree includes instructions for the Linux to only use one CPU and to not access certain amount of memory, which is reserved for the bare-metal application.
+For instructions for the creation of the kernel, u-boot and acquiring the root file system, the reader may refer to the Xilinx Wiki Multi-OS support \cite{Xilinx_wiki_amp}.\\
+
+Lastly, after all the above steps, the last one is to follow the appropriate procedures to copy the necessary files to an SD card. The files, including the applications, are:
+\begin{itemize}
+\item BOOT.BIN
+\item uramdisk.image.gz
+\item devicetree.dtb
+\item uImage
+\item rwmem.elf
+\item softUart.elf
+\end{itemize}
+
+The application for the CPU1 is included in the BOOT.BIN file.
