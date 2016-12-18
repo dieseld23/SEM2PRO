@@ -30,6 +30,7 @@ By splitting the 11 bit Message ID into a 4 bit function code, followed by 7 bit
 The Service Data Object (SDO) can read from or write to any registers on any node. 
 It can handle 127 different nodes with each 65536 different indices, each with 256 sub indices, in total, more than 2 billion addresses with each 4 bytes of data.
 The way CANopen supports this, is by using the first four bytes of the data portion of the frame for metadata, as described in figure~\ref{fig:CANopen_SDO_data}.
+This of course means that the overhead from one message increases from 47 bits to 79 bits, or 247 \% of the maximum data size.\\
 
 \begin{figure}[h]
 	\centering
@@ -39,21 +40,21 @@ The way CANopen supports this, is by using the first four bytes of the data port
 \end{figure}
 \thomas{de-jesusify}
 
-\martin{Clarify facts}
-This of course means that the overhead from one message increases from 47 bits to 59 bits, or 184 \% of the maximum data size.
-\\~\\
+\todo[inline]{I clarefied some of the calculations. }
 This protocol is not ideal for this network. 
 In part because it's request based, but more because of the enormous overhead.
-The IMU would produce 999 bits in order to transmit its 9 axis data without loss of precision, and at 400 Hz, that node alone will take up 40 \% of the bandwidth.
+For instance, the IMU produces 4 byte data types for each of its 9 axes. 
+With an overhead of 79 bits, this comes to 999 bits, and at 400 Hz, that node alone will take up 40 \% of the bandwidth.
 In addition to this, all transmits would need to be requested, so the total bandwidth comes close to 70 \%.
 %Metadata is 47 bits, plus 32 bits from the Data portion. The data it self is a float, so that's 32 bits; 111 in all. A request does not include data, so that's only 79 bits of data. At 400 Hz, that's (111+79)*9*400=684000.
 The SDO is generally used to define or read parameters for that node, that are not bound to change over time.
 It should not be used for broadcasting data.
 \\
 The Process Data Object (PDO) is a protocol used to transmit specific indices with a higher throughput. 
-In this protocol, certain indices are mapped to one of 8 PDOs. 
+In this protocol, certain indices are mapped to one of 8 PDOs per node. 
 This way, a node can identify data only by the CAN message ID, without using any of the data portion for overhead.
-It is also possible to group multiple values together, and to transmit without request -- either at fixed time or event driven.
+It is also possible to group multiple values together, and to transmit without request, either at fixed time or event driven.
+Using PDO, it is possible to group 8 of the axes together and send the 9th by itself.
 This brings the data from the IMU down to 523 bits to transmit its 9 axis data.\\
 %((32+32)+47)*4+(47+32)
 
