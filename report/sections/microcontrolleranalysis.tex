@@ -4,7 +4,7 @@
 As described in section \ref{sec:data_collection}, a CAN network will be created to support the nodes on the go-kart.
 Each node is some type of embedded platform, possibly connected to a sensor or other data producing unit.
 From the perspective of the network the only requirement for the embedded platform is that it has a CAN controller.
-In principle the network could consist of 16 different embedded platform's.
+In principle the network could consist of 16 different embedded platforms.
 \subsection{Nodes}
 In section \ref{sec:hardware_for_par}, it was chosen to use an IMU and a GPS, both using a USB interface.
 Additionally, one node has to transfer data wirelessly from the go-kart to a stationary monitoring system.
@@ -45,7 +45,7 @@ The Zybos need to be supplied with 5 V, which subsequently powers the sensors, t
 The Sevcon has a 5V output capable of supplying up to $\si{100 \milli \ampere}$, which is insufficient.
 It is therefore necessary to use a DC-DC converter to supply the nodes.
 Some tests along with datasheet lookups are used to determine the power requirements for the system.\\
-
+\catalin{The zybo draw 475 doing what exactly?}
 By measurement, it was found that one Zybo draws a maximum of $\si{475 \milli \ampere}$ while running Linux.
 The CAN transceivers consume up to 40 mA\cite{3.3V_CAN}. 
 The GPS module consumes up to 40 mA, the IMU consumes up to 56 mA. 
