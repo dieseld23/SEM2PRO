@@ -60,7 +60,7 @@ The test was also performed with multiple Zybos connected to the CAN bus, in thi
 \subsection{Latency Test}\label{sub:CAN_latency}
 For this test, only two Zybos are needed.
 One node prepares a frame for transmission, then sets a GPIO pin high.
-It then performs the necessary checks and writes the message details to the TX fifo, and then sets its GPIO pin low. \\
+It then performs the necessary checks and writes the message details to the TX FIFO, and then sets its GPIO pin low. \\
 
 The other node will then wait for the full message frame to be received, and then set its GPIO pin high.
 Once the metadata of the message (data length and message ID) has been intepreted, the GPIO pin goes low again.
@@ -73,10 +73,9 @@ The resulting voltage measurements are displayed in figure~\ref{fig:CAN_test1_ra
 \begin{figure}[h]
 	\centering
 	\includegraphics[width = \linewidth]{graphics/CAN_test1_raw}
-	\caption{Start and stop pulses for an 8 byte CAN message. }
+	\caption{Start and stop pulses for an 8 byte CAN message. Yellow indicates the voltage of the CAN\_H, purple indicates the voltage of CAN\_L}
 	\label{fig:CAN_test1_raw}
 \end{figure}
-\martin{Define the colors in figure~\ref{fig:CAN_test1_raw}.}
 
 The time from the red voltage goes low, to the time the blue voltage goes high is $87.5 \si{\micro\second}$.
 This is of course very dependent on the particular controller used for this test, which according to the datasheet can work up to 1 MHz.
