@@ -1,7 +1,10 @@
 %!TEX root = ../main.tex
-\subsection{Methods to implement CAN on Linux}\label{sec:methods_to_implement_can}
+\subsection{Implementing CAN utilizing XCanPs}\label{sec:methods_to_implement_can}
 
-\mikkel{move axi can to analysis. move assymetric multiprocesssing to future work. move bare metal first, split from linux part.}
+\mikkel{DONE:move axi can to analysis.}
+\mikkel{move assymetric multiprocesssing to future work}
+\mikkel{ move bare metal first}
+\mikkel{split from linux part.}
 
 \martin{The can controllers do not have anything to do with xilinux. Does Xilinux provide drivers for the can controllers on the zynq? CAN controllers vs CAN drivers Issue - Some things rephrased.}
 After testing the stack board and showing the basic functionality of the CAN network as described in section \ref{sub:TestingCANStack_BareMetal}, the next step was to implement it using Linux running on the Zybo board.\\
@@ -9,12 +12,6 @@ Using Linux was necessary because the available sensors, GPS and IMU, as well as
 The process of establishing a wireless communication is explained in section \ref{sec:wifi}.
 An operating system was also required for logging purposes, specifically to log data into files.
 This section describes the necessary procedures that were followed in order to gain control over the CAN network from Linux.
-The different approaches that were explored, described in the next section, include:
-\begin{itemize}
-\item utilizing the XCanPs
-\item utilizing the AXI CAN IP Core
-\item implementing asymmetric multiprocessing.
-\end{itemize}
 ~\\
 At this point the reader should be informed that although the CAN controllers could be used on the Processing System using bare-metal code, the implementation of CAN on the Programmable Logic and the access to it from Linux was not successful.
 Alternatively, other means to prove the concept of the project were taken into account, as described in section \ref{sub:Utilizing_Svr_Virtualization}.
@@ -78,12 +75,6 @@ axi_can_0: axi-can@40000000 {
 \mikkel{Maybe you can provide some thoughts about the problem. Maybe also some words about the patching Xilinx-Digilent etc.}
 As was previously mentioned, the implementation was unsuccessful. At the time, the research done on this topic did not lead to successfully enabling the drivers.
 
-\subsubsection*{Utilizing the AXI CAN IP Core}
-\catalin{Move ip core to analysis}
-
-Another way to implement a CAN network was to use the AXI CAN core that is available in the Vivado Suite, instead of utilizing the CAN controllers on the Zynq chip.
-Unfortunately due to a license restriction from Xilinx, the core can only be used for simulation purposes and not actual hardware implementations.
-This information became available after the process of generating the bistream file in the form of an error, thus not allowing for further use of the core.
 %The architecture can be seen in figure \ref{fig:CAN_Arch_with_AXI_CAN}.
 
 %\begin{figure}[h!]
