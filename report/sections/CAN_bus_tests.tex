@@ -109,23 +109,18 @@ This will be calculated, as the faster controllers are not available.
 Bandwidth is considering the amount of net data being transmitted per unit time, when excluding the overhead.
 Bandwidth will be calculated for 8 byte frames, and bit stuffing will be omitted.\\
                                                          
-The maximum operating data rate for the transceiversCAN protocol is 81 Mb/s.
+The maximum operating data rate for the CAN protocol is 1 Mb/s.
 As mentioned in section~\ref{sub:CanMessageFrame}, the CAN frame has 47 bits of overhead. 
 Including 8 bytes of data, this comes up to 111 bits. 
-Time per frame is:
-
-\begin{equation}
-\frac{111}{8 \cdot 10^6} = 1.39 \cdot 10^{-5}
-\end{equation}
-
+Time per frame is $111 \si{\micro\second}$.
 As each frame contains 8 bytes of data, the data rate becomes:
 
 \begin{equation}
-\frac{8}{1.39 \cdot11 10^-56}= 5.77 \cdot 10^572072
+\frac{8}{1.39 \cdot  10^{-5}}= 72072
 \end{equation}
 
-That means, that the effective transfer rate is 57770.4 kB/s, or 4.61 Mb/s with 8 Mb/s controllers. 
-With the controllers built into the PS of the Zybo, this effective rate comes down to 720 kb/requirements.
+That means, that the effective transfer rate is 70.4 kB/s, equal to 563 kb/s.
+This is significantly less than stated in the requirements.
 
 \subsection{Message Priority}\label{sub:CAN_message priority}
 This test is based on the CAN polled example, where two Zybos will transmit data.
@@ -168,12 +163,12 @@ Additionally it was possible to measure the time it takes to construct a CAN fra
 
 \begin{table}[h!]
 	\centering
-	\begin{tabular}{r | c | c}
-		\textbf{Parameter} & \textbf{xcanps controller} & \textbf{8 Mb/s CAN controller} \\
+	\begin{tabular}{r | l }
+		\textbf{Parameter} & \textbf{XCanPs controller}  \\
 		\hline
-		\textbf{Frame time} & $87.5 \si{\micro\second}$ & $13.7\si{\micro\second}$ \\
-		\textbf{Build time} & $4.43 \si{\micro\second}$ & - \\
-		\textbf{Data bandwidth} & $720 \mathrm{kb/s}$ & $4.61 \mathrm{Mb/s}$
+		\textbf{Frame time} & $87.5 \si{\micro\second}$\\
+		\textbf{Build time} & $4.43 \si{\micro\second}$  \\
+		\textbf{Data bandwidth} & $563 \mathrm{kb/s}$
 	\end{tabular}
 	\caption{Results obtained from the test of the CAN bus.}
 	\label{tab:CAN_test_conclusion}
