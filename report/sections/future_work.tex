@@ -23,12 +23,12 @@ The WiFi node will then need to know which to expect, and will not send synchron
 
 \subsection*{Timestamping}
 \mikkel{Brand new subsection!}
-\thomas{accurate timestamp}
-As described in section \ref{sec:time} the time stamping on the sensor nodes is done in userspace in Linux, which does not produce an  accurate timestamps.
+\martin{Read it and liked it.}
+As described in section \ref{sec:time} the time stamping on the sensor nodes is done in userspace in Linux, which does not produce accurate timestamps.
 The reason for using Linux on the nodes is mainly that USB and especially WiFi requires complex drivers that are already implemented in Linux.
 As the frames are timestamped when they reach the WiFi node there is no requirement for it to be real-time.
-This leaves a solution to the imprecise time stamping to be to let the WiFi node run Linux and the rest of the nodes to run on bare-metal code.
-It of course requires a USB driver that can run on bare-metal code.
+This leaves a solution to the imprecise timestamping to let the WiFi node run Linux and the rest of the nodes to run on bare-metal code.
+That of course requires a USB driver that can run on bare-metal code.
 
 \subsection*{Extended Command Structure}
 As described in section~\ref{sub:CAN_protocol}, the WiFi node can only transmit 4 different message types, because 4 bits are used to address the command. 
@@ -41,8 +41,8 @@ Sync will be as it is now, but command would be any commands to control specific
 The data field would then contain one byte of data, determining which command is being sent.
 The getting and setting of parameters, would require one or two bytes of the data field to determine which node is being manipulated.
 Additionally, changing parameters on a go-kart while it is driving can be dangerous, so it will be important to include safety measures on the target node.
-
 \subsection*{Internode Communication}
+\catalin{rephrase 1st sentence. both a bus?}
 One of the advantages with both a bus, that all nodes can be snooping on all of the communication.
 At this stage though, the nodes cannot interpret what the other nodes are sending out, but there might be situations where one node would want to get data from another.
 One example could be velocity information from the front wheels being used by the motor controller to determine if the wheels are slipping, and reduce the torque accordingly. 
