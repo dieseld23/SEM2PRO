@@ -18,6 +18,7 @@ main.pdf
 *.glsdefs
 *.ist
 *.lot
+OD.tex
 
 #sublime
 *.sublime-project
