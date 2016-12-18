@@ -8,11 +8,11 @@ This section will seek to develop a PL architecture for the Zybo that allows for
 Furthermore it will describe the implementation of software that has the following functionality.
 \begin{itemize}
 \item Receiving and sending of frames
-\item Creating the message id
-\item Decoding of the message id parts, such as the node id, the message type and the command
+\item Creating the message ID
+\item Decoding of the message ID
 \item Handling interrupts from buttons and a GPIO port
 \item Controlling the LEDs
-\item Accepting and ignoring messages according to a subscriptions list
+\item Accepting and ignoring messages according to a subscription list
 \end{itemize}
 Some of the functionalities are not needed in the finished version of the system, but will be implemented for testing and debugging purposes.
 % This section includes the design and development of hardware and software in order to realize the CAN network.
@@ -21,7 +21,7 @@ Some of the functionalities are not needed in the finished version of the system
 
 \subsubsection*{Architecture}
 To use the XCanPs these need to be enabled in the Zynq PS.
-Interrupts were also enabled along with an AXI GPIO port connected to a PMOD connector to allow for externally triggered interrupts to the system.
+Interrupts were also enabled along with adding an AXI GPIO port connected to a PMOD connector to allow for externally triggered interrupts to the system.
 Additional AXI GPIO cores for LEDs and buttons were added for debugging and testing purposes.
 The architecture can be seen it figure \ref{fig:CAN_Testing_Architecture}. 
 It is simple, but adequate to meet the purpose of basic communication between nodes.
@@ -39,13 +39,12 @@ This is used as a basis for the developed software.
 The code was rewritten to give the wanted functionality.
 
 \subsubsection*{Sending Frames}
-The figure \ref{fig:SeqDiagram_SendFrame} shows the procedure of sending a frame to the CAN network containing data, which makes use of the protocol function \texttt{createMsgID()}.
+Figure \ref{fig:SeqDiagram_SendFrame} shows the procedure of sending a frame to the CAN network containing data, which makes use of the protocol function \texttt{createMsgID()}.
 Its purpose is to create a message ID by putting together the new message bit, the node ID and the message type.
 In the final implementation of the system the message ID would be provided by the software running in the userspace.
-After returning the message ID, 
 Afterwards the massage ID and dummy data are put into a \texttt{TxFrame}.
 The \texttt{TxFrame} will be sent when the FIFO has space.
-The actual sending is done with a call to the XCanPs function XCanPs\_Send().
+The actual sending is done with a call to the XCanPs function \texttt{XCanPs\_Send()}.
 
 \subsubsection*{Receiving Frames}
 The procedure of receiving a frame is shown in figure \ref{fig:SeqDiagram_RecvFrame}.
