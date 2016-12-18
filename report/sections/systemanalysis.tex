@@ -34,6 +34,22 @@ This section will present the analysis of the complete system, touching on the f
 
 \section{Conclusion}
 \label{sec:analysisconclusion}
-\thomas{A conclusion, outlining all of the decisions made?}
+\martin{Under construction.}
+In the analysis, a number of decisions was taken in order to give a preliminary idea of how the system should be implemented. \\
+
+A number of parameters of interest was explored, eventually boiling them down to three types of sensors: and IMU to measure relative motion, a GPS to measure the absolute position and the motor controller to measure speed of the wheel along with electrical parameters.
+
+\begin{itemize}
+	\item parameters of interest: Boiled down to IMU, GPS and motor controller
+	\item hardware for monitoring: VN-100, U-blox NEO-6P Sevcon Gen4
+	\item Data rate: losely calculated to 864 kb/s, but decided 1 Mb/s
+	\item Data collection: CAN was decided to collect data from all sensors onto one node
+	\item Embedded Platform: Zybo
+	\item Wireless network: WiFi
+	\item Local storage: Since the Zybos are running Linux, it is easy to collect and extract data from the SD card 
+	\item monitoring station interface: A Linux bases computer will be used to receive data wirelessly from the go kart, and present it to a user.  
+\end{itemize}
+
+These decisions resulted in a list of requirements, which are listed in section~\ref{sec:system_requirements}.
 
 % section system_analysis (end)
