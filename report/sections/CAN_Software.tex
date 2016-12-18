@@ -49,8 +49,8 @@ The actual sending is done with a call to the XCanPs function \texttt{XCanPs\_Se
 \subsubsection*{Receiving Frames}
 The procedure of receiving a frame is shown in figure \ref{fig:SeqDiagram_RecvFrame}.
 The node calls the \texttt{RecvFrame()} function and waits in a loop until it receives a frame.
-Then it checks the subscriptions in order to determine if the message is addressed to the node.
-\mikkel{Maybe add a line or two about the subscription list.}
+Then it checks the subscriptions in order to determine if the message is addressed to the node using the function \texttt{amISubscribed()}.
+This function makes use of an array containing the messages IDs that the node should accept when a message is being transmitted through the network.
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width = 1\linewidth]{graphics/SeqDiagram_SendFrame.pdf}

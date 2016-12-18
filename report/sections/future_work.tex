@@ -44,39 +44,10 @@ Although implementing internode communication would likely make the network more
 
 \subsection*{Utilizing Asymmetric Multiprocessing}
 
-Apart from using the AXI CAN core and the CAN drivers, the Zynq-7000 AP SoC provides the possibility of implementing a mechanism called asymmetric multiprocessing since there are two processors which share common memory as well as peripherals.
-The idea of this is to run Linux OS on one processor, while on the other one a bare-metal system, which both of them can communicate with each other.
-This was a proposed solution for the problem of accessing the CAN controllers from Linux which was the most promising of the implementation methods discussed in this report, but due to lack of time, it was researched only at a theoretical level.
-\\
-A brief implementation description will be given in this section, but for more details about the instructions and applications, the reader may refer to the Xilinx document \cite{Xilinx_AMP}.
+A proposed solution for the problem of accessing the CAN controllers from Linux is implementing a mechanism called asymmetric multiprocessing.
+It is supported by the Zynq-7000 AP SoC since there are two cores on the same processor which share common memory as well as peripherals.\\
 
-\subsubsection*{Short Implementation Description}~\\
-In order to achieve asymmetric multiprocessing on the Zybo board, certain steps are required to be taken, but also a few precautions as well.
-An important one is to configure the two processors appropriately in order to use the shared memory without conflicts.
-A second one is to setup the CPU0 as the master, because that is the processor assigned for the Linux OS.
-It is also the one that will start CPU1 by writing a value to a specific address in memory.
-\\
-Linux also needs to be configured as symmetric multiprocessing with a maximum number of one CPUs.
-It is a good approach because it will ensure that Linux configures the interrupt control distributor (ICD) and the snoop control unit (SCU) appropriately for multi-CPU environment, but only running on one of the two CPUs.
-\\
-Applications for the bare-metal and the Linux part are needed as well. Specifically, the former makes use of the fist stage boot loader (FSBL) as well as a custom application that will run on the CPU1 after it will be loaded by the FSBL into the memory.
-The latter, the Linux OS, uses two applications as well.
-The first one is RWMEM which is a utility providing the ability to read and write to various memory locations.
-The second one is the Soft UART, which constantly monitors the memory in order to receive data from the application running on the second processor, the bare-metal code.
-\\
-The next step is to create the Linux kernel and device tree, as well as the u-boot.
-Acquiring the root file system is also a requirement.
-One important note here is the modification of the device tree includes instructions for the Linux to only use one CPU and to not access certain amount of memory, which is reserved for the bare-metal application.
-For instructions for the creation of the kernel, u-boot and acquiring the root file system, the reader may refer to the Xilinx Wiki Multi-OS support \cite{Xilinx_wiki_amp}.\\
+The idea of this is to run Linux OS on one core, while on the other one a bare-metal system, which both of them can communicate with each other through shared memory. The core running Linux is needed to be set up as the master CPU since it is the one that starts the bare-metal system. Also, the operating system needs to be configured as symmetric multiprocessing with a maximum number of one CPUs.
+It is a good approach because it will ensure that Linux configures the interrupt control distributor and the snoop control unit appropriately for multi-CPU environment, but only running on one of the two CPUs. Lastly, the shared memory should be handled properly to avoid conflicts.\\
 
-Lastly, after all the above steps, the last one is to follow the appropriate procedures to copy the necessary files to an SD card. The files, including the applications, are:
-\begin{itemize}
-\item BOOT.BIN
-\item uramdisk.image.gz
-\item devicetree.dtb
-\item uImage
-\item rwmem.elf
-\item softUart.elf
-\end{itemize}
-
-The application for the CPU1 is included in the BOOT.BIN file.
+It is a promising solution, especially suitable for multi-core embedded platforms where different systems need to run simultaneously. In the case of this report, it could have solved the communication difficulty between the CAN network and Linux, but due to lack of time, it was researched only at a theoretical level. For more details about the instructions on implementing this mechanism, the reader may refer to the Xilinx document \cite{Xilinx_AMP}.
