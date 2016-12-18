@@ -34,7 +34,7 @@ This of course means that the overhead from one message increases from 47 bits t
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=0.9\linewidth]{graphics/CANopen_SDO_data_crop}
+	\includegraphics[width=0.9\linewidth]{graphics/CANopen_SDO_data}
 	\caption{"The data section of the CAN frame is split into three parts: one byte for the specifier, three bytes for the node index and subindex, and four bytes for the actual data in the transfer."\cite{CANopen_introduction}}
 	\label{fig:CANopen_SDO_data}
 \end{figure}
@@ -72,7 +72,7 @@ GoCAN, mostly, is a reinterpretation of the message ID of the frame.
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width = 0.9\linewidth]{graphics/CAN_protocol_general}
-	\caption{Naming convention for this high level protocol}
+	\caption{Naming convention GoCAN}
 	\label{fig:CAN_protocol_general_pdf}
 \end{figure}
 \thomas{Indicate messageid, remove color in dotted box, split into two cases}
