@@ -6,7 +6,8 @@ In addition to this, there are some features which would be  highly beneficial t
 All of this is discussed in this section.
 
 \subsection*{Design CAN Controller on FPGA}
-As the final implementation might be done in PL, it is possible to utilize the 8 Mb/s there is nothing preventing the controller working at 8 Mb/s -- the FPGA can easily produce and interpret signals up to or beyond 8 Mb/s.
+As the final implementation might be done in PL, it is possible to utilize the 8 Mb/s transfer rate of the CAN transceivers.
+This does not conform with the ISO11898-2 standard, though, but a custom controller in FPGA can easily produce and interpret signals up to or beyond 8 Mb/s.
 First objective of future work would be to implement the one missing link to make the entire project work.
 This would be implemented on FPGA for two reasons;
 the XCanPs controllers built into the Zybo can operate up to 1 Mb/s, but the transceivers can operate up to 8 Mb/s, so better to use the faster option.
