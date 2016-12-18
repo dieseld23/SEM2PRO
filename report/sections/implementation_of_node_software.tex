@@ -3,8 +3,8 @@ The on-vehicle network generally has two types of nodes, a generic sensor node a
 This section will seek to design and implement software that adheres to the requirements listed in the table of requirements.
 In general all nodes in the system needs to:
 \begin{itemize}
-\item Get data from CAN network.
-\item Send data using a CAN controller.
+\item Get data from CAN network
+\item Send data using a CAN controller
 \end{itemize}
 As described earlier, these responsibilities are implemented in the bare-metal CAN program described in section \ref{sec:methods_to_implement_can} therefore these responsibilities will be omitted from the following sections.
 
@@ -29,10 +29,10 @@ Due to time constraints, only the GPS sensor software was adapted to function wi
 It is found that a sensor node has the following responsibilities:
 
 \begin{itemize}
-\item Get data from associated sensor.
-\item Pack data according to GoCAN.
-\item Construct and send CAN packet.
-\item Receive and execute incoming commands.
+\item Get data from associated sensor
+\item Pack data according to GoCAN
+\item Construct and send CAN packet
+\item Receive and execute incoming commands
 \end{itemize}
 
 A CAN packet is defined as the \texttt{struct} in code \ref{code:data_packet}.
