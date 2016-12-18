@@ -34,6 +34,19 @@ This section will present the analysis of the complete system, touching on the f
 
 \section{Conclusion}
 \label{sec:analysisconclusion}
-\thomas{A conclusion, outlining all of the decisions made?}
+\martin{This was changed. All of the bullets in the introduction to the analysis were addressed.}
+In the analysis, a number of decisions was taken in order to give a preliminary idea of how the system should be implemented. \\
+
+A number of parameters of interest was explored, eventually boiling them down to three types of sensors, an IMU, a GPS and the motor controller.
+These were the VN-100 from Vectornav, the NEO-6P from U-blox and the Sevcon Gen4, all of which sensors were available from SDU.
+Based on these sensors the total data rate from the sensors was extrapolated.
+It was decided to make a distributed network of embeded platform, and a CAN bus was selected to handle communication between these.\\
+
+For implementation, the embedded platform has been selected to be the Zybo from Diligent, running Ubuntu.
+The wireless data connection between the go kart and the stationary compute will be handled using WiFi.
+The SD with Linux mounted in each Zybo had sufficient free storage for logging data at a high rate.
+A Linux bases computer will be used to receive data wirelessly from the go kart, and present it to a user. \\
+
+These decisions resulted in a list of requirements, which are listed in section~\ref{sec:system_requirements}.
 
 % section system_analysis (end)
