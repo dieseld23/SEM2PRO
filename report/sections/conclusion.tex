@@ -1,5 +1,87 @@
+%!TEX root = ../main.tex
 Throughout this report has been described the creation of a system for gathering and monitoring data from the SDU go-kart.
 Here will be presented a consollidation of the outcome of the different parts of the project, as well as some of the observations with respect to the working methods employed by the authors.
 \\~\\
 Initially, an attempt was made to exemplify the requirements of a system such as the one being developed.
 Each part of the system was analysed to this effect.
+While the analysis does touch on every part of the project, it was not until late in the project that the value of the analysis was clear to the authors.
+Some mistakes were made to this effect. 
+For instance, on making the connection between the PC and the Zybo, three different methods were tried before finally settling on socat.
+A process that might have been avoided with proper analysis of the problem at hand.
+Even with the detours, a collection of requirements were set.
+Many of which were verified in part \ref{part:verification}.
+
+\section{State of the Requirements}
+The results of the verification is consolidated here to provide an overview of the state of the project.
+Each requirement is listed with an explanation as to whether the requirement was met.
+Requirements marked with \cmark were fully realised, -- partially and \xmark ~are not realised.
+
+\subsection{Functional Requirements}
+\begin{itemize}
+	\item[\cmark] Read data from sensors/data producers:
+	Data was successfully read from a GPS module.
+	The data was gathered using the real GPS module but service virtualisation was utilised in verifying the functionality of the node responsible of handling the GPS.
+	This is explained in section \ref{sec:node_software}.
+	\item[\cmark] Timestamp all data:
+	A system was devised such that a packet contain the tinestamp of the data is sent prior to sending the data.
+	The timestamp was left out of the actual data packet to limit the bandwidth spent on transmitting timestamps.
+	This is explained in section \ref{sec:node_software}.
+	\item[\cmark] Transmit data wirelessly between Zybo and monitoring station:
+	This was succesfully done using a WiFi connection.
+	An ad-hoc network was created using a WiFi/USB dongle, which is connected to from a PC.
+	Verification of this feature can be seen in section \ref{sec:wifiverification}.
+	\item[\xmark] Log data to SD card:
+	Due to time constraints, it was not possible to implement this feature.
+	\item[\xmark] Transfer logs to monitoring station:
+	Since a log of the data is not kept, this requirement could not be fulfilled.
+	\item[\cmark] Start/stop transmission from nodes:
+	This feature is part of GoCAN, the protocol developed in the report.
+	The user can issue a command which is relayed from the monitoring station to the CAN network using the WiFi node.
+	This is shown in section \ref{sec:node_software}.
+	\item[\cmark] Present data to user:
+	A basic program reading the GPS data was written to act as a placeholder GUI.
+	The output of this program is shown in section \ref{sec:frontendverification}.
+	\item[\cmark] Provide an API for data access:
+	A class was written to provide an API which acts as a front end to the underlying system.
+	A function was written to interpret the GPS data and present it in a human readable format.
+	This API was utilised in verifiying the previous requirement.
+	\item[--] Must continue to function on node failure:
+	This requirement is fulfilled only partially. 
+	The network is agnostic to the number of nodes present at any one time and the failure of any sensor node will not bring the system down.
+	The WiFi node does, however, provide the link between the CAN network and the monitoring station.
+	Due to this, if the WiFi node fails, the system can no longer be used in monitoring data.
+\end{itemize}
+
+\subsection{Operational Requirements}
+\begin{itemize}
+	\item[\cmark] A developer can add new nodes:
+	A framework has been created which allows the developer to add the necessary code to support nodes.
+	Guidelines on how to implement new nodes are provided in appendix \ref{app:addnode}.
+	\item[\cmark] A developer can modify existing nodes:
+	Since the code for the framework mentioned in the previous requirement is available to the developer, it will also be possible to modify the code for any existing node.
+	\item[\cmark] A developer can add API for specific sensor:
+	The framework provides a front end class in which functions for accessing data from a particular node can be written.
+	An outline of the process of adding to the API can be seen in appendix \ref{app:addnode}.
+	\item[\cmark] A developer can add custom (G)UI:
+	S
+	\item A user can request a data log:
+	\item A user can start/stop data transmission from nodes:
+\end{itemize}
+
+\subsection{Quality of Service Requirements}
+\begin{itemize}
+	\item Can support up to 16 nodes:
+	\item Has wireless range greater than 80m:
+	\item CAN network has at least 1Mb/s data bandwidth:
+	\item[\xmark] Timestamps with a precision of 1 ms:
+	While timestamping is done, it is currently not possible to guarantee 1 ms precision.
+	This is due to the node being run on an ordinary Linux system.
+	If the data gathered on the network is to be useful in any data processing application, it is necessary to port the system to a real time platform.
+\end{itemize}
+
+\subsection{Design Requirements}
+\begin{itemize}
+	\item Must allow for integration of new nodes:
+	\item Software must be modular to allow for simple integration of nodes:
+\end{itemize}
+
