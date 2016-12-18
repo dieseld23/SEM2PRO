@@ -4,8 +4,8 @@ In order to ensure that all message IDs are unique, an Object Dictionary is decl
 The name is inspired from CANopen, but unlike the CANopen Object Dictionary, this refers to the messages being transmitted on the bus, and not the parameters or variables of the node.
 Because of this, some variables appear in several message IDs, as it might be desirable to reconfigure some nodes to send different data, and the node should group data together to reduce the number of frames.\\
 
-At this time, there are four nodes in the Object Dictionary with their node IDs: Wifi "0001", IMU "0011", Sevcon "0111" and GPS "1110".
-The Wifi node can issue commands to other nodes, and as such its portion of the OD is different. 
+At this time, there are four nodes in the Object Dictionary with their node IDs: WiFi "0001", IMU "0011", Sevcon "0111" and GPS "1110".
+The WiFi node can issue commands to other nodes, and as such its portion of the OD is different. 
 Common for the other three nodes is that the message type 0x01 is a four byte timestamp.
 Other than that, data messages start from 0x08.\\
 

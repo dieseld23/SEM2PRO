@@ -49,27 +49,27 @@ One frame contains all the parts in figure~\ref{fig:CAN_frame_pdf}.
 A \texttt{0} input to the transceiver will result in a voltage difference on the CAN bus, and a \texttt{1} input will result in no difference. 
 A \texttt{0} will always be dominant.
 This is used to ensure that two nodes do not transmit at the same time.
-If a node tries to write a \texttt{	}, but simultaneously reads back a \texttt{0}, it detects that the bus is occupied by a node with higher priority.
+If a node tries to write a \texttt{1}, but simultaneously reads back a \texttt{0}, it detects that the bus is occupied by a node with higher priority.
 The CAN message consists of 47 bits of overhead and 0-8 bytes of data. 
 The frame of the message is described here.
 
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width = 0.9\linewidth]{graphics/CAN_frame}
-	\caption{Bitwise representation of a CAN frame}
+	\caption{Bitwise representation of a CAN frame.}
 	\label{fig:CAN_frame_pdf}
 \end{figure}
 
 \begin{itemize}
 	\item SOF: \textbf{S}tart \textbf{O}f \textbf{F}rame: One dominant bit to start a frame.
 	\item Message ID: 11 bit message identifier provides information about what the message contains. Subscribers will recognize a message by this ID.
-	\item RTR: \textbf{R}emote \textbf{T}ransmission \textbf{R}equest: set to \texttt{1} if a transmission is requested from another node. Because is a publisher-subscriber network, this will always be \texttt{0}.
+	\item RTR: \textbf{R}emote \textbf{T}ransmission \textbf{R}equest: set to \texttt{1} if a transmission is requested from another node. Because it is a publisher-subscriber network, this will always be \texttt{0}.
 	\item IDE: \textbf{ID E}xtended: Set to \texttt{1} if extended ID is in use. This adds 18 more bits of message identifiers immediately after this bit. At the moment, this is not needed, and should always be 0.
-	\item r0: Bit reserved for future use, alway set to zero.
+	\item r0: Bit reserved for future use, always set to zero.
 	\item DLC: \textbf{D}ata \textbf{L}ength \textbf{C}ode: how many bytes, of data, the frame contains. Ranging from 0-8.
 	\item Data: Raw data. 
 	\item CRC Checksum: \textbf{C}yclic \textbf{R}edundancy \textbf{C}heck: 15 bit checksum based on what was written in the Data portion. The last bit is a delimiter, and is always \texttt{1}.
-	\item ACK: \textbf{ACK}nowledge: The transmitting node will set the first bit of ACK to be recessive (\texttt{1}). Each receiving node will calculate CRC based on the data, and compare it to the CRC checksum. If no error is detected, it will set the bit to dominant (\texttt{0}). On a multi-node network, if one node confirms the data, the transmitting node cannot know if any other node did not receive the data. However, because of the nature of a differential voltage bus it is nearly impossible that two nodes would not receive the same signal, so long as the bus is correctly impedance matched, and distances do not exceed the specification. The last bit of ACK is a delimiter, and always \texttt{1}.
+	\item ACK: \textbf{ACK}nowledge: The transmitting node will set the first bit of ACK to be recessive (\texttt{1}). Each receiving node will calculate CRC based on the data, and compare it to the CRC checksum. If no error is detected, it will set the bit to dominant (\texttt{0}). On a multi-node network, if one node confirms the data, the transmitting node cannot know if any other node did not receive the data. However, because of the nature of a differential voltage bus it is nearly impossible that two nodes would not receive the same signal, so long as the bus is correctly impedance matched and distances do not exceed the specification. The last bit of ACK is a delimiter, and always \texttt{1}.
 	\item EOF: \textbf{E}nd \textbf{O}f \textbf{F}rame: Pattern signifies the end of a frame, the pattern is 7 recessive bits.
 	\item IFS: \textbf{I}nter\textbf{F}rame \textbf{S}pace: an arbitrary length of recessive bits, at least three bits long. After this point, a new frame may start by setting a zero.
 \end{itemize}
@@ -86,4 +86,4 @@ If either \texttt{0} or \texttt{1} is written to the controller 5 consecutive ti
 This is done to ensure that receiving nodes remain synchronized with the transmitting node, as there is no clock signal.
 That means, that a frame can be extended by upwards of 20 \% if the data requires it.
 This is however not done to the EOF and IFS parts.
-This means, that the controllers may come out of sync at the end of each frame, this is irrelevant since the frame is finished.
+This means, that the controllers may go out of sync at the end of each frame, this is irrelevant since the frame is finished.
