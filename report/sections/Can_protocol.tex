@@ -11,7 +11,7 @@ The requirements of GoCAN are listed below.
 	\item Simple and easy to learn.
 	\item Support for 16 nodes.
 	\item One node must be able to receive/transmit data to/from multiple inputs/outputs
-	\item Publish/subscribe architecture.
+	\item Publisher-subscriber architecture.
 	\item Variable data length - beyond 8 bytes per message
 	\item Expandable -- must be able to add more nodes without affecting the existing ones.
 	\item Commands: Start/stop broadcasting 
@@ -41,19 +41,14 @@ This of course means that the overhead from one message increases from 47 bits t
 
 \todo[inline]{I clarefied some of the calculations. }
 This protocol is not ideal for this network. 
-<<<<<<< HEAD
-In part because it is request based, but more because of the enormous overhead.
-The IMU would produce 999 bits in order to transmit its 9 axis data without loss of precision, and at 400 Hz, that node alone will take up 40 \% of the bandwidth.
-=======
 In part because it's request based, but more because of the enormous overhead.
 For instance, the IMU produces 4 byte data types for each of its 9 axes. 
 With an overhead of 79 bits, this comes to 999 bits, and at 400 Hz, that node alone will take up 40 \% of the bandwidth.
->>>>>>> 0281d8b76481e929cd85f9e288bbf849f0b88343
 In addition to this, all transmits would need to be requested, so the total bandwidth comes close to 70 \%.
 %Metadata is 47 bits, plus 32 bits from the Data portion. The data it self is a float, so that's 32 bits; 111 in all. A request does not include data, so that's only 79 bits of data. At 400 Hz, that's (111+79)*9*400=684000.
 The SDO is generally used to define or read parameters for that node, that are not bound to change over time.
-It should not be used for broadcasting data.
-\\
+It should not be used for broadcasting data.\\
+
 The Process Data Object (PDO) is a protocol used to transmit specific indices with a higher throughput. 
 In this protocol, certain indices are mapped to one of 8 PDOs per node. 
 This way, a node can identify data only by the CAN message ID, without using any of the data portion for overhead.
@@ -86,10 +81,10 @@ GoCAN, mostly, is a reinterpretation of the message ID of the frame.
 \end{figure}
 The message ID is different depending on the recipient. 
 A message can be addressed to either a sensor node or the WiFi node.
-The two cases are shown in figure \ref{fig:CAN_protocol_general}
+The two cases are shown in figure \ref{fig:CAN_protocol_general}.
 The first 5 bits are common for the two cases, bit 1 indicates whether this is the first frame of the message, bits 2-5 indicate the address of the transmitting node.
 If a node needs to send more than 8 bytes in one message, the new message bit can be set to \texttt{0}, thus blocking other nodes with higher priority until the entire message has been transmitted.
-If the message is addressed to a sensor node, bits 6 through 9 indicates the node id of the sensor node while bits 10 and 11 hold the command.
+If the message is addressed to a sensor node, bits 6 through 9 indicates the node ID of the sensor node while bits 10 and 11 hold the command.
 Command types are "Start broadcasting", "Stop broadcasting" and "Synchronize".
 These will be explained in more detail in section \ref{sec:CAN_functions}.
 If the recipient message ID is the ID of the WiFi node, then the command applies to all nodes.
@@ -99,7 +94,7 @@ It is the responsibility of the developer to utilize these correctly.\\
 
 As mentioned, there are two types of nodes: 
 \begin{itemize}
-	\item \textbf{The Wifi node:} Acts as the link between the user on the monitoring station and the network.
+	\item \textbf{The WiFi node:} Acts as the link between the user on the monitoring station and the network.
 	It transfers data to the monitoring station and distributes commands on the network.
 	\item \textbf{Sensor nodes:} Any sensor or data producing unit will be associated with a node.
 	A sensor node will produce data and act according to received commands
@@ -108,7 +103,7 @@ As mentioned, there are two types of nodes:
 The four node IDs currently in use:
 \begin{table}[h]
 	\begin{tabular}{{l} {l}}
-		Wifi node: & 0b0001 \\
+		WiFi node: & 0b0001 \\
 		IMU node: & 0b0011 \\
 		Sevcon node: & 0b0111 \\
 		GPS node: & 0b1110
