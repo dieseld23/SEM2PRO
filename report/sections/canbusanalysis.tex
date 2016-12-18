@@ -56,20 +56,6 @@ A CAN controller (both standalone and built-in) has an input and output FIFO, me
 This does, however, mean that it can not be used as a real time network.
 Asynchronous operation is necessary as there is only one bus and it is possible that nodes will attempt to transmit messages simultaneously.
 
-\subsubsection*{Methods to Implement CAN}
-\catalin{DONE: Move ip core to analysis}
-\catalin{Is it well written? Say sth about AMP or remove it completely?}
-The Zybo provides various means to create a CAN network and can be implemented either in the PS or the PL.
-The different approaches that were explored in order to create such a network include:
-\begin{itemize}
-\item utilizing the XCanPs
-\item utilizing the AXI CAN IP Core
-\item implementing asymmetric multiprocessing.
-\end{itemize}
-The first approach makes use of the CAN controllers that are present in the Zynq chip.
-The AXI CAN core is available in the Vivado Suite but due to a license restriction from Xilinx, the core can only be used for simulation purposes and not actual hardware implementations.
-This information became available after the process of generating the bistream file in the form of an error, thus not allowing for further use of the core.
-
 \subsubsection*{Protocol}
 The CAN standard, apart from a variety of hardware requirements, also defines a protocol that nodes on a CAN bus should adhere to.
 Part of this protocol is a well defined message frame.
