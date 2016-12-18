@@ -20,7 +20,6 @@ As can be seen, this architecture provides the link between the receiving progra
 Upon receiving a message from the go-kart, socat will pipe the raw message to the interpreter.
 The interpreter will proceed to extract the message ID, the timestamp and the data.
 These are then put into a fifo buffer which will contain the latest 1024 data points for a given message ID.
-\martin{does that mean that there are upwards of 1000 independent fifos? Looking at figure~\ref{fig:backendconcept}, it seems like is a three part FIFO, where messages get mixed between each other}
 One of the requirements of this system is that it should be easily expandable.
 A consequence of this is that adding a new node on the system should require as few changes to the code as possible.
 Making this backend agnostic with respect to the type of data means that no changes are required when adding different nodes with different data types.
