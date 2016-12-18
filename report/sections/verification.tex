@@ -1,16 +1,14 @@
 %!TEX root = ../main.tex
+The complete system was not made to function, however, most of the subsystems were.
+Throughout this section tests will be designed and carried out in order to verify that the various subsystems live up to the requirements set in section \ref{sec:system_requirements}.
+\\~\\
+Service virtualisation is used extensively in verifying the various systems.
+This is the process of emulating one piece of hardware such that another can act on the input given it.
+\\~\\
+Four parts are tested throughout this section, the CAN network, the WiFi, the node software and the front end.
+These parts constitute both the system on the go-kart as well as the system on the monitoring station.
 
-\thomas{Needs rewrite. Emphasis on service virtualization, also both describe the can and software side of the "gap}
-Throughout this section tests will be designed and carried out in order to verify that the various subsystems live up to the requirements set in section \ref{sec:system_requirements}.\\
-
-In order to show that the system can be fully functional despite the unsuccessful attempt to implement it, a different approach than the actual implementation is needed.
-One way of doing that is to apply a method called service virtualization where one part of the system can be simulated to prove that the rest of the system is fully functional, given the presence of the missing simulated part.
-\\
-In this case, the system that was designed for this project can be divided into two parts or subsystems.
-The first one is the physical CAN network to this point is only functional in bare\-metal code, which is described in section~\ref{sub:CAN_Bus_Tests}.
-The second part would be considered the subsystem present on Linux which included the protocol designed to be used with the CAN bus and the application which extracted the data from the sensors.
-This is described in section~\ref{sec:node_software}
-The connection between the two subsystems is the service virtualization and could be replaced either by a software buffer.
+\thomas{rewritten}
 
 \input{sections/CAN_bus_tests}
 \input{sections/wifi_verification}
