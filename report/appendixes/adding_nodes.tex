@@ -53,7 +53,7 @@ A template of an API function is given in code \ref{code:apitemplate}.
 \begin{lstlisting}[caption=Function template for accesing data,label=code:apitemplate]
 #define <MESSAGE_ID> "11110001001"
 
-<PARAMETER_TYPE> backend::get_<PARAMETER>()
+<PARAMETER_TYPE> frontend::get_<PARAMETER>()
 {
 	std::vector<data_t> v;
 
@@ -71,7 +71,7 @@ A template of an API function is given in code \ref{code:apitemplate}.
 }
 \end{lstlisting}
 
-The definition of the message id of the frame being decoded should be placed in \texttt{backend.hpp}.
+The definition of the message id of the frame being decoded should be placed in \texttt{frontend.hpp}.
 The return type of functions is optional.
 The \texttt{get\_coordinate()} function implemented, for example, returns a struct containing the relevant data.
 All data is kept in a vector with 0-1024 elements where the last element of the vector is always the newest.

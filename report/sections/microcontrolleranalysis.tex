@@ -33,8 +33,7 @@ In PS the Xillybus is reached in userspace through \texttt{/dev/xillybus\_<bus-n
 
 
 
-\subsubsection*{CAN Controller on the Zybo }
-\mikkel{Moved! Changede by Catalin and Mikkel}
+\subsubsection*{CAN Controller on the Zybo}
 The Zybo provides two different types of CAN Controllers.
 Xilinx provides an AXI Core implementing a CAN controller in PL and it has a built-in CAN Controller in the PS.
 The AXI core CAN Controller is available in the Vivado Suite, but it cannot actually be bitstreamed without obtaining the appropriate license from Xilinx.
@@ -45,7 +44,7 @@ The Zybos need to be supplied with 5 V, which subsequently powers the sensors, t
 The Sevcon has a 5V output capable of supplying up to $\si{100 \milli \ampere}$, which is insufficient.
 It is therefore necessary to use a DC-DC converter to supply the nodes.
 Some tests along with datasheet lookups are used to determine the power requirements for the system.\\
-\catalin{The zybo draw 475 doing what exactly?}
+
 By measurement, it was found that one Zybo draws a maximum of $\si{475 \milli \ampere}$ while running Linux.
 The CAN transceivers consume up to 40 mA\cite{3.3V_CAN}. 
 The GPS module consumes up to 40 mA, the IMU consumes up to 56 mA. 

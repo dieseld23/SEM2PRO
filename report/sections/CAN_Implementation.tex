@@ -1,15 +1,13 @@
 %!TEX root = ../main.tex
 \subsection{Accessing CAN Controller from Linux}\label{sec:methods_to_implement_can}
-\mikkel{Changed by Catalin and a little of Mikkel :D}
 Utilizing the XCanPs from bare-metal code is not enough for all nodes as some needs to run Linux as described in the analysis part.
 This section describes the steps tried in order gain access to the CAN controller from Linux. 
 According to Xilinx documentation, this can be done by following their Linux CAN driver guide \cite{Xilinx_wiki_Linux_CAN_driver}.
 %The steps for this were to modify certain files related to the kernel configurations and the device tree settings.
 
 \subsubsection*{Enabling the CAN Controller Drivers}
-\thomas{spelling mistake -withe}
-To access the CAN controller the appropriate drivers needs to be enabled in the Kernel.
-Specifically, the Kconfig file withe the path shown in code \ref{code:can_kconfig_pathfile} needed to be configured.
+To access the CAN controller the appropriate drivers needs to be enabled in the kernel.
+Specifically, the Kconfig file with the path shown in code \ref{code:can_kconfig_pathfile} needed to be configured.
 The entry at line 128 was changed as seen in code \ref{code:can_kconfig_contents_line128}.
 Originally, lines 130 and 131 were as seen in code \ref{code:can_kconfig_original_line130}.
 
@@ -65,15 +63,14 @@ axi_can_0: axi-can@40000000 {
 It was expected that the changes took effect after rebooting the system, which was not the case.
 
 \subsubsection*{Conclusion}
-\thomas{I think unsuccesful}
-After the changes, the CAN devices were still not visible in Linux and thus, accessing the CAN controllers was successful.
+After the changes, the CAN devices were still not visible in Linux and thus, accessing the CAN controllers was unsuccessful.
 
 Research was done by the authors in why this could not be accomplished.
 It was found that there were some naming inconsistencies between the guide and the Device Tree Settings file present in Linux running on the Zybo. Specifically, all the devices' names in the file are prepended with ps7.
 A new set of changes with this naming convention was done, but with no success.\\
 
 Another approach to this, was to build a newer version of the kernel containing these changes and to build an entirely new Linux system for the Zybo.
-This approach was considered to be unfeasible as the kernel needed to be patched with Xillinux patches which are not compatible with a newer version of the kernel.
+This approach was considered to be infeasible as the kernel needed to be patched with Xillinux patches which are not compatible with a newer version of the kernel.
 %The architecture can be seen in figure \ref{fig:CAN_Arch_with_AXI_CAN}.
 
 %\begin{figure}[h!]

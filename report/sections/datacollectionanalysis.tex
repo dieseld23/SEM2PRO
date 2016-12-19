@@ -49,8 +49,6 @@ It can be scalable to a certain point, since the hub can be upgraded to handle m
 \end{itemize}
 
 \subsubsection*{Suitable Topology}
-
-\todo[inline]{rewrote, and shrunk a lot. Martin}
 A star network requires extra hardware in the form of a hub, which has a limited number of ports. 
 This either has to be large enough to a predefined maximum number of nodes, or it will have to be replaced to accommodate more nodes.
 This takes away scalability and modularity.\\
@@ -58,7 +56,7 @@ This takes away scalability and modularity.\\
 Both the bus and ring topology fulfill the requirements suitably in terms of scalability and hardware requirements.
 Technologies of both types will be explored in order to determine which suits the project better.
 
-\subsection{Networking technology}
+\subsection{Networking technology}\label{sec:CAN-bus}
 In the previous section it was found that the bus and ring topologies in particular lend themselves well to the implementation of this system.
 A number of different technologies exist, that implement these topologies. 
 This section explores a few of the ones that are considered for this project to find the one best suited.
@@ -88,4 +86,3 @@ According to the data rate calculations in section~\ref{sec:data_rate}, the CAN 
 In comparing CAN and Powerlink, CAN was the better fit for this project.
 CAN requires less hardware to implement, and the hardware it requires is cheaper than that of Powerlink. 
 Furthermore, Powerlink is proprietary, which poses a problem in implementation, that CAN does not.
-\todo[inline]{Rewrote this}

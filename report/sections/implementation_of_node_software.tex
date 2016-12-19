@@ -36,7 +36,6 @@ It is found that a sensor node has the following responsibilities:
 \end{itemize}
 
 A CAN packet is defined as the \texttt{struct} in code \ref{code:data_packet}.
-\mikkel{Code has been moved here as agreed!}
 \begin{lstlisting}[caption=Struct for data packet.,label=code:data_packet]
 struct data_packet {
   std::bitset<1> nw_msg;
@@ -66,7 +65,7 @@ The three first responsibilities listed describe a flow which is presented in mo
 \label{fig:filter_2}
 \end{subfigure}
 \caption[Block diagram showing handling of outgoing and incoming data.]{Block diagram showing handling of outgoing and incoming data. The boxes are colored according to which class implements the functionality. 
-Yellow is the GPS class, orange is the Packer\_GPS class, purple is the node class, green is the protocol class and blue is the CAN\_link class.}
+Yellow is the \texttt{GPS} class, orange is the \texttt{GPS\_Packer} class, purple is the \texttt{Node} class, green is the \texttt{Protocol} class and blue is the \texttt{CAN\_link class}.}
 \label{fig:flow_flow}
 \end{figure}
 
@@ -282,8 +281,6 @@ It needs to keep the latest received timestamp for each node in the network.
 When it receives data from a node it should append the latest received timestamp from that node.  
 
 \subsection{Timestamping}\label{sec:time}
-\mikkel{Brandnew section! Should be read!}
-\martin{Read it and liked it}
 The reason for timestamping at the nodes is that CAN is not a real-time network.
 Therefore timestamping when frames are received would be of no use, as the latency of the frames is unknown.
 The accuracy of a timestamp given at the node depends on the system on which it is runs. 

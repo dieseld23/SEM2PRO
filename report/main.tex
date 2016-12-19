@@ -1,4 +1,4 @@
-\documentclass[a4paper,10pt]{article}
+\documentclass[a4paper,10pt, twoside]{article}
 \usepackage[utf8]{inputenc}
 \usepackage{courier}
 \setcounter{tocdepth}{2} %Only show sections and subsections in toc.
@@ -66,7 +66,7 @@
 
 \usepackage[T1]{fontenc}	% Quotes
 \usepackage{dblfloatfix}	% used to have a headline on a page with a rotated table
-\usepackage{todonotes}
+\usepackage[disable]{todonotes}
 \usepackage{listings}
 \lstset{
 backgroundcolor = \color{black!5},
@@ -113,7 +113,7 @@ breaklines = true
   }%
   }
 
-%\usepackage[inner=2cm,outer=4cm]{geometry}
+\usepackage[inner=5.5cm,outer=3.75cm]{geometry}
 
 \setlength{\parindent}{0pt}
 
@@ -125,18 +125,19 @@ Skarup Jaedicke, Martin Brøchner Andersen, Catalin I. Ntemkas‎}
 \begin{document}
 \input{sections/titlepage.tex}
 \newpage
+\newgeometry{left=3.75cm,right=5.5cm}
 \pagenumbering{Roman}
 \input{sections/abstract}
 \newpage
 \tableofcontents
 \newpage
-\listoftodos
 \listoffigures
 \listoftables
 %\addcontentsline{toc}{section}{Acronyms}
 %\printacronyms
 \clearpage
 \newpage
+\restoregeometry
 \pagenumbering{arabic}
 \part{Preface}
 \input{sections/introduction}
@@ -158,6 +159,7 @@ Skarup Jaedicke, Martin Brøchner Andersen, Catalin I. Ntemkas‎}
 \part{Conclusion}
 \input{sections/conclusion}
 \input{sections/future_work}
+\newpage
 \input{bib}
 \appendix
 \input{appendixes/bare_metal_code}

@@ -2,7 +2,6 @@
 The requirements state that it should be simple to add additional sensors to the system.
 Adding a sensor includes creating a way of easily accessing and showing the data on the observing system.
 This section will explain the design of the front end that will provide this functionality.
-\martin{Is any of this backend?}
 
 \subsection{Data Format}
 Depending on where the data comes from it may be inherently different. 
@@ -27,7 +26,7 @@ However, full agnosticity throughout the entire front end would mean that the GU
 Instead, it was decided to let the front end consist of a number of functions, written specifically for each node.
 The GPS node, for instance, may have a \texttt{get\_latitude()} function.
 In this manner, an API can be created which provides the GUI with access to the parameters that needs to be shown.
-The complete code can be found on the associated github repository in \path{code/backend/}.
+The complete code can be found on the associated github repository in \path{code/frontend/}.
 As a note, throughout this section it is assumed that the messages are of string type.
 Clearly, this is hugely inefficient as these are string representations of binary numbers.
 In testing the software this approach simplified the process greatly and was due to time pressure.
@@ -42,7 +41,7 @@ It is unlikely that this choice will pose any issues in terms of performance sin
 	\label{fig:backendconcept}
 \end{figure}
 
-\begin{figure}[H]
+\begin{figure}
 	%\missingfigure{Backend Class Diagram}
 	\includegraphics[width=\linewidth]{graphics/backend_class_diagram}
 	\caption[Front end class diagram.]{Class diagram of the front end.}

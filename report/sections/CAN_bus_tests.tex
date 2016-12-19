@@ -19,8 +19,6 @@ The tests performed will be:
 \subsection{Basic Communication}
 \label{sub:TestingCANStack_BareMetal}
 
-
-\mikkel{Changed!}
 In order to verify that the basic communication of a CAN network works on the developed CAN bus a test needs to be conducted.
 The method of the test was to implement the functionality of sending the input value of a pressed button to the network and to receive frames from the network, decode the frames and turn on the appropriate LED.
 The flow of event for sending a frame is shown in figure \ref{fig:FlowChart_CANSoft_BtnsIntr} and the flow for the receiving a frame is shown in figure \ref{fig:FlowChart_CANSoft_RecvData}.
@@ -73,7 +71,7 @@ The resulting voltage measurements are displayed ion figure~\ref{fig:CAN_test1_r
 \begin{figure}[h]
 	\centering
 	\includegraphics[width = \linewidth]{graphics/CAN_test1_raw}
-	\caption[Start and stop pulses for an 8 byte CAN message.]{Start and stop pulses for an 8 byte CAN message. Yellow indicates the voltage of the CAN\_H, purple indicates the voltage of CAN\_L}
+	\caption[Start and stop pulses for an 8 byte CAN message.]{Start and stop pulses for an 8 byte CAN message. Yellow indicates the voltage of the CAN\_H, purple indicates the voltage of CAN\_L.}
 	\label{fig:CAN_test1_raw}
 \end{figure}
 

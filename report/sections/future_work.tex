@@ -19,11 +19,9 @@ So instead of working on two different methods for implementing a CAN controller
 As described in section~\ref{sec:CAN_functions}, the WiFi node sends out a sync signal when the whole network starts up.
 The WiFi node will send this signal after a fixed time, but there is a risk, that not all nodes are ready to receive yet. 
 An added security measure would be to add an "Ready for Sync" message, that all nodes will send out at a fixed interval.
-The WiFi node will then need to know which to expect, and will not send synchronize the other nodes until all of them have reported ready.
+The WiFi node will then need to know which to expect, and will not send a synchronize message to the other nodes until all of them have reported ready.
 
 \subsection*{Timestamping}
-\mikkel{Brand new subsection!}
-\martin{Read it and liked it.}
 As described in section \ref{sec:time} the time stamping on the sensor nodes is done in userspace in Linux, which does not produce accurate timestamps.
 The reason for using Linux on the nodes is mainly that USB and especially WiFi requires complex drivers that are already implemented in Linux.
 As the frames are timestamped when they reach the WiFi node there is no requirement for it to be real-time.
@@ -42,8 +40,7 @@ The data field would then contain one byte of data, determining which command is
 The getting and setting of parameters, would require one or two bytes of the data field to determine which node is being manipulated.
 Additionally, changing parameters on a go-kart while it is driving can be dangerous, so it will be important to include safety measures on the target node.
 \subsection*{Internode Communication}
-\catalin{rephrase 1st sentence. both a bus?}
-One of the advantages with both a bus, that all nodes can be snooping on all of the communication.
+One of the advantages with a bus, is that all nodes can receive all of the communication.
 At this stage though, the nodes cannot interpret what the other nodes are sending out, but there might be situations where one node would want to get data from another.
 One example could be velocity information from the front wheels being used by the motor controller to determine if the wheels are slipping, and reduce the torque accordingly. 
 To reduce noise, it would be better to put a node closer to the front of the car, than to use long dedicated cables for each sensor in the front of the car, and then transmit the data over the CAN bus.\\
@@ -54,10 +51,10 @@ Although implementing internode communication would likely make the network more
 
 \subsection*{Utilizing Asymmetric Multiprocessing}
 
-A proposed solution for the problem of accessing the CAN controllers from Linux is implementing a mechanism called asymmetric multiprocessing.
+A proposed solution for the problem of accessing the CAN controllers from Linux is implementing asymmetric multiprocessing.
 It is supported by the Zynq-7000 AP SoC since there are two cores on the same processor which share common memory as well as peripherals.\\
 
 The idea of this is to run Linux OS on one core, while on the other one a bare-metal system, which both of them can communicate with each other through shared memory. The core running Linux is needed to be set up as the master CPU since it is the one that starts the bare-metal system. Also, the operating system needs to be configured as symmetric multiprocessing with a maximum number of one CPUs.
 It is a good approach because it will ensure that Linux configures the interrupt control distributor and the snoop control unit appropriately for multi-CPU environment, but only running on one of the two CPUs. Lastly, the shared memory should be handled properly to avoid conflicts.\\
 
-It is a promising solution, especially suitable for multi-core embedded platforms where different systems need to run simultaneously. In the case of this report, it could have solved the communication difficulty between the CAN network and Linux, but due to lack of time, it was researched only at a theoretical level. For more details about the instructions on implementing this mechanism, the reader may refer to the Xilinx document \cite{Xilinx_AMP}.
+It is a promising solution, especially suitable for multi-core embedded platforms where different systems need to run simultaneously. In the case of this report, it could have solved the communication difficulty between the CAN controller and Linux, but due to lack of time, it was researched only at a theoretical level. For more details about the instructions on implementing this mechanism, the reader may refer to the Xilinx document \cite{Xilinx_AMP}.

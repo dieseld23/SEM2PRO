@@ -19,7 +19,6 @@ The requirements of GoCAN are listed below.
 	\item Timestamp data.
 \end{itemize}
 
-\thomas{This is changed!}
 \subsubsection*{The CANopen Protocol}
 \label{sub:CANopen}
 As mentioned before, CANopen is a high level protocol that runs on top of the CAN protocol.
@@ -39,7 +38,6 @@ This of course means that the overhead from one message increases from 47 bits t
 	\label{fig:CANopen_SDO_data}
 \end{figure}
 
-\todo[inline]{I clarefied some of the calculations. }
 This protocol is not ideal for this network. 
 In part because it's request based, but more because of the enormous overhead.
 For instance, the IMU produces 4 byte data types for each of its 9 axes. 

@@ -155,7 +155,6 @@ Finally, a short bash script is written to quickly set up the network:
 >> ip addr add wlan0 196.178.10.10
 \end{lstlisting}
 
-\thomas{add script to git}
 Since the system will not necessarily have an interface when it is mounted on the go-kart, it will have to automatically run this script on startup.
 On Xillinux, this can be achived by placing the script in \path{/etc/init.d/<script_name>}.
 
@@ -179,7 +178,6 @@ Although \cite{beej} was used as a reference in setting up the connection, it pr
 As the authors had prior knowledge with this library it became the next choice.
 ASIO is part of Boost and contains all of the tools necessary to set up a TCP/IP connection.
 Boost provides a multitude of different examples and tutorials on how to use ASIO, specifically the chat server from \cite{boostchat} was modified and formed the basis for the program used in setting up the connection.
-\thomas{Put server/client code on github:/code/socket/}
 This approach was not without problems, however.
 As mentioned previously, Xillinux is based on an older version of Ubuntu, as such, the version of CMake and Boost available on the platform is insufficient.
 In updating the software, one significant issue emerged; the size of the library.

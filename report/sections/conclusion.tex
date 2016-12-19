@@ -23,12 +23,12 @@ Requirements marked with \cmark were fully realised, -- partially and \xmark ~ar
 	The data was gathered using the real GPS module but service virtualisation was utilised in verifying the functionality of the node responsible of handling the GPS.
 	This is explained in section \ref{sec:node_software}.
 	\item[\cmark] \textbf{Timestamp all data:}
-	A system was devised such that a packet contain the tinestamp of the data is sent prior to sending the data.
+	A system was devised such that a packet contain the timestamp of the data is sent prior to sending the data.
 	The timestamp was left out of the actual data packet to limit the bandwidth spent on transmitting timestamps.
 	This is explained in section \ref{sec:node_software}.
 	\item[\cmark] \textbf{Transmit data wirelessly between Zybo and monitoring station:}
 	This was succesfully done using a WiFi connection.
-	An ad-hoc network was created using a WiFi/USB dongle, which is connected to from a PC.
+	An ad-hoc network was created using a WiFi/USB dongle, which communicates wirelessly to a PC.
 	Verification of this feature can be seen in section \ref{sec:wifiverification}.
 	\item[\xmark] \textbf{Log data to SD card:}
 	Due to time constraints, it was not possible to implement this feature.
