@@ -3,16 +3,16 @@
 #include <iostream>
 #include <thread>
 
-#include "backend.hpp"
+#include "frontend.hpp"
 
 class ui
 {
 public:
-	ui(backend *backend);
+	ui(frontend *frontend);
 private:
 	void running();
 	void clr_scrn();
 	
 	std::thread ui_t;
-	backend *backend_o;
+	frontend *frontend_o;
 };

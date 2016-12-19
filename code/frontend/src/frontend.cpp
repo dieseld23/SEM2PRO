@@ -1,14 +1,14 @@
-#include "backend.hpp"
+#include "frontend.hpp"
 #include "fifo.hpp"
 
 #include <vector>
 #include <math.h>
 
-backend::backend(fifo *fifo) : fifo_o(fifo)
+frontend::frontend(fifo *fifo) : fifo_o(fifo)
 {
 }
 
-coordinate_t backend::get_coordinate()
+coordinate_t frontend::get_coordinate()
 {
 	std::string lat, lon;
 	char lat_p, lon_p;

@@ -20,10 +20,10 @@ struct coordinate_t
 	float longitude;
 };
 
-class backend
+class frontend
 {
 public:
-	backend(fifo *fifo);
+	frontend(fifo *fifo);
 
 	/*GPS Getters*/
 	coordinate_t get_coordinate();
